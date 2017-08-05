@@ -1,0 +1,185 @@
+[
+  {
+    "MODELS": {
+      "THREE": [
+        {
+          "id": "modern_transport_hull",
+          "material": "modern_transport_atlas",
+          "format":"obj",
+          "url": "./client/assets/models/boats/modern_transport_hull",
+          "urluv2": "./client/assets/models/boats/modern_transport_hull_ao",
+          "pool": 15,
+          "transform": {
+            "pos": [0, -1.2, -0.3],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+
+        {
+          "id": "sherman_hull",
+          "material": "tank_atlas",
+          "format":"obj",
+          "url": "./client/assets/models/sherman_hull",
+          "urluv2": "./client/assets/models/sherman_hull_ao",
+          "pool": 15,
+          "transform": {
+            "pos": [0, -1.2, -0.3],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "sherman_turret",
+          "material": "tank_atlas",
+          "url": "./client/assets/models/sherman_turret",
+          "urluv2": "./client/assets/models/sherman_turret_ao",
+          "pool": 15,
+          "transform": {
+            "pos": [0, -2.4, 0.3],
+            "rot": [0, -1, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "sherman_cannon",
+          "material": "tank_atlas",
+          "url": "./client/assets/models/sherman_cannon",
+          "urluv2": "./client/assets/models/sherman_cannon_ao",
+          "pool": 15,
+          "transform": {
+            "pos": [0, -2.45, 3.2],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "sherman_track_l",
+          "material": "tank_track",
+          "url": "./client/assets/models/sherman_track_l",
+          "urluv2": "./client/assets/models/sherman_track_l_ao",
+          "pool": 15,
+          "transform": {
+            "pos": [
+              1.3, -0.2, -0.55],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "sherman_track_r",
+          "material": "tank_track",
+          "url": "./client/assets/models/sherman_track_r",
+          "urluv2": "./client/assets/models/sherman_track_r_ao",
+          "pool": 15,
+          "transform": {
+            "pos": [-1.3, -0.2, -0.55],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "rock_10m",
+          "material": "main_atlas",
+          "url": "./client/assets/models/rock_10m",
+          "pool": 5,
+          "transform": {
+            "pos": [3, -6, 8],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+
+        {
+          "id": "tree_trunk_1",
+          "material": "main_atlas",
+          "url": "./client/assets/models/trees/tree_1_combined",
+          "pool": 5,
+          "transform": {
+            "pos": [0, -8, 0],
+            "rot": [0, 0, 0],
+            "scale": [0.6, 0.6, 0.6]
+          }
+        },
+        {
+          "id": "tree_trunk_2",
+          "material": "main_atlas",
+          "url": "./client/assets/models/trees/tree_2_combined",
+          "pool": 5,
+          "transform": {
+            "pos": [0, -4, 0],
+            "rot": [0, 0, 0],
+            "scale": [0.4, 0.4, 0.4]
+          }
+        },
+        {
+          "id": "tree_trunk_3",
+          "material": "main_atlas",
+          "url": "./client/assets/models/trees/tree_3_combined",
+          "pool": 5,
+          "transform": {
+            "pos": [0, -10, 0],
+            "rot": [0, 0, 0],
+            "scale": [0.5, 0.5, 0.5]
+          }
+        },
+        {
+          "id": "tree_model_4",
+          "material": "main_atlas",
+          "url": "./client/assets/models/trees/tree_4_combined",
+          "pool": 5,
+          "transform": {
+            "pos": [0, -5, 0],
+            "rot": [0, 0, 0],
+            "scale": [0.5, 0.5, 0.5]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "TERRAINS": {
+      "THREE": [
+        {
+          "id": "plain_ground",
+          "textures": [
+            {"uniform":"tx0", "file":"striperock",       "repeat":[9,   9]},
+            {"uniform":"tx1", "file":"darkrock",         "repeat":[13, 13]},
+            {"uniform":"tx2", "file":"mud",              "repeat":[58,  58]},
+            {"uniform":"tx3", "file":"dark_grass",       "repeat":[4,  4]},
+            {"uniform":"tx4", "file":"grass",            "repeat":[35,  35]},
+            {"uniform":"tx5", "file":"detail",           "repeat":[22,  22]},
+            {"uniform":"tx6", "file":"fract",            "repeat":[5,   5]}
+
+          ],
+          "shader":"TERRAIN_SHADER",
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [-0.5, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "OCEANS": {
+      "THREE": [
+        {
+          "id": "main_ocean",
+          "textures": [
+            {"uniform":"tx0", "file":"watertile2",       "repeat":[40, 70]},
+            {"uniform":"tx1", "file":"watertile",        "repeat":[75, 35]},
+            {"uniform":"tx2", "file":"watertile",        "repeat":[85, 85]}
+          ],
+          "shader":"OCEAN_SHADER",
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [-0.5, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        }
+      ]
+    }
+  }
+]

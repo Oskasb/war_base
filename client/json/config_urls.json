@@ -1,0 +1,52 @@
+[{
+  "config_url_index":{
+    "files":[
+      "validation/schemas/base_schema.json",
+      "validation/type_validation.json",
+      "validation/shapes_validation.json",
+
+      "effects/module_effects.json",
+
+      "messages/ui_messages.json",
+
+      "ui/type_style_map.json",
+      "ui/main_navigation.json",
+      "ui/buttons.json",
+      "ui/popups.json",
+
+      "styles/ui_monitor.json",
+      "styles/element_types.json",
+      "styles/ui_main.json",
+      "styles/ui_popups.json",
+      "styles/messaging.json",
+      "styles/world_objects.json",
+      "styles/ui_hud.json",
+      "styles/ships.json",
+      "styles/effects.json",
+
+      "modules/canvas_systems.json",
+      "modules/canvas3d_elements.json",
+      
+      "threedata/models/three_materials.json",
+      "threedata/models/three_models.json",
+      "threedata/models/three_building_models.json",
+      "threedata/models/three_environment.json",
+
+      "threedata/shaders/three_shader_chunks.json",
+      "threedata/shaders/three_particle_shaders.json",
+      "threedata/shaders/three_shader_programs.json",
+
+      "threedata/effects/three_particle_renderers.json",
+      "threedata/effects/three_particle_materials.json",
+      "threedata/effects/three_particle_simulations.json",
+      "threedata/effects/three_particle_effects.json",
+      "threedata/effects/three_particle_sprites.json",
+      "threedata/effects/three_particles.json",
+
+      "threedata/vegetation/three_particle_vegetation.json",
+      "threedata/vegetation/three_vegetation_configs.json",
+
+      "system_setup.json"
+    ]
+  }
+}]
