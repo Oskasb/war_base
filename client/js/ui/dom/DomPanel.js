@@ -33,7 +33,7 @@ define([
 
             this.panelId = panelId;
 
-            var parent = {
+            this.parent = {
                 element:parentElem
             };
 
@@ -44,7 +44,7 @@ define([
             var callback = function(key, data) {
                 _this.config = data;
                 if (_this.active) {
-                    _this.applyConfigs(parent, data);
+                    _this.applyConfigs(_this.parent, data);
                 }
             };
 
@@ -97,7 +97,7 @@ define([
             this.uiSystems.push(domCanvas);
 
             var setupReady = function(data) {
-    //            console.log("Config for 3d canvas:", data);
+                //            console.log("Config for 3d canvas:", data);
                 domCanvas.initCanvasSystem(data);
             };
 
@@ -135,9 +135,58 @@ define([
             };
 
             PipelineAPI.subscribeToCategoryKey('canvas3d', 'elements', confLoaded);
-
         };
 
+        DomPanel.prototype.getAvailableElementContainer = function() {
+        //    console.log("Elements:", this.elements);
+
+            for (var key in this.elements) {
+                if (typeof(this.elements[key].isAvailableContainer) === 'function') {
+                    if (this.elements[key].isAvailableContainer()) {
+                        console.log('Available:', key, this.elements[key])
+                        return this.elements[key];
+                    }
+                }
+            }
+        };
+
+        DomPanel.prototype.addContainedElement = function(elementConfig) {
+
+            var _this = this;
+            var id = elementConfig.id;
+
+            var elemData = function(key, conf) {
+                for (var i = 0; i < conf.length; i++) {
+                    if (conf[i].id == elementConfig.container) {
+                        console.log("load Element:", elementConfig, _this.parent);
+                        _this.removeContainedElement(elementConfig);
+                    //    var container = _this.attachElement(_this.panelId, conf[i]);
+                        _this.attachElement(null, elementConfig)
+                    }
+                }
+            };
+
+            PipelineAPI.subscribeToCategoryKey('gui_elements', 'containers', elemData);
+        };
+
+
+        DomPanel.prototype.removeContainedElement = function(elementConfig) {
+
+            var id = elementConfig.id;
+            var containerId = elementConfig.container+'_'+id;
+
+            if (this.elements[id]) {
+                console.log("Remove id", id, this.elements);
+                this.elements[id].removeElement();
+                delete this.elements[id];
+            }
+
+            if (this.elements[containerId]) {
+                console.log("Remove containerId", containerId, this.elements);
+                this.elements[containerId].removeElement();
+                delete this.elements[containerId];
+            }
+        };
 
         DomPanel.prototype.attachElement = function(parent, conf) {
 
@@ -154,15 +203,31 @@ define([
                 _this.inputChanged(dataSource.element.value);
             };
 
+            var parentElem;
 
-            if (conf.data.parentId) {
-                parent = this.elements[conf.data.parentId];
-
+            if (parent == this.panelId) {
+                parentElem = this.gridElements[0].element;
+            } else if (conf.data.parentId) {
+                parentElem = this.elements[conf.data.parentId].element;
+            } else {
+                if (!parent) {
+                    var container = this.getAvailableElementContainer();
+                    if (container) {
+                        console.log("Selected Container", container);
+                        parentElem = container.element;
+                    } else {
+                        console.warn("NO CONTAINER AVAILABLE:", conf);
+                        return;
+                    }
+                } else {
+                    parentElem = parent.element
+                }
             }
 
+            if (!parentElem) parentElem = this.parent.element;
 
             if (conf.data.style) {
-                var elem = new DomElement(parent.element, conf.data.style, conf.data.input);
+                var elem = new DomElement(parentElem, conf.data.style, conf.data.input);
                 if (conf.data.parentId == this.config[0].id) {
                     //            console.log("Add grid...")
                     this.gridElements.push(elem);
@@ -226,17 +291,17 @@ define([
                 elem.setText(conf.data.text)
             }
             this.elements[conf.id] = elem;
-
+            return elem;
         };
 
 
         DomPanel.prototype.applyConfigs = function(parent, config) {
 
-                for (var key in this.elements) {
-                    if (typeof(this.elements[key].removeElement) == 'function') {
-                        this.elements[key].removeElement();
-                    }
+            for (var key in this.elements) {
+                if (typeof(this.elements[key].removeElement) == 'function') {
+                    this.elements[key].removeElement();
                 }
+            }
 
             this.elements = {};
             this.gridElements = [];
@@ -259,7 +324,7 @@ define([
                 this.elements[this.config[0].id].applyStyleParams(styles.panel_portrait);
             }
 
-        //    this.updateLayout();
+            //    this.updateLayout();
 
 
         };
@@ -303,11 +368,11 @@ define([
         };
 
         DomPanel.prototype.removeGuiPanel = function() {
-            
+
             for (var i = 0; i < this.uiSystems.length; i++) {
                 this.uiSystems.removeUiSystem();
             }
-            
+
             this.active = false;
             this.elements[this.config[0].id].removeElement();
             delete this;

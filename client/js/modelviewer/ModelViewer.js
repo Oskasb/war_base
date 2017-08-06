@@ -1,13 +1,11 @@
 "use strict";
 
-
 define([
 		'Events',
 		'application/ClientRegistry',
         'application/debug/SetupDebug',
 		'io/Connection',
 		'application/TimeTracker',
-		'main/ClientWorld',
 		'modelviewer/ViewerMain',
         'ui/GuiSetup',
 		'ui/UiMessenger',
@@ -19,7 +17,6 @@ define([
         SetupDebug,
         Connection,
         TimeTracker,
-        ClientWorld,
         ViewerMain,
         GuiSetup,
         UiMessenger,
@@ -35,7 +32,7 @@ define([
         var sendMessage = function() {};
 
         var ModelViewer = function(pointerCursor) {
-            ClientState = GAME.ENUMS.ClientStates.INITIALIZING;
+            ClientState = ENUMS.ClientStates.INITIALIZING;
 
             new SetupDebug();
 
@@ -55,43 +52,26 @@ define([
             this.handlers.clientRegistry = new ClientRegistry();
             this.handlers.gameMain = this.viewerMain;
             this.handlers.timeTracker = this.timeTracker;
-            this.handlers.clientWorld = new ClientWorld();
+        //    this.handlers.clientWorld = new ClientWorld();
 
-            PipelineAPI.setCategoryData('POINTER_STATE', this.pointerCursor.inputState);
+            PipelineAPI.setCategoryData(ENUMS.Category.POINTER_STATE, this.pointerCursor.inputState);
 
 		};
-
-
-        ModelViewer.prototype.handleServerMessage = function(res) {
-
-            evt.fire(evt.list().SERVER_MESSAGE, res);
-            var message = this.socketMessages.getMessageById(res.id);
-            if (message) {
-                this.handlers[message.target][res.id](res.data);
-            } else {
-                if (res.id == 'server_status') {
-
-                } else {
-                    evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});
-                    console.log("unhandled message response:", res);
-                }
-            }
-        };
 
 
         ModelViewer.prototype.setClientState = function(state) {
             ClientState = state;
     //        console.log("SetCLientState: ", state);
-            evt.fire(evt.list().MESSAGE_UI, {channel:'client_state', message:' - '+state});
+            evt.fire(evt.list().MESSAGE_UI, {channel:ENUMS.Channel.client_state, message:' - '+state});
         };
 
 
         ModelViewer.prototype.connectSocket = function(socketMessages, connection) {
-            this.setClientState(GAME.ENUMS.ClientStates.CONNECTING);
+            this.setClientState(ENUMS.ClientStates.CONNECTING);
 
             var disconnectedCallback = function() {
                 console.log("Socket Disconnected");
-                this.setClientState(GAME.ENUMS.ClientStates.DISCONNECTED);
+                this.setClientState(ENUMS.ClientStates.DISCONNECTED);
                 evt.fire(evt.list().MESSAGE_UI, {channel:'connection_error', message:'Connection Lost'});
                 evt.fire(evt.list().CONNECTION_CLOSED, {data:'closed'});
                 evt.removeListener(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
@@ -111,7 +91,7 @@ define([
             };
 
             var connectedCallback = function() {
-                this.setClientState(GAME.ENUMS.ClientStates.CONNECTED);
+                this.setClientState(ENUMS.ClientStates.CONNECTED);
                 evt.fire(evt.list().MESSAGE_UI, {channel:'connection_status', message:'Connection Open'});
                 evt.fire(evt.list().CONNECTION_OPEN, {});
                 evt.on(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
@@ -126,76 +106,11 @@ define([
         };
 
 
-        ModelViewer.prototype.initiateClient = function(socketMessages, connectionReady) {
+        ModelViewer.prototype.initiateClient = function(socketMessages, ready) {
 
             this.guiSetup.initMainGui();
-            var connection = this.connection;
+            ready();
 
-            this.socketMessages = socketMessages;
-
-			var count = 0;
-
-			var requestPlayer = function(e) {
-		//		console.log("Request Player", e);
-                
-                if (!name) name = 'NoName';
-                
-                evt.fire(evt.list().MESSAGE_UI, {channel:'own_player_name', message:name});
-				PipelineAPI.setCategoryData('REGISTRY', {PLAYER_NAME:name});
-
-				if (ClientState == GAME.ENUMS.ClientStates.CLIENT_REQUESTED) {
-					var clientId = PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID');
-			//		console.log("RequestPlaye with ClientId:", clientId);
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:{clientId:clientId, name:name}});
-					this.setClientState(GAME.ENUMS.ClientStates.PLAYER_REQUESTED);
-				}
-
-			}.bind(this);
-
-            var requestClient = function() {
-
-                //    if (ClientState == GAME.ENUMS.ClientStates.READY) {
-
-                count++;
-
-                var clientId = PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID');
-
-        //        console.log("Request ClientID",clientId);
-
-                if (clientId == 'CLIENT_ID') {
-                    evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'Request ID'});
-                    clientReady();
-                    return;
-                }
-
-
-
-                evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:clientId}});
-
-                evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'ID: '+PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')});
-                this.setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
-
-                connectionReady();
-                
-            }.bind(this);
-
-
-			var clientReady = function() {
-    //            console.log("Client Ready!")
-			//	this.setClientState(GAME.ENUMS.ClientStates.READY);
-				setTimeout(function() {
-					requestClient();
-				}, 10);
-
-			//	evt.removeListener(evt.list().CONNECTION_OPEN, clientReady)
-			}.bind(this);
-
-            //  sendMessage = this.setupSocketCallbacks(connection, connectedCallback, errorCallback, disconnectedCallback);
-
-            evt.on(evt.list().CONNECTION_OPEN, clientReady);
-            evt.on(evt.list().PLAYER_READY, requestPlayer);
-
-            this.connectSocket(socketMessages, connection);
 		};
 
         var aggDiff = 0;
@@ -215,14 +130,8 @@ define([
             var systems = 0;
 
             var sysReady = function() {
-
                 systems++;
-
                 if (systems == 1) {
-
-                }
-
-                if (systems == 2) {
                     ready();
                 }
 
@@ -231,17 +140,10 @@ define([
             sceneController.setup3dScene(clientTick, sysReady);
             sceneController.setupEffectPlayers(sysReady);
 
-            evt.once(evt.list().PLAYER_READY, sysReady);
+        //    evt.once(evt.list().PLAYER_READY, sysReady);
 
         };
 
-        ModelViewer.prototype.processResponseStack = function(responseStack) {
-
-            while (responseStack.length) {
-                this.handleServerMessage(responseStack.shift());
-            }
-
-        };
 
         var start;
 
@@ -251,14 +153,9 @@ define([
             
 			frame++;
 
+        //    var responseStack = this.connection.processTick();
 
-            
-            
-            var responseStack = this.connection.processTick();
-
-
-            
-            this.processResponseStack(responseStack);
+        //    this.processResponseStack(responseStack);
 
 			var exactTpf = this.timeTracker.trackFrameTime(frame);
 

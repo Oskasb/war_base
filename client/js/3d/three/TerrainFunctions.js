@@ -14,10 +14,9 @@ define([
 
         var TerrainFunctions = function() {
 
-            calcVec1 = new MATH.Vec3();
-            calcVec2 = new MATH.Vec3();
+            calcVec1 = new THREE.Vector3();
+            calcVec2 = new THREE.Vector3();
         };
-
 
 
 // get a height at point from matrix
@@ -116,17 +115,17 @@ define([
                 tri[2].x = this.returnToWorldDimensions(tri[2].x, htN, htP, segments);
                 tri[2].y = this.returnToWorldDimensions(tri[2].y, htN, htP, segments);
 
-                calcVec1.setXYZ((tri[1].x-tri[0].x), (tri[1].z-tri[0].z), (tri[1].y-tri[0].y));
-                calcVec2.setXYZ((tri[2].x-tri[0].x), (tri[2].z-tri[0].z), (tri[2].y-tri[0].y));
+                calcVec1.set((tri[1].x-tri[0].x), (tri[1].z-tri[0].z), (tri[1].y-tri[0].y));
+                calcVec2.set((tri[2].x-tri[0].x), (tri[2].z-tri[0].z), (tri[2].y-tri[0].y));
 
             //    THREETri.a.set(tri[0].x, tri[0].y, tri[0].z);
             //    THREETri.c.set(tri[1].x, tri[1].y, tri[1].z);
             //    THREETri.b.set(tri[2].x, tri[2].y, tri[2].z);
 
             //    THREETri.normal(normalStore);
-                calcVec1.crossVec(calcVec2);
-                if (calcVec1.data[1] < 0) {
-                    calcVec1.invert();
+                calcVec1.cross(calcVec2);
+                if (calcVec1.y < 0) {
+                    calcVec1.negate();
                 }
 
                 calcVec1.normalize();
@@ -135,9 +134,6 @@ define([
                 //        console.log(calcVec1.data);
                 //    }
 
-                normalStore.x = calcVec1.getX();
-                normalStore.y = calcVec1.getY();
-                normalStore.z = calcVec1.getZ();
             }
 
             return find.z;

@@ -86,7 +86,7 @@ PieceSpawner.prototype.spawnPhysicsPiece = function(pieceType, posx, posz, rot, 
 
     this.addAttachmentPoints(piece, config, this.gameConfigs);
 
-    piece.setState(GAME.ENUMS.PieceStates.SPAWN);
+    piece.setState(ENUMS.PieceStates.SPAWN);
 
     return piece;
 
@@ -102,7 +102,7 @@ PieceSpawner.prototype.spawnWorldPiece = function(pieceType, posx, posz, rot, ro
 
     this.addAttachmentPoints(piece, config, this.gameConfigs);
 
-    piece.setState(GAME.ENUMS.PieceStates.SPAWN);
+    piece.setState(ENUMS.PieceStates.SPAWN);
     piece.spatial.setPosXYZ(posx, posY, posz);
     piece.spatial.setYaw(rot);
     piece.spatial.setYawVel(rotVel);
@@ -172,7 +172,7 @@ PieceSpawner.prototype.spawnBullet = function(sourcePiece, cannonModuleData, now
 
     bullet.spatial.pos.addVec(this.calcVec2);
 
-    bullet.setState(GAME.ENUMS.PieceStates.SPAWN);
+    bullet.setState(ENUMS.PieceStates.SPAWN);
 
     bullet.spatial.updateSpatial(sourcePiece.temporal.stepTime * 10);
 

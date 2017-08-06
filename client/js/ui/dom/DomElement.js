@@ -86,6 +86,14 @@ define([
             }
         };
 
+        DomElement.prototype.isAvailableContainer = function() {
+        //    console.log(DomUtils.getChildCount(this.element));
+            if (!DomUtils.getChildCount(this.element)) {
+                return true
+            }
+            return false;
+        };
+
         DomElement.prototype.enableActive = function(style) {
             this.activeStyle = style;
         };

@@ -102,7 +102,7 @@ ServerPieceProcessor.prototype.playerAgainstPiece = function(playerPiece, piece)
          //   this.callbacks.broadcast(piece);
        //     this.callbacks.broadcast(playerPiece);
        //     playerPiece.setState(GAME.ENUMS.PieceStates.MOVING);
-            piece.setState(GAME.ENUMS.PieceStates.TIME_OUT);
+            piece.setState(ENUMS.PieceStates.TIME_OUT);
             piece.networkDirty = true;
     }
 };
@@ -131,8 +131,8 @@ ServerPieceProcessor.prototype.pieceAgainstPiece = function(pieceA, pieceB) {
         }
         this.collissions.push(pieceA);
         this.collissions.push(pieceB);
-            pieceA.setState(GAME.ENUMS.PieceStates.BURST);
-            pieceB.setState(GAME.ENUMS.PieceStates.BURST);
+            pieceA.setState(ENUMS.PieceStates.BURST);
+            pieceB.setState(ENUMS.PieceStates.BURST);
 
 
             if (pieceA.spatial.getVelVec().getLength() > pieceB.spatial.getVelVec().getLength()) {
@@ -147,8 +147,8 @@ ServerPieceProcessor.prototype.pieceAgainstPiece = function(pieceA, pieceB) {
 
         this.callbacks.broadcast(pieceA);
         this.callbacks.broadcast(pieceB);
-        pieceA.setState(GAME.ENUMS.PieceStates.TIME_OUT);
-        pieceB.setState(GAME.ENUMS.PieceStates.TIME_OUT);
+        pieceA.setState(ENUMS.PieceStates.TIME_OUT);
+        pieceB.setState(ENUMS.PieceStates.TIME_OUT);
         }
 };
 

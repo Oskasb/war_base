@@ -26,90 +26,11 @@
             "eventId":"MESSAGE_UI"
           }
         }
-
       },{
         "id":"main_slot_1",
         "data":{
           "parentId":"rightRoot",
           "style":["main_button_container", "coloring_container_main_panel"]
-        }
-      },{
-        "id":"slot_1_split",
-        "data":{
-          "parentId":"main_slot_1",
-          "style":["full_size_container"]
-        }
-      },{
-        "id":"slot_1",
-        "data":{
-          "parentId":"slot_1_split",
-          "style":["main_button_container_multi"]
-        }
-      },{
-        "id":"slot_2",
-        "data":{
-          "parentId":"slot_1_split",
-          "style":["main_button_container_multi", "coloring_container_main_panel"]
-        }
-      },{
-        "id":"button1_1",
-        "data":{
-          "parentId":"slot_1",
-          "style":["panel_button_multi", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-            "event":{"category":"CONTROL_STATE", "key":"TOGGLE_SHIELD", "type":"toggle"}
-          },
-          "text":"1"
-        }
-      },{
-        "id":"button1_2",
-        "data":{
-          "parentId":"slot_2",
-          "style":["panel_button_multi", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-            "event":{"category":"CONTROL_STATE", "key":"TOGGLE_HYPER", "type":"toggle"}
-          },
-          "text":"2"
-        }
-      },{
-        "id":"canvasSteeringMonitor",
-        "data":{
-          "canvas3d": {
-            "configId": "canvas_input_monitor_3d",
-            "enableOnEvent":{"category":"HUD_STATUS", "key":"CANVAS_INPUT_DEBUG", "type":"toggle"}
-          }
-        }
-      },{
-        "id":"inputSelectMonitor",
-        "data":{
-          "canvas3d": {
-            "configId": "canvas_input_select"
-          }
-        }
-      },{
-        "id":"targetSelectMonitor",
-        "data":{
-          "canvas3d": {
-            "configId": "canvas_target_select"
-          }
-        }
-      },{
-        "id":"currentTargetMonitor",
-        "data":{
-          "canvas3d": {
-            "configId": "canvas_current_target"
-          }
-        }
-      },{
-        "id":"radar",
-        "data":{
-          "parentId":"rightRoot",
-          "canvas3d":{
-            "configId": "canvas_controls",
-            "enableOnEvent":{"category":"HUD_STATUS", "key":"CANVAS_INPUT_DEBUG_", "type":"toggle"}
-          }
         }
 
       },{
@@ -118,20 +39,9 @@
           "parentId":"rightRoot",
           "style":["main_button_container", "coloring_container_main_panel"]
         }
-      },{
-        "id":"hyperButton",
-        "data":{
-          "parentId":"slot_3",
-          "style":["panel_button", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-            "event":{"category":"CONTROL_STATE", "key":"TOGGLE_TELEPORT", "type":"toggle"}
-          },
-          "text":"3"
-        }
 
       },{
-        "id":"buttonContainerAttack",
+        "id":"slot_4",
         "data":{
           "parentId":"rightRoot",
           "style":["main_button_container", "coloring_container_main_panel"]
@@ -139,13 +49,13 @@
       },{
         "id":"hyperButton",
         "data":{
-          "parentId":"buttonContainerAttack",
+          "parentId":"slot_4",
           "style":["panel_button", "coloring_button_main_panel"],
           "button":{
             "id":"panel_button",
             "event":{"category":"CONTROL_STATE", "key":"TOGGLE_ATTACK_ENABLED", "type":"toggle"}
           },
-          "text":"ATTACK"
+          "text":"4"
         }
       }
 
@@ -164,174 +74,24 @@
           "style":["main_button_container", "coloring_container_main_panel"]
         }
       },{
-        "id":"slot_0_splitter",
-        "data":{
-          "parentId":"main_slot_0",
-          "style":["full_size_container"]
-        }
-
-      }, {
-        "id": "slot_0",
-        "data": {
-          "parentId": "slot_0_splitter",
-          "style": ["id_field_list_container", "coloring_container_main_panel"]
-        }
-      }, {
-        "id": "monitorText",
-        "data": {
-          "parentId": "slot_0",
-          "style": ["ui_name_container", "coloring_ui_name_field"],
-          "dataLog":{
-            "style":"player_id_field",
-            "channels":["own_player_name"],
-            "argument":"message",
-            "entry_count":0,
-            "eventId":"MESSAGE_UI"
-          }
-        }
-
-      }, {
-        "id": "slot_1",
-        "data": {
-          "parentId": "slot_0_splitter",
-          "style": ["id_button_container", "coloring_container_main_panel"]
-        }
-      },{
-        "id":"playerButton",
-        "data":{
-          "parentId":"slot_1",
-          "style":["panel_button_multi", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-            "event":{"category":"MESSAGE_POPUP", "key":"PLAYER_PROFILE", "type":"toggle"}
-          },
-          "text":"PLAYER"
-        }
-      },{
-        "id":"buttonContainer1",
-        "data":{
-          "parentId":"leftRoot",
-          "style":["main_button_container", "coloring_container_main_panel"]
-        }
-      },{
-        "id":"multiButtonContainer1",
-        "data":{
-          "parentId":"buttonContainer1",
-          "style":["full_size_container"]
-        }
-      },{
-        "id":"buttonContainer1_1",
-        "data":{
-          "parentId":"multiButtonContainer1",
-          "style":["main_button_container_multi"]
-        }
-      },{
-        "id":"buttonContainer1_2",
-        "data":{
-          "parentId":"multiButtonContainer1",
-          "style":["main_button_container_multi", "coloring_container_main_panel"]
-        }
-      },{
-        "id":"button1_1",
-        "data":{
-          "parentId":"buttonContainer1_1",
-          "style":["panel_button_multi", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-
-            "event":{"category":"HUD_STATUS", "key":"CANVAS_RADAR_RIGHT", "type":"toggle"}
-          },
-          "text":"RADAR"
-        }
-      },{
-        "id":"button1_2",
-        "data":{
-          "parentId":"buttonContainer1_2",
-          "style":["panel_button_multi", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-            "event":{"category":"HUD_STATUS", "key":"CANVAS_INPUT_DEBUG", "type":"toggle"}
-          },
-          "text":"INPUT"
-        }
-
-
-      },{
-        "id":"buttonContainer3_dev",
+        "id":"main_slot_1",
         "data":{
           "parentId":"leftRoot",
           "style":["main_button_container", "coloring_container_main_panel"]
         }
 
       },{
-        "id":"multiButtonContainer_dev",
+        "id":"main_slot_2",
         "data":{
-          "parentId":"buttonContainer3_dev",
-          "style":["full_size_container"]
-        }
-      },{
-        "id":"buttonContainer_dev_status",
-        "data":{
-          "parentId":"multiButtonContainer_dev",
-          "style":["main_button_container_multi"]
-        }
-      },{
-        "id":"buttonContainer_dev_debug",
-        "data":{
-          "parentId":"multiButtonContainer_dev",
-          "style":["main_button_container_multi", "coloring_container_main_panel"]
+          "parentId":"leftRoot",
+          "style":["main_button_container", "coloring_container_main_panel"]
         }
 
-
-      },{
-        "id":"button3_!",
-        "data":{
-          "parentId":"buttonContainer_dev_status",
-          "style":["panel_button_multi", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-            "event":{"category":"STATUS", "key":"DEV_STATUS", "type":"toggle"}
-          },
-          "text":"STATUS"
-        }
-
-
-      },{
-        "id":"button3_",
-        "data":{
-          "parentId":"buttonContainer_dev_debug",
-          "style":["panel_button_multi", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-            "event":{"category":"STATUS", "key":"DEV_MODE", "type":"toggle"}
-          },
-          "text":"DEBUG"
-        }
       },{
         "id":"buttonContainer4",
         "data":{
           "parentId":"leftRoot",
           "style":["main_button_container", "coloring_container_main_panel"]
-        }
-      },{
-        "id":"button4",
-        "data":{
-          "parentId":"buttonContainer4",
-          "style":["panel_button", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-            "event":{"category":"STATUS", "key":"FULL_SCREEN", "type":"toggle"}
-          },
-          "text":"FULL SCREEN"
-        }
-      }, {
-        "id": "radar_3d2",
-        "data": {
-          "parentId": "leftRoot",
-          "canvas3d": {
-            "configId": "canvas_radar_3d",
-            "enableOnEvent":{"category":"HUD_STATUS", "key":"CANVAS_RADAR_RIGHT", "type":"toggle"}
-          }
         }
       }
     ],

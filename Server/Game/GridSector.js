@@ -58,14 +58,14 @@ GridSector.prototype.makeAppearPacket = function(piece) {
 
     piece.spatial.updateSpatial(piece.temporal.stepTime);
     var iAppearPacket = piece.makePacket();
-    iAppearPacket.data.state = GAME.ENUMS.PieceStates.APPEAR;
+    iAppearPacket.data.state = ENUMS.PieceStates.APPEAR;
     
     return iAppearPacket;
 };
 
 GridSector.prototype.makeHidePacket = function(piece) {
     var iHidePacket = piece.makePacket();
-    iHidePacket.data.state = GAME.ENUMS.PieceStates.HIDE;
+    iHidePacket.data.state = ENUMS.PieceStates.HIDE;
     return iHidePacket;
 
 };
@@ -103,7 +103,7 @@ GridSector.prototype.activateSector = function() {
         this.groundPhysics = true;
   //  }
     this.terrainFunctions.enableTerrainPhysics(this.groundPiece);
- //   this.groundPiece.setState(GAME.ENUMS.PieceStates.APPEAR);
+ //   this.groundPiece.setState(ENUMS.PieceStates.APPEAR);
  //   this.groundPiece.networdDirty = true;
     this.activeSectorPieces.push(this.groundPiece);
 };
@@ -309,7 +309,7 @@ GridSector.prototype.deactivateSector = function() {
     for (var i = 0; i < this.activeSectorPieces.length; i++) {
         var piece = this.activeSectorPieces[i];
         if (piece) {
-            piece.setState(GAME.ENUMS.PieceStates.REMOVED)
+            piece.setState(ENUMS.PieceStates.REMOVED)
         }
     }
 

@@ -100,7 +100,7 @@ ServerGameMain.prototype.playerDiconected = function(clientId) {
 	var player = this.serverWorld.getPlayer(clientId);
 	if (!player) return;
 
-	player.piece.setState(GAME.ENUMS.PieceStates.REMOVED);
+	player.piece.setState(ENUMS.PieceStates.REMOVED);
 	var packet = player.makePacket();
 	this.serverWorld.removePlayer(player.id);
 	return packet;

@@ -7,34 +7,7 @@ if(typeof(GAME) == "undefined"){
 
 (function(GAME){
 
-	GAME.ENUMS = {};
 
-	GAME.ENUMS.ClientStates = {
-		INITIALIZING:'INITIALIZING',
-		DISCONNECTED:'DISCONNECTED',
-		CONNECTING:'CONNECTING',
-		CONNECTED:'CONNECTED',
-		LOADING:'LOADING',
-		READY:'READY',
-		PLAYING:'PLAYING',
-		CLIENT_REQUESTED:'CLIENT_REQUESTED',
-		CLIENT_REGISTERED:'CLIENT_REGISTERED',
-		PLAYER_REQUESTED:'PLAYER_REQUESTED'
-	};
-
-	GAME.ENUMS.PieceStates = {
-		TIME_OUT:'TIME_OUT',
-		MOVING:'MOVING',
-        STATIC:'STATIC',
-		TELEPORT:'TELEPORT',
-		SPAWN:'SPAWN',
-		KILLED:'KILLED',
-		BURST:'BURST',
-		EXPLODE:'EXPLODE',
-		REMOVED:'REMOVED',
-        APPEAR:'APPEAR',
-        HIDE:'HIDE'
-	};
 
 
 	GAME.PieceControls = function() {
@@ -303,7 +276,7 @@ if(typeof(GAME) == "undefined"){
 	GAME.Piece.prototype.teleportRandom = function() {
 		console.log("Piece teleport", this.id);
 
-		this.setState(GAME.ENUMS.PieceStates.TELEPORT);
+		this.setState(ENUMS.PieceStates.TELEPORT);
 		this.spatial.stop();
 		this.spatial.setPosXYZ(5+Math.random()*25, 4, 5+Math.random()*25);
 
@@ -483,7 +456,7 @@ if(typeof(GAME) == "undefined"){
 		this.temporal.predictUpdate(currentTime);
 
 		if (this.temporal.lifeTime < this.temporal.getAge()) {
-			this.setState(GAME.ENUMS.PieceStates.TIME_OUT);
+			this.setState(ENUMS.PieceStates.TIME_OUT);
 		}
 	};
 
@@ -508,9 +481,9 @@ if(typeof(GAME) == "undefined"){
 	//	this.updateServerSpatial(tickDelta, terrainFunctions);
         this.spatial.updateSpatial(tickDelta);
         if (this.spatial.vel.getLengthSquared() > 0.01) {
-            this.setState(GAME.ENUMS.PieceStates.MOVING);
+            this.setState(ENUMS.PieceStates.MOVING);
         } else {
-            this.setState(GAME.ENUMS.PieceStates.STATIC);
+            this.setState(ENUMS.PieceStates.STATIC);
         }
 
 
@@ -596,7 +569,7 @@ if(typeof(GAME) == "undefined"){
 
 	//	console.log(this.spatial.pitch());
 
-        if (networkState.state == GAME.ENUMS.PieceStates.TELEPORT || networkState.state == GAME.ENUMS.PieceStates.SPAWN || networkState.state == GAME.ENUMS.PieceStates.APPEAR) {
+        if (networkState.state == ENUMS.PieceStates.TELEPORT || networkState.state == ENUMS.PieceStates.SPAWN || networkState.state == ENUMS.PieceStates.APPEAR) {
             this.spatial.setSendData(networkState.spatial);
             this.serverSpatial.setSendData(networkState.spatial);
             this.frameCurrentSpatial.setSendData(networkState.spatial);

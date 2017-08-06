@@ -52,13 +52,13 @@ ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs) {
 ServerPlayer.prototype.makeAppearPacket = function() {
     var iAppearPacket = this.piece.makePacket();
     console.log("Make Appear:", this.id)
-    iAppearPacket.data.state = GAME.ENUMS.PieceStates.APPEAR;
+    iAppearPacket.data.state = ENUMS.PieceStates.APPEAR;
     return iAppearPacket;
 };
 
 ServerPlayer.prototype.makeHidePacket = function() {
     var iHidePacket = this.piece.makePacket();
-    iHidePacket.data.state = GAME.ENUMS.PieceStates.HIDE;
+    iHidePacket.data.state = ENUMS.PieceStates.HIDE;
     return iHidePacket;
 };
 

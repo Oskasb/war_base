@@ -5,7 +5,7 @@ define([
         'Events',
         'PipelineAPI',
         'EffectsAPI',
-    'ThreeAPI',
+        'ThreeAPI',
         'gui/CanvasGuiAPI',
         './MonitorEffectAPI'
     ],
@@ -24,17 +24,40 @@ define([
 
             var monitorStatus = function(e) {
                 _this.registerStatus(evt.args(e));
-            //    _this.monitorEffectAPI()
+                //    _this.monitorEffectAPI()
             };
 
             evt.on(evt.list().MONITOR_STATUS, monitorStatus);
             this.monitorSystem();
-            
+
             var tickMonitors = function() {
-                _this.tickMonitors();   
+                _this.tickMonitors();
             };
-            
+
             evt.on(evt.list().TICK_STATUS_MONITOR, tickMonitors);
+
+            var buttonEvent = {"category":"STATUS", "key":"DEV_MODE", "type":"toggle"};
+
+            var buttonConf = {
+                panel:ENUMS.Gui.leftPanel,
+                id:"devmodebutton",
+                container:"main_container",
+                data:{
+                    style:["panel_button", "coloring_button_main_panel"],
+                    button:{
+                        id:"panel_button",
+                        event:buttonEvent
+                    },
+                    text:"DEV"
+                }
+            };
+
+            var playerReady = function() {
+                evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
+            };
+
+            evt.on(evt.list().PLAYER_READY, playerReady);
+
         };
 
         StatusMonitor.prototype.registerStatus = function(data) {
@@ -247,8 +270,8 @@ define([
             this.monitorServerTraffic();
 
         };
-        
-        
+
+
         return StatusMonitor;
 
     });

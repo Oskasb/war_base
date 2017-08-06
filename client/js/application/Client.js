@@ -35,7 +35,7 @@ define([
         var sendMessage = function() {};
 
         var Client = function(pointerCursor) {
-            ClientState = GAME.ENUMS.ClientStates.INITIALIZING;
+            ClientState = ENUMS.ClientStates.INITIALIZING;
 
             new SetupDebug();
 
@@ -83,11 +83,11 @@ define([
 
 
         Client.prototype.connectSocket = function(socketMessages, connection) {
-            this.setClientState(GAME.ENUMS.ClientStates.CONNECTING);
+            this.setClientState(ENUMS.ClientStates.CONNECTING);
 
             var disconnectedCallback = function() {
                 console.log("Socket Disconnected");
-                this.setClientState(GAME.ENUMS.ClientStates.DISCONNECTED);
+                this.setClientState(ENUMS.ClientStates.DISCONNECTED);
                 evt.fire(evt.list().MESSAGE_UI, {channel:'connection_error', message:'Connection Lost'});
                 evt.fire(evt.list().CONNECTION_CLOSED, {data:'closed'});
                 evt.removeListener(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
@@ -107,7 +107,7 @@ define([
             };
 
             var connectedCallback = function() {
-                this.setClientState(GAME.ENUMS.ClientStates.CONNECTED);
+                this.setClientState(ENUMS.ClientStates.CONNECTED);
                 evt.fire(evt.list().MESSAGE_UI, {channel:'connection_status', message:'Connection Open'});
                 evt.fire(evt.list().CONNECTION_OPEN, {});
                 evt.on(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
@@ -139,11 +139,11 @@ define([
                 evt.fire(evt.list().MESSAGE_UI, {channel:'own_player_name', message:name});
 				PipelineAPI.setCategoryData('REGISTRY', {PLAYER_NAME:name});
 
-				if (ClientState == GAME.ENUMS.ClientStates.CLIENT_REQUESTED) {
+				if (ClientState == ENUMS.ClientStates.CLIENT_REQUESTED) {
 					var clientId = PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID');
 			//		console.log("RequestPlaye with ClientId:", clientId);
 					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:{clientId:clientId, name:name}});
-					this.setClientState(GAME.ENUMS.ClientStates.PLAYER_REQUESTED);
+					this.setClientState(ENUMS.ClientStates.PLAYER_REQUESTED);
 				}
 
 			}.bind(this);
@@ -169,7 +169,7 @@ define([
                 evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:clientId}});
 
                 evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'ID: '+PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')});
-                this.setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
+                this.setClientState(ENUMS.ClientStates.CLIENT_REQUESTED);
 
                 connectionReady();
                 

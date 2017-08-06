@@ -159,6 +159,13 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
         removeDivElement(element);
     };
 
+    var getChildCount = function(element) {
+        if (element.childNodes) {
+            return element.childNodes.length
+        }
+        return 0;
+    };
+
     var removeElementChildren = function(element) {
         if (element.childNodes )
         {
@@ -322,6 +329,7 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
         createCanvasElement:createCanvasElement,
         getElementById:getElementById,
         removeElement:removeElement,
+        getChildCount:getChildCount,
         createDivElement:createDivElement,
         addElementClickFunction:addElementClickFunction,
         disableElementInteraction:disableElementInteraction,

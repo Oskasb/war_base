@@ -145,8 +145,6 @@ define([
 
 		GameMain.prototype.trackClientPieces = function(count) {
 
-
-
 			if (this.lastPieceCount != count) {
 				this.lastPieceCount = count;
 				evt.fire(evt.list().MONITOR_STATUS, {CLIENT_PIECES:this.pieceCount});

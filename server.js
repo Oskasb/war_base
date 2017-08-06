@@ -128,9 +128,9 @@ var initServerMain = function(devMode) {
 	};
 
 	configLoader.setUpdateCallback(dataUpdated);
-	serverMain.initServerMain(new DataHub());
-	serverMain.initServerConnection(wss);
-	serverMain.initConfigs(configLoader, 'server_setup', devMode);
+//	serverMain.initServerMain(new DataHub());
+//	serverMain.initServerConnection(wss);
+//	serverMain.initConfigs(configLoader, 'server_setup', devMode);
 	return serverMain;
 };
 

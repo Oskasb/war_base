@@ -213,7 +213,7 @@ define([
 			
 			this.piece.updatePieceFrame(tpf);
 
-            if (this.piece.state != GAME.ENUMS.PieceStates.STATIC) {
+            if (this.piece.state != ENUMS.PieceStates.STATIC) {
                 this.calculateClientSpatial(this.piece);
             } else {
             //    console.log("Static Piece..");
@@ -223,7 +223,7 @@ define([
 
 
 			
-			if (this.piece.state == GAME.ENUMS.PieceStates.TIME_OUT || this.piece.state == GAME.ENUMS.PieceStates.REMOVED) {
+			if (this.piece.state == ENUMS.PieceStates.TIME_OUT || this.piece.state == GAME.ENUMS.PieceStates.REMOVED) {
 
 				this.playerRemove();
 				return;
@@ -314,7 +314,7 @@ define([
 
         ClientPiece.prototype.notifyServerState = function(serverState) {
 			
-			if (serverState.state == GAME.ENUMS.PieceStates.REMOVED) {
+			if (serverState.state == ENUMS.PieceStates.REMOVED) {
 		//		this.domPlayer.renderStateText("Poof");
 
 				textStyle.posx = this.piece.spatial.pos.getX()-5;
@@ -330,11 +330,11 @@ define([
 			//	return;
 			}
 
-			if (serverState.state == GAME.ENUMS.PieceStates.TIME_OUT) {
+			if (serverState.state == ENUMS.PieceStates.TIME_OUT) {
 		    //    this.forceServerSpatial(serverState);
 			}
 
-            if (serverState.state == GAME.ENUMS.PieceStates.EXPLODE) {
+            if (serverState.state == ENUMS.PieceStates.EXPLODE) {
             //    this.domPlayer.renderEffect('effect_explosion_bullet', 0.4, 1);
             //    this.domPlayer.renderEffect('effect_shockwave_heavy', 0.25, 1.4);
 
@@ -351,13 +351,13 @@ define([
 
             }
 
-            if (serverState.state == GAME.ENUMS.PieceStates.BURST) {
+            if (serverState.state == ENUMS.PieceStates.BURST) {
         //        this.domPlayer.renderEffect('effect_shockwave_light', 0.45, 0.6);
 
 				evt.fire(evt.list().GAME_EFFECT, {effect:"collide", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});
             }
 
-			if (serverState.state == GAME.ENUMS.PieceStates.TELEPORT) {
+			if (serverState.state == ENUMS.PieceStates.TELEPORT) {
 				//	this.piece.notifyTrigger(true);
 			//	this.domPlayer.renderStateText("Jump");
 				textStyle.posx = this.piece.spatial.pos.getX()-5;
@@ -374,7 +374,7 @@ define([
 			}
 
 
-			if (serverState.state == GAME.ENUMS.PieceStates.HIDE) {
+			if (serverState.state == ENUMS.PieceStates.HIDE) {
 				textStyle.posx = this.piece.spatial.pos.getX()-5;
 				textStyle.posy = this.piece.spatial.pos.getZ()+5;
 
@@ -384,7 +384,7 @@ define([
 				return;
 			}
 
-			if (serverState.state == GAME.ENUMS.PieceStates.APPEAR) {
+			if (serverState.state == ENUMS.PieceStates.APPEAR) {
                 this.forceServerSpatial(serverState);
 				textStyle.posx = this.piece.spatial.pos.getX()-5;
 				textStyle.posy = this.piece.spatial.pos.getZ()+5;
@@ -396,7 +396,7 @@ define([
 			}
 			
 			
-			if (serverState.state == GAME.ENUMS.PieceStates.SPAWN) {
+			if (serverState.state == ENUMS.PieceStates.SPAWN) {
 				//	this.piece.notifyTrigger(true);
              //   this.forceServerSpatial(serverState);
 				textStyle.posx = this.piece.spatial.pos.getX()-5;

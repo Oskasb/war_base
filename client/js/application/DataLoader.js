@@ -26,11 +26,7 @@ define([
         var path = './../../..';
 
         var loadUrls = [
-            './../../../Transport/MATH.js',
-            './../../../Transport/io/Message.js',
-            './../../../Transport/io/SocketMessages.js',
-            './../../../Transport/MODEL.js',
-            './../../../Transport/GAME.js'
+            './../../../Transport/MATH.js'
         ];
 
         var dataPipelineSetup = {
@@ -152,15 +148,13 @@ define([
 
             function connectClient() {
     //            console.log('connectClient')
-                client.initiateClient(new SocketMessages(), connectionReady);
+                client.initiateClient(null, connectionReady);
             }
             
 
             var loadStateChange = function(state) {
-            //    console.log('loadStateChange', state)
+                console.log('loadStateChange', state)
                 if (state == _this.getStates().IMAGES) {
-
-
 
                     _this.preloadImages();
                 }
@@ -183,15 +177,15 @@ define([
 
             evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:window.location.href});
             
-            function pipelineCallback(started, remaining, loaded) {
-            //    console.log("SRL", started, remaining, loaded);
+            function pipelineCallback(started, remaining, loaded, files) {
+            //   console.log("SRL", loadState, started, remaining, loaded, files);
 
                 PipelineAPI.setCategoryKeyValue("STATUS", "FILE_CACHE", "OK "+loaded);
 
                 loadProgress.setProgress(loaded / started);
 
                 if (loadState == loadStates.IMAGES && remaining == 0) {
-                //    console.log("IMAGE COMPLETED", started, remaining, loaded);
+                    console.log("IMAGE COMPLETED", started, remaining, loaded);
                     loadState = loadStates.COMPLETED;
                     PipelineAPI.setCategoryData('STATUS', {PIPELINE:pipelineOn});
                     PipelineAPI.subscribeToCategoryKey('setup', 'DEBUG', setDebug);
@@ -205,7 +199,7 @@ define([
                 }
 
                 if (loadState == loadStates.SHARED_FILES && remaining == 0) {
-                    console.log( "shared loaded....")
+                    console.log( "shared loaded....");
                     loadState = loadStates.CONFIGS;
                     loadStateChange(loadState);
                 }
@@ -236,7 +230,7 @@ define([
                     _this.setupPipelineCallback(loadStateChange);
                     sharedFilesLoaded();
                 }, 0);
-
+8
             };
 
 

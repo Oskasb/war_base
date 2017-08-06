@@ -10,6 +10,8 @@
       "messages/ui_messages.json",
 
       "ui/type_style_map.json",
+
+      "ui/gui_elements.json",
       "ui/main_navigation.json",
       "ui/buttons.json",
       "ui/popups.json",

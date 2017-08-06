@@ -141,8 +141,8 @@ ServerWorld.prototype.broadcastPieceState = function(piece) {
 
 //	this.connectedClients.broadcastToAllClients(packet);
 
-    if (piece.getState() == GAME.ENUMS.PieceStates.EXPLODE) {
-        piece.setState(GAME.ENUMS.PieceStates.TIME_OUT);
+    if (piece.getState() == ENUMS.PieceStates.EXPLODE) {
+        piece.setState(ENUMS.PieceStates.TIME_OUT);
         this.removePiece(piece);
     }
 };
@@ -187,7 +187,7 @@ ServerWorld.prototype.updateWorldPiece = function(piece, currentTime, tpf) {
         if (piece.spatial.pos.getY() > groundHeight) {
             this.applyGravity(piece, tpfMod);
         } else {
-            piece.setState(GAME.ENUMS.PieceStates.TIME_OUT);
+            piece.setState(ENUMS.PieceStates.TIME_OUT);
         }
 
     }
@@ -228,8 +228,8 @@ ServerWorld.prototype.updatePieces = function(currentTime, tpf) {
             this.cannonAPI.updatePhysicalPiece(this.pieces[i]);
         }
 
-        if (this.pieces[i].getState() == GAME.ENUMS.PieceStates.APPEAR) {
-            this.pieces[i].setState(GAME.ENUMS.PieceStates.STATIC);
+        if (this.pieces[i].getState() == ENUMS.PieceStates.APPEAR) {
+            this.pieces[i].setState(ENUMS.PieceStates.STATIC);
         }
 
         if (Math.abs(this.pieces[i].spatial.vel.getX()) > 0.001 || Math.abs(this.pieces[i].spatial.vel.getZ()) > 0.001) {
@@ -238,8 +238,8 @@ ServerWorld.prototype.updatePieces = function(currentTime, tpf) {
         } else if (this.pieces[i].groundPiece) {
 
 
-            if (this.pieces[i].getState() == GAME.ENUMS.PieceStates.SPAWN) {
-                this.pieces[i].setState(GAME.ENUMS.PieceStates.APPEAR);
+            if (this.pieces[i].getState() == ENUMS.PieceStates.SPAWN) {
+                this.pieces[i].setState(ENUMS.PieceStates.APPEAR);
                 
                 var terrainHeight = this.terrainFunctions.getTerrainHeightAt(this.pieces[i].groundPiece, this.pieces[i].spatial.pos);
 
@@ -253,15 +253,15 @@ ServerWorld.prototype.updatePieces = function(currentTime, tpf) {
         }
 
         if (this.pieces[i].temporal.lifeTime < this.pieces[i].temporal.getAge()) {
-            this.pieces[i].setState(GAME.ENUMS.PieceStates.TIME_OUT);
+            this.pieces[i].setState(ENUMS.PieceStates.TIME_OUT);
         }
 
 
-        if (this.pieces[i].getState() == GAME.ENUMS.PieceStates.TIME_OUT) {
+        if (this.pieces[i].getState() == ENUMS.PieceStates.TIME_OUT) {
 			timeouts.push(this.pieces[i]);
 		}
 
-        if (this.pieces[i].getState() == GAME.ENUMS.PieceStates.REMOVED) {
+        if (this.pieces[i].getState() == ENUMS.PieceStates.REMOVED) {
             remove.push(this.pieces[i]);
         }
 	}
