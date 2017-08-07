@@ -53,16 +53,20 @@ define([
 
         var DomElement = function(parentElem, styleId, input) {
             count++;
-            this.sourceColor = 'rgba(0, 0, 0, 1)';
+            this.count = count;
+            this.styleId = styleId;
+
+            this.id = this.getId();
+                this.sourceColor = 'rgba(0, 0, 0, 1)';
             this.sourceTransition = 'all 0.5s ease-out';
 
-            this.styleId = styleId;
+
             this.pressed = false;
             var element;
             if (input) {
-                element = DomUtils.createTextInputElement(parentElem, styleId+'_'+count, input.varname, 'point');
+                element = DomUtils.createTextInputElement(parentElem, this.id, input.varname, 'point');
             } else {
-                element = DomUtils.createDivElement(parentElem, styleId+'_'+count, '', 'point');
+                element = DomUtils.createDivElement(parentElem, this.id, '', 'point');
             }
 
             this.element = element;
@@ -84,6 +88,10 @@ define([
                     PipelineAPI.subscribeToCategoryKey('styles', styleId[i], styleCallback)
                 }
             }
+        };
+
+        DomElement.prototype.getId = function() {
+            return this.styleId+'_'+this.count;
         };
 
         DomElement.prototype.isAvailableContainer = function() {

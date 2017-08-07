@@ -5,6 +5,7 @@
         "id": "monitorText",
         "data": {
           "parentId": "slot_0",
+          "container": "main_container",
           "style": ["data_log_container"],
           "dataLog":{
             "style":"message_log_field",

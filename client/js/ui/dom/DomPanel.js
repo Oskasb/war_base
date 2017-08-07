@@ -33,6 +33,8 @@ define([
 
             this.panelId = panelId;
 
+            this.panel;
+
             this.parent = {
                 element:parentElem
             };
@@ -153,15 +155,17 @@ define([
         DomPanel.prototype.addContainedElement = function(elementConfig) {
 
             var _this = this;
-            var id = elementConfig.id;
+            ;
 
             var elemData = function(key, conf) {
                 for (var i = 0; i < conf.length; i++) {
                     if (conf[i].id == elementConfig.container) {
                         console.log("load Element:", elementConfig, _this.parent);
                         _this.removeContainedElement(elementConfig);
-                    //    var container = _this.attachElement(_this.panelId, conf[i]);
-                        _this.attachElement(null, elementConfig)
+                        var container = _this.attachElement(_this.panelId, conf[i]);
+                        var elem = _this.attachElement(container, elementConfig)
+                        elem.container = container;
+                        _this.gridElements.push(container);
                     }
                 }
             };
@@ -173,22 +177,27 @@ define([
         DomPanel.prototype.removeContainedElement = function(elementConfig) {
 
             var id = elementConfig.id;
-            var containerId = elementConfig.container+'_'+id;
+        //    var containerId = elementConfig.container+'_'+id;
 
             if (this.elements[id]) {
                 console.log("Remove id", id, this.elements);
+
+                    if (this.elements[id].container ) {
+                        this.gridElements.splice(this.gridElements.indexOf(this.elements[id].container), 1);
+                        this.elements[id].container.removeElement();
+                    //    delete this.elements[key];
+                    }
+
                 this.elements[id].removeElement();
                 delete this.elements[id];
+                this.updateLayout();
             }
 
-            if (this.elements[containerId]) {
-                console.log("Remove containerId", containerId, this.elements);
-                this.elements[containerId].removeElement();
-                delete this.elements[containerId];
-            }
         };
 
         DomPanel.prototype.attachElement = function(parent, conf) {
+
+
 
             var _this = this;
             var dataSource;
@@ -206,7 +215,7 @@ define([
             var parentElem;
 
             if (parent == this.panelId) {
-                parentElem = this.gridElements[0].element;
+                parentElem = this.panel.element;
             } else if (conf.data.parentId) {
                 parentElem = this.elements[conf.data.parentId].element;
             } else {
@@ -228,6 +237,7 @@ define([
 
             if (conf.data.style) {
                 var elem = new DomElement(parentElem, conf.data.style, conf.data.input);
+                if (!this.panel) this.panel = elem;
                 if (conf.data.parentId == this.config[0].id) {
                     //            console.log("Add grid...")
                     this.gridElements.push(elem);

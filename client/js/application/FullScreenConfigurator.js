@@ -64,16 +64,22 @@ define([
                     if (!_this.currentValue) {
                         elem.innerHTML = txt.exit;
                         GameScreen.goFullscreen();
-                        //    PipelineAPI.setCategoryKeyValue(ENUMS.Category.GUI_ELEMENT, ENUMS.Key.REMOVE, buttonConf);
+
+                    //        PipelineAPI.setCategoryKeyValue(ENUMS.Category.GUI_ELEMENT, ENUMS.Key.REMOVE, buttonConf);
                     } else {
                         elem.innerHTML = txt.flscrn;
                         GameScreen.exitFullscreen();
+
+                    //    evt.fire(evt.list().REMOVE_GUI_ELEMENT, {data:buttonConf});
+
                     }
                 }
 
                 console.log("BUTTON EVT FULLSCREEN!", evt.args(e));
 
                 if (evt.args(e).data.FULL_SCREEN) {
+
+
 
                     var elem = evt.args(e).element;
 
