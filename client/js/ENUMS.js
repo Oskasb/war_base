@@ -35,6 +35,7 @@ if(typeof(ENUMS) === "undefined"){
     ENUMS.Category = {
         POINTER_STATE:'POINTER_STATE',
         STATUS:'STATUS',
+        LOAD_MODEL:'LOAD_MODEL',
         GUI_ELEMENT:'GUI_ELEMENT',
         setup:'setup'
     };
@@ -43,6 +44,8 @@ if(typeof(ENUMS) === "undefined"){
         MON_VEGETATION:'MON_VEGETATION',
         DEBUG:'DEBUG',
         FULL_SCREEN:'FULL_SCREEN',
+        MODEL_LOADER:'MODEL_LOADER',
+        ENV_LOADER:'ENV_LOADER',
         ADD:'ADD',
         REMOVE:'REMOVE'
     };

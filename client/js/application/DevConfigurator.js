@@ -91,7 +91,7 @@ define([
 
                     for (var key in panels) {
                         if (key == 'MON_SERVER_STATUS' || key == 'MON_CLIENT_STATUS' ) {
-                            keep = true;
+                    //        keep = true;
                         }
                     }
 

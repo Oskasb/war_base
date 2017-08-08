@@ -165,8 +165,15 @@ define(['../../PipelineObject',
     ThreeEnvironment.readDynamicValue = function(worldProperty, key) {
         return world[worldProperty][key];  
     };
-    
-    
+
+    ThreeEnvironment.enableEnvironment = function() {
+        scene.add( sky.mesh );
+    };
+
+    ThreeEnvironment.disableEnvironment = function() {
+        scene.remove( sky.mesh );
+    };
+
     ThreeEnvironment.initEnvironment = function(store) {
 
         scene = store.scene;
@@ -250,7 +257,7 @@ define(['../../PipelineObject',
 
                 if (config[key].density) {
                     applyFog(world[key], config[key].density);
-                    renderer.setClearColor(new THREE.Color(config[key].color[0],config[key].color[1], config[key].color[2]))
+                //    renderer.setClearColor(new THREE.Color(config[key].color[0],config[key].color[1], config[key].color[2]))
                 }
             }
         };

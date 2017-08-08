@@ -59,6 +59,7 @@
       "zIndex":"200"
     },
 
+
     "panel_left":{
       "left": "15em"
     },
@@ -107,6 +108,18 @@
       "right": "5em",
       "left": "5em",
       "height": "34em",
+      "textAlign": "center",
+      "position": "absolute",
+      "display": "block"
+    },
+
+    "select_button_container":{
+      "margin":"1em",
+      "width": "auto",
+      "top": "1em",
+      "right": "1em",
+      "left": "1em",
+      "height": "14em",
       "textAlign": "center",
       "position": "absolute",
       "display": "block"
@@ -226,6 +239,22 @@
       "position": "fixed",
       "display": "inline-block",
       "padding":"0.7em",
+      "paddingLeft": "0.2em",
+      "paddingRight": "0.2em"
+    },
+
+    "select_panel_button":{
+      "top": "0.1em",
+      "left": "0.1em",
+      "right": "0.1em",
+      "height": "auto",
+      "width": "auto",
+      "bottom": "0.1em",
+      "fontSize": "8em",
+      "textAlign": "center",
+      "position": "fixed",
+      "display": "inline-block",
+      "padding":"0.1em",
       "paddingLeft": "0.2em",
       "paddingRight": "0.2em"
     }

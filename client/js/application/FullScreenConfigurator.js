@@ -40,7 +40,7 @@ define([
                 evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
             };
 
-            evt.on(evt.list().PLAYER_READY, playerReady);
+        //    evt.on(evt.list().PLAYER_READY, playerReady);
 
 
             this.currentValue = 0;

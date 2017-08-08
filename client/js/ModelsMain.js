@@ -3,6 +3,7 @@
 
 
 require([
+    'Events',
     '3d/SceneController',
     'application/DataLoader',
     'application/DevConfigurator',
@@ -11,9 +12,12 @@ require([
     'application/ButtonEventDispatcher',
     'application/ControlStateDispatcher',
     'modelviewer/ModelViewer',
+    'modelviewer/EnvironmentLoader',
+    'modelviewer/ModelLoader',
     'ui/GameScreen',
     'io/PointerCursor'
 ], function(
+    evt,
     SceneController,
     DataLoader,
     DevConfigurator,
@@ -22,6 +26,8 @@ require([
     ButtonEventDispatcher,
     ControlStateDispatcher,
     ModelViewer,
+    EnvironmentLoader,
+    ModelLoader,
     GameScreen,
     PointerCursor
 ) {
@@ -30,8 +36,7 @@ require([
     var init = function() {
         new SystemDetector();
         new ButtonEventDispatcher();
-        new DevConfigurator();
-        new FullScreenConfigurator();
+
         new ControlStateDispatcher();
 
         GameScreen.registerAppContainer(document.getElementById('canvas_window'));
@@ -40,6 +45,16 @@ require([
         var dataLoader = new DataLoader();
 
         dataLoader.loadData(ModelViewer, PointerCursor, sceneController);
+
+
+        var playerReady = function() {
+            new DevConfigurator();
+            new FullScreenConfigurator();
+            new EnvironmentLoader();
+            new ModelLoader();
+        };
+
+        evt.on(evt.list().PLAYER_READY, playerReady);
     };
 
     setTimeout(function() {

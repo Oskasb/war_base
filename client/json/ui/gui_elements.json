@@ -85,6 +85,12 @@
         "data":{
           "style":["main_button_container_multi", "coloring_container_main_panel"]
         }
+      },{
+        "id":"panel_select_container",
+        "data":{
+          "parentId":"panelRoot",
+          "style":["dev_button_container", "coloring_container_dev_panel"]
+        }
       }
     ],
 

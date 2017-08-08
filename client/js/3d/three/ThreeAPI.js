@@ -59,9 +59,18 @@ define([
             return ThreeEnvironment.readDynamicValue(worldProperty, key);
         };
 
+        ThreeAPI.getEnvironment = function() {
+            return ThreeEnvironment;
+        };
+
+        ThreeAPI.getModelLoader = function() {
+            return ThreeModelLoader;
+        };
+
         ThreeAPI.getCamera = function() {
             return camera;
         };
+
         ThreeAPI.getScene = function() {
             return scene;
         };
@@ -175,6 +184,8 @@ define([
         ThreeAPI.attachInstancedModel = function(modelId, rootObject) {
             return ThreeModelLoader.attachInstancedModelTo3DObject(modelId, rootObject, ThreeSetup);
         };
+
+
 
 
         ThreeAPI.loadModel = function(sx, sy, sz, partsReady) {

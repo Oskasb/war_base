@@ -56,6 +56,16 @@
       }
     ],
 
+    "select_panel":[
+      {
+        "id":"panelRoot",
+        "data":{
+          "style":["dev_panel", "panel_left", "coloring_panel_dev"]
+        }
+      }
+    ],
+
+
     "dev_panel":[
       {
         "id":"panelRoot",
@@ -83,59 +93,6 @@
         }
 
       },{
-        "id":"buttonContainer1",
-        "data":{
-          "parentId":"panelRoot",
-          "style":["dev_button_container", "coloring_container_dev_panel"]
-        }
-      },{
-        "id":"button1",
-        "data":{
-          "parentId":"buttonContainer1",
-          "style":["dev_panel_button", "coloring_button_dev_panel"],
-          "button":{
-            "id":"dev_panel_button",
-            "event":{"category":"STATUS", "key":"MON_TRAFFIC", "type":"toggle"}
-          },
-          "text":"TRAFFIC"
-        }
-      },{
-        "id":"buttonContainer2",
-        "data":{
-          "parentId":"panelRoot",
-          "style":["dev_button_container", "coloring_container_dev_panel"]
-        }
-      },{
-        "id":"button2",
-        "data":{
-          "parentId":"buttonContainer2",
-          "style":["dev_panel_button", "coloring_button_dev_panel"],
-          "button":{
-            "id":"dev_panel_button",
-            "event":{"category":"STATUS", "key":"MON_SERVER", "type":"toggle"}
-          },
-          "text":"HEALTH"
-        }
-      },{
-        "id":"buttonContainer",
-        "data":{
-          "parentId":"panelRoot",
-          "style":["dev_button_container", "coloring_container_dev_panel"]
-        }
-      },{
-        "id":"button",
-        "data":{
-          "parentId":"buttonContainer",
-          "style":["dev_panel_button", "coloring_button_dev_panel"],
-          "button":{
-            "id":"dev_panel_button",
-            "event":{"category":"STATUS", "key":"MON_TPF", "type":"toggle"}
-          },
-          "text":"TPF"
-        }
-      },
-
-      {
 
         "id":"buttonContainer4",
         "data":{
@@ -226,23 +183,6 @@
           "text":"SPATIAL"
         }
       },{
-        "id":"buttonContainerServerStatus",
-        "data":{
-          "parentId":"panelRoot",
-          "style":["dev_button_container", "coloring_container_dev_panel"]
-        }
-      },{
-        "id":"button",
-        "data":{
-          "parentId":"buttonContainerServerStatus",
-          "style":["dev_panel_button", "coloring_button_dev_panel"],
-          "button":{
-            "id":"dev_panel_button",
-            "event":{"category":"STATUS", "key":"MON_SERVER_STATUS", "type":"toggle"}
-          },
-          "text":"SERVER"
-        }
-      },{
         "id":"buttonContainerCLientStatus",
         "data":{
           "parentId":"panelRoot",
@@ -313,7 +253,6 @@
             "dataCategory":"STATUS"
           }
         }
-
       }, {
         "id": "monitorContainer2",
         "data": {

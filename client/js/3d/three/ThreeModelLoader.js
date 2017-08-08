@@ -155,11 +155,12 @@ define([
 
         };
 
-
         ThreeModelLoader.createObject3D = function() {
-
             return new THREE.Object3D();
+        };
 
+        ThreeModelLoader.getModelList = function() {
+            return modelList;
         };
 
         ThreeModelLoader.loadData = function(TAPI) {

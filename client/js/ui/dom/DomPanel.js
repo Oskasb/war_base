@@ -157,20 +157,33 @@ define([
             var _this = this;
             ;
 
-            var elemData = function(key, conf) {
-                for (var i = 0; i < conf.length; i++) {
-                    if (conf[i].id == elementConfig.container) {
-                        console.log("load Element:", elementConfig, _this.parent);
-                        _this.removeContainedElement(elementConfig);
-                        var container = _this.attachElement(_this.panelId, conf[i]);
-                        var elem = _this.attachElement(container, elementConfig)
-                        elem.container = container;
-                        _this.gridElements.push(container);
+            if (elementConfig.container) {
+                var elemData = function(key, conf) {
+                    for (var i = 0; i < conf.length; i++) {
+                        if (conf[i].id == elementConfig.container) {
+                            console.log("load container Element:", elementConfig, _this.parent);
+                            _this.removeContainedElement(elementConfig);
+                            var container = _this.attachElement(_this.panelId, conf[i]);
+                            var elem = _this.attachElement(container, elementConfig)
+                            elem.container = container;
+                            _this.gridElements.push(container);
+                        }
                     }
-                }
-            };
+                };
 
-            PipelineAPI.subscribeToCategoryKey('gui_elements', 'containers', elemData);
+                PipelineAPI.subscribeToCategoryKey('gui_elements', 'containers', elemData);
+
+            } else {
+
+                console.log("load Element:", elementConfig, _this.panelId);
+                _this.removeContainedElement(elementConfig);
+                //    var container = _this.attachElement(_this.panelId, conf[i]);
+                var elem = _this.attachElement(_this.panelId, elementConfig)
+                //    elem.container = container;
+                //    _this.gridElements.push(container);
+            }
+
+
         };
 
 
@@ -373,7 +386,6 @@ define([
                 lastX = x;
                 lastY = y;
             }
-
 
         };
 
