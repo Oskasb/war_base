@@ -5,28 +5,20 @@ define([
         'Events',
         'PipelineAPI',
         'ThreeAPI',
-        'ui/GameScreen',
-        'ui/dom/DomPanel'
+        'ui/dom/DomSelectList'
     ],
     function(
         evt,
         PipelineAPI,
         ThreeAPI,
-        GameScreen,
-        DomPanel
+        DomSelectList
     ) {
 
         var panels = {};
         var panelStates = {};
-
         var loadedModels = {};
         var rootModels = {};
-
         var stateData;
-
-        var panelMap = {
-            MODEL_LOADER:'select_panel'
-        };
 
         function addButton() {
             var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.MODEL_LOADER, type:ENUMS.Type.toggle};
@@ -41,7 +33,7 @@ define([
                         id:"panel_button",
                         event:buttonEvent
                     },
-                    text:'VIEW MODEL'
+                    text:'MODEL LIST'
                 }
             };
 
@@ -67,68 +59,14 @@ define([
 
             PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.MODEL_LOADER, apply);
 
-
-
-
-
-
-
             addButton();
         };
 
 
-        ModelLoader.prototype.toggleModelPanel = function(src, value) {
-
-            if (panelStates[src] === value) {
-                return
-            }
-
-            panelStates[src] = value;
-
-            if (value == 1) {
-                console.log("Configs: ", PipelineAPI.getCachedConfigs());
-
-                panels[src] = new DomPanel(GameScreen.getElement(), panelMap[src]);
-
-                var modelList = ThreeAPI.getModelLoader().getModelList();
-
-                this.populatePanelButtons(panels[src], modelList);
-
-            } else if (panels[src]) {
-
-                panels[src].removeGuiPanel();
-                delete panels[src];
-
-            }
-            
-        };
-
-        ModelLoader.prototype.populatePanelButtons = function(panel, modelList) {
-            console.log("Models:", panel, modelList);
-
-            var first;
-
-            if (!stateData) {
-                stateData = {};
-                first = true;
-            }
-
-            for (var key in modelList) {
-                this.addLoadModelButton(panel, key, modelList[key])
-            }
-
-            panel.updateLayout();
-
-            if (first) {
-                PipelineAPI.setCategoryData(ENUMS.Category.LOAD_MODEL, stateData);
-            }
-
-        };
-
         ModelLoader.prototype.loadModel = function(modelId, value) {
 
 
-            if (value == 1) {
+            if (value === true) {
                 console.log("Load Model: ", modelId, value);
 
                 var rootObj = ThreeAPI.createRootObject();
@@ -159,53 +97,52 @@ define([
             }
         };
 
-        ModelLoader.prototype.addLoadModelButton = function(panel, modelId) {
 
-            var buttonEvent = {category:ENUMS.Category.LOAD_MODEL, key:modelId, type:ENUMS.Type.toggle};
+        ModelLoader.prototype.toggleModelPanel = function(src, value) {
 
-            var containerConf = {
-                id:modelId+"_container",
-                data:{
-                    parentId:"panelRoot",
-                    style:["select_button_container", "coloring_container_dev_panel"]
-                }
-            };
-
-            var buttonConf = {
-                panel:panel.panelId,
-                id:"button",
-            //    container:"panel_select_container",
-                data:{
-                    parentId:containerConf.id,
-                    style:["select_panel_button", "coloring_button_dev_panel"],
-                    button:{
-                        id:"dev_panel_button",
-                        event:buttonEvent
-                    },
-                    text:modelId
-                }
-            };
-
-            if (!stateData[modelId]) {
-                stateData[modelId] = false;
+            if (panelStates[src] === value) {
+                return
             }
-
-        //    PipelineAPI.setCategoryKeyValue(ENUMS.Category.LOAD_MODEL, modelId, stateData[modelId]);
-
-            var container = panel.attachElement(panel.panelId, containerConf);
-            panel.attachElement(container, buttonConf);
-
+            panelStates[src] = value;
             var _this = this;
 
-            var apply = function(src, value) {
+            var category = ENUMS.Category.LOAD_MODEL
+
+            var buttonFunc = function(src, value) {
                 setTimeout(function() {
                     _this.loadModel(src, value)
                 }, 10);
             };
 
-            PipelineAPI.subscribeToCategoryKey(ENUMS.Category.LOAD_MODEL, modelId, apply);
+            var first;
+
+            if (!stateData) {
+                stateData = {};
+                first = true;
+            }
+
+
+
+            if (value) {
+                console.log("Configs: ", PipelineAPI.getCachedConfigs());
+
+                var dataList = ThreeAPI.getModelLoader().getModelList();
+
+                panels[src] = new DomSelectList(category, dataList, stateData, buttonFunc);
+
+            } else if (panels[src]) {
+
+                panels[src].removeSelectList();
+                delete panels[src];
+
+            }
+
+            if (first) {
+                PipelineAPI.setCategoryData(category, stateData);
+            }
 
         };
+
 
         return ModelLoader;
     });

@@ -36,6 +36,7 @@ if(typeof(ENUMS) === "undefined"){
         POINTER_STATE:'POINTER_STATE',
         STATUS:'STATUS',
         LOAD_MODEL:'LOAD_MODEL',
+        LOAD_ENVIRONMENT:'LOAD_ENVIRONMENT',
         GUI_ELEMENT:'GUI_ELEMENT',
         setup:'setup'
     };

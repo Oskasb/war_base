@@ -4,15 +4,19 @@
 define([
         'Events',
         'PipelineAPI',
-        'ThreeAPI'
+        'ThreeAPI',
+        'ui/dom/DomSelectList'
     ],
     function(
         evt,
         PipelineAPI,
-        ThreeAPI
+        ThreeAPI,
+        DomSelectList
     ) {
 
+        var panels = {};
         var panelStates = {};
+        var stateData;
 
         function addButton() {
             var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.ENV_LOADER, type:ENUMS.Type.toggle};
@@ -40,13 +44,14 @@ define([
         var EnvironmentLoader = function() {
             this.running = false;
             this.panel = null;
-            this.currentValue = 0;
+            this.currentValue = ThreeAPI.getEnvironment().getCurrentEnvId();
+
 
             var _this=this;
 
             var apply = function(src, value) {
                 setTimeout(function() {
-                    _this.toggleEnv(src, value)
+                    _this.toggleEnvPanel(src, value)
                 }, 100);
             };
 
@@ -54,19 +59,80 @@ define([
             addButton();
         };
 
+        EnvironmentLoader.prototype.loadEnv = function(src, value, category) {
 
-        EnvironmentLoader.prototype.toggleEnv = function(src, value) {
+            stateData[src] = value;
+
+            var disable = false
+
+        //    for (var key in stateData) {
+        //        if (key != src) {
+
+        //        }
+        //    }
+
+            if (value) {
+                console.log("Set Env Conf:", src, value);
+
+                if (src != this.currentValue) {
+                    PipelineAPI.setCategoryKeyValue(category, this.currentValue, false);
+                }
+
+                ThreeAPI.getEnvironment().setEnvConfigId(src);
+                ThreeAPI.getEnvironment().enableEnvironment();
+                this.currentValue = src;
+
+            } else  {
+
+                if (src === ThreeAPI.getEnvironment().getCurrentEnvId()) {
+                   ThreeAPI.getEnvironment().disableEnvironment();
+                }
+
+            }
+
+        //    PipelineAPI.setCategoryData(category, stateData);
+
+        };
+
+        EnvironmentLoader.prototype.toggleEnvPanel = function(src, value) {
 
             if (panelStates[src] === value) {
                 return
             }
 
             panelStates[src] = value;
+            var _this = this;
 
-            if (value == 1) {
-                ThreeAPI.getEnvironment().enableEnvironment();
-            } else  {
-                ThreeAPI.getEnvironment().disableEnvironment();
+            var category = ENUMS.Category.LOAD_ENVIRONMENT;
+
+            var buttonFunc = function(src, value) {
+                setTimeout(function() {
+                    _this.loadEnv(src, value, category)
+                }, 10);
+            };
+
+            var first;
+
+            if (!stateData) {
+                stateData = {};
+                stateData[this.currentValue] = true;
+                first = true;
+            }
+
+            if (value) {
+                var dataList = ThreeAPI.getEnvironment().getEnvConfigs();
+
+                panels[src] = new DomSelectList(category, dataList, stateData, buttonFunc);
+
+            } else if (panels[src]) {
+
+                panels[src].removeSelectList();
+                delete panels[src];
+
+            }
+
+            if (first) {
+                PipelineAPI.setCategoryData(category, stateData);
             }
 
         };

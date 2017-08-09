@@ -9,6 +9,7 @@ define(['../../PipelineObject',
     evt
 ) {
 
+    var enabled;
     var envList = {};
     var skyList = {};
 
@@ -71,6 +72,61 @@ define(['../../PipelineObject',
 
     };
 
+
+    var applyColor = function(Obj3d, color) {
+        if (Obj3d) {
+            Obj3d.color = new THREE.Color(color[0],color[1], color[2]);
+        }
+
+    };
+
+
+    var applyFog = function(Obj3d, density) {
+        Obj3d.density = density;
+    };
+
+    var applyEnvironment = function(envConfigs) {
+        var config = envConfigs[currentEnvId];
+
+        console.log(config, currentEnvId, envConfigs[currentEnvId]);
+
+        for (var key in config) {
+
+
+            if (config[key].color) {
+
+                if (key == 'sun') {
+
+                    world[key].position.copy(sunSphere.position);
+                    world[key].lookAt(worldCenter)
+                }
+
+                if (key == 'moon') {
+
+                    world[key].position.x = 10 -sunSphere.position.x * 0.2;
+                    world[key].position.y = 1000 +sunSphere.position.y * 5;
+                    world[key].position.z = 10 -sunSphere.position.z * 0.2;
+                    world[key].lookAt(worldCenter)
+                }
+
+
+                if (key == 'fog') {
+                    fogColor.setRGB(config[key].color[0],config[key].color[1],config[key].color[2]);
+                }
+
+                if (key == 'ambient') {
+                    ambientColor.setRGB(config[key].color[0],config[key].color[1],config[key].color[2]);
+                }
+
+                applyColor(world[key], config[key].color);
+            }
+
+            if (config[key].density) {
+                applyFog(world[key], config[key].density);
+                //    renderer.setClearColor(new THREE.Color(config[key].color[0],config[key].color[1], config[key].color[2]))
+            }
+        }
+    };
 
     function applySkyConfig() {
 
@@ -167,11 +223,30 @@ define(['../../PipelineObject',
     };
 
     ThreeEnvironment.enableEnvironment = function() {
+        if (enabled) return;
+        enabled = true;
         scene.add( sky.mesh );
     };
 
+    ThreeEnvironment.getEnvConfigs = function() {
+        return envList;
+    };
+
+    ThreeEnvironment.getCurrentEnvId = function() {
+        return currentEnvId;
+    };
+
     ThreeEnvironment.disableEnvironment = function() {
+        if (!enabled) return;
+        enabled = false;
         scene.remove( sky.mesh );
+    };
+
+
+    ThreeEnvironment.setEnvConfigId = function(envConfId, enable) {
+        currentEnvId = envConfId;
+        applySkyConfig(skyList);
+        applyEnvironment(envList);
     };
 
     ThreeEnvironment.initEnvironment = function(store) {
@@ -207,60 +282,9 @@ define(['../../PipelineObject',
             }
         };
 
-        var applyColor = function(Obj3d, color) {
-            if (Obj3d) {
-                Obj3d.color = new THREE.Color(color[0],color[1], color[2]);
-            }
-
-        };
 
 
-        var applyFog = function(Obj3d, density) {
-            Obj3d.density = density;
-        };
 
-        var applyEnvironment = function(envConfigs) {
-            var config = envConfigs[currentEnvId];
-
-            console.log(config, currentEnvId, envConfigs[currentEnvId]);
-
-            for (var key in config) {
-
-
-                if (config[key].color) {
-
-                    if (key == 'sun') {
-
-                        world[key].position.copy(sunSphere.position);
-                        world[key].lookAt(worldCenter)
-                    }
-
-                    if (key == 'moon') {
-
-                        world[key].position.x = 10 -sunSphere.position.x * 0.2;
-                        world[key].position.y = 1000 +sunSphere.position.y * 5;
-                        world[key].position.z = 10 -sunSphere.position.z * 0.2;
-                        world[key].lookAt(worldCenter)
-                    }
-
-
-                    if (key == 'fog') {
-                        fogColor.setRGB(config[key].color[0],config[key].color[1],config[key].color[2]);
-                    }
-
-                    if (key == 'ambient') {
-                        ambientColor.setRGB(config[key].color[0],config[key].color[1],config[key].color[2]);
-                    }
-
-                    applyColor(world[key], config[key].color);
-                }
-
-                if (config[key].density) {
-                    applyFog(world[key], config[key].density);
-                //    renderer.setClearColor(new THREE.Color(config[key].color[0],config[key].color[1], config[key].color[2]))
-                }
-            }
-        };
 
         var environmentListLoaded = function(scr, data) {
 
