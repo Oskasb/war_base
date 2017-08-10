@@ -62,18 +62,19 @@ define([
                 if (this.renderModel == 'canvas3d') {
 
 
-                    var _this = this;
+                    //ar _this = this;
 
-                    var playerReady = function(src, player) {
-                        _this.canvasApi.init3dCanvasGui(_this.callbackMap, _this.canvasGuiConfig);
-                        _this.ctx = _this.canvasApi.getCanvasContext();
-                        _this.ready = true;
+                //    var playerReady = function(src, player) {
+                        this.canvasApi.init3dCanvasGui(this.callbackMap, this.canvasGuiConfig);
+                        this.ctx = this.canvasApi.getCanvasContext();
+                        this.ready = true;
+                        this.canvasApi.setGuiTextureResolution(this.configs.resolution);
+                        this.canvasApi.setGuiAttenuationRgba(this.configs.attenuation);
+                //    };
 
-                        _this.canvasApi.setGuiTextureResolution(_this.configs.resolution);
-                        _this.canvasApi.setGuiAttenuationRgba(_this.configs.attenuation);
-                    };
+                    //    new PipelineObject('GAME_DATA', 'OWN_PLAYER', playerReady);
 
-                    PipelineAPI.subscribeToCategoryKey('GAME_DATA', 'OWN_PLAYER', playerReady);
+                //    playerReady();
 
                 } else {
         //            console.log(parent);

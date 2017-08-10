@@ -148,7 +148,7 @@ define(['../../PipelineObject',
 
         sunSphere.visible = true;
 
-        sunSphere.lookAt(worldCenter)
+        sunSphere.lookAt(worldCenter);
 
         sky.uniforms.sunPosition.value.copy( sunSphere.position );
 
@@ -281,9 +281,6 @@ define(['../../PipelineObject',
                 }
             }
         };
-
-
-
 
 
         var environmentListLoaded = function(scr, data) {

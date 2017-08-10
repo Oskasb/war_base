@@ -22,7 +22,7 @@ define([
         };
 
         var setupEffect = function(args) {
-            //    console.log("Setup FX:", args);
+        //        console.log("Setup FX:", args);
             posVec.copy(args.pos)
             velVec.copy(args.vel);
         };
@@ -46,7 +46,7 @@ define([
                 setupEffect(evt.args(e));
 
                 if (!effectList[evt.args(e).effect]) {
-                    //    console.log("No FX")
+                        console.log("No FX")
                 } else {
                     EffectsAPI.requestParticleEffect(evt.args(e).effect, posVec, velVec);
                 }

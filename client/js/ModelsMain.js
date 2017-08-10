@@ -14,6 +14,8 @@ require([
     'modelviewer/ModelViewer',
     'modelviewer/EnvironmentLoader',
     'modelviewer/ModelLoader',
+    'modelviewer/ParticleLoader',
+    'modelviewer/ViewerPointer',
     'ui/GameScreen',
     'io/PointerCursor'
 ], function(
@@ -28,6 +30,8 @@ require([
     ModelViewer,
     EnvironmentLoader,
     ModelLoader,
+    ParticleLoader,
+    ViewerPointer,
     GameScreen,
     PointerCursor
 ) {
@@ -52,6 +56,8 @@ require([
             new FullScreenConfigurator();
             new EnvironmentLoader();
             new ModelLoader();
+            new ViewerPointer();
+            new ParticleLoader();
         };
 
         evt.on(evt.list().PLAYER_READY, playerReady);

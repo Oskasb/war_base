@@ -36,7 +36,7 @@ define([
             };
 
 
-            var toggleTriggered = function(src, data) {
+            var toggleTriggered = function(data) {
         //        console.log("Enable event", src, data);
                 _this.canvasElement.toggleEnabled(data);
             };
@@ -60,6 +60,8 @@ define([
                     PipelineAPI.setCategoryData(_this.conf.enableOnEvent.category, data);
                     PipelineAPI.subscribeToCategoryKey(_this.conf.enableOnEvent.category, _this.conf.enableOnEvent.key, toggleTriggered);
 
+                } else {
+                    toggleTriggered(true);
                 }
 
                 _this.ready = true;
@@ -72,12 +74,13 @@ define([
         //        console.log("GUI READY CALLBACK FIRED");
 
             };
-            new PipelineObject('GAME_DATA', 'OWN_PLAYER', playerReady);
+        //    new PipelineObject('GAME_DATA', 'OWN_PLAYER', playerReady);
+
             var configLoaded = function(src, conf) {
                 _this.canvasElement.applyElementConfig(_this.parent, _this.pipelineObject.buildConfig()[_this.configId], guiReady);
             };
 
-
+            playerReady();
         };
 
 

@@ -17,6 +17,10 @@ define([
 
         var DomSelectList = function(category, dataList, stateData, buttonFunc) {
 
+            this.category = category;
+            this.stateData = stateData;
+            this.funcList = {};
+
             this.panel = new DomPanel(GameScreen.getElement(), 'select_panel');
             this.populatePanelButtons(this.panel, category, dataList, stateData, buttonFunc)
 
@@ -26,6 +30,7 @@ define([
             console.log("Select List:", panel, dataList);
 
             for (var key in dataList) {
+                this.funcList[key] = buttonFunc;
                 this.addListButton(panel, category, key, stateData, buttonFunc)
             }
 
@@ -66,14 +71,21 @@ define([
             var container = panel.attachElement(panel.panelId, containerConf);
             panel.attachElement(container, buttonConf);
 
-            var apply = function(src, value) {
-                buttonFunc(src, value)
-            };
+        //    var apply = function(src, value) {
+        //        buttonFunc(src, value)
+        //    };
 
-            PipelineAPI.subscribeToCategoryKey(category, key, apply);
+            var apply = buttonFunc;
+
+            PipelineAPI.subscribeToCategoryKey(category, key, buttonFunc);
         };
 
         DomSelectList.prototype.removeSelectList = function() {
+
+            for (var key in this.funcList) {
+                PipelineAPI.removeCategoryKeySubscriber(this.category, key, this.funcList[key]);
+            }
+
             this.panel.removeGuiPanel();
         };
 

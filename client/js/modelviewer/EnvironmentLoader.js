@@ -35,8 +35,12 @@ define([
                 }
             };
 
-            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {ENV_LOADER:1});
+            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {ENV_LOADER:true});
             evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
+
+            setTimeout(function() {
+                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {ENV_LOADER:false});
+            }, 1000);
 
         }
 

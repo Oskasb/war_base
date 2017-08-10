@@ -36,6 +36,8 @@ define([
             this.canvasGuiApi = canvasGuiApi;
             this.configs = {};
 
+            this.callbacks = [];
+
             pieces = PipelineAPI.readCachedConfigKey('GAME_DATA', 'PIECES');
         //    camera = PipelineAPI.readCachedConfigKey('GAME_DATA', 'CAMERA');
             
@@ -53,9 +55,9 @@ define([
 
 
         CanvasFunctions.prototype.setupCallbacks = function(id, conf, callbackNames) {
-            if (!ownPiece) return;
+        //    if (!ownPiece) return;
             
-            this.callbacks = [];
+
 
             var configs = conf;
             
@@ -137,7 +139,7 @@ define([
                     canvasGuiApi.setElementPosition(
 
                         pointerFrustumPos.x,
-                        pointerFrustumPos.y
+                        pointerFrustumPos.y * 0.8
 
                     )
 

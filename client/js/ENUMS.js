@@ -37,6 +37,7 @@ if(typeof(ENUMS) === "undefined"){
         STATUS:'STATUS',
         LOAD_MODEL:'LOAD_MODEL',
         LOAD_ENVIRONMENT:'LOAD_ENVIRONMENT',
+        LOAD_PARTICLES:'LOAD_PARTICLES',
         GUI_ELEMENT:'GUI_ELEMENT',
         setup:'setup'
     };
@@ -46,6 +47,7 @@ if(typeof(ENUMS) === "undefined"){
         DEBUG:'DEBUG',
         FULL_SCREEN:'FULL_SCREEN',
         MODEL_LOADER:'MODEL_LOADER',
+        PARTICLE_LOADER:'PARTICLE_LOADER',
         ENV_LOADER:'ENV_LOADER',
         ADD:'ADD',
         REMOVE:'REMOVE'
