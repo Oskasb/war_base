@@ -33,6 +33,19 @@ define([
 			pollIndex.push(url);
 		};
 
+        JsonPipe.pollUrl = function(url) {
+            if (!pollCallbacks[url]) return;
+            if (pollIndex.indexOf(url) === -1) {
+            	pollIndex.push(url);
+            }
+        };
+
+        JsonPipe.removeUrlPoll = function(url) {
+            if (pollIndex.indexOf(url) !== -1) {
+                pollIndex.splice(pollIndex.indexOf(url));
+            }
+        };
+
 		JsonPipe.storeConfig = function(url, config, success) {
 			loadedData[url] = config;
 			success(url, config);
@@ -59,9 +72,7 @@ define([
 		};
 
 		JsonPipe.saveJsonToUrl = function(json, url) {
-
 			DataWorker.saveJsonData(json, url);
-			
 		};
 		
 		JsonPipe.tickJsonPipe = function(tpf) {
@@ -87,7 +98,6 @@ define([
 			errorCallback = pipelineErrorCb;
 			
 			var statusUpdate = function(key, value) {
-
 				if (value) {
 					evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'Enable JSON Poll'});
 				} else {
@@ -95,9 +105,7 @@ define([
 				}
 
 				options.polling.enabled = value;
-
 			};
-
 			ConfigCache.subscribeToCategoryKey('STATUS', "PIPELINE", statusUpdate)
 		};
 

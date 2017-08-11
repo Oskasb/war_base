@@ -97,6 +97,14 @@ define(['data_pipeline/data/ConfigCache'],
 			ConfigCache.applyDataPipelineOptions(jsonIndexUrl, options, pipelineError);
 		};
 
+        PipelineAPI.pollFileUrl = function(url) {
+            ConfigCache.registerPollUrl(url);
+        };
+
+        PipelineAPI.cancelFileUrlPoll = function(url) {
+            ConfigCache.removePollUrl(url);
+        };
+
 		PipelineAPI.getPipelineOptions = function(key) {
 			return pipeOptions[key];
 		};

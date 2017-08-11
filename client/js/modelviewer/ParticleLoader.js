@@ -79,18 +79,16 @@ define([
 
         ParticleLoader.prototype.loadModel = function(id, value) {
 
-
-
             if (value === true) {
                 console.log("Load Particle: ", id, value);
 
                 var emitIt = function() {
-                    if (Math.random() < 0.1) {
-                        calcVec.x = 20 * Math.random()-0.5;
-                        calcVec.y = 20 * Math.random()-0.5;
-                        calcVec.z = 20 * Math.random()-0.5;
+                    if (Math.random() < 10.1) {
+                        calcVec.x = 20 * (Math.random()-0.5);
+                        calcVec.y = 20 * (Math.random()-0.5);
+                        calcVec.z = 20 * (Math.random()-0.5);
                         calcVec2.copy(calcVec);
-                        calcVec2.multiplyScalar(10*Math.random())
+                        calcVec2.multiplyScalar(2*Math.random())
                         emitEffect(pId, calcVec, calcVec2);
                     }
                 };

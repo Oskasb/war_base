@@ -64,11 +64,12 @@ define([
             };
 
             var jsonImageLoaded = function(src, data) {
+                PipelineAPI.cancelFileUrlPoll(src);
                 new THREE.TextureLoader().load(data.url, registerTexture);
             };
 
             var originalImageUpdated = function(src, data) {
-
+                PipelineAPI.pollFileUrl(src);
             //    console.log("Buffer Data Updated:  ", url, txType, src, [data]);
                 var onLoad = function(tx) {
                     if (PipelineAPI.readCachedConfigKey('STATUS', "PIPELINE")) {

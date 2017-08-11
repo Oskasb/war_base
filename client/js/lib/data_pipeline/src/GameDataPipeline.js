@@ -38,6 +38,15 @@ define([
 			ImagePipe.setImagePipeOpts(opts.imagePipe, pipelineErrorCb);
 		};
 
+        GameDataPipeline.registerUrlForPoll = function(url) {
+            JsonPipe.pollUrl(url);
+            ImagePipe.pollUrl(url);
+        };
+
+        GameDataPipeline.removeUrlFromPoll = function(url) {
+            JsonPipe.removeUrlPoll(url);
+            ImagePipe.removeUrlPoll(url);
+        };
 
 		return GameDataPipeline
 	});

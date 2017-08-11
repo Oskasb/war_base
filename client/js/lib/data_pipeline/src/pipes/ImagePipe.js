@@ -34,6 +34,20 @@ define([
 			pollIndex.push(url);
 		};
 
+        ImagePipe.pollUrl = function(url) {
+        	if (!pollCallbacks[url]) return;
+            if (pollIndex.indexOf(url) === -1) {
+                pollIndex.push(url);
+            }
+        };
+
+        ImagePipe.removeUrlPoll = function(url) {
+            if (pollIndex.indexOf(url) !== -1) {
+                pollIndex.splice(pollIndex.indexOf(url));
+            }
+        };
+
+
         ImagePipe.callUrlCallbacks = function(url, img) {
 
      //       console.log(url, pollCallbacks)

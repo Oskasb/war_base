@@ -15,6 +15,7 @@ define([
 
         var modelPool = {};
 
+        var activeModels = {};
 
         var contentUrl = function(url) {
             return 'content'+url.slice(1);
@@ -163,33 +164,41 @@ define([
             return modelList;
         };
 
+        ThreeModelLoader.loadModelId = function(id) {
+
+            if (!modelList[id]) {
+                console.warn("No model in list by id:", id, modelList);
+            }
+
+            switch ( modelList[id].format )	{
+
+                case 'dae':
+                    loadCollada(id, modelList[id].pool);
+                    break;
+
+                case 'fbx':
+                    loadFBX(id, modelList[id].pool);
+                    break;
+
+                default:
+                    LoadObj(id, modelList[id].pool);
+                    break;
+            }
+
+        };
+
+
         ThreeModelLoader.loadData = function(TAPI) {
 
             ThreeTerrain.loadData(TAPI);
 
             var modelListLoaded = function(scr, data) {
+                console.log("Models updated:", data);
                 for (var i = 0; i < data.length; i++){
-
                     modelList[data[i].id] = data[i];
-
-                    switch ( data[i].format )	{
-
-                        case 'dae':
-                            loadCollada(data[i].id, data[i].pool);
-                            break;
-
-                        case 'fbx':
-                            loadFBX(data[i].id, data[i].pool);
-                            break;
-
-                        default:
-                            LoadObj(data[i].id, data[i].pool);
-                            break;
-
-                    }
+                    ThreeModelLoader.loadModelId(data[i].id);
                 }
             };
-
 
             new PipelineObject("MODELS", "THREE", modelListLoaded);
             new PipelineObject("MODELS", "THREE_BUILDINGS", modelListLoaded);
@@ -218,31 +227,38 @@ define([
 
         var attachAsynchModel = function(modelId, rootObject) {
 
+
             var attachModel = function(model) {
 
-                var attachMaterial = function(src, data) {
                     //    console.log("Attach MAterial to Model", data, model);
                     for (var i = 0; i < rootObject.children.length; i++) {
                         rootObject.remove(rootObject.children[i]);
                     }
 
-                    model.material = data;
+
                     setup.addToScene(model);
                     rootObject.add(model);
                     transformModel(modelList[modelId].transform, model);
 
+                var attachMaterial = function(src, data) {
+                    model.material = data;
                 };
 
                 new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial);
             };
 
+        //    ThreeModelLoader.loadModelId(modelId);
+
             ThreeModelLoader.fetchPooledMeshModel(modelId, attachModel);
         };
+
 
 
         ThreeModelLoader.loadThreeMeshModel = function(applies, rootObject, ThreeSetup) {
 
             setup = ThreeSetup;
+
+
             attachAsynchModel(applies, rootObject);
             return rootObject;
         };
@@ -256,6 +272,7 @@ define([
             }, 500)
         };
 
+
         ThreeModelLoader.fetchPooledMeshModel = function(id, cb) {
 
 
@@ -264,19 +281,29 @@ define([
                 return;
             }
 
-            if (!modelPool[id].length) {
+            var applyModel = function(src, data) {
+                var mesh;
 
-    //            console.log("Increase Model Pool", id);
-                var modelData = function(src, cached) {
-                    var clone = cached.clone();
-                    clone.poolId = cached.poolId;
-                    cb(clone)
-                };
+                if (!modelPool[src].length) {
+                    console.log("Increase Model Pool", id);
+                    mesh = data.clone();
+                    mesh.poolId = data.poolId;
+                } else {
+                    mesh = modelPool[src].pop()
+                }
 
-                new PipelineObject('THREE_MODEL', id, modelData);
-            } else {
-                cb(modelPool[id].pop())
-            }
+                if (mesh.pipeObj) {
+                    mesh.pipeObj.removePipelineObject();
+                }
+
+                mesh.pipeObj = pipeObj;
+
+                cb(mesh)
+
+            };
+
+            var pipeObj = new PipelineObject('THREE_MODEL', id, applyModel);
+
         };
 
         ThreeModelLoader.returnModelToPool = function(model) {
@@ -290,6 +317,13 @@ define([
                     console.log("Missing Pool ID on Mesh", mesh);
                     return;
                 }
+
+                if (!mesh.pipeObj) {
+                    console.log("No pipe on mesh", mesh)
+                } else {
+                    mesh.pipeObj.removePipelineObject();
+                }
+
                 modelPool[mesh.poolId].push(mesh);
             };
 

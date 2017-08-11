@@ -64,21 +64,42 @@ define([
             PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.MODEL_LOADER, apply);
 
             addButton();
+
+            var pollwait = 5;
+            var countdown = pollwait;
+
+            var tick = function(e) {
+                countdown -= evt.args(e).tpf;
+                var reloadcount = 0;
+                if (countdown < 0) {
+                    for (var key in loadedModels) {
+                        if (loadedModels[key].length) {
+                            reloadcount++;
+                            ThreeAPI.getModelLoader().loadModelId(key);
+                        }
+                    }
+                    countdown = 0.3 * reloadcount + 0.5;
+                }
+            };
+
+            evt.on(evt.list().CLIENT_TICK, tick);
+
         };
 
 
         ModelLoader.prototype.loadModel = function(modelId, value) {
 
+            if (!loadedModels[modelId]) {
+                loadedModels[modelId] = [];
+                rootModels[modelId] = []
+            }
 
             if (value === true) {
                 console.log("Load Model: ", modelId, value);
 
-                var rootObj = ThreeAPI.createRootObject();
+                if (loadedModels[modelId].length) return;
 
-                if (!loadedModels[modelId]) {
-                    loadedModels[modelId] = [];
-                    rootModels[modelId] = []
-                }
+                var rootObj = ThreeAPI.createRootObject();
 
                 loadedModels[modelId].push(ThreeAPI.loadMeshModel(modelId, rootObj));
 

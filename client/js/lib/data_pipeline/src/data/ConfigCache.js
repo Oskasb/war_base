@@ -340,12 +340,20 @@ define([
 		};
 
 		ConfigCache.combineEntities = function(entityList, combineDone) {
-			gooEntityCache.runCombinerOnList(entityList, combineDone);
+
 		};
 
 		ConfigCache.getCachedConfigs = function() {
 			return configs;
 		};
+
+        ConfigCache.registerPollUrl = function(url) {
+            GameDataPipeline.registerUrlForPoll(url);
+        };
+
+        ConfigCache.removePollUrl = function(url) {
+            GameDataPipeline.removeUrlFromPoll(url);
+        };
 
         ConfigCache.tickConfigCache = function(tpf) {
             GameDataPipeline.tickDataLoader(tpf);
