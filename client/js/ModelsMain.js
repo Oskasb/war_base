@@ -14,6 +14,7 @@ require([
     'modelviewer/ModelViewer',
     'modelviewer/EnvironmentLoader',
     'modelviewer/ModelLoader',
+    'modelviewer/ModuleLoader',
     'modelviewer/ParticleLoader',
     'modelviewer/ViewerPointer',
     'ui/GameScreen',
@@ -30,6 +31,7 @@ require([
     ModelViewer,
     EnvironmentLoader,
     ModelLoader,
+    ModuleLoader,
     ParticleLoader,
     ViewerPointer,
     GameScreen,
@@ -56,6 +58,7 @@ require([
             new FullScreenConfigurator();
             new EnvironmentLoader();
             new ModelLoader();
+            new ModuleLoader();
             new ViewerPointer();
             new ParticleLoader();
         };

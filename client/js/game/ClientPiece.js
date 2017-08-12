@@ -35,7 +35,7 @@ define([
 
             var _this = this;
 
-            this.clientModules = [];
+            this.gameModules = [];
             this.attachmentPoints = [];
 
 			this.isOwnPlayer = false;
@@ -90,8 +90,8 @@ define([
 		};
 
 		ClientPiece.prototype.monitorModules = function(bool) {
-			for (var i = 0; i < this.clientModules.length; i++) {
-				this.clientModules[i].monitorClientModule(bool);
+			for (var i = 0; i < this.gameModules.length; i++) {
+				this.gameModules[i].monitorClientModule(bool);
 			}
 		};
 
@@ -147,29 +147,29 @@ define([
 		};
 
         ClientPiece.prototype.registerModule = function(module) {
-			if (this.clientModules.indexOf(module) == -1) {
-				this.clientModules.push(module);
+			if (this.gameModules.indexOf(module) == -1) {
+				this.gameModules.push(module);
 			}
         };
 
 
 		ClientPiece.prototype.detachModules = function() {
-			for (var i = 0; i < this.clientModules.length; i++) {
-				this.clientModules[i].removeClientModule();
+			for (var i = 0; i < this.gameModules.length; i++) {
+				this.gameModules[i].removeClientModule();
 			}
 			
-			this.clientModules.length = 0;
+			this.gameModules.length = 0;
 		};
 
         ClientPiece.prototype.disableModules = function() {
-            for (var i = 0; i < this.clientModules.length; i++) {
-                this.clientModules[i].disableClientModule();
+            for (var i = 0; i < this.gameModules.length; i++) {
+                this.gameModules[i].disableClientModule();
             }
         };
 
         ClientPiece.prototype.enableModules = function() {
-            for (var i = 0; i < this.clientModules.length; i++) {
-                this.clientModules[i].enableClientModule();
+            for (var i = 0; i < this.gameModules.length; i++) {
+                this.gameModules[i].enableClientModule();
             }
         };
         
@@ -288,9 +288,9 @@ define([
 		};
 
         ClientPiece.prototype.sampleClientModules = function(serverModules) {
-            for (var i = 0; i < this.clientModules.length; i++) {
-                this.clientModules[i].applyModuleServerState(serverModules);
-                this.clientModules[i].sampleModuleFrame();
+            for (var i = 0; i < this.gameModules.length; i++) {
+                this.gameModules[i].applyModuleServerState(serverModules);
+                this.gameModules[i].sampleModuleFrame();
             } 
         };
 

@@ -11,26 +11,28 @@ define([
     ) {
 
 
-        var ThreeModule = function(module, clientPiece, attachmentPoint) {
+        var ThreeModule = function(module) {
 
+            /*
             this.tempSpatial = new MODEL.Spatial();
             this.transform = attachmentPoint.transform;
             this.moduleSpatial = new MODEL.Spatial();
             this.moduleSpatial.setSpatial(attachmentPoint.transform);
-
-            this.module = module;
             this.clientPiece = clientPiece;
             this.piece = clientPiece.piece;
+            */
+
+            this.module = module;
+
             this.staticEffect = null;
             this.dynamicEffect = null;
             //    this.addModuleDebugBox()
         };
 
 
-        ThreeModule.prototype.setModuleData = function(moduleData) {
-            this.applies = moduleData.applies;
+        ThreeModule.prototype.setModuleData = function(data) {
+            this.data = data;
         };
-
 
 
         ThreeModule.prototype.buildModel = function(parentObj3d) {
@@ -76,7 +78,6 @@ define([
             this.parentObject3d.position.x = this.transform.posX();
             this.parentObject3d.position.y = this.transform.posY();
             this.parentObject3d.position.z = this.transform.posZ();
-
 
             partsReady();
         };

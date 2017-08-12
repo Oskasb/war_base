@@ -242,11 +242,9 @@ define(['../../PipelineObject',
 
         var fraction = calcTransitionProgress(evt.args(e).tpf);
 
-    //    currentSkyConfig = skyList[currentEnvId];
-
         var useSky = interpolateSky(currentSkyConfig, skyList[currentEnvId], fraction*fraction);
 
-        var useEnv = interpolateEnv(currentEnvConfig, envList[currentEnvId], fraction*fraction);
+        interpolateEnv(currentEnvConfig, envList[currentEnvId], fraction*fraction);
 
         if (fraction < 1) {
             applyEnvironment();
@@ -297,6 +295,7 @@ define(['../../PipelineObject',
         if (enabled) return;
         enabled = true;
         scene.add( sky.mesh );
+        evt.on(evt.list().CLIENT_TICK, tickEnvironment);
     };
 
     ThreeEnvironment.getEnvConfigs = function() {
@@ -311,6 +310,7 @@ define(['../../PipelineObject',
         if (!enabled) return;
         enabled = false;
         scene.remove( sky.mesh );
+        evt.removeListener(evt.list().CLIENT_TICK, tickEnvironment);
     };
 
     ThreeEnvironment.setEnvConfigId = function(envConfId, time) {
@@ -374,13 +374,13 @@ define(['../../PipelineObject',
 
             applySkyConfig();
             applyEnvironment();
+
+
         };
 
         createEnvWorld(worldSetup);
 
         new PipelineObject("ENVIRONMENT", "THREE", environmentListLoaded);
-
-        evt.on(evt.list().CLIENT_TICK, tickEnvironment);
 
     };
 

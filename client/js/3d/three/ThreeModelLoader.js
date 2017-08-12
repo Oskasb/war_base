@@ -28,12 +28,11 @@ define([
 
         var poolMesh = function(id, mesh, count) {
             var poolCount = count || 3;
-            mesh.poolId = id;
             modelPool[id] = [];
 
             for (var i = 0; i < poolCount; i++) {
                 var clone = mesh.clone();
-                clone.poolId = id;
+                clone.userData.poolId = id;
                 clone.frustumCulled = false;
                 modelPool[id].push(clone);
             }
@@ -100,10 +99,21 @@ define([
             });
         };
 
+
+
         var getMesh = function(object, id, cb) {
 
+            if ( object instanceof THREE.Mesh ) {
+                cb(object, id);
+            }
+
+            if (typeof(object.traverse) != 'function') {
+                console.log("No Traverse function", object);
+                return;
+            }
+
             object.traverse( function ( child ) {
-                object.remove(child);
+            //    object.remove(child);
 
                 if ( child instanceof THREE.Mesh ) {
                     //    var geom = child.geometry;
@@ -231,10 +241,12 @@ define([
             var attachModel = function(model) {
 
                     //    console.log("Attach MAterial to Model", data, model);
+
+                /*
                     for (var i = 0; i < rootObject.children.length; i++) {
                         rootObject.remove(rootObject.children[i]);
                     }
-
+*/
 
                     setup.addToScene(model);
                     rootObject.add(model);
@@ -287,7 +299,7 @@ define([
                 if (!modelPool[src].length) {
                     console.log("Increase Model Pool", id);
                     mesh = data.clone();
-                    mesh.poolId = data.poolId;
+                    mesh.userData.poolId = data.userData.poolId;
                 } else {
                     mesh = modelPool[src].pop()
                 }
@@ -313,8 +325,9 @@ define([
                 if (mesh.parent) {
                     mesh.parent.remove(mesh);
                 }
-                if (!mesh.poolId) {
+                if (!mesh.userData.poolId) {
                     console.log("Missing Pool ID on Mesh", mesh);
+                    mesh.geometry.dispose();
                     return;
                 }
 
@@ -324,10 +337,10 @@ define([
                     mesh.pipeObj.removePipelineObject();
                 }
 
-                modelPool[mesh.poolId].push(mesh);
+                modelPool[mesh.userData.poolId].push(mesh);
             };
 
-            if (!model.poolId) {
+            if (!model.userData.poolId) {
                 //        console.log("Shave scrap objects from mesh before returning it...");
                 getMesh(model, null, meshFound)
             } else {
@@ -351,13 +364,19 @@ define([
         var material1 = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: true, fog:false } );
         var material2 = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true, fog:false } );
 
-        ThreeModelLoader.loadThreeDebugBox = function(sx, sy, sz) {
+        var materials = {
+            yellow : new THREE.MeshBasicMaterial( { color: 0xffff88, wireframe: true, fog:false } ),
+            red    : new THREE.MeshBasicMaterial( { color: 0xff5555, wireframe: true, fog:false } ),
+            blue    : new THREE.MeshBasicMaterial({ color: 0x5555ff, wireframe: true, fog:false } )
+        }
+
+        ThreeModelLoader.loadThreeDebugBox = function(sx, sy, sz, colorName) {
 
             var geometry;
 
             geometry = new THREE.BoxBufferGeometry( sx || 1, sy || 1, sz || 1);
 
-            return new THREE.Mesh( geometry, material1 );
+            return new THREE.Mesh( geometry, materials[colorName] || material1 );
         };
 
         ThreeModelLoader.loadThreeModel = function(sx, sy, sz) {

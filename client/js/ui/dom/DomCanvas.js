@@ -38,7 +38,10 @@ define([
 
             var toggleTriggered = function(data) {
         //        console.log("Enable event", src, data);
-                _this.canvasElement.toggleEnabled(data);
+                if (_this.ready) {
+                    _this.canvasElement.toggleEnabled(data);
+                }
+
             };
 
             var playerReady = function() {
@@ -46,12 +49,8 @@ define([
                 if (_this.ready) return;
 
                 if (!_this.active) {
-                    _this.pipelineObject = new PipelineObject('canvas', 'systems');
-                    _this.pipelineObject.subscribe(configLoaded);
-
+                    _this.pipelineObject = new PipelineObject('canvas', 'systems', configLoaded);
                 }
-
-                _this.active = true;
 
                 if (_this.conf.enableOnEvent) {
         //            console.log("Enable event", _this.conf);
@@ -64,10 +63,9 @@ define([
                     toggleTriggered(true);
                 }
 
-                _this.ready = true;
-                evt.on(evt.list().CLIENT_TICK, clientTick);
-            };
 
+                _this.active = true;
+            };
 
 
             var guiReady = function() {
@@ -77,7 +75,10 @@ define([
         //    new PipelineObject('GAME_DATA', 'OWN_PLAYER', playerReady);
 
             var configLoaded = function(src, conf) {
+
+                _this.ready = true;
                 _this.canvasElement.applyElementConfig(_this.parent, _this.pipelineObject.buildConfig()[_this.configId], guiReady);
+                evt.on(evt.list().CLIENT_TICK, clientTick);
             };
 
             playerReady();

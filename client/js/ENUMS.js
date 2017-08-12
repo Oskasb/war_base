@@ -36,6 +36,7 @@ if(typeof(ENUMS) === "undefined"){
         POINTER_STATE:'POINTER_STATE',
         STATUS:'STATUS',
         LOAD_MODEL:'LOAD_MODEL',
+        LOAD_MODULE:'LOAD_MODULE',
         LOAD_ENVIRONMENT:'LOAD_ENVIRONMENT',
         LOAD_PARTICLES:'LOAD_PARTICLES',
         GUI_ELEMENT:'GUI_ELEMENT',
@@ -47,6 +48,7 @@ if(typeof(ENUMS) === "undefined"){
         DEBUG:'DEBUG',
         FULL_SCREEN:'FULL_SCREEN',
         MODEL_LOADER:'MODEL_LOADER',
+        MODULE_LOADER:'MODULE_LOADER',
         PARTICLE_LOADER:'PARTICLE_LOADER',
         ENV_LOADER:'ENV_LOADER',
         ADD:'ADD',
@@ -65,6 +67,11 @@ if(typeof(ENUMS) === "undefined"){
     ENUMS.Type = {
         toggle:'toggle'
     }
+
+    ENUMS.ModuleParams = {
+        attachment_points:'attachment_points',
+        channels:'channels'
+    };
 
 
 })(ENUMS);

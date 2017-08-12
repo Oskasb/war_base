@@ -31,16 +31,11 @@ define([
                 if (data == src && data) {
                     console.log("No data at source", this.category, src, data)
                 } else {
-                //    if (compareDatas(this.data, data)) {
-                //        console.log("Data identical, skippping subscription push", this.category, this.key );
-                        // return;
-                 //   }
-
                     this.data = data;
                     if (typeof(onDataCallback) == 'function') {
-                //        setTimeout(function() {
+                        setTimeout(function() {
                             onDataCallback(src, data);
-                //        },0);
+                        },0)
                     }
                 }
             }.bind(this);
@@ -70,6 +65,19 @@ define([
 
         PipelineObject.prototype.setData = function(data) {
             PipelineAPI.setCategoryKeyValue(this.category, this.key, data);
+        };
+
+        PipelineObject.prototype.getElementId = function(id) {
+            this.data = this.readData();
+            this.configs = {};
+
+            if (this.data.length) {
+                for (var i = 0; i < this.data.length; i++) {
+                    this.configs[this.data[i].id] = this.data[i];
+                }
+            } else {
+                console.log("Data not Array Type", this.category, this.key, this.data)
+            }
         };
 
 

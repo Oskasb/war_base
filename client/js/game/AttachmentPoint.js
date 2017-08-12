@@ -9,57 +9,49 @@ define([
         ThreeAPI
     ) {
 
-        var AttachmentPoint = function(apData, moduleData) {
-            this.data = {};
-            this.slot = apData.slot;
-            this.parent = apData.parent;
-            this.point_id = apData.point_id;
-
+        var AttachmentPoint = function(apData) {
+            this.id = apData.id;
             this.object3D = ThreeAPI.createRootObject();
-            
-            this.clientModules = [];
+            this.updateData(apData)
+        };
 
-            this.transform = new MODEL.Spatial();
+        AttachmentPoint.prototype.updateData = function (apData) {
+            ThreeAPI.transformModel(
+                this.object3D,
+                apData.transform.pos[0], apData.transform.pos[1], apData.transform.pos[2],
+                apData.transform.rot[0], apData.transform.rot[1], apData.transform.rot[2]
+            )
+        };
 
-            if (apData.transform) {
-                this.applyTransform(apData.transform)
+        AttachmentPoint.prototype.getPosition = function () {
+            return this.object3D.position;
+        };
+
+        AttachmentPoint.prototype.visualiseAttachmentPoint = function (bool) {
+            if (bool) {
+                this.debugModel = ThreeAPI.loadDebugBox(0.2, 0.2, 0.2, 'yellow');
+                this.debugModel.material.color.r = 1;
+                this.debugModel.material.color.g = 1;
+                this.debugModel.material.color.b = 0.5;
+
+                ThreeAPI.addChildToObject3D(this.debugModel, this.object3D);
+            } else if (this.debugModel) {
+                ThreeAPI.disposeModel(this.debugModel);
+                this.debugModel = null;
             }
-
-            this.attachModuleData(moduleData);
         };
 
-        AttachmentPoint.prototype.attachModuleData = function (moduleData) {
-            this.data.module = moduleData;
-        };
 
-        AttachmentPoint.prototype.attachClientModule = function (clientModule) {
-            clientModule.buildGeometry();
-            this.clientModules.push(clientModule);
-            
-        };
-        
-        AttachmentPoint.prototype.attachModuleModels = function () {
-            for (var i = 0; i < this.clientModules.length; i++) {
-                this.clientModules[i].attachModuleToParent(this.object3D);
-            }
+        AttachmentPoint.prototype.getRotation = function () {
+            return this.object3D.rotation;
         };
 
         AttachmentPoint.prototype.attachToParent = function (parentObj3d) {
             ThreeAPI.addChildToObject3D(this.object3D, parentObj3d)
         };
 
-        AttachmentPoint.prototype.applyTransform = function (transform) {
-            if (transform.pos) this.transform.setPosXYZ(transform.pos[0], transform.pos[1], transform.pos[2]);
-            if (transform.rot) this.transform.fromAngles(transform.rot[0]*Math.PI, transform.rot[1]*Math.PI, transform.rot[2]*Math.PI);
-            if (transform.size) this.transform.setSizeXYZ(transform.size[0], transform.size[1], transform.size[2]);
-        };
-
-        AttachmentPoint.prototype.detatchAttachmentPoint = function (parentObj3d) {
-
-            for (var i = 0; i < this.clientModules.length; i++) {
-                this.clientModules[i].removeClientModule();
-            }
-            
+        AttachmentPoint.prototype.detatchAttachmentPoint = function () {
+            this.visualiseAttachmentPoint(false);
             ThreeAPI.disposeModel(this.object3D)
         };
         

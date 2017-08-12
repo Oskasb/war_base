@@ -192,8 +192,8 @@ define([
             return ThreeModelLoader.loadThreeModel(sx, sy, sz, partsReady);
         };
 
-        ThreeAPI.loadDebugBox = function(sx, sy, sz) {
-            return ThreeModelLoader.loadThreeDebugBox(sx, sy, sz);
+        ThreeAPI.loadDebugBox = function(sx, sy, sz, colorName) {
+            return ThreeModelLoader.loadThreeDebugBox(sx, sy, sz, colorName);
         };
         
         ThreeAPI.loadQuad = function(sx, sy) {
@@ -233,6 +233,7 @@ define([
         };
 
         ThreeAPI.disposeModel = function(model) {
+
             ThreeSetup.removeModelFromScene(model);
             ThreeModelLoader.disposeHierarchy(model);
         };
