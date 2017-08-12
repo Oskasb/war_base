@@ -6,13 +6,28 @@
         "data":{
           "state":{
             "value":0,
-            "min":-10,
-            "max":10
+            "min":-2,
+            "max":2
           },
           "target":{
-            "function":"transform",
+            "callback":"transform",
             "parameter":"rotation",
             "axis":"y"
+          }
+        }
+      },
+      {
+        "id":"track_speed",
+        "data":{
+          "state":{
+            "value":0,
+            "min":-4,
+            "max":4
+          },
+          "target":{
+            "callback":"animate_texture",
+            "offsetxy":[0, 1],
+            "factor":0.002
           }
         }
       },
@@ -25,9 +40,9 @@
             "max":10
           },
           "target":{
-            "function":"transform",
-            "parameter":"position",
-            "axis":"y"
+            "callback":"module_emit_effect",
+            "module_effect":"tank_engine_fx",
+            "glue_to_ground":false
           }
         }
       },
@@ -40,7 +55,7 @@
             "max":1
           },
           "target":{
-            "function":"transform",
+            "callback":"transform",
             "parameter":"position",
             "axis":"z"
           }

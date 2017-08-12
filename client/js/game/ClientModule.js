@@ -5,13 +5,15 @@
 define([
         'Events',
         'PipelineObject',
-        'game/modules/ThreeModule'
+        'game/modules/ThreeModule',
+        'game/modules/ModuleCallbacks'
     
     ],
     function(
         evt,
         PipelineObject,
-        ThreeModule
+        ThreeModule,
+        ModuleCallbacks
     ) {
 
         var ClientModule = function(clientPiece, attachmentPoint, serverState) {

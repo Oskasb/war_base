@@ -16,8 +16,8 @@
             "size":4
           },
           "channels":[
-            {"id":"health", "value":200, "max":200, "min": 0},
-            {"id":"armor",  "value":0.6, "max":0.6, "min": 0}
+            {"id":"health"},
+            {"id":"armor"}
           ],
 
           "attachment_points":[
@@ -48,6 +48,36 @@
                 "pos":[0.0,  0.65, 2.0]
               }
             }
+          ]
+        }
+      },
+
+      {
+        "id":"sherman_track_r_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   0,    0],
+            "size": [0.8, 0.1,   5.3]
+          },
+          "model":"sherman_track_r",
+          "channels":[
+            {"id":"track_speed",  "init":0}
+          ]
+        }
+      },
+
+      {
+        "id":"sherman_track_l_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   0,    0],
+            "size": [0.8, 0.1,   5.3]
+          },
+          "model":"sherman_track_l",
+          "channels":[
+            {"id":"track_speed",  "init":0}
           ]
         }
       },

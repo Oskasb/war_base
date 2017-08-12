@@ -58,19 +58,19 @@ define([
 
         var pre = 0;
 
-        ModuleEffectCreator.createModelTransformedEffects = function(piece, calcVec, transform, calcQuat, stateValue, velStore, posStore) {
+        ModuleEffectCreator.createModelTransformedEffects = function(calcVec, transform, calcQuat, stateValue, velStore, posStore) {
 
-            posStore.x = transform.size.getX()*Math.random() - transform.size.getX()*0.5;
-            posStore.y = transform.size.getY()*Math.random() - transform.size.getY()*0.5;
-            posStore.z = transform.size.getZ()*Math.random() - transform.size.getZ()*0.5;
+            posStore.x = transform.size[0]*Math.random() - transform.size[0]*0.5;
+            posStore.y = transform.size[1]*Math.random() - transform.size[1]*0.5;
+            posStore.z = transform.size[2]*Math.random() - transform.size[2]*0.5;
 
             posStore.applyQuaternion(calcQuat);
 
             velStore.addVectors(calcVec, posStore);
 
-            posStore.x = piece.spatial.vel.getX() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
-            posStore.y = piece.spatial.vel.getY() + Math.abs(stateValue);
-            posStore.z = piece.spatial.vel.getZ() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
+        //    posStore.x = piece.spatial.vel.getX() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
+        //    posStore.y = piece.spatial.vel.getY() + Math.abs(stateValue);
+        //    posStore.z = piece.spatial.vel.getZ() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
 
             velStore.x += posStore.x*0.02;
             velStore.z += posStore.z*0.02;
@@ -135,7 +135,7 @@ define([
         };
 
 
-        ModuleEffectCreator.createModuleApplyEmitEffect = function(piece, model, emit_effect, transform, stateValue, glueToGround) {
+        ModuleEffectCreator.createModuleApplyEmitEffect = function(model, emit_effect, transform, stateValue, glueToGround) {
 
             var fx = PipelineAPI.readCachedConfigKey('MODULE_EFFECTS', emit_effect);
 
@@ -147,8 +147,6 @@ define([
             calcVec.setFromMatrixPosition( model.matrixWorld );
             model.getWorldQuaternion(calcQuat);
 
-            if (!calcVec.x) return;
-            if (!piece.spatial.pos.data) return;
 
 
             for (var i = 0; i < fx.length; i++) {
@@ -159,7 +157,7 @@ define([
                 }
 
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
-                    ModuleEffectCreator.createModelTransformedEffects(piece, calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
+                    ModuleEffectCreator.createModelTransformedEffects(calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
 
                     if (glueToGround) {
                         pre = calcVec2.y;
@@ -200,7 +198,7 @@ define([
                 }
 
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
-                    ModuleEffectCreator.createModelTransformedEffects(piece, calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
+                    ModuleEffectCreator.createModelTransformedEffects(calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
 
                     if (glueToGround) {
                         pre = calcVec2.y;

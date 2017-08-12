@@ -153,7 +153,7 @@ define([
 
         GameModule.prototype.sampleModuleFrame = function (tpf) {
             for (var i = 0; i < this.moduleChannels.length; i++) {
-                this.moduleChannels[i].updateChannelState(this.visualModule, tpf);
+                this.moduleChannels[i].updateChannelState(this, tpf);
             }
         };
 

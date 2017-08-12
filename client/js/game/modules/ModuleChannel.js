@@ -4,11 +4,13 @@
 
 define([
         'Events',
-        'PipelineObject'
+        'PipelineObject',
+        'game/modules/ModuleCallbacks'
     ],
     function(
         evt,
-        PipelineObject
+        PipelineObject,
+        ModuleCallbacks
     ) {
 
         var ModuleChannel = function(channelData, ready) {
@@ -32,7 +34,7 @@ define([
             for (var key in config.state) {
                 this.state[key] = config.state[key]
             }
-            this.state.value = this.init;
+            this.state.value = this.init || this.state.value;
 
             for (var key in config.target) {
                 this.target[key] = config.target[key]
@@ -41,12 +43,15 @@ define([
 
 
 
-        ModuleChannel.prototype.updateChannelState = function (visualModule, tpf) {
+        ModuleChannel.prototype.updateChannelState = function (module, tpf) {
 
-            this.age += tpf;
+            if (Math.random() < 0.2) {
+                this.age += tpf;
+            }
+
             this.state.value = MATH.clamp(Math.sin(this.age) * 5,this.state.min, this.state.max);
 
-            visualModule[this.target.function](this.target.parameter, this.target.axis, this.state.value)
+            ModuleCallbacks[this.target.callback](module, this.target, this.state)
 
         };
 
