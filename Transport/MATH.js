@@ -69,6 +69,7 @@ if(typeof(MATH) == "undefined"){
 		return start + (end-start)*fraction;
 	};
 
+
 	MATH.calcFraction = function(start, end, current) {
 		return (current-start) / (end-start);
 	};

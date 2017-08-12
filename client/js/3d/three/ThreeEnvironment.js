@@ -17,6 +17,9 @@ define(['../../PipelineObject',
     var world = {};
     var currentEnvId;
 
+    var currentEnvConfig;
+    var currentSkyConfig;
+
     var worldCenter = new THREE.Vector3(0, 0, 0);
     var calcVec = new THREE.Vector3();
     var calcVec2 = new THREE.Vector3();
@@ -24,6 +27,8 @@ define(['../../PipelineObject',
     var theta;
     var phi;
 
+    var transitionTime = 1;
+    var transitionProgress = 0;
 
     var sky;
     var scene;
@@ -31,7 +36,7 @@ define(['../../PipelineObject',
     var renderer;
     var sunSphere;
 
-    var currentSkyConf;
+
 
     var fogColor = new THREE.Color(1, 1, 1);
     var dynamicFogColor = new THREE.Color(1, 1, 1);
@@ -75,7 +80,15 @@ define(['../../PipelineObject',
 
     var applyColor = function(Obj3d, color) {
         if (Obj3d) {
-            Obj3d.color = new THREE.Color(color[0],color[1], color[2]);
+            if (Obj3d.color) {
+                Obj3d.color.r=color[0];
+                Obj3d.color.g=color[1];
+                Obj3d.color.b=color[2];
+            } else {
+                Obj3d.color = new THREE.Color(color[0],color[1], color[2]);
+            }
+
+
         }
 
     };
@@ -85,10 +98,9 @@ define(['../../PipelineObject',
         Obj3d.density = density;
     };
 
-    var applyEnvironment = function(envConfigs) {
-        var config = envConfigs[currentEnvId];
+    var applyEnvironment = function() {
 
-        console.log(config, currentEnvId, envConfigs[currentEnvId]);
+        var config = currentEnvConfig;
 
         for (var key in config) {
 
@@ -130,14 +142,14 @@ define(['../../PipelineObject',
 
     function applySkyConfig() {
 
-        var config = skyList[currentEnvId];
+        var config = currentSkyConfig;
 
         var uniforms = sky.uniforms;
-        uniforms.turbidity.value = config.turbidity.value;
-        uniforms.rayleigh.value = config.rayleigh.value;
-        uniforms.luminance.value = config.luminance.value;
-        uniforms.mieCoefficient.value = config.mieCoefficient.value;
-        uniforms.mieDirectionalG.value = config.mieDirectionalG.value;
+        uniforms.turbidity.value = config.turbidity;
+        uniforms.rayleigh.value = config.rayleigh;
+        uniforms.luminance.value = config.luminance;
+        uniforms.mieCoefficient.value = config.mieCoefficient;
+        uniforms.mieDirectionalG.value = config.mieDirectionalG;
 
         theta = Math.PI * ( config.inclination - 0.5 );
         phi = 2 * Math.PI * ( config.azimuth - 0.5 );
@@ -178,16 +190,75 @@ define(['../../PipelineObject',
     };
 
 
-    var tickEnvironment = function() {
+    var interpolateEnv = function(current, target, fraction) {
 
-        currentSkyConf = skyList[currentEnvId];
 
-        theta = Math.PI * ( currentSkyConf.inclination - 0.5 );
-        phi = 2 * Math.PI * ( currentSkyConf.azimuth - 0.5 );
+        for (var key in current) {
+            if (fraction >= 1) {
+                if (current[key].color) {
+                    current[key].color[0] = target[key].color[0];
+                    current[key].color[1] = target[key].color[1];
+                    current[key].color[2] = target[key].color[2];
+                }
 
-        sunSphere.position.x = camera.position.x + currentSkyConf.distance * Math.cos( phi );
-        sunSphere.position.y = camera.position.y + currentSkyConf.distance * Math.sin( phi ) * Math.sin( theta );
-        sunSphere.position.z = camera.position.z + currentSkyConf.distance * Math.sin( phi ) * Math.cos( theta );
+                if (current[key].density) {
+                    current[key].density = target[key].density;
+                }
+            } else  {
+                if (current[key].color) {
+                    current[key].color[0] = MATH.interpolateFromTo(current[key].color[0], target[key].color[0],  fraction);
+                    current[key].color[1] = MATH.interpolateFromTo(current[key].color[1], target[key].color[1],  fraction);
+                    current[key].color[2] = MATH.interpolateFromTo(current[key].color[2], target[key].color[2],  fraction);
+                }
+
+                if (current[key].density) {
+                    current[key].density = MATH.interpolateFromTo(current[key].density, target[key].density,  fraction);
+                }
+            }
+        }
+
+        return current;
+    };
+
+    var interpolateSky = function(current, target, fraction) {
+
+        for (var key in current) {
+            if (fraction >= 1) {
+                current[key] = target[key]
+            }
+
+            current[key] = MATH.interpolateFromTo(current[key], target[key],  fraction);
+        }
+
+        return current;
+    };
+
+    var calcTransitionProgress = function(tpf) {
+        transitionProgress += tpf;
+        return MATH.calcFraction(0, transitionTime, transitionProgress);
+    };
+
+    var tickEnvironment = function(e) {
+
+        var fraction = calcTransitionProgress(evt.args(e).tpf);
+
+    //    currentSkyConfig = skyList[currentEnvId];
+
+        var useSky = interpolateSky(currentSkyConfig, skyList[currentEnvId], fraction*fraction);
+
+        var useEnv = interpolateEnv(currentEnvConfig, envList[currentEnvId], fraction*fraction);
+
+        if (fraction < 1) {
+            applyEnvironment();
+            applySkyConfig()
+        }
+
+        theta = Math.PI * ( useSky.inclination - 0.5 );
+        phi = 2 * Math.PI * ( useSky.azimuth - 0.5 );
+
+        sunSphere.position.x = camera.position.x + useSky.distance * Math.cos( phi );
+        sunSphere.position.y = camera.position.y + useSky.distance * Math.sin( phi ) * Math.sin( theta );
+        sunSphere.position.z = camera.position.z + useSky.distance * Math.sin( phi ) * Math.cos( theta );
 
 
         sky.mesh.position.copy(camera.position);
@@ -242,11 +313,10 @@ define(['../../PipelineObject',
         scene.remove( sky.mesh );
     };
 
-
-    ThreeEnvironment.setEnvConfigId = function(envConfId, enable) {
+    ThreeEnvironment.setEnvConfigId = function(envConfId, time) {
+        transitionTime = time || 5;
+        transitionProgress = 0;
         currentEnvId = envConfId;
-        applySkyConfig(skyList);
-        applyEnvironment(envList);
     };
 
     ThreeEnvironment.initEnvironment = function(store) {
@@ -299,8 +369,11 @@ define(['../../PipelineObject',
                 }
             }
 
-            applySkyConfig(skyList);
-            applyEnvironment(envList);
+            currentSkyConfig = skyList['current'];
+            currentEnvConfig= envList['current'];
+
+            applySkyConfig();
+            applyEnvironment();
         };
 
         createEnvWorld(worldSetup);

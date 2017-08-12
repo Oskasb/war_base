@@ -5,12 +5,10 @@ define([
 			  LineRenderer
 			  ) {
 		'use strict';
-		
-		var System= {update:function(){}};
-	//	var	SystemBus = goo.SystemBus;
+
 		var	Vector3 = THREE.Vector3;
 		
-		function LineRenderSystem(world) {
+		function LineRenderSystem() {
 
 			this._lineRenderers = [];
 			
@@ -105,30 +103,30 @@ define([
 		LineRenderSystem.prototype.drawCross = function (position, color, size) {
 			size = size || 0.05;
 
-			start.x = position.data[0] - size;
-            start.y = position.data[1];
-            start.z = position.data[2] - size;
-            end.x = position.data[0] + size;
-            end.y = position.data[1];
-            end.z = position.data[2] + size;
+			start.x = position.x - size;
+            start.y = position.y;
+            start.z = position.z - size;
+            end.x = position.x + size;
+            end.y = position.y;
+            end.z = position.z + size;
 
 			this.drawLine(start, end, color);
 
-            start.x = position.data[0] + size;
-            start.y = position.data[1];
-            start.z = position.data[2] - size;
-            end.x = position.data[0] - size;
-            end.y = position.data[1];
-            end.z = position.data[2] + size;
+            start.x = position.x + size;
+            start.y = position.y;
+            start.z = position.z - size;
+            end.x = position.x - size;
+            end.y = position.y;
+            end.z = position.z + size;
 
 			this.drawLine(start, end, color);
 
-            start.x = position.data[0];
-            start.y = position.data[1] - size;
-            start.z = position.data[2];
-            end.x = position.data[0];
-            end.y = position.data[1] + size;
-            end.z = position.data[2];
+            start.x = position.x;
+            start.y = position.y - size;
+            start.z = position.z;
+            end.x = position.x;
+            end.y = position.y + size;
+            end.z = position.z;
 
 			this.drawLine(start, end, color);
 		};

@@ -233,6 +233,7 @@ define([
 
 
         function drawLine(from, to, color) {
+            enableLineRenderSys();
             setVector(calcVec, from.data[0], from.data[1], from.data[2]);
             setVector(calcVec2, to.data[0], to.data[1], to.data[2]);
             
@@ -240,25 +241,25 @@ define([
         }
 
         function drawCross(vec3, color) {
-
-            setVector(calcVec, vec3.data[0], vec3.data[1], vec3.data[2]);
+            enableLineRenderSys();
+        //    setVector(calcVec, vec3.data[0], vec3.data[1], vec3.data[2]);
             lineRenderSystem.drawCross(vec3, lineRenderSystem[color] || lineRenderSystem.WHITE, 1);
         }
 
         function drawLineBetween(e) {
-            enableLineRenderSys();
             drawLine(evt.args(e).from, evt.args(e).to, evt.args(e).color)
         }
 
 
         function drawPointAt(e) {
-            enableLineRenderSys();
             drawCross(evt.args(e).pos, evt.args(e).color)
         }
 
         function enableLineRenderSys() {
+
             if (lineRenderSystem.passive == true) {
                 lineRenderSystem.passive = false
+
             } else {
                 if (linerendering) return;
                 console.log("Line Render System Missing. MAKE ONE ! Enable")
@@ -294,6 +295,9 @@ define([
 
             evt.on(evt.list().DRAW_LINE_BETWEEN, drawLineBetween);
             evt.on(evt.list().DRAW_POINT_AT, drawPointAt);
+
+            evt.on(evt.list().POSTRENDER_TICK, diableLineRenderSys);
+
 
             PipelineAPI.subscribeToCategoryKey('STATUS', 'MON_SPATIAL', monitorSpatial);
         }

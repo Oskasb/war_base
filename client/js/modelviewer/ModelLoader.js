@@ -71,12 +71,17 @@ define([
             var tick = function(e) {
                 countdown -= evt.args(e).tpf;
                 var reloadcount = 0;
-                if (countdown < 0) {
-                    for (var key in loadedModels) {
-                        if (loadedModels[key].length) {
+
+                for (var key in loadedModels) {
+                    if (loadedModels[key].length) {
+
+                        if (countdown < 0) {
                             reloadcount++;
                             ThreeAPI.getModelLoader().loadModelId(key);
                         }
+                        //    if (Math.random() < 0.1) {
+                        evt.fire(evt.list().DRAW_POINT_AT, {pos:rootModels[key][0].position, color:'WHITE'});
+                        //    }
                     }
                     countdown = 0.3 * reloadcount + 0.5;
                 }

@@ -3,10 +3,12 @@
 
 
 define(['../../ui/GameScreen',
-    'PipelineAPI'
+    'PipelineAPI',
+    'Events'
 ], function(
     GameScreen,
-    PipelineAPI
+    PipelineAPI,
+    evt
 ) {
     
     var scene, camera, renderer;
@@ -21,6 +23,7 @@ define(['../../ui/GameScreen',
 
     };
 
+    var postrenderEvt = {};
 
     function animate(time) {
 
@@ -38,7 +41,7 @@ define(['../../ui/GameScreen',
         renderer.render(scene, camera);
         renderEnd = performance.now()/1000;
         PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_ANIM_RENDER', renderEnd - renderStart);
-        
+        evt.fire(evt.list().POSTRENDER_TICK, postrenderEvt)
     }
 
 
