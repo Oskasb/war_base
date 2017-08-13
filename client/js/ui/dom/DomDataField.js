@@ -5,13 +5,15 @@ define([
         'Events',
         'PipelineAPI',
         'PipelineObject',
-        'ui/dom/DomElement'
+        'ui/dom/DomElement',
+        'ui/dom/DomButton'
     ],
     function(
         evt,
         PipelineAPI,
         PipelineObject,
-        DomElement
+        DomElement,
+        DomButton
     ) {
 
         var dataTypeStyles = {
@@ -19,20 +21,35 @@ define([
         };
 
 
-        var DomDataField = function(domElem, fieldData) {
+        var DomDataField = function(domElem, fieldData, applyButton) {
             this.category = fieldData.dataCategory;
             for (var i = 0; i < fieldData.dataKeys.length; i++) {
-                this.addDataField(domElem, fieldData.dataKeys[i]);
+                this.addDataField(domElem, fieldData.dataKeys[i], fieldData.button, i, applyButton);
             }
         };
 
-        DomDataField.prototype.addDataField = function(domElem, fieldData) {
+        DomDataField.prototype.addDataField = function(domElem, dataKey, button, idx, applyButton) {
 
             var entryElem = new DomElement(domElem.element, 'entry_data_field');
             var keyElem = new DomElement(entryElem.element, 'data_field_key');
             var velueElem = new DomElement(entryElem.element, 'data_field_value');
 
-            keyElem.setText(fieldData);
+            keyElem.setText(dataKey);
+
+            if (button) {
+                var btElem = new DomElement(entryElem.element, ["tiny_dev_button", "coloring_button_main_panel"]);;
+                btElem.enableInteraction();
+                var fieldButton = {
+                    button:{
+                        id:"panel_button",
+                        event:{category:this.category, key:'button_'+dataKey, type:'toggle'}
+                    },
+                    text:dataKey
+                };
+                applyButton(btElem, fieldButton);
+
+            }
+
 
             var callback = function(src, data) {
 
@@ -52,7 +69,7 @@ define([
             };
 
             dataTypeStyles = new PipelineObject('data_types', 'style_map').readData();
-            PipelineAPI.subscribeToCategoryKey(this.category, fieldData, callback);
+            PipelineAPI.subscribeToCategoryKey(this.category, dataKey, callback);
             
         };
 

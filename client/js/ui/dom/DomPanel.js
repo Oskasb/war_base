@@ -78,11 +78,11 @@ define([
 
         };
 
-        DomPanel.prototype.applyButton = function(parent, elem, confData) {
+        DomPanel.prototype.applyButton = function(elem, confData) {
             var button = new DomButton();
 
             var setupReady = function(src, data) {
-                button.setupReady(parent, elem, confData.button)
+                button.setupReady(elem, confData.button)
             };
 
             if (PipelineAPI.readCachedConfigKey('SETUP', 'INPUT') == 'mouse' || PipelineAPI.readCachedConfigKey('SETUP', 'INPUT') == 'touch') {
@@ -266,11 +266,16 @@ define([
             }
 
             if (conf.data.button) {
-                this.applyButton(this.elements[conf.data.parentId], elem, conf.data);
+                this.applyButton(elem, conf.data);
             }
 
             if (conf.data.dataField) {
-                new DomDataField(elem, conf.data.dataField)
+
+                var applyButton = function(elem, confData) {
+                    this.applyButton(elem, confData);
+                }.bind(this);
+
+                new DomDataField(elem, conf.data.dataField, applyButton)
             }
 
             if (conf.data.dataLog) {

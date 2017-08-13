@@ -197,6 +197,20 @@
       "position": "absolute"
     },
 
+    "tiny_dev_button":{
+      "top": "0.2em",
+      "left": "115%",
+      "right": "auto",
+      "bottom": "0.2em",
+      "height": "auto",
+      "width": "3em",
+      "fontSize": "6em",
+      "textAlign": "center",
+      "position": "absolute",
+      "display": "block",
+      "padding":"-0.1em"
+    },
+
     "panel_button":{
       "top": "0.12em",
       "left": "0.12em",

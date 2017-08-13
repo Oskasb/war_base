@@ -4,6 +4,7 @@
 define([
         'Events',
         'PipelineAPI',
+        'PipelineObject',
         'ThreeAPI',
         'ui/dom/DomSelectList',
         'ui/dom/DomPanel',
@@ -14,6 +15,7 @@ define([
     function(
         evt,
         PipelineAPI,
+        PipelineObject,
         ThreeAPI,
         DomSelectList,
         DomPanel,
@@ -86,7 +88,7 @@ define([
                         var dataCat = "MODULE_DEBUG_"+mod.id;
 
                         for (var i = 0; i < mod.moduleChannels.length; i++) {
-                            mod.moduleChannels[i].state.setValue(Math.sin(t))
+                        //    mod.moduleChannels[i].state.setValue(Math.sin(t))
                             PipelineAPI.setCategoryKeyValue(dataCat, mod.moduleChannels[i].state.id, mod.moduleChannels[i].state.getValueRunded(100));
                         }
 
@@ -119,7 +121,7 @@ define([
                 var ready = function(mod) {
 
                     for (var i = 0; i < mod.moduleChannels.length; i++) {
-                        mod.moduleChannels[i].attachPieceState(new PieceState(mod.moduleChannels[i].stateid), 0)
+                        mod.moduleChannels[i].attachPieceState(new PieceState(mod.moduleChannels[i].stateid, 0));
                     }
 
                     var rootObj = ThreeAPI.createRootObject();
@@ -214,21 +216,67 @@ define([
             var src = 'state_viewer';
 
 
-
             function addModuleBox(module) {
 
                 var modState = {};
 
-                var dataKeys = [];
+                var tweakStates = [];
 
-                for (var i = 0; i < module.moduleChannels.length; i++) {
-                    dataKeys[i] = module.moduleChannels[i].state.id;
-                    modState[dataKeys[i]] = module.state;
+                var dataKeys = [];
+                var buttonKeys = [];
+                var val = 0;
+                var clear = 1;
+
+                var mouseState = PipelineAPI.readCachedConfigKey('POINTER_STATE', 'mouseState')
+
+                var samplePointer = function() {
+                    //    console.log(PipelineAPI.readCachedConfigKey('POINTER_STATE', 'mouseState').drag, PipelineAPI.readCachedConfigKey('POINTER_STATE', 'mouseState').dx);
+
+                    if (mouseState.action[0]) {
+                        val = mouseState.dragDistance[1] * 0.001;
+                        clear = 1;
+                    } else {
+                        val = 0;
+                    }
+
+                    if (mouseState.action[0] && mouseState.action[1]) {
+                        clear = 0;
+                    }
+
+                    for (var i = 0; i < tweakStates.length; i++) {
+                        tweakStates[i].setValue((tweakStates[i].getValue() + val) * clear);
+                    }
+
                 }
 
-                dataKeys.unshift(mod.id);
-
+                module.debugPipes = [];
                 var dataCat = "MODULE_DEBUG_"+module.id;
+                for (var i = 0; i < module.moduleChannels.length; i++) {
+                    dataKeys[i] = module.moduleChannels[i].state.id;
+
+
+                    var interactionCallback = function(buttonKey, data) {
+
+                        var id = buttonKeys[buttonKey];
+
+                        if (data) {
+                            tweakStates.push(module.getPieceStateById(id));
+                            evt.on(evt.list().CLIENT_TICK, samplePointer)
+                        } else {
+                            tweakStates.splice(tweakStates.indexOf(module.getPieceStateById(id), 1));
+                            evt.removeListener(evt.list().CLIENT_TICK, samplePointer)
+                        }
+
+                    };
+
+                    module.debugPipes.push(new PipelineObject(dataCat, 'button_'+dataKeys[i], interactionCallback));
+
+                    PipelineAPI.setCategoryKeyValue(dataCat, 'button_'+dataKeys[i], false);
+
+                    modState[dataKeys[i]] = module.state;
+                    buttonKeys['button_'+dataKeys[i]] = dataKeys[i]
+                }
+
 
                 var idconf = {
                     id:"module_id"+module.id,
@@ -237,7 +285,10 @@ define([
                         style:["data_list_container"],
                         dataField:{
                             dataKeys:dataKeys,
-                            dataCategory:dataCat
+                            dataCategory:dataCat,
+                            button:{
+                               id:"panel_button"
+                            }
                         }
                     }
                 };
@@ -253,6 +304,10 @@ define([
                 var container = {
                     id:"module_id"+mod.id
                 };
+
+                for (var i = 0; i < mod.debugPipes.length; i++) {
+                    mod.debugPipes[i].removePipelineObject();
+                }
 
                 panels[src].removeContainedElement(container)
             }

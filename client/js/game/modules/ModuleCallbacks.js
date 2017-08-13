@@ -23,9 +23,10 @@ define([
         };
 
         ModuleCallbacks.module_emit_effect = function(module, target, state) {
-            ModuleEffectCreator.createModuleApplyEmitEffect(module.visualModule.model, target.module_effect, module.config.transform, state.getValue(), target.glue_to_ground)
+            if (Math.random() < state.getValue()) {
+                ModuleEffectCreator.createModuleApplyEmitEffect(module.visualModule.model, target.module_effect, module.config.transform, state.getValue(), target.glue_to_ground)
+            }
         };
-
 
         return ModuleCallbacks;
 

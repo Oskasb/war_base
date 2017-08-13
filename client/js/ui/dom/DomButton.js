@@ -15,7 +15,7 @@ define([
 
         };
         
-        DomButton.prototype.setupReady = function(parent, domElem, buttonData) {
+        DomButton.prototype.setupReady = function(domElem, buttonData) {
             if (this.active) return;
             
             var state = {
@@ -24,6 +24,10 @@ define([
                 value:true
             };
 
+            if (buttonData.event.type == 'float') {
+                state.value = 0;
+            }
+
             var data = {};
             data[buttonData.event.key] = state.value;
 
@@ -31,13 +35,21 @@ define([
 
             };
 
-            var onPress = function() {
+            var onPress = function(key, value) {
+                if (buttonData.event.type === 'float') {
+                    var value = PipelineAPI.readCachedConfigKey('POINTER_STATE', 'dx');
+                    if (value != state.value) {
+                        data[buttonData.event.key] = state.value;
 
+                    //    evt.fire(evt.list().BUTTON_EVENT, {category:buttonData.event.category, data:data, element:domElem.element});
+                    }
+                    state.active = true;
+                }
             };
 
             var onActive = function(key, value) {
 
-                if (key != buttonData.event.key) {
+                if (key !== buttonData.event.key) {
                     console.log("Wong Key? ", key);
                     return
                 }
@@ -50,6 +62,16 @@ define([
 
             };
 
+            var releaseActive = function(key, value) {
+                if (buttonData.event.type === 'float') {
+                    state.value += 0.1;
+                    data[buttonData.event.key] = state.value;
+                    //    evt.fire(evt.list().BUTTON_EVENT, {category:buttonData.event.category, data:data, element:domElem.element});
+                }
+
+                state.active = value;
+            };
+
             var enableActive = function(data) {
                 domElem.enableActive(data.active.style);
                 notifyActive = function() {
@@ -58,27 +80,42 @@ define([
             };
             
             var onClick = function() {
-                
-                state.value = !state.active;
+
+                if (buttonData.event.type === 'float') {
+                    state.value += 0.1;
+                } else {
+                    state.value = !state.active;
+                }
+
 
                 data[buttonData.event.key] = state.value;
                 evt.fire(evt.list().BUTTON_EVENT, {category:buttonData.event.category, data:data, element:domElem.element});
             };
 
 
-            if (buttonData.event.type == 'toggle') {
+            if (buttonData.event.type === 'toggle') {
                 PipelineAPI.subscribeToCategoryKey(buttonData.event.category, buttonData.event.key, onActive);
             }
-            
+
+            if (buttonData.event.type === 'float') {
+                PipelineAPI.subscribeToCategoryKey(buttonData.event.category, buttonData.event.key, onPress);
+            }
+
             var callback = function(key, data) {
                 domElem.setHover(data.hover.style, onHover);
                 domElem.setPress(data.press.style, onPress);
                 domElem.setClick(onClick);
 
-                if (buttonData.event.type == 'toggle') {
+                if (buttonData.event.type === 'toggle') {
                     enableActive(data);
                     notifyActive()
                 }
+
+                if (buttonData.event.type === 'float') {
+                    releaseActive(data);
+                    notifyActive()
+                }
+
             };
 
             PipelineAPI.subscribeToCategoryKey('ui_buttons', buttonData.id, callback);

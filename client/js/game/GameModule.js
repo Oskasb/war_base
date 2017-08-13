@@ -97,9 +97,9 @@ define([
         };
 
         GameModule.prototype.getPieceStateById = function (id) {
-            for (var i = 0; i < this.pieceStates.length;i++) {
-                if (this.pieceStates[i].id === id) {
-                    return this.pieceStates[i];
+            for (var i = 0; i < this.moduleChannels.length;i++) {
+                if (this.moduleChannels[i].state.id === id) {
+                    return this.moduleChannels[i].state;
                 }
             }
         };
