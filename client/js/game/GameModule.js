@@ -19,15 +19,14 @@ define([
     ) {
 
         var GameModule = function(id, ready) {
+            this.id = id;
             this.visualModule = new VisualModule(this);
 
             this.attachmentPoints = [];
             this.moduleChannels = [];
 
             var applyModuleData = function() {
-                this.applyModuleData(this.pipeObj.buildConfig()[id]);
-
-                ready(this);
+                this.applyModuleData(this.pipeObj.buildConfig()[id], ready);
             }.bind(this);
 
             this.pipeObj = new PipelineObject('MODULE_DATA', 'MODULES', applyModuleData);
@@ -37,14 +36,15 @@ define([
             return this.config.transform;
         };
 
-        GameModule.prototype.applyModuleData = function (config) {
+
+        GameModule.prototype.applyModuleData = function (config, ready) {
             this.config = config;
             this.visualModule.setModuleData(this.config);
             if (config[ENUMS.ModuleParams.attachment_points]) {
-                this.applyAttachmentPoints(config[ENUMS.ModuleParams.attachment_points])
+                this.applyAttachmentPoints(config[ENUMS.ModuleParams.attachment_points]);
             }
             if (config[ENUMS.ModuleParams.channels]) {
-                this.applyModuleChannels(config[ENUMS.ModuleParams.channels])
+                this.applyModuleChannels(config[ENUMS.ModuleParams.channels], ready);
             }
         };
 
@@ -61,15 +61,22 @@ define([
             }
         };
 
-        GameModule.prototype.applyModuleChannels = function (channelData) {
+        GameModule.prototype.applyModuleChannels = function (channelData, ready) {
 
             var _this = this;
             for (var i = 0; i < channelData.length;i++) {
-                var ready = function(channel) {
-                    _this.moduleChannels.push(channel);
-                };
-                new ModuleChannel(channelData[i], ready);
 
+                if (this.getModuleChannelById(channelData[i].channelid)) {
+                    console.log("Module Channel already attached", channelData[i])
+                } else {
+                    var cready = function(channel) {
+                        _this.moduleChannels.push(channel);
+                        if (_this.moduleChannels.length === channelData.length) {
+                            ready(_this);
+                        }
+                    };
+                    new ModuleChannel(channelData[i], cready);
+                }
             }
         };
 
@@ -77,6 +84,22 @@ define([
             for (var i = 0; i < this.attachmentPoints.length;i++) {
                 if (this.attachmentPoints[i].id === id) {
                     return this.attachmentPoints[i];
+                }
+            }
+        };
+
+        GameModule.prototype.getModuleChannelById = function (id) {
+            for (var i = 0; i < this.moduleChannels.length;i++) {
+                if (this.moduleChannels[i].id === id) {
+                    return this.moduleChannels[i];
+                }
+            }
+        };
+
+        GameModule.prototype.getPieceStateById = function (id) {
+            for (var i = 0; i < this.pieceStates.length;i++) {
+                if (this.pieceStates[i].id === id) {
+                    return this.pieceStates[i];
                 }
             }
         };

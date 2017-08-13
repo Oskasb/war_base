@@ -5,18 +5,22 @@
 define([
         'Events',
         'PipelineObject',
-        'game/modules/ModuleCallbacks'
+
+        'game/modules/ChannelTarget'
     ],
     function(
         evt,
         PipelineObject,
-        ModuleCallbacks
+
+        ChannelTarget
     ) {
 
         var ModuleChannel = function(channelData, ready) {
-            this.id = channelData.id;
+            this.id = channelData.channelid;
+            this.stateid = channelData.stateid;
             this.init = channelData.init;
-            this.state = {};
+            this.state;
+            this.targets = [];
             this.target = {};
 
             this.age = 0;
@@ -30,29 +34,27 @@ define([
         };
 
         ModuleChannel.prototype.applyChannelData = function (config) {
+            this.targets = [];
+            var _this = this;
 
-            for (var key in config.state) {
-                this.state[key] = config.state[key]
+            for (var i = 0; i < config.targets.length; i++) {
+                var ready = function(ctarget) {
+                    _this.targets.push(ctarget)
+                };
+                new ChannelTarget(config.targets[i], ready);
             }
-            this.state.value = this.init || this.state.value;
 
-            for (var key in config.target) {
-                this.target[key] = config.target[key]
-            }
+        };
+
+        ModuleChannel.prototype.attachPieceState = function (pieceState) {
+            this.state = pieceState;
         };
 
 
-
-        ModuleChannel.prototype.updateChannelState = function (module, tpf) {
-
-            if (Math.random() < 0.2) {
-                this.age += tpf;
+        ModuleChannel.prototype.updateChannelState = function (module) {
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].sampleModuleState(module, this.state);
             }
-
-            this.state.value = MATH.clamp(Math.sin(this.age) * 5,this.state.min, this.state.max);
-
-            ModuleCallbacks[this.target.callback](module, this.target, this.state)
-
         };
 
         return ModuleChannel

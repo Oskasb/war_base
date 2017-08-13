@@ -31,6 +31,7 @@
 
       "game/modules/module_data.json",
       "game/modules/module_channels.json",
+      "game/modules/channel_targets.json",
 
       "threedata/models/three_materials.json",
       "threedata/models/three_models.json",

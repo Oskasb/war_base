@@ -6,8 +6,6 @@ define([
         'PipelineAPI',
         'ThreeAPI',
         'ui/dom/DomSelectList',
-        'ui/dom/DomPanel',
-        'ui/GameScreen',
         'game/GameModule',
         'game/PieceState'
     ],
@@ -16,8 +14,6 @@ define([
         PipelineAPI,
         ThreeAPI,
         DomSelectList,
-        DomPanel,
-        GameScreen,
         GameModule,
         PieceState
     ) {
@@ -56,7 +52,7 @@ define([
         }
 
 
-        var ModuleLoader = function() {
+        var StateTweaker = function(pieceState) {
             this.running = false;
             this.panel = null;
             this.currentValue = 0;
@@ -77,17 +73,15 @@ define([
 
             var tick = function(e) {
 
-                t += evt.args(e).tpf;
+                t += evt.args(e).tpf
 
                 for (var key in loadedModules) {
                     if (loadedModules[key].length) {
-                        var mod = loadedModules[key][0];
 
-                        var dataCat = "MODULE_DEBUG_"+mod.id;
+                        var mod = loadedModules[key][0];
 
                         for (var i = 0; i < mod.moduleChannels.length; i++) {
                             mod.moduleChannels[i].state.setValue(Math.sin(t))
-                            PipelineAPI.setCategoryKeyValue(dataCat, mod.moduleChannels[i].state.id, mod.moduleChannels[i].state.getValueRunded(100));
                         }
 
                         loadedModules[key][0].sampleModuleFrame(evt.args(e).tpf);
@@ -96,19 +90,17 @@ define([
             };
 
             evt.on(evt.list().CLIENT_TICK, tick);
+
         };
 
 
-
-        ModuleLoader.prototype.loadModule = function(id, value) {
+        StateTweaker.prototype.loadModule = function(id, value) {
 
             if (!loadedModules[id]) {
                 loadedModules[id] = [];
 
                 rootModels[id] = []
             }
-
-            var _this = this;
 
             if (value === true) {
                 console.log("Load Model: ", id, value);
@@ -131,7 +123,6 @@ define([
 
                     ThreeAPI.addToScene(rootObj);
                     mod.monitorGameModule(true);
-                    _this.toggleModuleStateViewer(mod, true);
                 };
 
                 new GameModule(id, ready);
@@ -141,9 +132,7 @@ define([
                 if (loadedModules[id]) {
 
                     while (loadedModules[id].length) {
-                        var mod = loadedModules[id].pop()
-                        _this.toggleModuleStateViewer(mod, false);
-                        mod.removeClientModule();
+                        loadedModules[id].pop().removeClientModule();
                     }
 
                     while (rootModels[id].length) {
@@ -154,7 +143,7 @@ define([
         };
 
 
-        ModuleLoader.prototype.togglePanel = function(src, value) {
+        StateTweaker.prototype.togglePanel = function(src, value) {
 
             if (panelStates[src] === value) {
                 return
@@ -190,8 +179,6 @@ define([
 
                 panels[src] = new DomSelectList(category, dataList, stateData, buttonFunc);
 
-
-
             } else if (panels[src]) {
 
                 panels[src].removeSelectList();
@@ -199,82 +186,12 @@ define([
 
             }
 
-            setTimeout(function() {
-                _this.toggleStateViewer(value);
-            },200);
-
-
             if (first) {
                 PipelineAPI.setCategoryData(category, stateData);
             }
-        };
-
-        ModuleLoader.prototype.toggleModuleStateViewer = function(mod, bool) {
-
-            var src = 'state_viewer';
-
-
-
-            function addModuleBox(module) {
-
-                var modState = {};
-
-                var dataKeys = [];
-
-                for (var i = 0; i < module.moduleChannels.length; i++) {
-                    dataKeys[i] = module.moduleChannels[i].state.id;
-                    modState[dataKeys[i]] = module.state;
-                }
-
-                dataKeys.unshift(mod.id);
-
-                var dataCat = "MODULE_DEBUG_"+module.id;
-
-                var idconf = {
-                    id:"module_id"+module.id,
-                    container:"dev_monitor_container",
-                    data:{
-                        style:["data_list_container"],
-                        dataField:{
-                            dataKeys:dataKeys,
-                            dataCategory:dataCat
-                        }
-                    }
-                };
-
-                panels[src].addContainedElement(idconf);
-                panels[src].updateLayout()
-            //    evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
-            }
-
-            if (bool) {
-                addModuleBox(mod);
-            } else {
-                var container = {
-                    id:"module_id"+mod.id
-                };
-
-                panels[src].removeContainedElement(container)
-            }
 
         };
 
 
-        ModuleLoader.prototype.toggleStateViewer = function(value) {
-
-            var src = 'state_viewer';
-
-            if (value) {
-                console.log("toggleStateViewer: ", value);
-
-                panels[src] = new DomPanel(GameScreen.getElement(), src);
-
-            } else if (panels[src]) {
-                panels[src].removeGuiPanel();
-                delete panels[src];
-            }
-
-        };
-
-        return ModuleLoader;
+        return StateTweaker;
     });

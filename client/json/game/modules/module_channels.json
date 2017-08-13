@@ -2,63 +2,39 @@
   "MODULE_CHANNELS":{
     "CHANNELS":[
       {
-        "id":"aim_yaw",
+        "id":"model_yaw",
         "data":{
-          "state":{
-            "value":0,
-            "min":-2,
-            "max":2
-          },
-          "target":{
-            "callback":"transform",
-            "parameter":"rotation",
-            "axis":"y"
-          }
+          "targets":[
+            {"targetid":"model_rotate_yaw"}
+          ]
         }
       },
       {
         "id":"track_speed",
         "data":{
-          "state":{
-            "value":0,
-            "min":-4,
-            "max":4
-          },
-          "target":{
-            "callback":"animate_texture",
-            "offsetxy":[0, 1],
-            "factor":0.002
-          }
+          "targets":[
+            {"targetid":"model_track_animate_texture"}
+          ]
         }
       },
       {
         "id":"health",
         "data":{
-          "state":{
-            "value":0,
-            "min":0,
-            "max":10
-          },
-          "target":{
-            "callback":"module_emit_effect",
-            "module_effect":"tank_engine_fx",
-            "glue_to_ground":false
-          }
+          "targets":[
+            {"targetid":"module_engine_emit_effect"},
+            {"targetid":"model_rotate_yaw"}
+          ]
         }
       },
       {
         "id":"armor",
         "data":{
-          "state":{
-            "value":0,
-            "min":0,
-            "max":1
-          },
-          "target":{
-            "callback":"transform",
-            "parameter":"position",
-            "axis":"z"
-          }
+
+          "targets": [
+            {
+              "targetid": "model_translate_z"
+            }
+          ]
         }
       }
     ]

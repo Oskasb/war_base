@@ -91,6 +91,11 @@
           "parentId":"panelRoot",
           "style":["dev_button_container", "coloring_container_dev_panel"]
         }
+      },{
+        "id": "dev_monitor_container",
+        "data": {
+          "style": ["dev_monitor_container", "coloring_container_main_panel"]
+        }
       }
     ],
 

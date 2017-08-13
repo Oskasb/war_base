@@ -225,7 +225,6 @@
             "dataCategory":"STATUS"
           }
         }
-
       }
     ],
 
@@ -337,6 +336,16 @@
             "dataKeys":["TPF", "IDLE", "TIME_GAME", "TIME_RENDER"],
             "dataCategory":"STATUS"
           }
+        }
+      }
+    ],
+
+
+    "state_viewer":[
+      {
+        "id":"panelRoot",
+        "data":{
+          "style":["dev_panel", "panel_right_2"]
         }
       }
     ],

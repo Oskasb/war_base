@@ -16,8 +16,8 @@
             "size":4
           },
           "channels":[
-            {"id":"health"},
-            {"id":"armor"}
+            {"channelid":"health", "stateid":"health_hull"},
+            {"channelid":"armor",  "stateid":"armor_hull"}
           ],
 
           "attachment_points":[
@@ -62,7 +62,7 @@
           },
           "model":"sherman_track_r",
           "channels":[
-            {"id":"track_speed",  "init":0}
+            {"channelid":"track_speed", "stateid":"track_speed_r"}
           ]
         }
       },
@@ -77,7 +77,7 @@
           },
           "model":"sherman_track_l",
           "channels":[
-            {"id":"track_speed",  "init":0}
+            {"channelid":"track_speed", "stateid":"track_speed_l"}
           ]
         }
       },
@@ -91,7 +91,7 @@
           },
           "model":"sherman_turret",
           "channels":[
-            {"id":"aim_yaw", "init":0}
+            {"channelid":"model_yaw", "stateid":"turret_aim_yaw"}
           ],
 
           "attachment_points":[
