@@ -10,7 +10,7 @@
             {"slot":"main_turret",  "module":"sherman_turret_module" },
             {"slot":"track_r",      "module":"sherman_track_r_module"},
             {"slot":"track_l",      "module":"sherman_track_l_module"},
-            {"slot":"main_gun",     "module":"sherman_track_l_module"}
+            {"slot":"main_gun",     "module":"sherman_main_gun_module"}
           ],
           "attachments":[
             {"slot":"hull",         "ap":"ap_turret",   "child":"main_turret" },

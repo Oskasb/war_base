@@ -2,6 +2,14 @@
   "MODULE_CHANNELS":{
     "CHANNELS":[
       {
+        "id":"model_pitch",
+        "data":{
+          "targets":[
+            {"targetid":"model_rotate_pitch"}
+          ]
+        }
+      },
+      {
         "id":"model_yaw",
         "data":{
           "targets":[

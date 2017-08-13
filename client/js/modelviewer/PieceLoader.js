@@ -111,8 +111,8 @@ define([
         };
 
 
-        PieceLoader.prototype.monitorPieceModules = function(piece) {
-            ModuleStateViewer.viewPieceStates(piece);
+        PieceLoader.prototype.monitorPieceModules = function(piece, bool) {
+            ModuleStateViewer.viewPieceStates(piece, bool);
         };
 
 
@@ -134,10 +134,20 @@ define([
 
                 var ready = function(piece) {
 
+                    if (rootModels[id]) {
+
+                        while (rootModels[id].length) {
+                            var p = rootModels[id].pop();
+                            _this.monitorPieceModules(p, false);
+                            p.removeGamePiece();
+                        }
+
+                    }
+
                     ThreeAPI.addToScene(piece.rootObj3D);
                 //    mod.monitorGameModule(true);
                     rootModels[id].push(piece);
-                    _this.monitorPieceModules(piece);
+                    _this.monitorPieceModules(piece, true);
 
                 };
 
@@ -148,7 +158,9 @@ define([
                 if (rootModels[id]) {
 
                     while (rootModels[id].length) {
-                        rootModels[id].pop().removeGamePiece();
+                        var p = rootModels[id].pop();
+                        _this.monitorPieceModules(p, false);
+                        p.removeGamePiece();
                     }
                 }
             }

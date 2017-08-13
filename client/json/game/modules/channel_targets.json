@@ -2,6 +2,14 @@
   "CHANNEL_TARGETS":{
     "TARGETS":[
       {
+        "id":"model_rotate_pitch",
+        "data":{
+          "callback":"transform",
+          "parameter":"rotation",
+          "axis":"x"
+        }
+      },
+      {
         "id":"model_rotate_yaw",
         "data":{
             "callback":"transform",

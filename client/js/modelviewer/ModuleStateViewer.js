@@ -32,10 +32,10 @@ define([
         };
 
 
-        ModuleStateViewer.viewPieceStates = function(piece) {
+        ModuleStateViewer.viewPieceStates = function(piece, bool) {
 
             for (var i = 0; i < piece.pieceSlots.length; i++) {
-                ModuleStateViewer.toggleModuleStateViewer(piece.pieceSlots[i].module, true)
+                ModuleStateViewer.toggleModuleStateViewer(piece.pieceSlots[i].module, bool)
             }
 
         };
