@@ -138,6 +138,14 @@
         ]
       }
     ],
+    "module_on_fire_fx":[
+      {
+        "particle_effects":[
+          {"id":"vehicle_fire_effect"},
+          {"id":"vehicle_burn_smoke_effect"}
+        ]
+      }
+    ],
 
     "tank_engine_fx":[
       {

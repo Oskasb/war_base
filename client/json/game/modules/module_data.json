@@ -16,6 +16,7 @@
             "size":4
           },
           "channels":[
+            {"channelid":"fire_channel", "stateid":"fire_state"},
             {"channelid":"health", "stateid":"health_hull"},
             {"channelid":"armor",  "stateid":"armor_hull"}
           ],
@@ -53,12 +54,26 @@
       },
 
       {
+        "id":"sherman_engine_module",
+        "data":{
+          "transform":{
+            "rot":  [0.2,   0,    0],
+            "pos":  [0,   0,    0],
+            "size": [0.4, 0.3,   0.4]
+          },
+          "channels":[
+            {"channelid":"engine_channel", "stateid":"engine_state"}
+          ]
+        }
+      },
+
+      {
         "id":"sherman_track_r_module",
         "data":{
           "transform":{
             "rot":  [0,   0,    0],
             "pos":  [0,   0,    0],
-            "size": [0.8, 0.1,   5.3]
+            "size": [0.8, 0.3,   5.3]
           },
           "model":"sherman_track_r",
           "channels":[
@@ -73,7 +88,7 @@
           "transform":{
             "rot":  [0,   0,    0],
             "pos":  [0,   0,    0],
-            "size": [0.8, 0.1,   5.3]
+            "size": [0.8, 0.3,   5.3]
           },
           "model":"sherman_track_l",
           "channels":[
@@ -101,10 +116,11 @@
           "transform":{
             "rot":  [0,   0,    0],
             "pos":  [0,   0.35, 0.5],
-            "size": [2,   0.7,  2.5]
+            "size": [2.5, 0.9,  3.5]
           },
           "model":"sherman_turret",
           "channels":[
+            {"channelid":"fire_channel", "stateid":"fire_state"},
             {"channelid":"model_yaw", "stateid":"turret_yaw"}
           ],
 

@@ -35,6 +35,26 @@
           }
         },
         {
+          "id":"vehicle_burn_smoke_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_normal_atlas_renderer",
+            "particle_id":"vehicle_burn_smoke_particles",
+            "count":2,
+            "simulation_id":"gpu_predictive_simulation"
+          }
+        },
+        {
+          "id":"vehicle_fire_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_atlas_renderer",
+            "particle_id":"vehicle_fire_particles",
+            "count":2,
+            "simulation_id":"gpu_predictive_simulation"
+          }
+        },
+        {
           "id":"firey_explosion_core",
           "data":{
             "system_key":"THREE",
@@ -268,7 +288,7 @@
             "system_key":"THREE",
             "renderer_id":"gpu_normal_atlas_renderer",
             "particle_id":"quick_near_smoke_particle",
-            "count":2,
+            "count":1,
             "simulation_id":"gpu_predictive_simulation"
           }
         },

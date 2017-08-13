@@ -29,6 +29,56 @@
             "velocityFactor":1.2
           }
         },
+        {
+          "id":"vehicle_burn_smoke_particles",
+          "sprite_key":"ATLAS",
+          "sprite_id":"smokey",
+          "config":{
+            "age":     {"min":0.0, "max":0.0002},
+            "lifeTime":{"min":1.15,"max":4.15},
+            "positionSpread":{"x":0.5, "y":1.01, "z":0.5},
+            "gravity":2.6,
+            "drag":0.85,
+            "bend":0.0001,
+            "spinDrag":0.2,
+            "colorCurve":"darkSmoke",
+            "alphaCurve":"quickFadeOut",
+            "diffusionCurve":"halfQuickIn",
+            "scaleCurve":"zeroToOne",
+            "size":{"value":0.4, "min": -0.2, "max": 2.5},
+            "spin":{"value":0.01, "min":-17.5, "max":17.5},
+            "velocityDiffusion":1,
+            "accelerationDiffusion":0.8,
+            "colorDiffusion":0.4,
+            "velocityFactor":1.2
+          }
+        },
+        {
+          "id":"vehicle_fire_particles",
+          "sprite_key":"ATLAS",
+          "sprite_id":"smokey",
+          "config":{
+            "age":     {"min":0.0, "max":0.0002},
+            "lifeTime":{"min":0.4,"max":1.1},
+            "positionSpread":{"x":0.5, "y":0.5, "z":1.01},
+            "gravity":8.001,
+            "drag":0.41,
+            "bend":0.2,
+
+            "colorCurve":"warmFire",
+            "alphaCurve":"pulseSlowOut",
+            "diffusionCurve":"pulseSlowOut",
+            "scaleCurve":"halfQuickIn",
+            "size":{"value":0.2, "min": -0.2, "max": 4.9},
+            "spin":{"value":0.1, "min":-0.30, "max":0.0},
+            "spinDrag":0.31,
+            "velocitySpread":{"min":-0.7,"max":0.7},
+            "velocityDiffusion":1.0,
+            "accelerationDiffusion":0.45,
+            "colorDiffusion":0.5,
+            "velocityFactor":1.4
+          }
+        },
 
         {
           "id":"firey_explosion_core_particles",
@@ -465,7 +515,7 @@
           "sprite_id":"thick_smoke",
           "config":{
             "age":     {"min":0.0, "max":0.01},
-            "lifeTime":{"min":0.5,"max":6.5},
+            "lifeTime":{"min":0.2,"max":4.5},
             "positionSpread":{"x":0.5, "y":0.1, "z":0.5},
             "gravity":0.61,
             "drag":1.25,

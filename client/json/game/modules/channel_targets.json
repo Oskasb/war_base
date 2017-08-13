@@ -26,7 +26,15 @@
         }
       },
       {
-        "id":"module_engine_emit_effect",
+        "id":"module_channel_on_fire",
+        "data":{
+          "callback":"module_emit_effect",
+          "module_effect":"module_on_fire_fx",
+          "glue_to_ground":false
+        }
+      },
+      {
+        "id":"module_channel_engine_smoke",
         "data":{
             "callback":"module_emit_effect",
             "module_effect":"tank_engine_fx",

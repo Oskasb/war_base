@@ -60,6 +60,7 @@ define([
                 this.sourceColor = 'rgba(0, 0, 0, 1)';
             this.sourceTransition = 'all 0.5s ease-out';
 
+            this.text;
 
             this.pressed = false;
             var element;
@@ -185,6 +186,8 @@ define([
         
         
         DomElement.prototype.setText = function(text) {
+            if (this.text === text) return;
+            this.text = text;
             this.element.innerHTML = text;
         };
 

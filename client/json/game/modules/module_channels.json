@@ -26,10 +26,26 @@
         }
       },
       {
+        "id":"engine_channel",
+        "data":{
+          "targets":[
+            {"targetid":"module_channel_engine_smoke"}
+          ]
+        }
+      },
+      {
+        "id":"fire_channel",
+        "data":{
+          "targets":[
+            {"targetid":"module_channel_on_fire"}
+          ]
+        }
+      },
+      {
         "id":"health",
         "data":{
           "targets":[
-            {"targetid":"module_engine_emit_effect"},
+            {"targetid":"module_channel_engine_smoke"},
             {"targetid":"model_rotate_yaw"}
           ]
         }
