@@ -45,7 +45,6 @@
         "id":"health",
         "data":{
           "targets":[
-            {"targetid":"module_channel_engine_smoke"},
             {"targetid":"model_rotate_yaw"}
           ]
         }
@@ -53,7 +52,6 @@
       {
         "id":"armor",
         "data":{
-
           "targets": [
             {
               "targetid": "model_translate_z"
