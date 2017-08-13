@@ -39,7 +39,7 @@ define([
             var buttonEvent = {"category":"STATUS", "key":"DEV_MODE", "type":"toggle"};
 
             var buttonConf = {
-                panel:ENUMS.Gui.leftPanel,
+                panel:ENUMS.Gui.rightPanel,
                 id:"devmodebutton",
                 container:"main_container",
                 data:{

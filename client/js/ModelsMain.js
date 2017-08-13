@@ -13,6 +13,7 @@ require([
     'application/ControlStateDispatcher',
     'modelviewer/ModelViewer',
     'modelviewer/EnvironmentLoader',
+    'modelviewer/PieceLoader',
     'modelviewer/ModelLoader',
     'modelviewer/ModuleLoader',
     'modelviewer/ParticleLoader',
@@ -30,6 +31,7 @@ require([
     ControlStateDispatcher,
     ModelViewer,
     EnvironmentLoader,
+    PieceLoader,
     ModelLoader,
     ModuleLoader,
     ParticleLoader,
@@ -61,6 +63,7 @@ require([
             new ModuleLoader();
             new ViewerPointer();
             new ParticleLoader();
+            new PieceLoader();
         };
 
         evt.on(evt.list().PLAYER_READY, playerReady);

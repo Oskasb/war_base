@@ -10,7 +10,8 @@ define([
         'ui/dom/DomPanel',
         'ui/GameScreen',
         'game/GameModule',
-        'game/PieceState'
+        'game/PieceState',
+    'modelviewer/ModuleStateViewer'
     ],
     function(
         evt,
@@ -21,7 +22,8 @@ define([
         DomPanel,
         GameScreen,
         GameModule,
-        PieceState
+        PieceState,
+        ModuleStateViewer
     ) {
 
         var panels = {};
@@ -133,7 +135,7 @@ define([
 
                     ThreeAPI.addToScene(rootObj);
                     mod.monitorGameModule(true);
-                    _this.toggleModuleStateViewer(mod, true);
+                    ModuleStateViewer.toggleModuleStateViewer(mod, true);
                 };
 
                 new GameModule(id, ready);
@@ -144,7 +146,7 @@ define([
 
                     while (loadedModules[id].length) {
                         var mod = loadedModules[id].pop()
-                        _this.toggleModuleStateViewer(mod, false);
+                        ModuleStateViewer.toggleModuleStateViewer(mod, false);
                         mod.removeClientModule();
                     }
 
@@ -202,133 +204,13 @@ define([
             }
 
             setTimeout(function() {
-                _this.toggleStateViewer(value);
+                ModuleStateViewer.toggleStateViewer(value);
             },200);
 
 
             if (first) {
                 PipelineAPI.setCategoryData(category, stateData);
             }
-        };
-
-        ModuleLoader.prototype.toggleModuleStateViewer = function(mod, bool) {
-
-            var src = 'state_viewer';
-
-
-            function addModuleBox(module) {
-
-                var modState = {};
-
-                var tweakStates = [];
-
-                var dataKeys = [];
-                var buttonKeys = [];
-                var val = 0;
-                var clear = 1;
-
-                var mouseState = PipelineAPI.readCachedConfigKey('POINTER_STATE', 'mouseState')
-
-                var samplePointer = function() {
-                    //    console.log(PipelineAPI.readCachedConfigKey('POINTER_STATE', 'mouseState').drag, PipelineAPI.readCachedConfigKey('POINTER_STATE', 'mouseState').dx);
-
-                    if (mouseState.action[0]) {
-                        val = mouseState.dragDistance[1] * 0.001;
-                        clear = 1;
-                    } else {
-                        val = 0;
-                    }
-
-                    if (mouseState.action[0] && mouseState.action[1]) {
-                        clear = 0;
-                    }
-
-                    for (var i = 0; i < tweakStates.length; i++) {
-                        tweakStates[i].setValue((tweakStates[i].getValue() + val) * clear);
-                    }
-
-                }
-
-                module.debugPipes = [];
-                var dataCat = "MODULE_DEBUG_"+module.id;
-                for (var i = 0; i < module.moduleChannels.length; i++) {
-                    dataKeys[i] = module.moduleChannels[i].state.id;
-
-
-                    var interactionCallback = function(buttonKey, data) {
-
-                        var id = buttonKeys[buttonKey];
-
-                        if (data) {
-                            tweakStates.push(module.getPieceStateById(id));
-                            evt.on(evt.list().CLIENT_TICK, samplePointer)
-                        } else {
-                            tweakStates.splice(tweakStates.indexOf(module.getPieceStateById(id), 1));
-                            evt.removeListener(evt.list().CLIENT_TICK, samplePointer)
-                        }
-
-                    };
-
-                    module.debugPipes.push(new PipelineObject(dataCat, 'button_'+dataKeys[i], interactionCallback));
-
-                    PipelineAPI.setCategoryKeyValue(dataCat, 'button_'+dataKeys[i], false);
-
-                    modState[dataKeys[i]] = module.state;
-                    buttonKeys['button_'+dataKeys[i]] = dataKeys[i]
-                }
-
-
-                var idconf = {
-                    id:"module_id"+module.id,
-                    container:"dev_monitor_container",
-                    data:{
-                        style:["data_list_container"],
-                        dataField:{
-                            dataKeys:dataKeys,
-                            dataCategory:dataCat,
-                            button:{
-                               id:"panel_button"
-                            }
-                        }
-                    }
-                };
-
-                panels[src].addContainedElement(idconf);
-                panels[src].updateLayout()
-            //    evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
-            }
-
-            if (bool) {
-                addModuleBox(mod);
-            } else {
-                var container = {
-                    id:"module_id"+mod.id
-                };
-
-                for (var i = 0; i < mod.debugPipes.length; i++) {
-                    mod.debugPipes[i].removePipelineObject();
-                }
-
-                panels[src].removeContainedElement(container)
-            }
-
-        };
-
-
-        ModuleLoader.prototype.toggleStateViewer = function(value) {
-
-            var src = 'state_viewer';
-
-            if (value) {
-                console.log("toggleStateViewer: ", value);
-
-                panels[src] = new DomPanel(GameScreen.getElement(), src);
-
-            } else if (panels[src]) {
-                panels[src].removeGuiPanel();
-                delete panels[src];
-            }
-
         };
 
         return ModuleLoader;

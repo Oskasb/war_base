@@ -75,7 +75,7 @@ define([
                     }
                 }
 
-                console.log("BUTTON EVT FULLSCREEN!", evt.args(e));
+            //    console.log("BUTTON EVT FULLSCREEN!", evt.args(e));
 
                 if (evt.args(e).data.FULL_SCREEN) {
 

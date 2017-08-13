@@ -29,6 +29,8 @@
       "modules/canvas_systems.json",
       "modules/canvas3d_elements.json",
 
+      "game/pieces/piece_data.json",
+
       "game/modules/module_data.json",
       "game/modules/module_channels.json",
       "game/modules/channel_targets.json",

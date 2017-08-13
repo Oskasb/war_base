@@ -37,11 +37,11 @@ define([
             keyElem.setText(dataKey);
 
             if (button) {
-                var btElem = new DomElement(entryElem.element, ["tiny_dev_button", "coloring_button_main_panel"]);;
+                var btElem = new DomElement(entryElem.element, ["tiny_dev_button", "coloring_button_dev_panel"]);
                 btElem.enableInteraction();
                 var fieldButton = {
                     button:{
-                        id:"panel_button",
+                        id:"dev_panel_button",
                         event:{category:this.category, key:'button_'+dataKey, type:'toggle'}
                     },
                     text:dataKey

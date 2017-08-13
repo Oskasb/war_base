@@ -46,6 +46,10 @@ define([
             return this.object3D.rotation;
         };
 
+        AttachmentPoint.prototype.attachChildToPoint = function (childObj3d) {
+            ThreeAPI.addChildToObject3D(childObj3d, this.object3D)
+        };
+
         AttachmentPoint.prototype.attachToParent = function (parentObj3d) {
             ThreeAPI.addChildToObject3D(this.object3D, parentObj3d)
         };
