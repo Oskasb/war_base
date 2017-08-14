@@ -45,15 +45,6 @@ define([
             )
         };
 
-        VisualModule.prototype.transform = function(parameter, axis, value) {
-            this.rootObj[parameter][axis] = value;
-        };
-
-
-        VisualModule.prototype.animate_texture = function(parameter, axis, value) {
-
-            ThreeAPI.animateModelTexture(this.model, value*parameter[0]*axis, value*parameter[1]*axis);//
-        };
 
         VisualModule.prototype.attachEffects = function() {
 
