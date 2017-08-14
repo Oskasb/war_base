@@ -76,6 +76,11 @@
           "style": ["main_button_container", "coloring_container_main_panel"]
         }
       },{
+        "id": "editor_button_container",
+        "data": {
+          "style": ["editor_button_container_style", "coloring_container_main_panel"]
+        }
+      },{
         "id":"main_splitter",
         "data":{
           "style":["full_size_container"]

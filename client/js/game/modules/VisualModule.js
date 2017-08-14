@@ -28,6 +28,12 @@ define([
                 this.model = ThreeAPI.loadMeshModel(this.data.model, ThreeAPI.createRootObject());
                 this.rootObj.add(this.model);
             }
+
+            if (this.data.terrain) {
+                this.model = ThreeAPI.loadGround(this.data.options, null, ThreeAPI.createRootObject());
+                this.rootObj.add(this.model);
+            }
+
         };
 
 

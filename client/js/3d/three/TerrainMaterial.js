@@ -27,9 +27,9 @@ define([
 
         var applyUniformEnvironmentRotation = function(uniform, worldProperty) {
             var rot = ThreeAPI.readEnvironmentUniform(worldProperty, 'rotation');
-            uniform.value.x = rot.x;
-            uniform.value.y = rot.y;
-            uniform.value.z = rot.z;
+            uniform.value.x = Math.sin(rot.z-0.5);
+            uniform.value.y = Math.cos(rot.y);
+            uniform.value.z = Math.sin(rot.x-0.5)
         };
 
 
@@ -68,7 +68,7 @@ define([
 
             var global_uniforms = {
                 ambientLightColor: { value: {r:1, g:1, b:1}},
-                sunLightColor: { value: {r:1, g:1, b:1}},
+                sunLightColor:     { value: {r:1, g:1, b:1}},
                 sunLightDirection: { value: {x:0.7, y:-0.3, z:0.7}}
             };
 

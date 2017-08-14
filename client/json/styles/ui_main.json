@@ -133,6 +133,14 @@
       "position": "fixed"
     },
 
+    "editor_button_container_style":{
+      "margin":"2em",
+      "padding": "0em",
+      "width": "116em",
+      "height": "76em",
+      "position": "fixed"
+    },
+
     "full_size_container":{
       "width": "100%",
       "height": "100%",

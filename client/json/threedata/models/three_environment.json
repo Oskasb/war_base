@@ -67,7 +67,26 @@
             {"id":"sun",     "color":[0,  0,  0]},
             {"id":"moon",    "color":[0,  0,  0]},
             {"id":"ambient", "color":[0,  0,  0]},
-            {"id":"fog",     "color":[0,  0,  0],  "density":1}
+            {"id":"fog",     "color":[0,  0,  0],  "density":0.001}
+          ]
+        },
+        {
+          "id":"high_noon",
+          "sky":{
+            "luminance":       0.7  ,
+            "turbidity":       1    ,
+            "rayleigh":        0.53 ,
+            "mieCoefficient":  0.005,
+            "mieDirectionalG": 0.8  ,
+            "inclination": 0.16,
+            "azimuth": 0.28,
+            "distance": 15000
+          },
+          "configs":[
+            {"id":"sun",     "color":[0.99,  0.96,  0.35]},
+            {"id":"moon",    "color":[0.22,  0.15,  0.12]},
+            {"id":"ambient", "color":[0.05,  0.05,  0.35]},
+            {"id":"fog",     "color":[0.98,  0.93,  0.5], "density":0.0009}
           ]
         },
         {
@@ -78,8 +97,8 @@
             "rayleigh":        0.53 ,
             "mieCoefficient":  0.005,
             "mieDirectionalG": 0.8  ,
-            "inclination": 0.18,
-            "azimuth": 0.08,
+            "inclination": 0.13,
+            "azimuth": 0.12,
             "distance": 15000
           },
           "configs":[
@@ -116,7 +135,7 @@
             "rayleigh":          2.1    ,
             "mieCoefficient":    0.025  ,
             "mieDirectionalG":   0.502  ,
-            "inclination": 0.25,
+            "inclination": 0.10,
             "azimuth": 0.0092,
             "distance": 15500
           },

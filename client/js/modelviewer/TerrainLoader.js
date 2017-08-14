@@ -21,11 +21,11 @@ define([
         var stateData;
 
         function addButton() {
-            var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.MODEL_LOADER, type:ENUMS.Type.toggle};
+            var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.TERRAIN_LOADER, type:ENUMS.Type.toggle};
 
             var buttonConf = {
                 panel:ENUMS.Gui.leftPanel,
-                id:"modelloaderbutton",
+                id:"terrainloaderbutton",
                 container:"editor_button_container",
                 data:{
                     style:["panel_button", "coloring_button_main_panel"],
@@ -33,22 +33,22 @@ define([
                         id:"panel_button",
                         event:buttonEvent
                     },
-                    text:'MODEL LIST'
+                    text:'TERRAIN'
                 }
             };
 
-            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {MODEL_LOADER:true});
+            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {TERRAIN_LOADER:true});
 
             evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
 
             setTimeout(function() {
-                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {MODEL_LOADER:false});
+                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {TERRAIN_LOADER:false});
             }, 1000);
 
         }
 
 
-        var ModelLoader = function() {
+        var TerrainLoader = function() {
             this.running = false;
             this.panel = null;
             this.currentValue = 0;
@@ -61,7 +61,7 @@ define([
                 }, 100);
             };
 
-            PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.MODEL_LOADER, apply);
+            PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.TERRAIN_LOADER, apply);
 
             addButton();
 
@@ -77,7 +77,7 @@ define([
 
                         if (countdown < 0) {
                             reloadcount++;
-                            ThreeAPI.getModelLoader().loadModelId(key);
+                        //    ThreeAPI.getModelLoader().loadModelId(key);
                         }
                         //    if (Math.random() < 0.1) {
                         evt.fire(evt.list().DRAW_POINT_AT, {pos:rootModels[key][0].position, color:'WHITE'});
@@ -92,7 +92,7 @@ define([
         };
 
 
-        ModelLoader.prototype.loadModel = function(modelId, value) {
+        TerrainLoader.prototype.loadModel = function(modelId, value) {
 
             if (!loadedModels[modelId]) {
                 loadedModels[modelId] = [];
@@ -128,7 +128,7 @@ define([
         };
 
 
-        ModelLoader.prototype.toggleModelPanel = function(src, value) {
+        TerrainLoader.prototype.toggleModelPanel = function(src, value) {
 
             if (panelStates[src] === value) {
                 return
@@ -136,7 +136,7 @@ define([
             panelStates[src] = value;
             var _this = this;
 
-            var category = ENUMS.Category.LOAD_MODEL
+            var category = ENUMS.Category.LOAD_TERRAIN
 
             var buttonFunc = function(src, value) {
                 setTimeout(function() {
@@ -174,5 +174,5 @@ define([
         };
 
 
-        return ModelLoader;
+        return TerrainLoader;
     });

@@ -241,19 +241,16 @@ define([
             var attachModel = function(model) {
 
                     //    console.log("Attach MAterial to Model", data, model);
-
                 /*
                     for (var i = 0; i < rootObject.children.length; i++) {
                         rootObject.remove(rootObject.children[i]);
                     }
 */
-
-                    setup.addToScene(model);
-                    rootObject.add(model);
                     transformModel(modelList[modelId].transform, model);
 
                 var attachMaterial = function(src, data) {
                     model.material = data;
+                    rootObject.add(model);
                 };
 
                 new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial);

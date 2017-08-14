@@ -139,6 +139,35 @@
             }
           ]
         }
+      },
+      {
+        "id":"terrain_plain_ground",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   0, -2.6],
+            "size": [0.4, 0.4,5.0]
+          },
+          "options":{
+            "type":"array",
+            "state":true,
+            "three_terrain":"plain_ground",
+            "vegetation_system":"basic_grassland",
+            "terrain_size":100,
+            "terrain_segments":63,
+            "invert_hill":false,
+            "terrain_edge_size":4,
+            "edge_easing":"EaseInOut",
+            "max_height":15,
+            "min_height":0,
+            "frequency":5,
+            "steps":3
+          },
+          "terrain":"plain_ground",
+          "channels":[
+            {"channelid":"model_pitch", "stateid":"gun_pitch"}
+          ]
+        }
       }
     ]
   }

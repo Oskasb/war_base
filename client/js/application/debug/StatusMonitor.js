@@ -41,7 +41,7 @@ define([
             var buttonConf = {
                 panel:ENUMS.Gui.rightPanel,
                 id:"devmodebutton",
-                container:"main_container",
+                container:"editor_button_container",
                 data:{
                     style:["panel_button", "coloring_button_main_panel"],
                     button:{

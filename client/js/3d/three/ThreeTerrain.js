@@ -91,8 +91,11 @@ define([
             };
             
             var terrain = new THREE.Terrain(opts);
-            
-            THREE.Terrain.fromArray1D(terrain.children[0].geometry.vertices, array1d);
+
+            if (array1d) {
+                THREE.Terrain.fromArray1D(terrain.children[0].geometry.vertices, array1d);
+            }
+
             
             terrain.children[0].geometry.computeFaceNormals();
             terrain.children[0].geometry.computeVertexNormals();
@@ -126,6 +129,8 @@ define([
         //    var attachMaterial = function(src, data) {
 
 
+
+
                 var attachModel = function(model) {
                     
                 //    setMaterialRepeat(src, model.children[0].material.map, modelId);
@@ -135,7 +140,9 @@ define([
                     ThreeTerrain.addTerrainToIndex(model, rootObject);
                     transformModel(terrainList[modelId].transform, model);
 
-                    partsReady();
+                    //partsReady();
+
+
                 };
 
                 //    model.material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
