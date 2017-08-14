@@ -3,11 +3,11 @@
 
 define([
         'ThreeAPI',
-        'game/modules/ModuleEffectCreator'
+        'GameAPI'
     ],
     function(
         ThreeAPI,
-        ModuleEffectCreator
+        GameAPI
     ) {
 
         var VisualModule = function(module) {
@@ -17,7 +17,6 @@ define([
             this.dynamicEffect = null;
             this.model;
         };
-
 
         VisualModule.prototype.setModuleData = function(data) {
             this.data = data;
@@ -30,60 +29,32 @@ define([
             }
 
             if (this.data.terrain) {
-                this.model = ThreeAPI.loadGround(this.data.options, null, ThreeAPI.createRootObject());
-                this.rootObj.add(this.model);
+
+                this.module.transform.pos[0] = this.data.options.terrain_size / 2;
+                this.module.transform.pos[1] = this.data.options.max_height   / 2;
+                this.module.transform.pos[2] = this.data.options.terrain_size / 2;
+
+                this.module.transform.size[0] = this.data.options.terrain_size;
+                this.module.transform.size[1] = this.data.options.max_height  ;
+                this.module.transform.size[2] = this.data.options.terrain_size;
+
+                var onData = function(resData) {
+                    this.model = ThreeAPI.loadGround(this.data.options, resData, ThreeAPI.createRootObject());
+                    this.rootObj.add(this.model);
+                }.bind(this);
+
+                GameAPI.createTerrain(this.data.options, onData);
             }
 
         };
 
-
-        VisualModule.prototype.transformObj = function(obj3d, data) {
+        VisualModule.prototype.transformObj = function(obj3d, transform) {
             ThreeAPI.transformModel(
                 obj3d,
-                data.transform.pos[0], data.transform.pos[1], data.transform.pos[2],
-                data.transform.rot[0], data.transform.rot[1], data.transform.rot[2]
+                transform.pos[0], transform.pos[1], transform.pos[2],
+                transform.rot[0], transform.rot[1], transform.rot[2]
             )
         };
-
-
-        VisualModule.prototype.attachEffects = function() {
-
-            if (this.applies.spawn_effect) {
-            //    console.log("Spawn Vel:", this.piece.spatial.vel.data)
-                ModuleEffectCreator.createPositionEffect(this.piece.spatial.pos, this.applies.spawn_effect, this.transform, this.piece.spatial.vel);
-            }
-
-            if (this.applies.static_effect) {
-                if (!this.staticEffect) {
-                    this.staticEffect = ModuleEffectCreator.createModuleStaticEffect(this.applies.static_effect, this.piece.spatial.pos, this.transform, this.piece.spatial.vel);
-                }
-            }
-
-        };
-
-        VisualModule.prototype.attachDynamicEffects = function() {
-
-
-            if (this.applies.dynamic_effect) {
-                if (!this.dynamicEffect) {
-                    this.dynamicEffect = ModuleEffectCreator.createModuleStaticEffect(this.applies.dynamic_effect, this.piece.spatial.pos, this.transform);
-                }
-            }
-        };
-
-        VisualModule.prototype.detatchEffects = function() {
-
-            if (this.staticEffect) {
-                ModuleEffectCreator.removeModuleStaticEffect(this.staticEffect);
-                this.staticEffect = null;
-            }
-
-            if (this.dynamicEffect) {
-                ModuleEffectCreator.removeModuleStaticEffect(this.dynamicEffect);
-                this.dynamicEffect = null;
-            }
-        };
-
 
         VisualModule.prototype.addModuleDebugBox = function() {
 
@@ -94,7 +65,7 @@ define([
             ThreeAPI.addChildToObject3D(this.debugModel, this.rootObj);
 
             ThreeAPI.addChildToObject3D(this.debugRoot, this.rootObj);
-            this.transformObj(this.debugModel, this.data);
+            this.transformObj(this.debugModel, trnsf);
         };
 
         VisualModule.prototype.removeModuleDebugBox = function() {
@@ -118,7 +89,6 @@ define([
 
         VisualModule.prototype.removeVisualModule = function() {
 
-            this.detatchEffects();
             if (this.model) {
                 //    ThreeAPI.removeModel(this.model);
                 this.rootObj.remove(this.model)

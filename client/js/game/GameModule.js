@@ -25,6 +25,12 @@ define([
             this.attachmentPoints = [];
             this.moduleChannels = [];
 
+            this.transform = {
+                rot:  [0, 0, 0],
+                pos:  [0, 0, 0],
+                size: [0, 0, 0]
+            };
+
             var applyModuleData = function() {
                 this.applyModuleData(this.pipeObj.buildConfig()[id], ready);
             }.bind(this);
@@ -33,12 +39,28 @@ define([
         };
 
         GameModule.prototype.getTransform = function () {
-            return this.config.transform;
+            return this.transform;
         };
 
+        GameModule.prototype.copyTransform = function (trnsf) {
+            this.transform.pos[0] = trnsf.pos[0];
+            this.transform.pos[1] = trnsf.pos[1];
+            this.transform.pos[2] = trnsf.pos[2];
+
+            this.transform.rot[0] = trnsf.rot[0];
+            this.transform.rot[1] = trnsf.rot[1];
+            this.transform.rot[2] = trnsf.rot[2];
+
+            this.transform.size[0] = trnsf.size[0];
+            this.transform.size[1] = trnsf.size[1];
+            this.transform.size[2] = trnsf.size[2];
+        };
 
         GameModule.prototype.applyModuleData = function (config, ready) {
             this.config = config;
+
+            if (this.config.transform) this.copyTransform(this.config.transform);
+
             this.visualModule.setModuleData(this.config);
             if (config[ENUMS.ModuleParams.attachment_points]) {
                 this.applyAttachmentPoints(config[ENUMS.ModuleParams.attachment_points]);

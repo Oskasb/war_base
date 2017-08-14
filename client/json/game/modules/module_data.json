@@ -143,11 +143,6 @@
       {
         "id":"terrain_plain_ground",
         "data":{
-          "transform":{
-            "rot":  [0,     0,    0],
-            "pos":  [500,  25,  500],
-            "size": [1000, 50, 1000]
-          },
           "options":{
             "type":"array",
             "state":true,
@@ -156,12 +151,12 @@
             "terrain_size":1000,
             "terrain_segments":127,
             "invert_hill":false,
-            "terrain_edge_size":4,
+            "terrain_edge_size":2,
             "edge_easing":"EaseInOut",
             "max_height":50,
             "min_height":0,
-            "frequency":2,
-            "steps":4
+            "frequency":1,
+            "steps":3
           },
           "terrain":"plain_ground",
           "channels":[

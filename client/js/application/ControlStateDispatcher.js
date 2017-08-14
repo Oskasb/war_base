@@ -31,7 +31,7 @@ define([
         var requestModuleState = function(src, stateValue) {
 
             if (!stateValue) {
-                console.log("No Module State", src);
+        //        console.log("No Module State", src);
         //        return;
             }
 

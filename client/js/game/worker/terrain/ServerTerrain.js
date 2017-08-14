@@ -5,7 +5,6 @@
  * @license MIT
  */
 
-var THREE = require('three');
 
 /**
 * Simplex and Perlin noise.

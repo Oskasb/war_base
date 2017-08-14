@@ -7,7 +7,8 @@ define([
         'PipelineObject',
         'ui/dom/DomLoadScreen',
         'ui/GameScreen',
-        'ThreeAPI'
+        'ThreeAPI',
+        'GameAPI'
     ],
     function(
         evt,
@@ -15,14 +16,17 @@ define([
         PipelineObject,
         DomLoadScreen,
         GameScreen,
-        ThreeAPI
+        ThreeAPI,
+        GameAPI
     ) {
 
         var client;
         var loadProgress;
         var filesLoadedOK = false;
         var clientInitiated = false;
-        
+
+        GameAPI.setupGameWorker()
+
         var path = './../../..';
 
         var loadUrls = [

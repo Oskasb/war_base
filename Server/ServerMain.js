@@ -3,7 +3,6 @@ ServerMain = function() {
 
 	console.log("Construct Server Main");
 
-
 	this.configLoader;
 	this.serverConnection = new ServerConnection();
     this.sectorGrid = new SectorGrid();
