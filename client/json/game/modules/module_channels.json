@@ -2,6 +2,62 @@
   "MODULE_CHANNELS":{
     "CHANNELS":[
       {
+        "id":"channel_pos_x",
+        "data":{
+          "targets":[
+            {"targetid":"model_translate_x"}
+          ]
+        }
+      },
+      {
+        "id":"channel_pos_y",
+        "data":{
+          "targets":[
+            {"targetid":"model_translate_y"}
+          ]
+        }
+      },
+      {
+        "id":"channel_pos_z",
+        "data":{
+          "targets":[
+            {"targetid":"model_translate_z"}
+          ]
+        }
+      },
+      {
+        "id":"channel_quat_x",
+        "data":{
+          "targets":[
+            {"targetid":"model_quatenion_x"}
+          ]
+        }
+      },
+      {
+        "id":"channel_quat_y",
+        "data":{
+          "targets":[
+            {"targetid":"model_quatenion_y"}
+          ]
+        }
+      },
+      {
+        "id":"channel_quat_z",
+        "data":{
+          "targets":[
+            {"targetid":"model_quatenion_z"}
+          ]
+        }
+      },
+      {
+        "id":"channel_quat_w",
+        "data":{
+          "targets":[
+            {"targetid":"model_quatenion_w"}
+          ]
+        }
+      },
+      {
         "id":"model_pitch",
         "data":{
           "targets":[

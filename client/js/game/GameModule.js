@@ -196,9 +196,12 @@ define([
 
         };
 
-        GameModule.prototype.sampleModuleFrame = function (tpf) {
+        GameModule.prototype.sampleModuleFrame = function () {
             for (var i = 0; i < this.moduleChannels.length; i++) {
-                this.moduleChannels[i].updateChannelState(this, tpf);
+                this.moduleChannels[i].updateChannelState(this);
+            }
+            if (this.needsNormalize) {
+                this.visualModule.rootObj.quaternion.normalize();
             }
         };
 

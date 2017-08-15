@@ -27,6 +27,11 @@ define([
             gameWorker.post(['createTerrain', JSON.stringify(options)], onData)
         };
 
+        GameAPI.registerActivePiece = function(pieceNr, pieceStates) {
+
+            gameWorker.registerPieceStates(pieceNr, pieceStates)
+        };
+
         return GameAPI;
     });
 

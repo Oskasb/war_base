@@ -36,18 +36,46 @@ define([],
             return module.data.applies.terrain_size;
         };
 
+        TerrainFunctions.prototype.clampSin = function() {
+            return function(value) {
+                return Math.sin(value*Math.PI*0.5)
+            }
+        };
+
+
+        TerrainFunctions.prototype.getEdgeEasing = function(applies) {
+            var easing = THREE.Terrain.EaseInOut;
+
+            if (applies.edge_easing) {
+                if (this[applies.edge_easing]) {
+                    easing = this[applies.edge_easing]()
+                } else {
+                    easing = THREE.Terrain[applies.edge_easing];
+                }
+            };
+            return easing;
+        };
+
         TerrainFunctions.prototype.getTerrainModuleEdges = function(applies) {
+            var easing = this.getEdgeEasing(applies);
+
             return {
                 invert: applies.invert_hill,
                 edgeSize: applies.terrain_edge_size,
-                easingFunc:applies.edge_easing
+                easingFunc:easing
             }
         };
 
         TerrainFunctions.prototype.getTerrainModuleOpts = function(applies) {
+
+
+
+            var easing = this.getEdgeEasing(applies);
+
+
             return {
                 after: null,
-                easing: THREE.Terrain.EaseInOut,
+                easing: easing,
                 heightmap: THREE.Terrain.DiamondSquare,
                 material: null,
                 maxHeight: applies.max_height,
@@ -57,7 +85,7 @@ define([],
                 steps: applies.steps,
                 stretch: true,
                 turbulent: false,
-                useBufferGeometry: false,
+            //    useBufferGeometry: true,
                 xSegments: applies.terrain_segments,
                 xSize: applies.terrain_size,
                 ySegments: applies.terrain_segments,
@@ -109,11 +137,21 @@ define([],
 
             var terrain = new THREE.Terrain(opts);
 
-            THREE.Terrain.RadialEdges(terrain.children[0].geometry.vertices, opts, edges.invert, edges.edgeSize, THREE.Terrain[edges.easingFunc]);
+            THREE.Terrain.Edges(terrain.children[0].geometry.vertices, opts, false, edges.edgeSize, edges.easingFunc);
 
-            var array1d = THREE.Terrain.toArray1D(terrain.children[0].geometry.vertices);
+            var bufferGeo = new THREE.BufferGeometry().fromGeometry( terrain.children[0].geometry );
+            var position = bufferGeo.attributes.position.array;
+            var normal = bufferGeo.attributes.normal.array;
+            var color = bufferGeo.attributes.color.array;
+            var uv = bufferGeo.attributes.uv.array;
+            return [position, normal, color, uv];
+
+
+            var array1d = THREE.Terrain.toArray1D(terrain.children[0].geometry.vertices, edges.invert);
 
             this.setEdgeVerticeHeight(array1d, 0);
+
+
 
             return array1d;
 

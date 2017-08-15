@@ -530,10 +530,14 @@ THREE.Terrain.fromArray2D = function(vertices, src) {
  * @return {Number[]}
  *   A 1D array representing the terrain's heightmap.
  */
-THREE.Terrain.toArray1D = function(vertices) {
+THREE.Terrain.toArray1D = function(vertices, invert) {
+    var inv = 1;
+    if (invert) {
+        inv = -1;
+    }
     var tgt = new Float64Array(vertices.length);
     for (var i = 0, l = tgt.length; i < l; i++) {
-        tgt[i] = vertices[i].z;
+        tgt[i] = vertices[i].z*inv;
     }
     return tgt;
 };

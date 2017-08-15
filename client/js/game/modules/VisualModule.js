@@ -18,7 +18,7 @@ define([
             this.model;
         };
 
-        VisualModule.prototype.setModuleData = function(data) {
+        VisualModule.prototype.setModuleData = function(data) {3
             this.data = data;
             if (this.data.model) {
                 if (this.model) {

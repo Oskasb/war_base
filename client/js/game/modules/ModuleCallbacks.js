@@ -18,6 +18,12 @@ define([
             module.visualModule.rootObj[target.parameter][target.axis] = state.getValue();
         };
 
+        ModuleCallbacks.quat_axis = function(module, target, state) {
+            module.visualModule.rootObj.quaternion[target.axis] = state.getValue();
+            module.needsNormalize = true;
+
+        };
+
         ModuleCallbacks.animate_texture = function(module, target, state) {
             ThreeAPI.animateModelTexture(module.visualModule.model, state.getValue()*target.offsetxy[0]*target.factor, state.getValue()*target.offsetxy[1]*target.factor);//
         };

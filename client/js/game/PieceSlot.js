@@ -54,8 +54,8 @@ define([
             this.module.attachModuleToParent(obj3d);
         };
 
-        PieceSLot.prototype.updatePieceSlot = function (tpf) {
-            this.module.sampleModuleFrame(tpf);
+        PieceSLot.prototype.updatePieceSlot = function () {
+            this.module.sampleModuleFrame();
         };
 
         PieceSLot.prototype.removePieceSlot = function () {

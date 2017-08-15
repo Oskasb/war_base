@@ -333,7 +333,7 @@ THREE.Terrain = function(options) {
     else {
         console.warn('An invalid value was passed for `options.heightmap`: ' + options.heightmap);
     }
-    THREE.Terrain.Normalize(mesh, options);
+  //  THREE.Terrain.Normalize(mesh, options);
 
     if (options.useBufferGeometry) {
         mesh.geometry = (new THREE.BufferGeometry()).fromGeometry(mesh.geometry);
@@ -762,6 +762,10 @@ THREE.Terrain.Edges = function(g, options, direction, distance, easing, edges) {
     var numXSegments = Math.floor(distance / (options.xSize / options.xSegments)) || 1,
         numYSegments = Math.floor(distance / (options.ySize / options.ySegments)) || 1,
         peak = direction ? options.maxHeight : options.minHeight,
+        inv = 1;
+        if (direction) {
+            inv = -1;
+        };
         max = direction ? Math.max : Math.min,
         xl = options.xSegments + 1,
         yl = options.ySegments + 1,

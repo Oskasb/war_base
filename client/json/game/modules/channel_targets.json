@@ -1,22 +1,7 @@
 [{
   "CHANNEL_TARGETS":{
     "TARGETS":[
-      {
-        "id":"model_rotate_pitch",
-        "data":{
-          "callback":"transform",
-          "parameter":"rotation",
-          "axis":"x"
-        }
-      },
-      {
-        "id":"model_rotate_yaw",
-        "data":{
-            "callback":"transform",
-            "parameter":"rotation",
-            "axis":"y"
-        }
-      },
+
       {
         "id":"model_track_animate_texture",
         "data":{
@@ -42,11 +27,72 @@
         }
       },
       {
+        "id":"model_rotate_pitch",
+        "data":{
+          "callback":"transform",
+          "parameter":"rotation",
+          "axis":"x"
+        }
+      },
+      {
+        "id":"model_rotate_yaw",
+        "data":{
+          "callback":"transform",
+          "parameter":"rotation",
+          "axis":"y"
+        }
+      },
+      {
+        "id":"model_translate_x",
+        "data":{
+          "callback":"transform",
+          "parameter":"position",
+          "axis":"x"
+        }
+      },
+      {
+        "id":"model_translate_y",
+        "data":{
+          "callback":"transform",
+          "parameter":"position",
+          "axis":"y"
+        }
+      },
+
+      {
         "id":"model_translate_z",
         "data":{
             "callback":"transform",
             "parameter":"position",
             "axis":"z"
+        }
+      },
+      {
+        "id":"model_quatenion_x",
+        "data":{
+          "callback":"quat_axis",
+          "axis":"x"
+        }
+      },
+      {
+        "id":"model_quatenion_y",
+        "data":{
+          "callback":"quat_axis",
+          "axis":"y"
+        }
+      },
+      {
+        "id":"model_quatenion_z",
+        "data":{
+          "callback":"quat_axis",
+          "axis":"z"
+        }
+      },
+      {
+        "id":"model_quatenion_w",
+        "data":{
+          "callback":"quat_axis",
+          "axis":"w"
         }
       }
     ]

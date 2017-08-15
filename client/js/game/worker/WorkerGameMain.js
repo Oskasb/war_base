@@ -15,7 +15,7 @@ define(['worker/physics/CannonAPI',
 
         WorkerGameMain.prototype.handleMessage = function(msg) {
             if (typeof(this[msg[0]]) === 'function') {
-                this[msg[0]](msg[0], JSON.parse(msg[1]))
+                this[msg[0]](msg[0], msg[1])
             } else {
                 console.log("No function", msg[0])
             }
@@ -24,8 +24,30 @@ define(['worker/physics/CannonAPI',
 
         WorkerGameMain.prototype.createTerrain = function(msgName, options) {
             console.log("opts:", options);
-            var array = this.terrainFunctions.createTerrainArray1d(options);
+            var array = this.terrainFunctions.createTerrainArray1d(JSON.parse(options));
             this.postToMain([msgName, array]);
+        };
+
+
+
+        WorkerGameMain.prototype.registerProtocol = function(msgName, protocol) {
+
+            var randomSend = function(prtc) {
+
+                var channelCount = (prtc.length - 3) / 2;
+                var channel = Math.floor(Math.random()*channelCount);
+
+                prtc[3 + channel*2] = Math.random();
+
+                prtc[prtc.length-1] = (new Date().getTime() + 1000*Math.random())*0.001;
+
+                this.postToMain([prtc[0], prtc[1], prtc[2 + channel*2], prtc[3 + channel*2], prtc[prtc.length-1]]);
+
+            }.bind(this);
+
+            setInterval(function() {
+                randomSend(protocol);
+            },40);
         };
 
         WorkerGameMain.prototype.saveJsonData = function(json, url) {

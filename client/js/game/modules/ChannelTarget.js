@@ -26,8 +26,8 @@ define([
             this.config = config;
         };
 
-        ChannelTarget.prototype.sampleModuleState = function(module, state) {
-            ModuleCallbacks[this.config.callback](module, this.config, state)
+        ChannelTarget.prototype.sampleModuleState = function(module, state, tpf, time) {
+            ModuleCallbacks[this.config.callback](module, this.config, state, tpf, time)
         };
 
 

@@ -101,7 +101,7 @@ define([
                             }
 
                         }
-                        piece.updateGamePiece(evt.args(e).tpf);
+                        piece.updateGamePiece(evt.args(e).tpf, new Date().getTime()*0.001);
 
                     }
                 }

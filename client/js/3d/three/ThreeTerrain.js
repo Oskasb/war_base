@@ -90,20 +90,35 @@ define([
                 ySize: applies.terrain_size
             };
             
-            var terrain = new THREE.Terrain(opts);
+            var terrain;
 
             if (array1d) {
-                THREE.Terrain.fromArray1D(terrain.children[0].geometry.vertices, array1d);
+                if (array1d.length === 4) {
+                    opts.xSegments = 3;
+                    opts.ySegments = 3;
+                    terrain = new THREE.Terrain(opts);
+
+                    terrain.children[0].geometry = new THREE.BufferGeometry();
+                    terrain.children[0].geometry.addAttribute('position', array1d[0] ,3);
+                    terrain.children[0].geometry.addAttribute('normal', array1d[1],3);
+                    terrain.children[0].geometry.addAttribute('color', array1d[2],3);
+                    terrain.children[0].geometry.addAttribute('uv', array1d[3],2)
+                } else {
+                    terrain = new THREE.Terrain(opts);
+                    THREE.Terrain.fromArray1D(terrain.children[0].geometry.vertices, array1d);
+
+                    terrain.children[0].geometry.computeFaceNormals();
+                    terrain.children[0].geometry.computeVertexNormals();
+                    terrain.children[0].geometry = new THREE.BufferGeometry().fromGeometry( terrain.children[0].geometry );
+                }
+
+            } else {
+                terrain = new THREE.Terrain(opts);
             }
 
-            
-            terrain.children[0].geometry.computeFaceNormals();
-            terrain.children[0].geometry.computeVertexNormals();
             terrain.children[0].needsUpdate = true;
             terrain.children[0].position.x += applies.terrain_size*0.5;
             terrain.children[0].position.y -= applies.terrain_size*0.5;
-
-            terrain.children[0].geometry = new THREE.BufferGeometry().fromGeometry( terrain.children[0].geometry );
 
             terrain.size = applies.terrain_size;
             terrain.segments = applies.terrain_segments;

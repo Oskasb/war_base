@@ -5,6 +5,7 @@
 define([
         'Events',
         'PipelineObject',
+        'GameAPI',
         'ThreeAPI',
         'game/PieceSlot',
         'game/PieceState'
@@ -12,13 +13,19 @@ define([
     function(
         evt,
         PipelineObject,
+        GameAPI,
         ThreeAPI,
         PieceSlot,
         PieceState
     ) {
 
 
+    var gamePieces = 0;
+
         var GamePiece = function(id, ready) {
+            gamePieces++;
+            this.pieceNr = gamePieces;
+
             this.id = id;
 
             this.rootObj3D = ThreeAPI.createRootObject();
@@ -59,6 +66,7 @@ define([
                 this.attachPieceStates();
                 this.buildHierarchy();
                 ready(this);
+                GameAPI.registerActivePiece(this.pieceNr, this.pieceStates);
             }.bind(this);
 
             if (config['slots']) {
@@ -124,9 +132,13 @@ define([
             }
         };
 
-        GamePiece.prototype.updateGamePiece = function(tpf) {
+        GamePiece.prototype.updateGamePiece = function(tpf, time) {
+            for (var i = 0; i < this.pieceStates.length; i++) {
+                this.pieceStates[i].updateStateFrame(tpf, time)
+            }
+
             for (var i = 0; i < this.pieceSlots.length;i++) {
-                this.pieceSlots[i].updatePieceSlot(tpf);
+                this.pieceSlots[i].updatePieceSlot(tpf, time);
             }
         };
 
