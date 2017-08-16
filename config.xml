@@ -8,7 +8,7 @@
     <!-- versionCode is optional and Android only -->
     <content src="index.html"></content>
 
-    <name>Test App</name>
+    <name>Test App index</name>
 
     <description>
         Test It

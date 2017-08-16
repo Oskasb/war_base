@@ -1,7 +1,7 @@
 "use strict";
 
 define([
-		'data_pipeline/PipelineAPI',
+        './../io/PipelineAPI',
 	'ThreeAPI',
 		'ui/GameScreen'
 	],

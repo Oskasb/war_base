@@ -32,16 +32,24 @@ define(['worker/physics/CannonAPI',
 
         WorkerGameMain.prototype.registerProtocol = function(msgName, protocol) {
 
+
+
             var randomSend = function(prtc) {
 
-                var channelCount = (prtc.length - 3) / 2;
-                var channel = Math.floor(Math.random()*channelCount);
+                var channelCount = (prtc.length - 3) / 3;
+                var channel = 2 + 3 * Math.floor(Math.random()*channelCount);
 
-                prtc[3 + channel*2] = Math.random();
 
-                prtc[prtc.length-1] = (new Date().getTime() + 1000*Math.random())*0.001;
+                prtc[channel+1] = Math.random();
 
-                this.postToMain([prtc[0], prtc[1], 2 + channel*2, prtc[3 + channel*2], prtc[prtc.length-1]]);
+                prtc[prtc.length-1] = 1000*Math.random()*0.01;
+
+                if (self.SharedArrayBuffer_) {
+                    prtc[channel+2][0] = prtc[channel+1];
+                    prtc[channel+2][1] = 1000 * Math.random() * 0.01;
+                } else {
+                    this.postToMain([prtc[0], prtc[1], channel, prtc[channel+1], prtc[prtc.length-1]]);
+                }
 
             }.bind(this);
 

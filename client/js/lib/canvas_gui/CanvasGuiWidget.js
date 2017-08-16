@@ -3,7 +3,7 @@
 define([
 	'gui/elements/CanvasGuiLayer',
 	'gui/layout/GuiConstants',
-	'data_pipeline/PipelineAPI'
+        './../io/PipelineAPI'
 ],
 	function(
 		CanvasGuiLayer,

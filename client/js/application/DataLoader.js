@@ -3,21 +3,21 @@
 
 define([
         'Events',
-        'PipelineAPI',
         'PipelineObject',
         'ui/dom/DomLoadScreen',
         'ui/GameScreen',
         'ThreeAPI',
-        'GameAPI'
+        'GameAPI',
+        'PipelineAPI'
     ],
     function(
         evt,
-        PipelineAPI,
         PipelineObject,
         DomLoadScreen,
         GameScreen,
         ThreeAPI,
-        GameAPI
+        GameAPI,
+        PipelineAPI
     ) {
 
         var client;
@@ -30,13 +30,19 @@ define([
         var path = './../../..';
 
         var loadUrls = [
-            './../../../Transport/MATH.js'
+            './Transport/MATH.js'
         ];
+
+        var pipelineOn = pollingOn;
+        window.jsonConfigUrls = 'client/json/';
+        if (window.location.href == 'http://127.0.0.1:5000/' || window.location.href ==  'http://localhost:5000/' || window.location.href ==  'http://192.168.0.100:5000/') {
+        //    pipelineOn = true;
+        }
 
         var dataPipelineSetup = {
             "jsonPipe":{
                 "polling":{
-                    "enabled":true,
+                    "enabled":pipelineOn,
                     "frequency":8
                 }
             },
@@ -53,12 +59,6 @@ define([
                 }
             }
         };
-
-        var pipelineOn = pollingOn;
-        window.jsonConfigUrls = 'client/json/';
-        if (window.location.href == 'http://127.0.0.1:5000/' || window.location.href ==  'http://localhost:5000/' || window.location.href ==  'http://192.168.0.100:5000/') {
-            pipelineOn = true;
-        }
 
         var jsonRegUrl = './client/json/config_urls.json';
 
@@ -220,6 +220,7 @@ define([
                     evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_error', message:'Pipeline Error '+src+' '+e});
                 }
                 evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:"Request Worker Fetch"});
+            //    PipelineAPI.setCategoryData(jsonRegUrl, dataPipelineSetup, pipelineError);
                 PipelineAPI.dataPipelineSetup(jsonRegUrl, dataPipelineSetup, pipelineError);
 
             };

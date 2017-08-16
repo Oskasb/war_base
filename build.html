@@ -1,0 +1,48 @@
+.<html>
+
+<head>
+
+    <title>Apk Build</title>
+
+    <link rel="stylesheet" type="text/css" href="./client/css/base.css" />
+
+    <script src="./client/js/ENUMS.js"></script>
+    <script src="./client/js/lib/three/three.js"></script>
+    <script src="./client/js/lib/three/OBJLoader.js"></script>
+    <script src="./client/js/lib/three/OrbitControls.js"></script>
+    <script src="./client/js/3d/three/THREE.Terrain.js"></script>
+    <script src="./client/js/lib/three/SkyShader.js"></script>
+
+    <script data-main="./client/js/ModelsMain" src="./client/js/lib/require.js"></script>
+
+</head>
+
+<body id="body">
+<div id="canvas_window"></div>
+</body>
+
+<script>
+    window.SYSTEM_SETUP = {
+        DEBUG:{
+            on:false
+        }
+    };
+
+    window.pollingOn = false;
+
+    require.config({
+        paths: {
+            shared:'./../../../Transport',
+            GameAPI:'./game/GameAPI',
+            ThreeAPI:'./3d/three/ThreeAPI',
+            EffectsAPI:'./3d/effects/EffectsAPI',
+            gui:'./lib/canvas_gui',
+            data_pipeline:'./lib/data_pipeline/src',
+            PipelineAPI:'./io/PipelineAPI'
+        }
+    });
+
+
+</script>
+
+</html>

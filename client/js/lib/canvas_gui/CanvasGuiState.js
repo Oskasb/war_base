@@ -3,7 +3,7 @@
 define([
 	'gui/CanvasGuiWidget',
 	'data_pipeline/data/ConfigCache',
-	'data_pipeline/PipelineAPI',
+	'./../io/PipelineAPI',
 	'data_pipeline/GameDataPipeline'
 
 ],
