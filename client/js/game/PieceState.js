@@ -13,6 +13,7 @@ define([],
             this.messageTime = 0;
             this.targetTime = 0;
             this.targetValue = value;
+            this.lastUpdate = 0;
         };
 
         PieceState.prototype.setValue = function (value) {
@@ -27,7 +28,7 @@ define([],
             if (value === this.value) {
                 return;
             };
-            this.messageTime = new Date().getTime()*0.001;
+            this.messageTime = this.lastUpdate;
             this.startValue = this.value;
             this.targetTime = time;
             this.targetValue = value;
@@ -38,7 +39,8 @@ define([],
         };
 
         PieceState.prototype.updateStateFrame = function (tpf, time) {
-            if (this.targetTime > time+tpf) {
+            this.lastUpdate = time+tpf;
+            if (this.targetTime > this.lastUpdate) {
                 var frac = MATH.calcFraction(this.messageTime, this.targetTime, time);
                 this.setValue(MATH.interpolateFromTo(this.startValue, this.targetValue, frac));
             } else {

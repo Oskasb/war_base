@@ -41,7 +41,7 @@ define(['worker/physics/CannonAPI',
 
                 prtc[prtc.length-1] = (new Date().getTime() + 1000*Math.random())*0.001;
 
-                this.postToMain([prtc[0], prtc[1], prtc[2 + channel*2], prtc[3 + channel*2], prtc[prtc.length-1]]);
+                this.postToMain([prtc[0], prtc[1], 2 + channel*2, prtc[3 + channel*2], prtc[prtc.length-1]]);
 
             }.bind(this);
 

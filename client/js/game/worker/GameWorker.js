@@ -30,12 +30,12 @@ define([],
 
         };
 
-        DataProtocol.prototype.setStateValue = function(stateKey, value, time) {
-            if (!this.stateKeyMap[this.protocol.indexOf(stateKey)]) {
-                console.log("No", stateKey, this.protocol);
+        DataProtocol.prototype.setStateValue = function(stateIndex, value, time) {
+            if (!this.stateKeyMap[stateIndex]) {
+                console.log("No", stateIndex, this.protocol);
                 return;
             }
-            this.stateKeyMap[this.protocol.indexOf(stateKey)].setValueAtTime(value, time);
+            this.stateKeyMap[stateIndex].setValueAtTime(value, time);
         };
 
         DataProtocol.prototype.addStateChannel = function(state) {
