@@ -30,6 +30,7 @@
       "modules/canvas3d_elements.json",
 
       "game/pieces/piece_data.json",
+      "game/pieces/control_piece_data.json",
 
       "game/modules/module_data.json",
       "game/modules/module_channels.json",

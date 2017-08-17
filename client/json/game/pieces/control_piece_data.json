@@ -1,0 +1,27 @@
+[{
+  "PIECE_DATA":{
+    "PIECES":[
+      {
+        "id":"vehicle_control_piece",
+        "data":{
+          "root_slot":"hull",
+          "slots":[
+            {"slot":"hull",         "module":"sherman_hull_module"   },
+            {"slot":"main_turret",  "module":"sherman_turret_module" },
+            {"slot":"track_r",      "module":"sherman_track_r_module"},
+            {"slot":"track_l",      "module":"sherman_track_l_module"},
+            {"slot":"main_gun",     "module":"sherman_main_gun_module"},
+            {"slot":"engine",       "module":"sherman_engine_module"}
+          ],
+          "attachments":[
+            {"slot":"hull",         "ap":"ap_turret",   "child":"main_turret" },
+            {"slot":"hull",         "ap":"ap_track_r",  "child":"track_r"},
+            {"slot":"hull",         "ap":"ap_track_l",  "child":"track_l"},
+            {"slot":"hull",         "ap":"ap_engine",   "child":"engine"  },
+            {"slot":"main_turret",  "ap":"ap_cannon",   "child":"main_gun"}
+          ]
+        }
+      }
+    ]
+  }
+}]
