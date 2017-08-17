@@ -63,7 +63,10 @@ define([
             }
         };
 
+        InputSegmentRadial.prototype.getLine = function() {
+            return this.line;
 
+        };
 
         InputSegmentRadial.prototype.registerControlledPiece = function(piece) {
             //    console.log("Register Control", piece);
@@ -100,13 +103,13 @@ define([
             evt.on(evt.list().CURSOR_RELEASE, cursorRelease);
             evt.on(evt.list().CURSOR_PRESS, cursorPress);
             evt.on(evt.list().CURSOR_LINE, cursorLine);
-            evt.on(evt.list().CLIENT_TICK, tickInput);
+        //    evt.on(evt.list().CLIENT_TICK, tickInput);
 
             var removeListeners = function() {
                 evt.removeListener(evt.list().CURSOR_RELEASE, cursorRelease);
                 evt.removeListener(evt.list().CURSOR_PRESS, cursorPress);
                 evt.removeListener(evt.list().CURSOR_LINE, cursorLine);
-                evt.removeListener(evt.list().CLIENT_TICK, tickInput);
+            //    evt.removeListener(evt.list().CLIENT_TICK, tickInput);
                 evt.removeListener(evt.list().CONNECTION_CLOSED, removeListeners);
             };
 

@@ -66,7 +66,6 @@ define([
                 this.attachPieceStates();
                 this.buildHierarchy();
                 ready(this);
-                GameAPI.registerActivePiece(this.pieceNr, this.pieceStates);
             }.bind(this);
 
             if (config['slots']) {

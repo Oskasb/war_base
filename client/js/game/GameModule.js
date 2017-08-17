@@ -74,7 +74,7 @@ define([
             for (var i = 0; i < apData.length;i++) {
 
                 if (this.getAttachmentPointById(apData[i].id)) {
-                    this.getAttachmentPointById(apData[i].id).updateData(apData);
+                    this.getAttachmentPointById(apData[i].id).updateData(apData[i]);
                 } else {
                     var ap = new AttachmentPoint(apData[i]);
                     this.attachmentPoints.push(ap);

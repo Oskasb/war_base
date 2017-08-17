@@ -3,7 +3,6 @@
 
 define([
         'Events',
-        'GameAPI',
         'PipelineAPI',
         'PipelineObject',
         'ThreeAPI',
@@ -12,11 +11,10 @@ define([
         'ui/GameScreen',
         'game/GamePiece',
         'game/PieceState',
-    'modelviewer/ModuleStateViewer'
+        'modelviewer/ModuleStateViewer'
     ],
     function(
         evt,
-        GameAPI,
         PipelineAPI,
         PipelineObject,
         ThreeAPI,
@@ -35,11 +33,11 @@ define([
         var stateData;
 
         function addButton() {
-            var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.PIECE_LOADER, type:ENUMS.Type.toggle};
+            var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.CONTROL_LOADER, type:ENUMS.Type.toggle};
 
             var buttonConf = {
                 panel:ENUMS.Gui.leftPanel,
-                id:"pieceloaderbutton",
+                id:"controlloaderbutton",
                 container:"editor_button_container",
                 data:{
                     style:["panel_button", "coloring_button_main_panel"],
@@ -47,22 +45,22 @@ define([
                         id:"panel_button",
                         event:buttonEvent
                     },
-                    text:'PIECES'
+                    text:'CONTROLS'
                 }
             };
 
-            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {PIECE_LOADER:true});
+            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {CONTROL_LOADER:true});
 
             evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
 
             setTimeout(function() {
-                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {PIECE_LOADER:false});
+                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {CONTROL_LOADER:false});
             }, 1000);
 
         }
 
 
-        var PieceLoader = function() {
+        var ControlLoader = function() {
             this.running = false;
             this.panel = null;
             this.currentValue = 0;
@@ -75,7 +73,7 @@ define([
                 }, 100);
             };
 
-            PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.PIECE_LOADER, apply);
+            PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.CONTROL_LOADER, apply);
 
             addButton();
 
@@ -113,12 +111,12 @@ define([
         };
 
 
-        PieceLoader.prototype.monitorPieceModules = function(piece, bool) {
+        ControlLoader.prototype.monitorPieceModules = function(piece, bool) {
             ModuleStateViewer.viewPieceStates(piece, bool);
         };
 
 
-        PieceLoader.prototype.loadPiece = function(id, value) {
+        ControlLoader.prototype.loadPiece = function(id, value) {
 
             if (!loadedModules[id]) {
                 loadedModules[id] = [];
@@ -147,10 +145,10 @@ define([
                     }
 
                     ThreeAPI.addToScene(piece.rootObj3D);
-                //    mod.monitorGameModule(true);
+                    //    mod.monitorGameModule(true);
                     rootModels[id].push(piece);
                     _this.monitorPieceModules(piece, true);
-                    GameAPI.registerActivePiece(piece.pieceNr, piece.pieceStates);
+
                 };
 
                 new GamePiece(id, ready);
@@ -169,7 +167,7 @@ define([
         };
 
 
-        PieceLoader.prototype.togglePanel = function(src, value) {
+        ControlLoader.prototype.togglePanel = function(src, value) {
 
             if (panelStates[src] === value) {
                 return
@@ -177,7 +175,7 @@ define([
             panelStates[src] = value;
             var _this = this;
 
-            var category = ENUMS.Category.LOAD_PIECE;
+            var category = ENUMS.Category.LOAD_CONTROLS;
 
             var buttonFunc = function(src, value) {
                 setTimeout(function() {
@@ -224,5 +222,5 @@ define([
             }
         };
 
-        return PieceLoader;
+        return ControlLoader;
     });

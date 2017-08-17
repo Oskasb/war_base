@@ -3,14 +3,35 @@
 
 define([
         'ThreeAPI',
+        'PipelineAPI',
         'game/modules/ModuleEffectCreator'
     ],
     function(
         ThreeAPI,
+        PipelineAPI,
         ModuleEffectCreator
     ) {
 
-        var ModuleCallbacks = function() {
+        var mouseState;
+        var line;
+
+        var fetchLine = function(src, data) {
+            line = data;
+        };
+
+        var fetchPointer = function(src, data) {
+            mouseState = data;
+        };
+
+        PipelineAPI.subscribeToCategoryKey('POINTER_STATE', 'line', fetchLine);
+        PipelineAPI.subscribeToCategoryKey('POINTER_STATE', 'mouseState', fetchPointer);
+
+        var ModuleCallbacks = function() {};
+
+        ModuleCallbacks.read_input_vector = function(module, target, state) {
+            if (mouseState.action[0]) {
+                state.setValueAtTime(line[target.parameter] * target.factor, target.time);
+            }
 
         };
 

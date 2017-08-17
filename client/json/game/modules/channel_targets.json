@@ -1,7 +1,24 @@
 [{
   "CHANNEL_TARGETS":{
     "TARGETS":[
-
+      {
+        "id":"module_channel_sample_angle",
+        "data":{
+          "callback":"read_input_vector",
+          "parameter":"zrot",
+          "factor":1,
+          "time":0.5
+        }
+      },
+      {
+        "id":"module_channel_sample_length",
+        "data":{
+          "callback":"read_input_vector",
+          "parameter":"w",
+          "factor":0.01,
+          "time":0.3
+        }
+      },
       {
         "id":"model_track_animate_texture",
         "data":{

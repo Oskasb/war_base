@@ -2,6 +2,22 @@
   "MODULE_CHANNELS":{
     "CHANNELS":[
       {
+        "id":"channel_input_length",
+        "data":{
+          "targets":[
+            {"targetid":"module_channel_sample_length"}
+          ]
+        }
+      },
+      {
+        "id":"channel_input_direction",
+        "data":{
+          "targets":[
+            {"targetid":"module_channel_sample_angle"}
+          ]
+        }
+      },
+      {
         "id":"channel_pos_x",
         "data":{
           "targets":[

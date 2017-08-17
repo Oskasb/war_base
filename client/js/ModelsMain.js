@@ -16,7 +16,7 @@ require([
     'modelviewer/PieceLoader',
     'modelviewer/ModelLoader',
     'modelviewer/ModuleLoader',
-    'modelviewer/TerrainLoader',
+    'modelviewer/ControlLoader',
     'modelviewer/ParticleLoader',
     'modelviewer/ViewerPointer',
     'ui/GameScreen',
@@ -35,7 +35,7 @@ require([
     PieceLoader,
     ModelLoader,
     ModuleLoader,
-    TerrainLoader,
+    ControlLoader,
     ParticleLoader,
     ViewerPointer,
     GameScreen,
@@ -66,7 +66,7 @@ require([
             new ViewerPointer();
             new ParticleLoader();
             new PieceLoader();
-            new TerrainLoader();
+            new ControlLoader();
         };
 
         evt.on(evt.list().PLAYER_READY, playerReady);

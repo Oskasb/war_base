@@ -8,13 +8,17 @@
           "slots":[
             {"slot":"root",         "module":"control_root_module"   },
             {"slot":"pointer_state","module":"control_pointer_module"},
+            {"slot":"state_heading","module":"control_heading_module"},
             {"slot":"state_forward","module":"control_forward_module"},
-            {"slot":"state_yaw",    "module":"control_pointer_module"}
+            {"slot":"state_reverse","module":"control_reverse_module"},
+            {"slot":"state_yaw",    "module":"control_yaw_module"}
           ],
           "attachments":[
             {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
-            {"slot":"pointer_state","ap":"ap_forward",      "child":"state_forward"},
-            {"slot":"pointer_state","ap":"ap_yaw",          "child":"state_yaw"}
+            {"slot":"pointer_state","ap":"ap_heading",      "child":"state_heading"},
+            {"slot":"state_yaw",    "ap":"ap_forward",      "child":"state_forward"},
+            {"slot":"state_yaw",    "ap":"ap_reverse",      "child":"state_reverse"},
+            {"slot":"state_heading","ap":"ap_yaw",          "child":"state_yaw"}
           ]
         }
       }

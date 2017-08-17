@@ -59,8 +59,15 @@ define([
 			return this.visualCursor.moveTo(x, y, hoverCount);
 		};
 
+        PointerCursor.prototype.lineDistance = function(fromX, fromY, toX, toY) {
+            return Math.sqrt((fromX - toX)*(fromX - toX) + (fromY - toY)*(fromY - toY));
+        };
+
 		PointerCursor.prototype.inputVector = function(fromX, fromY, toX, toY) {
-			this.visualCursor.visualizeVector(fromX, fromY, toX, toY);
+
+            this.inputState.setLine(fromY, fromX, toY, toX, this.lineDistance(fromX, fromY, toX, toY), Math.atan2(fromX - toX, fromY - toY));
+
+		//	this.visualCursor.visualizeVector(fromX, fromY, toX, toY);
 		};
 
 		PointerCursor.prototype.inputMouseAction = function(action) {

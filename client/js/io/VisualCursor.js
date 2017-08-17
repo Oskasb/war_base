@@ -192,7 +192,7 @@ define([
 			var distance = this.lineDistance(fromX, fromY, toX, toY);
 		//	this.showStartDragPoint(fromX, fromY, distance, Math.atan2( toX - fromX, fromY - toY));
 
-			this.transformConnector(fromY, fromX, toY, toX, distance, Math.atan2( toY - fromY, fromX - toX));
+			this.transformConnector(fromY, fromX, toY, toX, distance, Math.atan2(fromX - toX, fromY - toY));
 
 		//	this.transformConnector(fromX, fromY, toX, toY, distance, Math.atan2( toX - fromX, fromY - toY));
 

@@ -1,0 +1,41 @@
+[
+  {
+    "MODELS": {
+      "THREE": [
+        {
+          "id": "control_heading_model",
+          "material": "main_atlas",
+          "url": "./client/assets/models/controls/heading",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "control_yaw_model",
+          "material": "main_atlas",
+          "url": "./client/assets/models/controls/yaw",
+          "pool": 5,
+          "transform": {
+            "pos": [0,   0, 0],
+            "rot": [0,   0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "control_forward_model",
+          "material": "main_atlas",
+          "url": "./client/assets/models/controls/forward",
+          "pool": 5,
+          "transform": {
+            "pos": [0,   0, 0],
+            "rot": [0,  -1, 0],
+            "scale": [1, 1, 1]
+          }
+        }
+      ]
+    }
+  }
+]
