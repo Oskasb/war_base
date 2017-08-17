@@ -4,21 +4,17 @@
       {
         "id":"vehicle_control_piece",
         "data":{
-          "root_slot":"hull",
+          "root_slot":"root",
           "slots":[
-            {"slot":"hull",         "module":"sherman_hull_module"   },
-            {"slot":"main_turret",  "module":"sherman_turret_module" },
-            {"slot":"track_r",      "module":"sherman_track_r_module"},
-            {"slot":"track_l",      "module":"sherman_track_l_module"},
-            {"slot":"main_gun",     "module":"sherman_main_gun_module"},
-            {"slot":"engine",       "module":"sherman_engine_module"}
+            {"slot":"root",         "module":"control_root_module"   },
+            {"slot":"pointer_state","module":"control_pointer_module"},
+            {"slot":"state_forward","module":"control_forward_module"},
+            {"slot":"state_yaw",    "module":"control_pointer_module"}
           ],
           "attachments":[
-            {"slot":"hull",         "ap":"ap_turret",   "child":"main_turret" },
-            {"slot":"hull",         "ap":"ap_track_r",  "child":"track_r"},
-            {"slot":"hull",         "ap":"ap_track_l",  "child":"track_l"},
-            {"slot":"hull",         "ap":"ap_engine",   "child":"engine"  },
-            {"slot":"main_turret",  "ap":"ap_cannon",   "child":"main_gun"}
+            {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
+            {"slot":"pointer_state","ap":"ap_forward",      "child":"state_forward"},
+            {"slot":"pointer_state","ap":"ap_yaw",          "child":"state_yaw"}
           ]
         }
       }

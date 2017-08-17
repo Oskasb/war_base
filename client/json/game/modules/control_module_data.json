@@ -1,0 +1,86 @@
+[{
+  "MODULE_DATA":{
+    "MODULES":[
+      {
+        "id":"control_root_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,  0],
+            "pos":  [0,   0,  0],
+            "size": [0.3,0.1,0.3]
+          },
+          "channels":[
+            {"channelid":"channel_pos_x",  "stateid": "pos_state_x"},
+            {"channelid":"channel_pos_y",  "stateid": "pos_state_y"},
+            {"channelid":"channel_pos_z",  "stateid": "pos_state_z"}
+          ],
+
+          "attachment_points":[
+            {"id":"ap_pointer_state",
+              "transform":{
+                "rot":[0,   0,    0],
+                "pos":[0,   0.4,  0]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id":"control_pointer_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   0.35, 0.0],
+            "size": [0.4, 0.2,  0.5]
+          },
+          "channels":[
+            {"channelid":"fire_channel", "stateid":"fire_state"},
+            {"channelid":"model_yaw", "stateid":"turret_yaw"}
+          ],
+
+          "attachment_points":[
+            {"id":"ap_yaw",
+              "transform":{
+                "rot":[0,      0, 0],
+                "pos":[0.0, 0.45, 0]
+              }
+            },
+            {"id":"ap_forward",
+              "transform":{
+                "rot":[  0,    0,  0],
+                "pos":[0.0,   0.0, 0]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id":"control_forward_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   0.0,-0.25],
+            "size": [0.1, 0.1,  0.5]
+          },
+          "channels":[
+            {"channelid":"fire_channel", "stateid":"fire_state"},
+            {"channelid":"model_yaw", "stateid":"turret_yaw"}
+          ]
+        }
+      }, {
+        "id":"control_yaw_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [-0.3,   0.0, 0.0],
+            "size": [0.6, 0.1,  0.1]
+          },
+          "channels":[
+            {"channelid":"fire_channel", "stateid":"fire_state"},
+            {"channelid":"model_yaw", "stateid":"turret_yaw"}
+          ]
+        }
+      }
+    ]
+  }
+}]
