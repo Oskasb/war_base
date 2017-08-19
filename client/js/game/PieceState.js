@@ -22,7 +22,7 @@ define([],
             if (window.SharedArrayBuffer) {
                 var buffer = new SharedArrayBuffer(Float32Array.BYTES_PER_ELEMENT * state.length);
                 this.buffer = new Float32Array(buffer);
-                console.log(this.buffer)
+            //    console.log(this.buffer)
             } else {
                 this.buffer = state;
             }

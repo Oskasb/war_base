@@ -154,7 +154,7 @@ define([
 
 
             if (value) {
-                console.log("Configs: ", PipelineAPI.getCachedConfigs());
+        //        console.log("Configs: ", PipelineAPI.getCachedConfigs());
 
                 var dataList = ThreeAPI.getModelLoader().getModelList();
 

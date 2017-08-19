@@ -157,7 +157,7 @@ define([
             
 
             var loadStateChange = function(state) {
-                console.log('loadStateChange', state)
+            //    console.log('loadStateChange', state)
                 if (state == _this.getStates().IMAGES) {
 
                     _this.preloadImages();

@@ -11,9 +11,9 @@ define([
         SimulationState
     ) {
 
-        var GameSimulation = function() {
+        var GameSimulation = function(protocolSystem) {
 
-            this.simulationState = new SimulationState();
+            this.simulationState = new SimulationState(protocolSystem);
             this.simulationRequests = new SimulationRequests(this.simulationState);
         };
 

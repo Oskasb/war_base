@@ -22,7 +22,7 @@ define([
 
         var GamePiece = function(hostId, dataKey, ready) {
             gamePieces++;
-            this.pieceNr = hostId+'_piece_'+gamePieces;
+            this.pieceId = hostId+'_piece_'+gamePieces;
             this.dataKey = dataKey;
             this.render = false;
             this.frustumCoords = new THREE.Vector3();

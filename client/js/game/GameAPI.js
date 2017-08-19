@@ -78,9 +78,16 @@ define([
         GameAPI.removeActor = function(actor) {
             GameAPI.dropActorControl(actor);
             GameAPI.detatchPieceControls(actor.piece, actor.controlStateMap);
+
             this.removePiece(actor.controls);
             this.removePiece(actor.piece);
             actor.removeGameActor();
+
+            var response = function(msg) {
+                console.log("Actor Despwned", msg);
+            };
+
+            gameWorker.makeGameRequest('despawnActor', actor.id, response);
         };
 
         GameAPI.addPiece = function(piece) {

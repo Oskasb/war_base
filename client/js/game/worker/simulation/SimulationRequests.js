@@ -16,13 +16,19 @@ define([
             var opts = JSON.parse(options);
 
             var ready = function(actorSpawnData) {
-
                 postMessage(['createActor', JSON.stringify(actorSpawnData)]);
             };
-
             this.simulationState.spawnActor(opts, ready);
-
         };
+
+        SimulationRequests.prototype.despawnActor = function(actorId) {
+            var ready = function() {
+                postMessage(['despawnActor', 'despawned '+actorId]);
+            };
+            this.simulationState.removeActor(actorId, ready);
+        };
+
+
 
         SimulationRequests.prototype.createTerrain = function(options) {
             console.log("opts:", options);

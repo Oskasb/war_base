@@ -50,11 +50,11 @@ define(['game/worker/DataProtocol'],
         };
 
         GameWorker.prototype.registerPieceStates = function(piece) {
-            this.pieceProtocolMap[piece.pieceNr] = new DataProtocol(piece.pieceNr, piece.pieceStates, this.worker);
+            this.pieceProtocolMap[piece.pieceId] = new DataProtocol(piece.pieceId, piece.pieceStates, this.worker);
         };
 
         GameWorker.prototype.unregisterPieceStates = function(piece) {
-            delete this.pieceProtocolMap[piece.pieceNr];
+            delete this.pieceProtocolMap[piece.pieceId];
         };
 
         GameWorker.prototype.bindPieceControls = function(piece, controlPiece, controlStateMap) {
@@ -62,7 +62,7 @@ define(['game/worker/DataProtocol'],
             this.registerPieceStates(piece);
             this.registerPieceStates(controlPiece);
 
-            var dataProtocol = this.pieceProtocolMap[controlPiece.pieceNr];
+            var dataProtocol = this.pieceProtocolMap[controlPiece.pieceId];
 
             for (var key in controlStateMap.controlStates) {
 

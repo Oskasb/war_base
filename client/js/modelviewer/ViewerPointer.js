@@ -25,9 +25,7 @@ define([
                     }
                 }
             };
-
-        //    PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {MODEL_LOADER:1});
-
+            
             evt.fire(evt.list().ADD_GUI_ELEMENT, {data:elemConf});
         }
 

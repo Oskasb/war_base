@@ -181,7 +181,7 @@ define([
 
             var src = 'state_viewer';
 
-            console.log("toggleStateViewer: ", value);
+        //    console.log("toggleStateViewer: ", value);
 
             if (value) {
                 panel = new DomPanel(GameScreen.getElement(), src);

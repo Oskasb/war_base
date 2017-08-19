@@ -177,7 +177,7 @@ define([
             }
 
             if (value) {
-                console.log("Configs: ", PipelineAPI.getCachedConfigs());
+        //        console.log("Configs: ", PipelineAPI.getCachedConfigs());
 
                 var list = PipelineAPI.readCachedConfigKey('MODULE_DATA', 'MODULES');
 

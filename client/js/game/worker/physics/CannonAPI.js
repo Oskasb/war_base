@@ -12,7 +12,7 @@ define(['worker/physics/PhysicsFunctions'],
             }
         };
 
-        CannonAPI.prototype.initServerPhysics = function() {
+        CannonAPI.prototype.initPhysics = function() {
             this.world = this.physicsFunctions.createCannonWorld()
         };
 

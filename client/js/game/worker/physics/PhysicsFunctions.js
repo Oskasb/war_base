@@ -279,8 +279,6 @@ var createVehicle = function(world, spatial, bodyParams) {
     chassisBody.angularVelocity.set(0, 0, 0.2);
 
 
-
-
     var options = {
         radius: 0.5,
         directionLocal: new CANNON.Vec3(0, 0, -1),

@@ -24,7 +24,7 @@ define([],
 
         DataProtocol.prototype.recieveMessage = function(data) {
             for (var i = 2; i < data.length-1; i++) {
-                this.setStateValue(data[i], data[i+1], data[data.length-1]);
+                this.setStateValue(data[i], data[i+1], data[i+2]);
                 i++;
                 i++;
             }
@@ -60,7 +60,7 @@ define([],
 
         // Use to bind player inputs to worker side state controls on another protocol
         DataProtocol.prototype.mapTargetChannels = function(target, controlStateMap) {
-            this.protocol[1] = target.pieceNr;
+            this.protocol[1] = target.pieceId;
 
             var channelMatrix = [];
 

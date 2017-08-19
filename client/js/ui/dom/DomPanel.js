@@ -161,7 +161,7 @@ define([
                 var elemData = function(key, conf) {
                     for (var i = 0; i < conf.length; i++) {
                         if (conf[i].id == elementConfig.container) {
-                            console.log("load container Element:", elementConfig, _this.parent);
+                        //    console.log("load container Element:", elementConfig, _this.parent);
                             _this.removeContainedElement(elementConfig);
                             var container = _this.attachElement(_this.panelId, conf[i]);
                             var elem = _this.attachElement(container, elementConfig)
@@ -175,7 +175,7 @@ define([
 
             } else {
 
-                console.log("load Element:", elementConfig, _this.panelId);
+            //    console.log("load Element:", elementConfig, _this.panelId);
                 _this.removeContainedElement(elementConfig);
                 //    var container = _this.attachElement(_this.panelId, conf[i]);
                 var elem = _this.attachElement(_this.panelId, elementConfig)
@@ -193,7 +193,7 @@ define([
         //    var containerId = elementConfig.container+'_'+id;
 
             if (this.elements[id]) {
-                console.log("Remove id", id, this.elements);
+        //        console.log("Remove id", id, this.elements);
 
                     if (this.elements[id].container ) {
                         this.gridElements.splice(this.gridElements.indexOf(this.elements[id].container), 1);

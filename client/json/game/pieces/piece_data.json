@@ -21,6 +21,16 @@
             {"slot":"main_turret",  "ap":"ap_cannon",   "child":"main_gun"}
           ]
         }
+      },
+      {
+        "id":"default_terrain_piece",
+        "data":{
+          "root_slot":"ground",
+          "slots":[
+            {"slot":"ground",         "module":"terrain_plain_ground"}
+          ],
+          "attachments":[]
+        }
       }
     ]
   }

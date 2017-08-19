@@ -135,7 +135,7 @@ define([
             }
 
             if (value) {
-                console.log("Configs: ", PipelineAPI.getCachedConfigs());
+    //            console.log("Configs: ", PipelineAPI.getCachedConfigs());
                 var list = PipelineAPI.getCachedConfigs().PARTICLE_EFFECTS.THREE;
                 var dataList = {};
 

@@ -38,7 +38,7 @@ define([
             var _this=this;
 
             var applyDevConfig = function(src, value) {
-                console.log(src, value);
+        //        console.log(src, value);
                 setTimeout(function() {
                     _this.applyDevConfig(src,value)
                 }, 100);

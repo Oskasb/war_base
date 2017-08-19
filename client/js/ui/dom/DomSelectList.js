@@ -27,7 +27,7 @@ define([
         };
 
         DomSelectList.prototype.populatePanelButtons = function(panel, category, dataList, stateData, buttonFunc) {
-            console.log("Select List:", panel, dataList);
+    //        console.log("Select List:", panel, dataList);
 
             for (var key in dataList) {
                 this.funcList[key] = buttonFunc;

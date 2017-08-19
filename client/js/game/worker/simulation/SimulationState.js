@@ -15,7 +15,8 @@ define([
     ) {
 
         var actors = [];
-        var SimulationState = function() {
+        var SimulationState = function(protocolSystem) {
+            this.protocolSystem = protocolSystem;
             this.cannonApi = new CannonAPI();
             this.terrainFunctions = new TerrainFunctions(this.cannonApi);
             this.SimulationOperations = new SimulationOperations();
@@ -33,13 +34,29 @@ define([
 
         };
 
+        SimulationState.prototype.getActorById = function(actorId) {
+            for (var i = 0; i < actors.length; i++) {
+                if (actors[i].id === actorId) {
+                    return actors[i];
+                }
+            }
+            console.log("No actor by id:", actorId, actors);
+        };
+
+        SimulationState.prototype.removeActor = function(actorId, cb) {
+            var actor = this.getActorById(actorId);
+            actors.splice(actors.indexOf(actor, 1));
+            this.protocolSystem.removeProtocol(actor);
+            cb();
+        };
+
         SimulationState.prototype.createTerrain = function(options) {
 
         };
 
         SimulationState.prototype.updateState = function(tpf) {
             for (var i = 0; i < actors.length; i++) {
-
+                this.protocolSystem.updateActorProtocol(actors[i], tpf);
             }
         };
 

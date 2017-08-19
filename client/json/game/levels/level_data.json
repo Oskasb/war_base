@@ -1,0 +1,12 @@
+[{
+  "LEVEL_DATA":{
+    "LEVELS":[
+      {
+        "id":"default_game_level",
+        "data":{
+          "piece":"sherman_tank_piece"
+        }
+      }
+    ]
+  }
+}]

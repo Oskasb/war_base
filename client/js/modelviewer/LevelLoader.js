@@ -35,11 +35,11 @@ define([
         var stateData;
 
         function addButton() {
-            var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.ACTOR_LOADER, type:ENUMS.Type.toggle};
+            var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.LEVEL_LOADER, type:ENUMS.Type.toggle};
 
             var buttonConf = {
                 panel:ENUMS.Gui.leftPanel,
-                id:"actorloaderbutton",
+                id:"levelloaderbutton",
                 container:"editor_button_container",
                 data:{
                     style:["panel_button", "coloring_button_main_panel"],
@@ -47,22 +47,22 @@ define([
                         id:"panel_button",
                         event:buttonEvent
                     },
-                    text:'ACTORS'
+                    text:'LEVELS'
                 }
             };
 
-            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {ACTOR_LOADER:true});
+            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {LEVEL_LOADER:true});
 
             evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
 
             setTimeout(function() {
-                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {ACTOR_LOADER:false});
+                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {LEVEL_LOADER:false});
             }, 1000);
 
         }
 
 
-        var ActorLoader = function() {
+        var LevelLoader = function() {
             this.running = false;
             this.panel = null;
             this.currentValue = 0;
@@ -75,7 +75,7 @@ define([
                 }, 100);
             };
 
-            PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.ACTOR_LOADER, apply);
+            PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.LEVEL_LOADER, apply);
 
             addButton();
 
@@ -114,12 +114,12 @@ define([
         };
 
 
-        ActorLoader.prototype.monitorPieceModules = function(piece, bool) {
+        LevelLoader.prototype.monitorPieceModules = function(piece, bool) {
             ModuleStateViewer.viewPieceStates(piece, bool);
         };
 
 
-        ActorLoader.prototype.loadActor = function(id, value) {
+        LevelLoader.prototype.loadActor = function(id, value) {
 
             if (!loadedModules[id]) {
                 loadedModules[id] = [];
@@ -173,7 +173,7 @@ define([
         };
 
 
-        ActorLoader.prototype.togglePanel = function(src, value) {
+        LevelLoader.prototype.togglePanel = function(src, value) {
 
             if (panelStates[src] === value) {
                 return
@@ -181,7 +181,7 @@ define([
             panelStates[src] = value;
             var _this = this;
 
-            var category = ENUMS.Category.LOAD_ACTOR;
+            var category = ENUMS.Category.LOAD_LEVEL;
 
             var buttonFunc = function(src, value) {
                 setTimeout(function() {
@@ -199,7 +199,7 @@ define([
             if (value) {
         //        console.log("Configs: ", PipelineAPI.getCachedConfigs());
 
-                var list = PipelineAPI.readCachedConfigKey('PIECE_DATA', 'ACTORS');
+                var list = PipelineAPI.readCachedConfigKey('LEVEL_DATA', 'LEVELS');
 
                 var dataList = {};
 
@@ -228,5 +228,5 @@ define([
             }
         };
 
-        return ActorLoader;
+        return LevelLoader;
     });
