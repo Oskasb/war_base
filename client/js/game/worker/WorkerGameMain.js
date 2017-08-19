@@ -1,17 +1,18 @@
 "use strict";
 
 define([
-   // 'PipelineAPI',
+    'PipelineAPI',
         'worker/physics/CannonAPI',
         'worker/terrain/TerrainFunctions',
         'worker/io/ProtocolSystem'
     ],
     function(
-     //   PipelineAPI,
+        PipelineAPI,
         CannonAPI,
         TerrainFunctions,
         ProtocolSystem
     ) {
+
 
         var WorkerGameMain = function() {
             this.protocolSystem = new ProtocolSystem();

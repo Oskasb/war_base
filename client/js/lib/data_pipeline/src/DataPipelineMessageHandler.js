@@ -12,9 +12,13 @@ define([
 
 		var ConfigCache;
 
-		require(['data_pipeline/data/ConfigCache'], function(CC) {
-			ConfigCache = CC;
-		});
+	//	var w = window || null;
+
+	//	if (w) {
+            require(['data_pipeline/data/ConfigCache'], function(CC) {
+                ConfigCache = CC;
+            });
+	//	}
 
 		var okCount = 0;
 		var failCount = 0;

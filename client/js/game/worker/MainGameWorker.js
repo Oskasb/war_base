@@ -12,13 +12,20 @@ require.config({
 	baseUrl: baseUrl,
 	paths: {
         data_pipeline:'client/js/lib/data_pipeline/src',
+        PipelineAPI:'client/js/io/PipelineAPI',
+        Events:'client/js/Events',
+        EventList:'client/js/EventList',
 		worker:'client/js/game/worker'
 	}
 });
 
 require(
-	['worker/WorkerGameMain'],
-	function(WorkerGameMain) {
+	[
+	    'worker/WorkerGameMain'
+    ],
+	function(
+	    WorkerGameMain
+    ) {
 
 		var MainGameWorker = function() {
 			this.workerGameMain = new WorkerGameMain();

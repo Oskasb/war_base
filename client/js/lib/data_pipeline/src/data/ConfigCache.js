@@ -92,12 +92,11 @@ define([
             progressCallbacks.push(callback)
         };
 
-        ConfigCache.addProgressCallback = function(callback) {
+        ConfigCache.removeProgressCallback = function(callback) {
             if (progressCallbacks.indexOf(callback) !== -1) {
                 progressCallbacks.splice(progressCallbacks.indexOf(callback), 1)
             }
         };
-
 
         ConfigCache.setMasterResetFunction = function(callback) {
             masterReset = callback;

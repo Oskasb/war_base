@@ -9,19 +9,20 @@ define(["EventList"], function(eventList) {
         this.message = message;
     };
 
-    eventException.prototype = Error.prototype;
 
     var list = function() {
         return eventList;
     };
 
+//    eventException.prototype = Error.prototype;
 
     var validateEventArguments = function(event, arguments) {
+
         if (!event) console.log("NO EVENT", event)
         for (index in arguments) {
 
             if (typeof(event.args[index]) != typeof(arguments[index])) {
-                throw new eventException("Invalid event arguments, "+event.type+" does not match type for supplied argument: "+index);
+                console.log("Invalid event arguments, "+event.type+" does not match type for supplied argument: "+index)
             }
         }
     };

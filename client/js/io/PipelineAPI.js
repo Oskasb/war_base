@@ -1,6 +1,8 @@
 "use strict";
 
-define(['data_pipeline/data/ConfigCache'],
+define([
+    'data_pipeline/data/ConfigCache'
+    ],
 	function(
 		ConfigCache
 		) {
