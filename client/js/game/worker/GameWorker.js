@@ -34,16 +34,31 @@ define(['game/worker/DataProtocol'],
             }
         };
 
-
         GameWorker.prototype.post = function(msg, onData) {
             this.callbacks[msg[0]] = onData;
             this.worker.postMessage(msg);
         };
 
-        GameWorker.prototype.registerPieceStates = function(pieceNr, pieceStates) {
-            var dataProtocol = new DataProtocol(pieceNr, pieceStates);
-            this.pieceProtocolMap[dataProtocol.ptcNr] = dataProtocol;
-            this.worker.postMessage(['registerProtocol', dataProtocol.protocol]);
+        GameWorker.prototype.registerPieceStates = function(piece) {
+            this.pieceProtocolMap[piece.pieceNr] = new DataProtocol(piece.pieceNr, piece.pieceStates, this.worker);
+        };
+
+        GameWorker.prototype.bindPieceControls = function(piece, controlPiece, controlStateMap) {
+
+            this.registerPieceStates(piece);
+            this.registerPieceStates(controlPiece);
+
+            var dataProtocol = this.pieceProtocolMap[controlPiece.pieceNr];
+
+            for (var key in controlStateMap.controlStates) {
+                var callback = function(src, value) {
+                    dataProtocol.postState(src, value)
+                };
+                controlStateMap.setStateIdCallback(key, callback);
+            }
+
+            dataProtocol.mapTargetChannels(piece, controlStateMap);
+
         };
 
         return GameWorker;

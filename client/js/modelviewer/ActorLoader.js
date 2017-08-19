@@ -6,22 +6,24 @@ define([
         'PipelineAPI',
         'PipelineObject',
         'ThreeAPI',
+        'GameAPI',
         'ui/dom/DomSelectList',
         'ui/dom/DomPanel',
         'ui/GameScreen',
-        'game/GameModule',
+        'game/GameActor',
         'game/PieceState',
-    'modelviewer/ModuleStateViewer'
+        'modelviewer/ModuleStateViewer'
     ],
     function(
         evt,
         PipelineAPI,
         PipelineObject,
         ThreeAPI,
+        GameAPI,
         DomSelectList,
         DomPanel,
         GameScreen,
-        GameModule,
+        GameActor,
         PieceState,
         ModuleStateViewer
     ) {
@@ -33,11 +35,11 @@ define([
         var stateData;
 
         function addButton() {
-            var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.MODULE_LOADER, type:ENUMS.Type.toggle};
+            var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.ACTOR_LOADER, type:ENUMS.Type.toggle};
 
             var buttonConf = {
                 panel:ENUMS.Gui.leftPanel,
-                id:"moduleloaderbutton",
+                id:"actorloaderbutton",
                 container:"editor_button_container",
                 data:{
                     style:["panel_button", "coloring_button_main_panel"],
@@ -45,22 +47,22 @@ define([
                         id:"panel_button",
                         event:buttonEvent
                     },
-                    text:'MODULES'
+                    text:'ACTORS'
                 }
             };
 
-            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {MODULE_LOADER:true});
+            PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {ACTOR_LOADER:true});
 
             evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
 
             setTimeout(function() {
-                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {MODULE_LOADER:false});
+                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {ACTOR_LOADER:false});
             }, 1000);
 
         }
 
 
-        var ModuleLoader = function() {
+        var ActorLoader = function() {
             this.running = false;
             this.panel = null;
             this.currentValue = 0;
@@ -73,7 +75,7 @@ define([
                 }, 100);
             };
 
-            PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.MODULE_LOADER, apply);
+            PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.ACTOR_LOADER, apply);
 
             addButton();
 
@@ -83,23 +85,41 @@ define([
 
                 t += evt.args(e).tpf;
 
-                for (var key in loadedModules) {
-                    if (loadedModules[key].length) {
-                        var mod = loadedModules[key][0];
+                for (var key in rootModels) {
 
-                        var dataCat = "MODULE_DEBUG_"+mod.id;
 
-                        loadedModules[key][0].sampleModuleFrame(evt.args(e).tpf);
+                    if (rootModels[key].length) {
+
+                        var actor = rootModels[key][0];
+
+                        var piece = actor.piece;
+
+                        for (var i = 0; i < piece.pieceSlots.length;i++) {
+
+                            var mod = piece.pieceSlots[i].module;
+
+                            var dataCat = "MODULE_DEBUG_"+mod.id;
+
+                            for (var j = 0; j < mod.moduleChannels.length; j++) {
+                                PipelineAPI.setCategoryKeyValue(dataCat, mod.moduleChannels[j].state.id, mod.moduleChannels[j].state.getValueRunded(100));
+                            }
+                        }
+
                     }
                 }
+                GameAPI.tickGame(evt.args(e).tpf, evt.args(e).time);
             };
 
             evt.on(evt.list().CLIENT_TICK, tick);
         };
 
 
+        ActorLoader.prototype.monitorPieceModules = function(piece, bool) {
+            ModuleStateViewer.viewPieceStates(piece, bool);
+        };
 
-        ModuleLoader.prototype.loadModule = function(id, value) {
+
+        ActorLoader.prototype.loadActor = function(id, value) {
 
             if (!loadedModules[id]) {
                 loadedModules[id] = [];
@@ -112,48 +132,47 @@ define([
             if (value === true) {
                 console.log("Load Model: ", id, value);
 
-                if (loadedModules[id].length) return;
+                if (rootModels[id].length) return;
 
 
-                var ready = function(mod) {
+                var ready = function(actor) {
 
-                    for (var i = 0; i < mod.moduleChannels.length; i++) {
-                        mod.moduleChannels[i].attachPieceState(new PieceState(mod.moduleChannels[i].stateid, 0));
+                    if (rootModels[id]) {
+
+                        while (rootModels[id].length) {
+                            var p = rootModels[id].pop();
+                            _this.monitorPieceModules(p.piece, false);
+                            p.setGamePiece(null);
+                            p.removeGameActor();
+                        }
+
                     }
 
-                    var rootObj = ThreeAPI.createRootObject();
-                    mod.attachModuleToParent(rootObj);
-
-                    loadedModules[mod.id].push(mod);
-
-                    rootModels[mod.id].push(rootObj);
-
-                    ThreeAPI.addToScene(rootObj);
-                    mod.monitorGameModule(true);
-                    ModuleStateViewer.toggleModuleStateViewer(mod, true);
+                    ThreeAPI.addToScene(actor.piece.rootObj3D);
+                    ThreeAPI.addToScene(actor.controls.rootObj3D);
+                    //    mod.monitorGameModule(true);
+                    rootModels[id].push(actor);
+                    _this.monitorPieceModules(actor.piece, true);
                 };
 
-                new GameModule(id, ready);
+                new GameActor(id, ready);
 
             } else {
 
-                if (loadedModules[id]) {
-
-                    while (loadedModules[id].length) {
-                        var mod = loadedModules[id].pop()
-                        ModuleStateViewer.toggleModuleStateViewer(mod, false);
-                        mod.removeClientModule();
-                    }
+                if (rootModels[id]) {
 
                     while (rootModels[id].length) {
-                        ThreeAPI.hideModel(rootModels[id].pop());
+                        var p = rootModels[id].pop();
+                        _this.monitorPieceModules(p.piece, false);
+                        p.setGamePiece(null);
+                        p.removeGameActor();
                     }
                 }
             }
         };
 
 
-        ModuleLoader.prototype.togglePanel = function(src, value) {
+        ActorLoader.prototype.togglePanel = function(src, value) {
 
             if (panelStates[src] === value) {
                 return
@@ -161,11 +180,11 @@ define([
             panelStates[src] = value;
             var _this = this;
 
-            var category = ENUMS.Category.LOAD_MODULE;
+            var category = ENUMS.Category.LOAD_ACTOR;
 
             var buttonFunc = function(src, value) {
                 setTimeout(function() {
-                    _this.loadModule(src, value)
+                    _this.loadActor(src, value)
                 }, 10);
             };
 
@@ -179,7 +198,7 @@ define([
             if (value) {
                 console.log("Configs: ", PipelineAPI.getCachedConfigs());
 
-                var list = PipelineAPI.readCachedConfigKey('MODULE_DATA', 'MODULES');
+                var list = PipelineAPI.readCachedConfigKey('PIECE_DATA', 'ACTORS');
 
                 var dataList = {};
 
@@ -208,5 +227,5 @@ define([
             }
         };
 
-        return ModuleLoader;
+        return ActorLoader;
     });

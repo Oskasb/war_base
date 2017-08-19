@@ -2,6 +2,14 @@
   "MODULE_CHANNELS":{
     "CHANNELS":[
       {
+        "id":"channel_sample_press",
+        "data":{
+          "targets":[
+            {"targetid":"target_read_press_0"}
+          ]
+        }
+      },
+      {
         "id":"channel_input_length",
         "data":{
           "targets":[
@@ -14,6 +22,14 @@
         "data":{
           "targets":[
             {"targetid":"module_channel_sample_angle"}
+          ]
+        }
+      },
+      {
+        "id":"channel_scale_uniform",
+        "data":{
+          "targets":[
+            {"targetid":"target_uniform_scale"}
           ]
         }
       },
@@ -74,7 +90,7 @@
         }
       },
       {
-        "id":"model_pitch",
+        "id":"channel_pitch",
         "data":{
           "targets":[
             {"targetid":"model_rotate_pitch"}
@@ -82,7 +98,7 @@
         }
       },
       {
-        "id":"model_yaw",
+        "id":"channel_yaw",
         "data":{
           "targets":[
             {"targetid":"model_rotate_yaw"}

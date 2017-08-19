@@ -111,7 +111,7 @@
           },
           "model":"sherman_cannon",
           "channels":[
-            {"channelid":"model_pitch", "stateid":"gun_pitch"}
+            {"channelid":"channel_pitch", "stateid":"gun_pitch"}
           ]
         }
       },
@@ -126,7 +126,7 @@
           "model":"sherman_turret",
           "channels":[
             {"channelid":"fire_channel", "stateid":"fire_state"},
-            {"channelid":"model_yaw", "stateid":"turret_yaw"}
+            {"channelid":"channel_yaw", "stateid":"turret_yaw"}
           ],
 
           "attachment_points":[
@@ -165,7 +165,7 @@
           },
           "terrain":"plain_ground",
           "channels":[
-            {"channelid":"model_pitch", "stateid":"gun_pitch"}
+            {"channelid":"channel_pitch", "stateid":"gun_pitch"}
           ]
         }
       }

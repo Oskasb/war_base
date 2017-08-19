@@ -9,6 +9,7 @@ define([
     ) {
         var gameWorker;
 
+        var pieces = [];
 
         var GameAPI = function() {
 
@@ -27,9 +28,29 @@ define([
             gameWorker.post(['createTerrain', JSON.stringify(options)], onData)
         };
 
-        GameAPI.registerActivePiece = function(pieceNr, pieceStates) {
+        GameAPI.registerActivePiece = function(piece) {
+            gameWorker.registerPieceStates(piece)
+        };
 
-            gameWorker.registerPieceStates(pieceNr, pieceStates)
+        GameAPI.registerPieceControls = function(piece, pieceControls, stateMap) {
+            gameWorker.bindPieceControls(piece, pieceControls, stateMap)
+        };
+
+        GameAPI.addPiece = function(piece) {
+            this.removePiece(piece);
+            pieces.push(piece);
+        };
+
+        GameAPI.removePiece = function(piece) {
+            if (pieces.indexOf(piece) !== -1) {
+                pieces.splice(pieces.indexOf(piece), 1);
+            }
+        };
+
+        GameAPI.tickGame = function(tpf, time) {
+            for (var i = 0; i < pieces.length; i++) {
+                pieces[i].updateGamePiece(tpf, time);
+            }
         };
 
         return GameAPI;

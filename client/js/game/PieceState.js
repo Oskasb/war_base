@@ -10,7 +10,8 @@ define([],
             this.value = 0;
             this.startValue = value;
 
-            this.messageTime = 0;
+            this.callbacks = [];
+
             this.targetTime = 0;
             this.targetValue = value;
             this.lastUpdate = 0;
@@ -30,6 +31,25 @@ define([],
 
         PieceState.prototype.setValue = function (value) {
             this.value = value;
+            this.notifyUpdate();
+        };
+
+
+        PieceState.prototype.notifyUpdate = function () {
+            for (var i = 0; i < this.callbacks.length; i++) {
+                this.callbacks[i](this.id, this.value);
+            }
+        };
+
+        PieceState.prototype.addCallback = function (callback) {
+            this.removeCallback(callback);
+            this.callbacks.push(callback);
+        };
+
+        PieceState.prototype.removeCallback = function (callback) {
+            if (this.callbacks.indexOf(callback) !== -1) {
+                this.callbacks.splice(this.callbacks.indexOf(callback), 1);
+            }
         };
 
         PieceState.prototype.getValue = function () {
@@ -45,20 +65,14 @@ define([],
             return Math.round(this.value*factor)/factor;
         };
 
-        PieceState.prototype.updateStateFrame = function (tpf, time) {
+        PieceState.prototype.updateTargetValues = function () {
+           this.targetValue = this.buffer[0];
+            this.targetTime = this.buffer[1];
+            this.stateProgress = 0;
+            this.startValue = this.value;
+        };
 
-            if (this.value === this.buffer[0]) return;
-
-            this.lastUpdate = time;
-
-            if (this.targetValue !== this.buffer[0]) {
-                this.targetValue = this.buffer[0];
-                this.targetTime = this.buffer[1];
-             //   this.messageTime = time;
-                this.stateProgress = 0;
-                this.startValue = this.value;
-            }
-
+        PieceState.prototype.updateStateProgress = function (tpf) {
             this.stateProgress += tpf;
 
             if (this.stateProgress < this.targetTime) {
@@ -67,6 +81,19 @@ define([],
             } else {
                 this.setValue(this.targetValue);
             };
+        };
+
+        PieceState.prototype.updateStateFrame = function (tpf, time) {
+
+            if (this.value === this.buffer[0]) return;
+
+            this.lastUpdate = time;
+
+            if (this.targetValue !== this.buffer[0]) {
+                this.updateTargetValues()
+            }
+            this.updateStateProgress(tpf);
+
         };
 
         return PieceState

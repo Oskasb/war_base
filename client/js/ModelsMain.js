@@ -18,6 +18,7 @@ require([
     'modelviewer/ModuleLoader',
     'modelviewer/ControlLoader',
     'modelviewer/ParticleLoader',
+    'modelviewer/ActorLoader',
     'modelviewer/ViewerPointer',
     'ui/GameScreen',
     'io/PointerCursor'
@@ -37,6 +38,7 @@ require([
     ModuleLoader,
     ControlLoader,
     ParticleLoader,
+    ActorLoader,
     ViewerPointer,
     GameScreen,
     PointerCursor
@@ -67,6 +69,7 @@ require([
             new ParticleLoader();
             new PieceLoader();
             new ControlLoader();
+            new ActorLoader();
         };
 
         evt.on(evt.list().PLAYER_READY, playerReady);

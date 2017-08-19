@@ -150,7 +150,7 @@ define([
                 //    mod.monitorGameModule(true);
                     rootModels[id].push(piece);
                     _this.monitorPieceModules(piece, true);
-                    GameAPI.registerActivePiece(piece.pieceNr, piece.pieceStates);
+                    GameAPI.registerActivePiece(piece);
                 };
 
                 new GamePiece(id, ready);
@@ -192,6 +192,9 @@ define([
                 first = true;
             }
 
+
+            ModuleStateViewer.toggleStateViewer(value);
+
             if (value) {
                 console.log("Configs: ", PipelineAPI.getCachedConfigs());
 
@@ -214,9 +217,7 @@ define([
 
             }
 
-            setTimeout(function() {
-                ModuleStateViewer.toggleStateViewer(value);
-            },200);
+
 
 
             if (first) {

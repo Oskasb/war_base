@@ -28,15 +28,24 @@ define([
 
         var ModuleCallbacks = function() {};
 
+        ModuleCallbacks.read_press_active = function(module, target, state) {
+            if (mouseState.action[0] + 0.00001 !== state.getValue() && !mouseState.action[1]) {
+                state.setValueAtTime(mouseState.action[0] * target.factor + 0.00001, target.time);
+            }
+        };
+
         ModuleCallbacks.read_input_vector = function(module, target, state) {
             if (mouseState.action[0]) {
                 state.setValueAtTime(line[target.parameter] * target.factor, target.time);
             }
-
         };
 
         ModuleCallbacks.transform = function(module, target, state) {
             module.visualModule.rootObj[target.parameter][target.axis] = state.getValue();
+        };
+
+        ModuleCallbacks.scale_uniform = function(module, target, state) {
+            module.visualModule.rootObj.scale.setScalar(state.getValue());
         };
 
         ModuleCallbacks.quat_axis = function(module, target, state) {

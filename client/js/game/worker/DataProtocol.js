@@ -3,22 +3,23 @@
 define([],
     function() {
 
-    var protocols = 0;
 
-        var DataProtocol = function(pieceKey, pieceStates) {
 
-            protocols++;
-            this.ptcNr = protocols;
+        var DataProtocol = function(pieceKey, pieceStates, worker) {
+
+            this.ptcNr = pieceKey;
+
+            this.worker = worker;
 
             this.stateKeyMap = {};
             this.protocol = [this.ptcNr, pieceKey];
-
-
 
             for (var i = 0; i < pieceStates.length; i++) {
                 this.addStateChannel(pieceStates[i])
             }
             this.protocol.push(new Date().getTime());
+
+            this.worker.postMessage(['registerProtocol', this.protocol]);
         };
 
         DataProtocol.prototype.recieveMessage = function(data) {
@@ -51,8 +52,25 @@ define([],
             this.stateKeyMap[stateIdx] = state;
         };
 
-        DataProtocol.prototype.getStateChannel = function(stateKey, value) {
+        DataProtocol.prototype.postState = function(stateKey, value) {
+            var stateIdx = this.protocol.indexOf(stateKey);
+            this.protocol[stateIdx+1] = value;
+            this.worker.postMessage(this.protocol);
+        };
 
+        // Use to bind player inputs to worker side state controls on another protocol
+        DataProtocol.prototype.mapTargetChannels = function(target, controlStateMap) {
+            this.protocol[1] = target.pieceNr;
+
+            var channelMatrix = [];
+
+            for (var stateKey in controlStateMap.controlTarget) {
+                var targetKey = controlStateMap.controlTarget[stateKey].id;
+                channelMatrix.push(stateKey);
+                channelMatrix.push(targetKey);
+            }
+
+            this.worker.postMessage(['mapTarget', [this.protocol[0], channelMatrix]]);
         };
 
         return DataProtocol

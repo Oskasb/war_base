@@ -1,0 +1,16 @@
+[{
+  "PIECE_DATA":{
+    "ACTORS":[
+      {
+        "id":"sherman_tank_actor",
+        "data":{
+          "piece":"sherman_tank_piece",
+          "controls":"vehicle_control_piece",
+          "state_map":[
+            {"control":"state_forward", "target":"engine_state"}
+          ]
+        }
+      }
+    ]
+  }
+}]

@@ -65,6 +65,7 @@ define([
             var slotsReady = function() {
                 this.attachPieceStates();
                 this.buildHierarchy();
+                GameAPI.addPiece(this);
                 ready(this);
             }.bind(this);
 
@@ -143,9 +144,11 @@ define([
 
         GamePiece.prototype.removeGamePiece = function () {
 
+            this.pipeObj.removePipelineObject();
             for (var i = 0; i < this.pieceSlots.length;i++) {
                 this.pieceSlots[i].removePieceSlot();
             }
+            GameAPI.removePiece(this);
         };
 
 

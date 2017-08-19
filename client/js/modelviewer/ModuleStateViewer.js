@@ -26,6 +26,7 @@ define([
 
         var panel;
 
+        var loadedModules = [];
 
         var ModuleStateViewer = function() {
 
@@ -41,6 +42,16 @@ define([
         };
 
         ModuleStateViewer.toggleModuleStateViewer = function(mod, bool) {
+
+            if (bool) {
+                if (loadedModules.indexOf(mod) === -1) {
+                    loadedModules.push(mod);
+                }
+            } else {
+                if (loadedModules.indexOf(mod) !== -1) {
+                    loadedModules.splice(loadedModules.indexOf(mod));
+                }
+            }
 
             var mouseState = PipelineAPI.readCachedConfigKey('POINTER_STATE', 'mouseState');
 
@@ -149,16 +160,35 @@ define([
 
         };
 
+        var tick = function(e) {
+
+            for (var key in loadedModules) {
+                if (loadedModules[key].length) {
+                    var mod = loadedModules[key][0];
+
+                    var dataCat = "MODULE_DEBUG_"+mod.id;
+
+                    for (var i = 0; i < mod.moduleChannels.length; i++) {
+                        PipelineAPI.setCategoryKeyValue(dataCat, mod.moduleChannels[i].state.id, mod.moduleChannels[i].state.getValueRunded(100));
+                    }
+
+                    loadedModules[key][0].sampleModuleFrame(evt.args(e).tpf);
+                }
+            }
+        };
 
         ModuleStateViewer.toggleStateViewer = function(value) {
 
             var src = 'state_viewer';
 
+            console.log("toggleStateViewer: ", value);
+
             if (value) {
-                console.log("toggleStateViewer: ", value);
                 panel = new DomPanel(GameScreen.getElement(), src);
-            } else if (panel) {
-                panel.removeGuiPanel();
+                evt.on(evt.list().CLIENT_TICK, tick);
+            } else {
+                if (panel) panel.removeGuiPanel();
+                evt.removeListener(evt.list().CLIENT_TICK, tick);
             }
 
         };
