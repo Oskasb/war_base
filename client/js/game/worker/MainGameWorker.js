@@ -11,7 +11,7 @@ importScripts(baseUrl+'client/js/lib/require.js');
 require.config({
 	baseUrl: baseUrl,
 	paths: {
-		data_pipeline:'client/js/lib/data_pipeline/src',
+        data_pipeline:'client/js/lib/data_pipeline/src',
 		worker:'client/js/game/worker'
 	}
 });

@@ -1,10 +1,13 @@
 "use strict";
 
-define(['worker/physics/CannonAPI',
+define([
+   // 'PipelineAPI',
+        'worker/physics/CannonAPI',
         'worker/terrain/TerrainFunctions',
         'worker/io/ProtocolSystem'
     ],
     function(
+     //   PipelineAPI,
         CannonAPI,
         TerrainFunctions,
         ProtocolSystem
@@ -37,9 +40,12 @@ define(['worker/physics/CannonAPI',
             this.postToMain(['createTerrain', array]);
         };
 
-
         WorkerGameMain.prototype.registerProtocol = function(protocol) {
             this.protocolSystem.addProtocol(protocol);
+        };
+
+        WorkerGameMain.prototype.storeConfig = function(config) {
+            console.log("Sore worker config", config);
         };
 
         WorkerGameMain.prototype.mapTarget = function(protocol) {

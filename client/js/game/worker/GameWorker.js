@@ -3,9 +3,12 @@
 define(['game/worker/DataProtocol'],
     function(DataProtocol) {
 
-        var GameWorker = function() {
+        var GameWorker = function(workerReady) {
 
-            this.callbacks = {};
+            this.callbacks = {
+                ready:workerReady
+            };
+
             this.pieceProtocolMap = {};
             this.worker = new Worker('./client/js/game/worker/MainGameWorker.js');
             this.worker.onmessage = function(msg) {
@@ -29,9 +32,6 @@ define(['game/worker/DataProtocol'],
                 return;
             }
 
-            if (msg.data[0] === 'ready') {
-                this.worker.postMessage(['ping', [new Date().getTime()]]);
-            }
         };
 
         GameWorker.prototype.post = function(msg, onData) {
@@ -59,6 +59,12 @@ define(['game/worker/DataProtocol'],
 
             dataProtocol.mapTargetChannels(piece, controlStateMap);
 
+        };
+
+        GameWorker.prototype.storeConfig = function(confId, data) {
+            var json = JSON.stringify(data);
+            console.log([confId, json]);
+            this.worker.postMessage(['storeConfig', [confId, json]]);
         };
 
         return GameWorker;

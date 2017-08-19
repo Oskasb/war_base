@@ -12,14 +12,9 @@ define([], function() {
             if (this.protocols[msg[0]]) {
                 this.handleProtocolMessage(msg);
                 return;
-            }
-
-            if (typeof(this[msg[0]]) === 'function') {
-                this[msg[0]](msg[0], msg[1])
             } else {
-                console.log("No function", msg[0])
+                console.log("No protocol for", msg)
             }
-            console.log("-- >Worker Game Message", msg)
         };
 
         ProtocolSystem.prototype.mapProtocolTargets = function(msg) {
@@ -44,11 +39,8 @@ define([], function() {
             }
 
             var channels = this.targetMap[protocol[0]];
-
             var target = this.protocols[protocol[1]];
-
             var msg = [target[0], target[1]];
-
 
             var addStateToMessage = function(channelKey, targetKey) {
 
@@ -73,11 +65,9 @@ define([], function() {
             }
 
             if (self.SharedArrayBuffer) return;
-
             msg.push(0.2);
             self.postMessage(msg);
         };
-
 
 
         return ProtocolSystem;

@@ -23,6 +23,10 @@ define(['data_pipeline/data/ConfigCache'],
 			ConfigCache.addProgressCallback(callback);
 		};
 
+        PipelineAPI.removeProgressCallback = function(callback) {
+            ConfigCache.removeProgressCallback(callback);
+        };
+
 		PipelineAPI.readCachedConfigKey = function(category, key) {
 			return ConfigCache.getConfigKey(category, key)
 		};
