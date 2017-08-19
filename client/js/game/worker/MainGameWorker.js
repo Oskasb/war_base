@@ -14,6 +14,7 @@ require.config({
 	baseUrl: baseUrl,
 	paths: {
         data_pipeline:'client/js/lib/data_pipeline/src',
+        ThreeAPI:'client/js/3d/three/ThreeAPI',
         PipelineAPI:'client/js/io/PipelineAPI',
         Events:'client/js/Events',
         EventList:'client/js/EventList',

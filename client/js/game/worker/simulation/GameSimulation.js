@@ -2,39 +2,50 @@
 
 define([
         'PipelineAPI',
-        'worker/physics/CannonAPI',
-        'worker/terrain/TerrainFunctions'
+        'worker/simulation/SimulationRequests',
+        'worker/simulation/SimulationState'
     ],
     function(
         PipelineAPI,
-        CannonAPI,
-        TerrainFunctions
+        SimulationRequests,
+        SimulationState
     ) {
 
         var GameSimulation = function() {
-            this.cannonApi = new CannonAPI();
-            this.terrainFunctions = new TerrainFunctions(this.cannonApi);
-            this.actors = [];
+
+            this.simulationState = new SimulationState();
+            this.simulationRequests = new SimulationRequests(this.simulationState);
         };
 
         GameSimulation.prototype.processRequest = function(msg) {
-            if (typeof(this[msg[0]]) === 'function') {
-                this[msg[0]](msg[1])
+            if (typeof(this.simulationRequests[msg[0]]) === 'function') {
+                this.simulationRequests[msg[0]](msg[1])
             } else {
-                console.log("No function", msg[0])
+                console.log("No simulationRequests", msg[0])
             }
         };
 
-        GameSimulation.prototype.createActor = function(options) {
-            var opts = JSON.parse(options);
-            console.log("actorRequested:", opts);
-            postMessage(['createActor', JSON.stringify(opts)]);
+
+        GameSimulation.prototype.updateSimulation = function(tpf) {
+            this.simulationState.updateState(tpf);
         };
 
-        GameSimulation.prototype.createTerrain = function(options) {
-            console.log("opts:", options);
-            var array = this.terrainFunctions.createTerrainArray1d(JSON.parse(options));
-            postMessage(['createTerrain', array]);
+        GameSimulation.prototype.runGameLoop = function(tpf) {
+
+            clearInterval(this.gameLoop);
+
+            var frameTime = tpf;
+            var update = function(tickTpf) {
+                this.updateSimulation(tickTpf)
+            }.bind(this);
+
+            this.gameLoop = setInterval(function() {
+                update(frameTime)
+            }, tpf*1000);
+        };
+
+        GameSimulation.prototype.stopGameLoop = function() {
+            clearInterval(this.gameLoop);
         };
 
         return GameSimulation;

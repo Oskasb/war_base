@@ -53,6 +53,10 @@ define(['game/worker/DataProtocol'],
             this.pieceProtocolMap[piece.pieceNr] = new DataProtocol(piece.pieceNr, piece.pieceStates, this.worker);
         };
 
+        GameWorker.prototype.unregisterPieceStates = function(piece) {
+            delete this.pieceProtocolMap[piece.pieceNr];
+        };
+
         GameWorker.prototype.bindPieceControls = function(piece, controlPiece, controlStateMap) {
 
             this.registerPieceStates(piece);
@@ -68,6 +72,11 @@ define(['game/worker/DataProtocol'],
             }
 
             dataProtocol.mapTargetChannels(piece, controlStateMap);
+        };
+
+        GameWorker.prototype.clearPieceControls = function(piece, controlPiece, controlStateMap) {
+            controlStateMap.clearControlState();
+            this.unregisterPieceStates(controlPiece);
         };
 
         GameWorker.prototype.storeConfig = function(confId, key, data) {

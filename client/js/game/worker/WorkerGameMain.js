@@ -1,11 +1,11 @@
 "use strict";
 
 define([
-    'PipelineAPI',
+        'PipelineAPI',
         'worker/physics/CannonAPI',
         'worker/terrain/TerrainFunctions',
         'worker/io/ProtocolSystem',
-    'worker/simulation/GameSimulation'
+        'worker/simulation/GameSimulation'
     ],
     function(
         PipelineAPI,
@@ -19,6 +19,7 @@ define([
         var WorkerGameMain = function() {
             this.protocolSystem = new ProtocolSystem();
             this.gameSimulation = new GameSimulation();
+            this.gameSimulation.runGameLoop(0.05);
         };
 
         WorkerGameMain.prototype.handleMessage = function(msg) {

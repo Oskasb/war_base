@@ -76,6 +76,8 @@ define([
 
         GameActor.prototype.removeGameActor = function () {
             this.pipeObj.removePipelineObject();
+            this.controls.removeGamePiece();
+            this.piece.removeGamePiece();
         //    this.piece.setControlPiece(null);
         };
 

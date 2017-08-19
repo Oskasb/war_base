@@ -23,6 +23,14 @@ define([],
 
         ControlStateMap.prototype.removeControlState = function (controlStateId) {
             this.controlStates[controlStateId].removeCallback(this.callbacks[controlStateId]);
+            delete this.controlStates[controlStateId];
+            delete this.controlTarget[controlStateId]
+        };
+
+        ControlStateMap.prototype.clearControlState = function () {
+            for (var key in this.controlStates) {
+                this.removeControlState(key);
+            }
         };
 
         return ControlStateMap

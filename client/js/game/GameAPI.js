@@ -58,15 +58,29 @@ define([
             gameWorker.bindPieceControls(piece, pieceControls, stateMap)
         };
 
+        GameAPI.detatchPieceControls = function(pieceControls, stateMap) {
+            gameWorker.clearPieceControls(pieceControls, stateMap)
+        };
+
         GameAPI.addActor = function(actor) {
             this.addPiece(actor.piece);
             this.addPiece(actor.controls);
+        };
+
+        GameAPI.controlActor = function(actor) {
             GameAPI.registerPieceControls(actor.piece, actor.controls, actor.controlStateMap);
         };
 
+        GameAPI.dropActorControl = function(actor) {
+            GameAPI.detatchPieceControls(actor.controls, actor.controlStateMap);
+        };
+
         GameAPI.removeActor = function(actor) {
-            this.removePiece(actor.piece);
+            GameAPI.dropActorControl(actor);
+            GameAPI.detatchPieceControls(actor.piece, actor.controlStateMap);
             this.removePiece(actor.controls);
+            this.removePiece(actor.piece);
+            actor.removeGameActor();
         };
 
         GameAPI.addPiece = function(piece) {

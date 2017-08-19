@@ -138,6 +138,7 @@ define([
                 var ready = function(actor) {
 
                     GameAPI.addActor(actor);
+                    GameAPI.controlActor(actor);
 
                     if (rootModels[id]) {
 
@@ -147,12 +148,11 @@ define([
                             p.setGamePiece(null);
                             p.removeGameActor();
                         }
-
                     }
 
                     ThreeAPI.addToScene(actor.piece.rootObj3D);
                     ThreeAPI.addToScene(actor.controls.rootObj3D);
-                    //    mod.monitorGameModule(true);
+
                     rootModels[id].push(actor);
                     _this.monitorPieceModules(actor.piece, true);
                 };
@@ -166,8 +166,7 @@ define([
                     while (rootModels[id].length) {
                         var p = rootModels[id].pop();
                         _this.monitorPieceModules(p.piece, false);
-                        p.setGamePiece(null);
-                        p.removeGameActor();
+                        GameAPI.removeActor(p);
                     }
                 }
             }
