@@ -1,12 +1,14 @@
 "use strict";
 
 define([
+    'ThreeAPI',
         'EffectsAPI',
         'PipelineObject',
         'Events'
 
     ],
     function(
+        ThreeAPI,
         EffectsAPI,
         PipelineObject,
         evt
@@ -61,6 +63,10 @@ define([
             evt.on(evt.list().CLIENT_TICK, tickEffectPlayer);
         };
 
+
+        EffectsListeners.setEffectCallbacks = function(callbacks) {
+            ThreeAPI.setEffectCallbacks(callbacks);
+        };
 
 
         return EffectsListeners;

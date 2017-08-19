@@ -1,60 +1,34 @@
 "use strict";
 
 define([
-        '3d/three/ThreeSetup',
-        '3d/three/ThreeShaderBuilder',
-        '3d/three/ThreeModelLoader',
-        '3d/three/ThreeTextureMaker',
-        '3d/three/ThreeMaterialMaker',
-        '3d/three/ThreeFeedbackFunctions',
-        '3d/three/ThreeEnvironment'
+
 
 ],
     function(
-        ThreeSetup,
-        ThreeShaderBuilder,
-        ThreeModelLoader,
-        ThreeTextureMaker,
-        ThreeMaterialMaker,
-        ThreeFeedbackFunctions,
-        ThreeEnvironment
-        
+
     ) {
 
-        var shaderBuilder;
-        var glContext;
-        var renderer;
-        var camera;
-        var scene;
-
-        var effectCallbacks;
-
+        var effectCallbacks = {};
+        
         var ThreeAPI = function() {
 
         };
 
         ThreeAPI.initThreeLoaders = function(TAPI) {
-            shaderBuilder = new ThreeShaderBuilder();
-            ThreeModelLoader.loadData(TAPI);
-            ThreeTextureMaker.loadTextures();
-            ThreeMaterialMaker.loadMaterialist();
-            ThreeEnvironment.loadEnvironmentData();
+
             
         };
 
         ThreeAPI.initThreeScene = function(containerElement, clientTickCallback, pxRatio, antialias) {
-            var store = {}; 
-            store = ThreeSetup.initThreeRenderer(pxRatio, antialias, containerElement, clientTickCallback, store);
-            ThreeEnvironment.initEnvironment(store);
-            glContext = store.renderer.context;
-            scene = store.scene;
-            camera = store.camera;
-            renderer = store.renderer;
-            shaderBuilder.loadShaderData(glContext);
+
         };
 
         ThreeAPI.getContext = function() {
             return glContext;
+        };
+
+        ThreeAPI.readEnvironmentUniform = function(worldProperty, key) {
+            return ThreeEnvironment.readDynamicValue(worldProperty, key);
         };
 
         ThreeAPI.setEffectCallbacks = function(callbacks) {
@@ -63,10 +37,6 @@ define([
 
         ThreeAPI.getEffectCallbacks = function() {
             return effectCallbacks;
-        };
-
-        ThreeAPI.readEnvironmentUniform = function(worldProperty, key) {
-            return ThreeEnvironment.readDynamicValue(worldProperty, key);
         };
 
         ThreeAPI.getEnvironment = function() {
@@ -180,48 +150,49 @@ define([
         };
 
         ThreeAPI.addToScene = function(threeObject) {
-            ThreeSetup.addToScene(threeObject);
+            // ThreeSetup.addToScene(threeObject);
         };
 
         ThreeAPI.createRootObject = function() {
-            return ThreeModelLoader.createObject3D();
+            return new THREE.Object3D();
         };
 
         ThreeAPI.loadMeshModel = function(modelId, rootObject, partsReady) {
-            return ThreeModelLoader.loadThreeMeshModel(modelId, rootObject, ThreeSetup, partsReady);
+            rootObject.add(ThreeAPI.createRootObject());
+            return rootObject;
         };
 
         ThreeAPI.attachInstancedModel = function(modelId, rootObject) {
-            return ThreeModelLoader.attachInstancedModelTo3DObject(modelId, rootObject, ThreeSetup);
+
         };
-
-
 
 
         ThreeAPI.loadModel = function(sx, sy, sz, partsReady) {
-            return ThreeModelLoader.loadThreeModel(sx, sy, sz, partsReady);
+
         };
 
         ThreeAPI.loadDebugBox = function(sx, sy, sz, colorName) {
-            return ThreeModelLoader.loadThreeDebugBox(sx, sy, sz, colorName);
+
         };
         
         ThreeAPI.loadQuad = function(sx, sy) {
-            var model = ThreeModelLoader.loadThreeQuad(sx, sy);
-            return ThreeSetup.addToScene(model);
+
         };
 
         ThreeAPI.loadGround = function(applies, array1d, rootObject, partsReady) {
-            return ThreeModelLoader.loadGroundMesh(applies, array1d, rootObject, ThreeSetup, partsReady);
+
         };
         
 
         ThreeAPI.addChildToObject3D = function(child, parent) {
-            ThreeSetup.addChildToParent(child, parent);
+            if (child.parent) {
+                child.parent.remove(child);
+            }
+            parent.add(child);
         };
 
         ThreeAPI.animateModelTexture = function(model, z, y) {
-            ThreeFeedbackFunctions.applyModelTextureTranslation(model, z, y)
+
         };
         
         ThreeAPI.setObjectVisibility = function(object3d, bool) {
@@ -229,35 +200,31 @@ define([
         };
 
         ThreeAPI.showModel = function(obj3d) {
-            ThreeSetup.addToScene(obj3d);
+
         };
 
         ThreeAPI.hideModel = function(obj3d) {
-            ThreeSetup.removeModelFromScene(obj3d);
+
         };
         
         ThreeAPI.removeModel = function(model) {
 
-//            ThreeSetup.removeModelFromScene(model);
-            ThreeModelLoader.returnModelToPool(model);
         };
 
         ThreeAPI.disposeModel = function(model) {
 
-            ThreeSetup.removeModelFromScene(model);
-            ThreeModelLoader.disposeHierarchy(model);
         };
         
         ThreeAPI.countAddedSceneModels = function() {
-            return ThreeSetup.getSceneChildrenCount();
+
         };
 
         ThreeAPI.sampleRenderInfo = function(source, key) {
-            return ThreeSetup.getInfoFromRenderer(source, key);
+
         };
 
         ThreeAPI.countPooledModels = function() {
-            return ThreeModelLoader.getPooledModelCount();
+
         };
 
         return ThreeAPI;

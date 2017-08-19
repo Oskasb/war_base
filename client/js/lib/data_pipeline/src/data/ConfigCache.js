@@ -199,7 +199,7 @@ define([
                 if (!configs[key][index]) {
                     configs[key][index] = data[key][index];
                 } else {
-                    if (configs[key][index]) {
+                    if (configs[key][index] && data[key][index]) {
                         if (configs[key][index].length && typeof(configs[key][index]) !== 'string') {
                         	combineArray(data[key][index], configs[key][index], index)
                         } else {

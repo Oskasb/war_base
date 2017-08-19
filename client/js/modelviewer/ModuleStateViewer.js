@@ -172,7 +172,7 @@ define([
                         PipelineAPI.setCategoryKeyValue(dataCat, mod.moduleChannels[i].state.id, mod.moduleChannels[i].state.getValueRunded(100));
                     }
 
-                    loadedModules[key][0].sampleModuleFrame(evt.args(e).tpf);
+                    loadedModules[key][0].sampleModuleFrame(true);
                 }
             }
         };

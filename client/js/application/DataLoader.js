@@ -184,7 +184,7 @@ define([
             function pipelineCallback(started, remaining, loaded, files) {
             //   console.log("SRL", loadState, started, remaining, loaded, files);
 
-                PipelineAPI.setCategoryKeyValue("STATUS", "FILE_CACHE", {"OK":loaded});
+                PipelineAPI.setCategoryKeyValue("STATUS", "FILE_CACHE", loaded);
 
                 loadProgress.setProgress(loaded / started);
 

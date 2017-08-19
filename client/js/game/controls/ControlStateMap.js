@@ -13,16 +13,25 @@ define([],
 
         ControlStateMap.prototype.addControlState = function (controlState, targetState) {
             this.controlStates[controlState.id] = controlState;
-            this.controlTarget[controlState.id] = targetState;
+            if (!this.controlTarget[controlState.id]) {
+                this.controlTarget[controlState.id] = [];
+            }
+            this.controlTarget[controlState.id].push(targetState);
         };
 
-        ControlStateMap.prototype.setStateIdCallback = function (controlStateId, callback) {
+        ControlStateMap.prototype.addStateIdCallback = function (controlStateId, callback) {
             this.controlStates[controlStateId].addCallback(callback);
-            this.callbacks[controlStateId] = callback;
+            if (!this.callbacks[controlStateId]) {
+                this.callbacks[controlStateId] = [];
+            }
+            this.callbacks[controlStateId].push(callback);
         };
 
         ControlStateMap.prototype.removeControlState = function (controlStateId) {
-            this.controlStates[controlStateId].removeCallback(this.callbacks[controlStateId]);
+            for (var i = 0; i < this.callbacks[controlStateId].length; i++) {
+                this.controlStates[controlStateId].removeCallback(this.callbacks[controlStateId][i]);
+            }
+            this.callbacks[controlStateId] = [];
             delete this.controlStates[controlStateId];
             delete this.controlTarget[controlStateId]
         };

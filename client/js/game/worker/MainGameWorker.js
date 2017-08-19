@@ -1,9 +1,10 @@
 var baseUrl = './../../../../';
 
 var mainGameWorker;
-
+var window = self;
 var postMessage = self.postMessage;
 
+importScripts(baseUrl+'client/js/ENUMS.js');
 importScripts(baseUrl+'Transport/MATH.js');
 importScripts(baseUrl+'client/js/lib/three/three.js');
 importScripts(baseUrl+'client/js/game/worker/terrain/ServerTerrain.js');
@@ -14,11 +15,14 @@ require.config({
 	baseUrl: baseUrl,
 	paths: {
         data_pipeline:'client/js/lib/data_pipeline/src',
-        ThreeAPI:'client/js/3d/three/ThreeAPI',
+        ThreeAPI:'client/js/3d/three/ThreeWorkerAPI',
         PipelineAPI:'client/js/io/PipelineAPI',
+        PipelineObject:'client/js/PipelineObject',
         Events:'client/js/Events',
         EventList:'client/js/EventList',
-		worker:'client/js/game/worker'
+		worker:'client/js/game/worker',
+        "3d":'client/js/3d',
+        game:'client/js/game'
 	}
 });
 

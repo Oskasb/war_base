@@ -3,13 +3,11 @@
 
 define([
         'ThreeAPI',
-        'PipelineAPI',
-        'game/modules/ModuleEffectCreator'
+        'PipelineAPI'
     ],
     function(
         ThreeAPI,
-        PipelineAPI,
-        ModuleEffectCreator
+        PipelineAPI
     ) {
 
         var mouseState;
@@ -28,40 +26,38 @@ define([
 
         var ModuleCallbacks = function() {};
 
-        ModuleCallbacks.read_press_active = function(module, target, state) {
-            if (mouseState.action[0] + 0.00001 !== state.getValue() && !mouseState.action[1]) {
-                state.setValueAtTime(mouseState.action[0] * target.factor + 0.00001, target.time);
+        ModuleCallbacks.read_press_active = function(module, target) {
+            if (mouseState.action[0] + 0.00001 !== target.stateValue && !mouseState.action[1]) {
+                target.state.setValueAtTime(mouseState.action[0] * target.config.factor + 0.00001, target.config.time);
             }
         };
 
-        ModuleCallbacks.read_input_vector = function(module, target, state) {
+        ModuleCallbacks.read_input_vector = function(module, target) {
             if (mouseState.action[0]) {
-                state.setValueAtTime(line[target.parameter] * target.factor, target.time);
+                target.state.setValueAtTime(line[target.config.parameter] * target.config.factor, target.config.time);
             }
         };
 
-        ModuleCallbacks.transform = function(module, target, state) {
-            module.visualModule.rootObj[target.parameter][target.axis] = state.getValue();
+        ModuleCallbacks.transform = function(module, target) {
+            module.visualModule.rootObj[target.config.parameter][target.config.axis] = target.state.getValue();
         };
 
-        ModuleCallbacks.scale_uniform = function(module, target, state) {
-            module.visualModule.rootObj.scale.setScalar(state.getValue());
+        ModuleCallbacks.scale_uniform = function(module, target) {
+            module.visualModule.rootObj.scale.setScalar(target.state.getValue());
         };
 
-        ModuleCallbacks.quat_axis = function(module, target, state) {
-            module.visualModule.rootObj.quaternion[target.axis] = state.getValue();
+        ModuleCallbacks.quat_axis = function(module, target) {
+            module.visualModule.rootObj.quaternion[target.config.axis] = target.state.getValue();
             module.needsNormalize = true;
 
         };
 
-        ModuleCallbacks.animate_texture = function(module, target, state) {
-            ThreeAPI.animateModelTexture(module.visualModule.model, state.getValue()*target.offsetxy[0]*target.factor, state.getValue()*target.offsetxy[1]*target.factor);//
+        ModuleCallbacks.animate_texture = function(module, target) {
+            module.visualModule.addEffectTarget(target);
         };
 
-        ModuleCallbacks.module_emit_effect = function(module, target, state) {
-            if (Math.random() < state.getValue()) {
-                ModuleEffectCreator.createModuleApplyEmitEffect(module.visualModule.model || module.visualModule.rootObj , target.module_effect, module.config.transform, state.getValue(), target.glue_to_ground)
-            }
+        ModuleCallbacks.module_emit_effect = function(module, target) {
+            module.visualModule.addEffectTarget(target);
         };
 
         return ModuleCallbacks;

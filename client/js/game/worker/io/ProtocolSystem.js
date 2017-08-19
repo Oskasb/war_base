@@ -37,14 +37,18 @@ define([], function() {
                 console.log("No target map", this.targetMap, protocol);
                 return;
             }
-
-            var channels = this.targetMap[protocol[0]];
             var target = this.protocols[protocol[1]];
             var msg = [target[0], target[1]];
+
+
+            var channels = this.targetMap[protocol[0]];
+
+
 
             var addStateToMessage = function(channelKey, targetKey) {
 
                 var sourceChannel = protocol.indexOf(channelKey); //2 + 3 * Math.floor(Math.random()*channelCount);
+
                 var targetChannel = target.indexOf(targetKey);
 
                 target[targetChannel+1] = protocol[sourceChannel+1];
@@ -58,10 +62,14 @@ define([], function() {
                 }
 
             };
+            
 
             for (var i = 0; i < channels.length; i++) {
-                addStateToMessage(channels[i], channels[i+1]);
-                i++
+                var channelGroup = channels[i];
+
+                for (var j = 1; j < channelGroup.length; j++) {
+                    addStateToMessage(channelGroup[0], channelGroup[j])
+                }
             }
 
             if (self.SharedArrayBuffer) return;

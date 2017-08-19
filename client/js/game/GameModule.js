@@ -151,13 +151,12 @@ define([
         };
 
 
-
         GameModule.prototype.attachModuleToParent = function (parentModule) {
             this.visualModule.attachToParent(parentModule);
         };
 
         GameModule.prototype.enableClientModule = function () {
-            this.visualModule.attachEffects();
+            this.visualModule.loadVisualModule();
         };
 
         GameModule.prototype.disableClientModule = function () {
@@ -196,7 +195,9 @@ define([
 
         };
 
-        GameModule.prototype.sampleModuleFrame = function () {
+        GameModule.prototype.sampleModuleFrame = function (render) {
+            this.visualModule.setVisibility(render);
+            this.visualModule.updateVisualModule(render);
             for (var i = 0; i < this.moduleChannels.length; i++) {
                 this.moduleChannels[i].updateChannelState(this);
             }

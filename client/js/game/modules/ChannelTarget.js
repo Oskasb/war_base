@@ -27,7 +27,9 @@ define([
         };
 
         ChannelTarget.prototype.sampleModuleState = function(module, state, tpf, time) {
-            ModuleCallbacks[this.config.callback](module, this.config, state, tpf, time)
+         //   if (isNaN(state.getValue())) state.setValue(0);
+            this.state = state;
+            ModuleCallbacks[this.config.callback](module, this)
         };
 
 

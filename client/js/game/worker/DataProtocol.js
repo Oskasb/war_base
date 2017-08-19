@@ -65,9 +65,12 @@ define([],
             var channelMatrix = [];
 
             for (var stateKey in controlStateMap.controlTarget) {
-                var targetKey = controlStateMap.controlTarget[stateKey].id;
-                channelMatrix.push(stateKey);
-                channelMatrix.push(targetKey);
+                var channelGroup = [stateKey];
+                for (var i = 0; i < controlStateMap.controlTarget[stateKey].length; i++) {
+                    var targetKey = controlStateMap.controlTarget[stateKey][i].id;
+                    channelGroup.push(targetKey);
+                }
+                channelMatrix.push(channelGroup);
             }
 
             this.worker.postMessage(['mapTarget', [this.protocol[0], channelMatrix]]);

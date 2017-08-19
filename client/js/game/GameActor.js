@@ -5,29 +5,27 @@
 define([
         'Events',
         'PipelineObject',
-        'GameAPI',
         'game/GamePiece',
     'game/controls/ControlStateMap'
     ],
     function(
         evt,
         PipelineObject,
-        GameAPI,
         GamePiece,
         ControlStateMap
     ) {
 
-        var GameActor = function(id, ready) {
+        var GameActor = function(actorId, dataKey, ready) {
 
-            this.id = id;
-
+            this.id = actorId;
+            this.dataKey = dataKey;
             this.piece = null;
             this.controls = null;
 
             this.controlStateMap = new ControlStateMap();
 
             var applyData = function() {
-                this.applyActorData(this.pipeObj.buildConfig()[id], ready);
+                this.applyActorData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
 
             this.pipeObj = new PipelineObject('PIECE_DATA', 'ACTORS', applyData);
@@ -49,13 +47,10 @@ define([
         };
 
         GameActor.prototype.bindControlStateMap = function (stateMap) {
-
             for (var i = 0; i < stateMap.length; i++) {
                 this.addControlState(stateMap[i].control, stateMap[i].target);
             }
-
         };
-
 
         GameActor.prototype.applyActorData = function (config, ready) {
             this.config = config;
@@ -69,8 +64,8 @@ define([
                 }
             }.bind(this);
 
-            this.setGamePiece(new GamePiece(config.piece, pieceReady));
-            this.setControlPiece(new GamePiece(config.controls, pieceReady));
+            this.setGamePiece(new GamePiece(this.id, config.piece, pieceReady));
+            this.setControlPiece(new GamePiece(this.id, config.controls, pieceReady));
 
         };
 
@@ -78,9 +73,7 @@ define([
             this.pipeObj.removePipelineObject();
             this.controls.removeGamePiece();
             this.piece.removeGamePiece();
-        //    this.piece.setControlPiece(null);
         };
-
 
         return GameActor
     });

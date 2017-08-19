@@ -4,12 +4,14 @@
 define([
     '3d/ThreeController',
     'EffectsAPI',
-    '3d/effects/EffectListeners'
+    '3d/effects/EffectListeners',
+    'game/modules/ModuleEffectCreator'
 
 ], function(
     ThreeController,
     EffectsAPI,
-    EffectListeners
+    EffectListeners,
+    ModuleEffectCreator
 ) {
     
     var SceneController = function() {
@@ -22,9 +24,9 @@ define([
     };
 
     SceneController.prototype.setupEffectPlayers = function(onReady) {
-
         EffectsAPI.initEffects(onReady);
         EffectListeners.setupListeners();
+        EffectListeners.setEffectCallbacks(ModuleEffectCreator)
     };
     
     return SceneController;

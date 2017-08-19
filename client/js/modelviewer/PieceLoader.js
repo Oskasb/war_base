@@ -153,7 +153,7 @@ define([
                     GameAPI.registerActivePiece(piece);
                 };
 
-                new GamePiece(id, ready);
+                new GamePiece('view_', id, ready);
 
             } else {
 

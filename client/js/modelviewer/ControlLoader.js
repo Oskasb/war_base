@@ -151,7 +151,7 @@ define([
 
                 };
 
-                new GamePiece(id, ready);
+                new GamePiece('view_', id, ready);
 
             } else {
 

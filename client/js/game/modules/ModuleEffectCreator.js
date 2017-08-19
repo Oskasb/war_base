@@ -288,6 +288,25 @@ define([
 
         };
 
+        ModuleEffectCreator.animate_texture = function(visualModule, target) {
+            ThreeAPI.animateModelTexture(
+                visualModule.model,
+                target.state.getValue()*target.config.offsetxy[0]*target.config.factor,
+                target.state.getValue()*target.config.offsetxy[1]*target.config.factor
+            );//
+        };
+
+        ModuleEffectCreator.module_emit_effect = function(visualModule, target) {
+            if (Math.random() < target.state.getValue()) {
+                ModuleEffectCreator.createModuleApplyEmitEffect(
+                    visualModule.model || visualModule.rootObj,
+                    target.config.module_effect,
+                    visualModule.module.transform,
+                    target.state.getValue(),
+                    target.config.glue_to_ground
+                )
+            }
+        };
 
         ModuleEffectCreator.createPassiveEffect = function(fxId, pos, vel, size, quat, store) {
 

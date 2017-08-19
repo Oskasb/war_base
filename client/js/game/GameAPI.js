@@ -45,7 +45,7 @@ define([
         GameAPI.createActor = function(options, onData) {
             var actorResponse = function(response) {
                 var res = JSON.parse(response);
-                new GameActor(res.dataKey, onData);
+                new GameActor(res.actorId, res.dataKey, onData);
             };
             gameWorker.makeGameRequest('createActor', options, actorResponse);
         };

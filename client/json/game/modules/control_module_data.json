@@ -119,7 +119,7 @@
           },
           "channels":[
             {"channelid":"channel_input_direction",     "stateid":"state_yaw"},
-            {"channelid":"channel_yaw",                   "stateid":"state_yaw"}
+            {"channelid":"channel_yaw",                 "stateid":"state_yaw"}
           ],
           "attachment_points":[
             {"id":"ap_forward",

@@ -52,8 +52,10 @@ define([
 
 
         ModuleChannel.prototype.updateChannelState = function (module) {
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].sampleModuleState(module, this.state);
+            if (this.state) {
+                for (var i = 0; i < this.targets.length; i++) {
+                    this.targets[i].sampleModuleState(module, this.state);
+                }
             }
         };
 

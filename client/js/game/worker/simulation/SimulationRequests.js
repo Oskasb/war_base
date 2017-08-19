@@ -8,13 +8,20 @@ define([
     ) {
 
         var SimulationRequests = function(simulationState) {
+            this.simulationState = simulationState;
             this.terrainFunctions = simulationState.terrainFunctions;
         };
 
         SimulationRequests.prototype.createActor = function(options) {
             var opts = JSON.parse(options);
-            console.log("actorRequested:", opts);
-            postMessage(['createActor', JSON.stringify(opts)]);
+
+            var ready = function(actorSpawnData) {
+
+                postMessage(['createActor', JSON.stringify(actorSpawnData)]);
+            };
+
+            this.simulationState.spawnActor(opts, ready);
+
         };
 
         SimulationRequests.prototype.createTerrain = function(options) {

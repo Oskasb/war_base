@@ -20,22 +20,24 @@ define([
 
     var gamePieces = 0;
 
-        var GamePiece = function(id, ready) {
+        var GamePiece = function(hostId, dataKey, ready) {
             gamePieces++;
-            this.pieceNr = gamePieces;
-
-            this.id = id;
+            this.pieceNr = hostId+'_piece_'+gamePieces;
+            this.dataKey = dataKey;
+            this.render = false;
+            this.frustumCoords = new THREE.Vector3();
 
             this.rootObj3D = ThreeAPI.createRootObject();
 
             this.attachmentPoints = [];
             this.moduleChannels = [];
 
+            this.boundingSize = 10;
             this.pieceSlots = [];
             this.pieceStates = [];
 
             var applyPieceData = function() {
-                this.applyPieceData(this.pipeObj.buildConfig()[id], ready);
+                this.applyPieceData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
 
             this.pipeObj = new PipelineObject('PIECE_DATA', 'PIECES', applyPieceData);
@@ -129,13 +131,50 @@ define([
             }
         };
 
+
+        GamePiece.prototype.setRendereable = function(bool) {
+            this.render = bool;
+        };
+
+        GamePiece.prototype.getScreenPosition = function (store) {
+            ThreeAPI.toScreenPosition(this.rootObj3D.position, store);
+        };
+
+        GamePiece.prototype.determineVisibility = function() {
+            var distance = ThreeAPI.distanceToCamera(this.rootObj3D.position);
+
+            if (distance < this.boundingSize) {
+
+                this.setRendereable(true);
+                return this.render;
+            }
+
+
+            this.getScreenPosition(this.frustumCoords);
+
+            if (MATH.valueIsBetween(this.frustumCoords.x, 0, 1) && MATH.valueIsBetween(this.frustumCoords.y, 0, 1) ) {
+                this.setRendereable(true);
+            } else {
+
+                if (ThreeAPI.checkVolumeObjectVisible(this.rootObj3D.position, this.boundingSize)) {
+                    this.setRendereable(true);
+                } else {
+                    this.setRendereable(false);
+                }
+            }
+
+            return this.render;
+        };
+
+
         GamePiece.prototype.updateGamePiece = function(tpf, time) {
+            this.determineVisibility();
             for (var i = 0; i < this.pieceStates.length; i++) {
                 this.pieceStates[i].updateStateFrame(tpf, time)
             }
 
             for (var i = 0; i < this.pieceSlots.length;i++) {
-                this.pieceSlots[i].updatePieceSlot(tpf, time);
+                this.pieceSlots[i].updatePieceSlot(tpf, time, this.render);
             }
         };
 

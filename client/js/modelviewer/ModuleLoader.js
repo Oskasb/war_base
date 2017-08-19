@@ -89,7 +89,7 @@ define([
 
                         var dataCat = "MODULE_DEBUG_"+mod.id;
 
-                        loadedModules[key][0].sampleModuleFrame(evt.args(e).tpf);
+                        loadedModules[key][0].sampleModuleFrame(true);
                     }
                 }
             };

@@ -2,23 +2,34 @@
 
 define([
         'PipelineAPI',
+        'worker/simulation/SimulationOperations',
         'worker/physics/CannonAPI',
         'worker/terrain/TerrainFunctions'
 
     ],
     function(
         PipelineAPI,
+        SimulationOperations,
         CannonAPI,
         TerrainFunctions
     ) {
 
+        var actors = [];
         var SimulationState = function() {
             this.cannonApi = new CannonAPI();
             this.terrainFunctions = new TerrainFunctions(this.cannonApi);
-            this.actors = [];
+            this.SimulationOperations = new SimulationOperations();
+
         };
 
-        SimulationState.prototype.createActor = function(options) {
+        SimulationState.prototype.spawnActor = function(options, ready) {
+
+            var actorBuilt = function(actor) {
+                actors.push(actor);
+                ready({dataKey:actor.dataKey, actorId:actor.id});
+            }.bind(this);
+
+            this.SimulationOperations.buildActor(options, actorBuilt);
 
         };
 
@@ -27,7 +38,7 @@ define([
         };
 
         SimulationState.prototype.updateState = function(tpf) {
-            for (var i = 0; i < this.actors.length; i++) {
+            for (var i = 0; i < actors.length; i++) {
 
             }
         };

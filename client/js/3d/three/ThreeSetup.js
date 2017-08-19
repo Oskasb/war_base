@@ -47,6 +47,9 @@ define(['../../ui/GameScreen',
 
     ThreeSetup.initThreeRenderer = function(pxRatio, antialias, containerElement, clientTickCallback, store) {
         prerenderCallbacks.push(clientTickCallback);
+
+        ThreeSetup.addPrerenderCallback(ThreeSetup.updateCameraMatrix);
+
         lastTime = 0;
         init();
         animate(0.1);
@@ -77,14 +80,16 @@ define(['../../ui/GameScreen',
         return store;
     };
 
-
+    ThreeSetup.addPrerenderCallback = function(callback) {
+        prerenderCallbacks.push(callback);
+    };
 
     var vector = new THREE.Vector3();
     var tempObj = new THREE.Object3D();
 
-    ThreeSetup.toScreenPosition = function(x, y, z, store) {
+    ThreeSetup.toScreenPosition = function(vec3, store) {
 
-        tempObj.position.set(x, y, z);
+        tempObj.position.copy(vec3);
 
         if (!frustum.containsPoint(tempObj.position)) {
 
@@ -107,20 +112,16 @@ define(['../../ui/GameScreen',
     };
 
     
-    var sphere = new THREE.Sphere()
+    var sphere = new THREE.Sphere();
     
-    ThreeSetup.cameraTestXYZRadius = function(x, y, z, radius) {
-        sphere.center.x = x;
-        sphere.center.y = y;
-        sphere.center.z = z;
+    ThreeSetup.cameraTestXYZRadius = function(vec3, radius) {
+        sphere.center.copy(vec3);
         sphere.radius = radius;
         return frustum.intersectsSphere(sphere);
     };
     
-    ThreeSetup.calcDistanceToCamera = function(x, y, z) {
-        vector.x = x;
-        vector.y = y;
-        vector.z = z;
+    ThreeSetup.calcDistanceToCamera = function(vec3) {
+        vector.copy(vec3);
         return vector.distanceTo(camera.position);
     };
 

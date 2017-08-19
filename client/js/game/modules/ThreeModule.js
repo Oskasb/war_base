@@ -2,14 +2,11 @@
 
 
 define([
-        'ThreeAPI',
-        'game/modules/ModuleEffectCreator'
+        'ThreeAPI'
     ],
     function(
-        ThreeAPI,
-        ModuleEffectCreator
+        ThreeAPI
     ) {
-
 
         var ThreeModule = function(module) {
 
@@ -80,45 +77,6 @@ define([
             this.parentObject3d.position.z = this.transform.posZ();
 
             partsReady();
-        };
-
-
-        ThreeModule.prototype.attachEffects = function() {
-
-            if (this.applies.spawn_effect) {
-            //    console.log("Spawn Vel:", this.piece.spatial.vel.data)
-                ModuleEffectCreator.createPositionEffect(this.piece.spatial.pos, this.applies.spawn_effect, this.transform, this.piece.spatial.vel);
-            }
-
-            if (this.applies.static_effect) {
-                if (!this.staticEffect) {
-                    this.staticEffect = ModuleEffectCreator.createModuleStaticEffect(this.applies.static_effect, this.piece.spatial.pos, this.transform, this.piece.spatial.vel);
-                }
-            }
-
-        };
-
-        ThreeModule.prototype.attachDynamicEffects = function() {
-
-
-            if (this.applies.dynamic_effect) {
-                if (!this.dynamicEffect) {
-                    this.dynamicEffect = ModuleEffectCreator.createModuleStaticEffect(this.applies.dynamic_effect, this.piece.spatial.pos, this.transform);
-                }
-            }
-        };
-
-        ThreeModule.prototype.detatchEffects = function() {
-
-            if (this.staticEffect) {
-                ModuleEffectCreator.removeModuleStaticEffect(this.staticEffect);
-                this.staticEffect = null;
-            }
-
-            if (this.dynamicEffect) {
-                ModuleEffectCreator.removeModuleStaticEffect(this.dynamicEffect);
-                this.dynamicEffect = null;
-            }
         };
 
 

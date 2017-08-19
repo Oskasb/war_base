@@ -1,10 +1,8 @@
 define([
-        'PipelineAPI',
-        'application/debug/ObjectComparator'
+        'PipelineAPI'
     ],
     function(
-        PipelineAPI,
-        ObjectComparator
+        PipelineAPI
     ) {
 
         var PipelineObject = function(category, key, onDataCallback, defaultValue) {
@@ -19,11 +17,6 @@ define([
             this.subscribe(onDataCallback);
         };
 
-        var compareDatas = function(stale, fresh) {
-            if (ObjectComparator.trueIfEqualObjects(stale, fresh)) {
-                return ObjectComparator.trueIfEqualObjects(fresh, stale);
-            };
-        };
 
         PipelineObject.prototype.subscribe = function(onDataCallback) {
 

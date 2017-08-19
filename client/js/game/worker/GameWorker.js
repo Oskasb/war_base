@@ -65,18 +65,20 @@ define(['game/worker/DataProtocol'],
             var dataProtocol = this.pieceProtocolMap[controlPiece.pieceNr];
 
             for (var key in controlStateMap.controlStates) {
-                var callback = function(src, value) {
-                    dataProtocol.postState(src, value)
-                };
-                controlStateMap.setStateIdCallback(key, callback);
+
+
+                    var callback = function(src, value) {
+                        dataProtocol.postState(src, value)
+                    };
+                    controlStateMap.addStateIdCallback(key, callback);
             }
 
             dataProtocol.mapTargetChannels(piece, controlStateMap);
         };
 
-        GameWorker.prototype.clearPieceControls = function(piece, controlPiece, controlStateMap) {
+        GameWorker.prototype.clearPieceControls = function(piece, controlStateMap) {
             controlStateMap.clearControlState();
-            this.unregisterPieceStates(controlPiece);
+            this.unregisterPieceStates(piece);
         };
 
         GameWorker.prototype.storeConfig = function(confId, key, data) {

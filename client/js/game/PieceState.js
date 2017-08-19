@@ -7,7 +7,7 @@ define([],
 
         var PieceState = function(id, value) {
             this.id = id;
-            this.value = 0;
+            this.value = 0 || value;
             this.startValue = value;
 
             this.callbacks = [];
@@ -17,7 +17,7 @@ define([],
             this.lastUpdate = 0;
             this.stateProgress = 0;
 
-            var state = [value, 0];
+            var state = [this.value, 0];
 
             if (window.SharedArrayBuffer) {
                 var buffer = new SharedArrayBuffer(Float32Array.BYTES_PER_ELEMENT * state.length);
@@ -26,10 +26,15 @@ define([],
             } else {
                 this.buffer = state;
             }
-            this.setValueAtTime(value, 0);
+            this.setValueAtTime(this.value, 0);
         };
 
         PieceState.prototype.setValue = function (value) {
+            if (isNaN(value)) {
+                console.log("Set NaN!", this.id)
+                value = Math.random();
+                this.buffer[0] = value;
+            }
             this.value = value;
             this.notifyUpdate();
         };
@@ -66,7 +71,7 @@ define([],
         };
 
         PieceState.prototype.updateTargetValues = function () {
-           this.targetValue = this.buffer[0];
+            this.targetValue = this.buffer[0];
             this.targetTime = this.buffer[1];
             this.stateProgress = 0;
             this.startValue = this.value;
