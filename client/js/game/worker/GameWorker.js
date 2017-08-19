@@ -39,6 +39,16 @@ define(['game/worker/DataProtocol'],
             this.worker.postMessage(msg);
         };
 
+        GameWorker.prototype.makeGameRequest = function(requestName, data, callback) {
+            this.callbacks[requestName] = callback;
+
+            if (typeof(data) === 'object') {
+                data = JSON.stringify(data);
+            };
+
+            this.worker.postMessage(['gameRequest', [requestName, data]]);
+        };
+
         GameWorker.prototype.registerPieceStates = function(piece) {
             this.pieceProtocolMap[piece.pieceNr] = new DataProtocol(piece.pieceNr, piece.pieceStates, this.worker);
         };
@@ -58,13 +68,11 @@ define(['game/worker/DataProtocol'],
             }
 
             dataProtocol.mapTargetChannels(piece, controlStateMap);
-
         };
 
-        GameWorker.prototype.storeConfig = function(confId, data) {
+        GameWorker.prototype.storeConfig = function(confId, key, data) {
             var json = JSON.stringify(data);
-            console.log([confId, json]);
-            this.worker.postMessage(['storeConfig', [confId, json]]);
+            this.worker.postMessage(['storeConfig', [confId, key, json]]);
         };
 
         return GameWorker;

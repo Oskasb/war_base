@@ -4,20 +4,21 @@ define([
     'PipelineAPI',
         'worker/physics/CannonAPI',
         'worker/terrain/TerrainFunctions',
-        'worker/io/ProtocolSystem'
+        'worker/io/ProtocolSystem',
+    'worker/simulation/GameSimulation'
     ],
     function(
         PipelineAPI,
         CannonAPI,
         TerrainFunctions,
-        ProtocolSystem
+        ProtocolSystem,
+        GameSimulation
     ) {
 
 
         var WorkerGameMain = function() {
             this.protocolSystem = new ProtocolSystem();
-            this.cannonApi = new CannonAPI();
-            this.terrainFunctions = new TerrainFunctions(this.cannonApi)
+            this.gameSimulation = new GameSimulation();
         };
 
         WorkerGameMain.prototype.handleMessage = function(msg) {
@@ -32,13 +33,6 @@ define([
             } else {
                 console.log("No function", msg[0])
             }
-            console.log("-- >Worker Game Message", msg)
-        };
-
-        WorkerGameMain.prototype.createTerrain = function(options) {
-            console.log("opts:", options);
-            var array = this.terrainFunctions.createTerrainArray1d(JSON.parse(options));
-            this.postToMain(['createTerrain', array]);
         };
 
         WorkerGameMain.prototype.registerProtocol = function(protocol) {
@@ -46,18 +40,18 @@ define([
         };
 
         WorkerGameMain.prototype.storeConfig = function(config) {
-            console.log("Sore worker config", config);
+            PipelineAPI.setCategoryKeyValue(config[0], config[1], JSON.parse(config[2]))
         };
 
         WorkerGameMain.prototype.mapTarget = function(protocol) {
             this.protocolSystem.mapProtocolTargets(protocol);
         };
 
-
-        WorkerGameMain.prototype.postToMain = function(msg) {
-            postMessage(msg);
+        WorkerGameMain.prototype.gameRequest = function(request) {
+            this.gameSimulation.processRequest(request);
         };
 
         return WorkerGameMain;
 
     });
+

@@ -1,15 +1,21 @@
 "use strict";
 
 define([
-    'PipelineAPI',
-        'game/worker/GameWorker'
+        'PipelineAPI',
+        'game/GameActor',
+        'game/worker/GameWorker',
+        'game/worker/io/ConfigPublisher'
     ],
 
     function(
         PipelineAPI,
-        GameWorker
+        GameActor,
+        GameWorker,
+        ConfigPublisher
     ) {
+
         var gameWorker;
+        var configPublisher = ConfigPublisher;
 
         var pieces = [];
 
@@ -20,39 +26,10 @@ define([
 
         GameAPI.setupGameWorker = function() {
 
-            var fileList = function(src, data) {
-                GameAPI.updateWorkerConfigs(data);
-            };
-
-            var pipeLoaded = false;
-            var workerLoaded = false;
-
-            var checkBoth = function() {
-                if (pipeLoaded && workerLoaded) {
-                    PipelineAPI.subscribeToCategoryKey('config_url_index', 'files', fileList);
-                }
-            };
-
-            var pipeProgress = function(started, remainig) {
-                console.log(remainig)
-                if (started > 3 && remainig === 0) {
-                    pipeLoaded = true;
-                    PipelineAPI.removeProgressCallback(pipeProgress);
-                    checkBoth();
-                }
-            };
-
-
-            var pipeReady = function () {
-                PipelineAPI.addProgressCallback(pipeProgress)
-            };
-
             var workerReady = function() {
-                workerLoaded = true;
-                checkBoth();
+                configPublisher.publishConfigs(gameWorker);
             };
 
-            PipelineAPI.addReadyCallback(pipeReady);
             gameWorker = new GameWorker(workerReady);
 
         };
@@ -62,7 +39,15 @@ define([
         };
 
         GameAPI.createTerrain = function(options, onData) {
-            gameWorker.post(['createTerrain', JSON.stringify(options)], onData)
+            gameWorker.makeGameRequest('createTerrain', options, onData);
+        };
+
+        GameAPI.createActor = function(options, onData) {
+            var actorResponse = function(response) {
+                var res = JSON.parse(response);
+                new GameActor(res.dataKey, onData);
+            };
+            gameWorker.makeGameRequest('createActor', options, actorResponse);
         };
 
         GameAPI.registerActivePiece = function(piece) {
@@ -71,6 +56,17 @@ define([
 
         GameAPI.registerPieceControls = function(piece, pieceControls, stateMap) {
             gameWorker.bindPieceControls(piece, pieceControls, stateMap)
+        };
+
+        GameAPI.addActor = function(actor) {
+            this.addPiece(actor.piece);
+            this.addPiece(actor.controls);
+            GameAPI.registerPieceControls(actor.piece, actor.controls, actor.controlStateMap);
+        };
+
+        GameAPI.removeActor = function(actor) {
+            this.removePiece(actor.piece);
+            this.removePiece(actor.controls);
         };
 
         GameAPI.addPiece = function(piece) {
@@ -87,27 +83,6 @@ define([
         GameAPI.tickGame = function(tpf, time) {
             for (var i = 0; i < pieces.length; i++) {
                 pieces[i].updateGamePiece(tpf, time);
-            }
-        };
-
-        var postConfig = function(src, conf) {
-            gameWorker.storeConfig(src, conf);
-        };
-
-        GameAPI.updateWorkerConfigs = function(data) {
-
-            var urls = PipelineAPI.getCachedConfigs()['urls'];
-
-            for (var i = 0; i < data.length; i++) {
-                var file = data[i];
-                var conf = urls['client/json/'+file];
-                if (conf) {
-                    for (var j = 0; j < conf.length; j++) {
-                        for (var key in conf[j]) {
-                            PipelineAPI.subscribeToCategoryUpdate(key, postConfig);
-                        }
-                    }
-                }
             }
         };
 

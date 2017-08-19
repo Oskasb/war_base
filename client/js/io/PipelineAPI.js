@@ -77,7 +77,7 @@ define([
 		};
 
 		PipelineAPI.saveJsonFileOnServer = function(jsonData, url) {
-	//		console.log("Save Json to Server", url, [jsonData]);
+			console.log("Save Json to Server", url, [jsonData]);
 			ConfigCache.storeJsonAtUrl(jsonData, url);
 		};
 		

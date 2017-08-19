@@ -137,6 +137,8 @@ define([
 
                 var ready = function(actor) {
 
+                    GameAPI.addActor(actor);
+
                     if (rootModels[id]) {
 
                         while (rootModels[id].length) {
@@ -155,7 +157,7 @@ define([
                     _this.monitorPieceModules(actor.piece, true);
                 };
 
-                new GameActor(id, ready);
+                GameAPI.createActor({dataKey:id}, ready);
 
             } else {
 

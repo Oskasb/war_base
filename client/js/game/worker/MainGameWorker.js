@@ -2,6 +2,8 @@ var baseUrl = './../../../../';
 
 var mainGameWorker;
 
+var postMessage = self.postMessage;
+
 importScripts(baseUrl+'Transport/MATH.js');
 importScripts(baseUrl+'client/js/lib/three/three.js');
 importScripts(baseUrl+'client/js/game/worker/terrain/ServerTerrain.js');

@@ -65,7 +65,6 @@ define([
                 count++;
                 if (count == 2) {
                     this.bindControlStateMap(config.state_map);
-                    GameAPI.registerPieceControls(this.piece, this.controls, this.controlStateMap);
                     ready(this)
                 }
             }.bind(this);
