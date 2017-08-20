@@ -31,7 +31,7 @@ define([], function() {
 
     ProtocolSystem.prototype.removeProtocol = function(actor) {
         if (!this.protocols[actor.piece.pieceId]) {
-            console.log("No protocol for actor", actor);
+            console.log("No protocol to remove for actor", actor);
             return;
         }
 

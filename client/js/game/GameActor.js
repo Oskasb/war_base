@@ -44,10 +44,8 @@ define([
         };
 
         GameActor.prototype.setPhysicsBody = function (body) {
-            if (this.body) this.body.removeFromWorld();
             this.body = body;
         };
-
 
         GameActor.prototype.setControlPiece = function (controlPiece) {
             if (this.controls) this.controls.removeGamePiece();
@@ -91,7 +89,6 @@ define([
             this.pipeObj.removePipelineObject();
             this.controls.removeGamePiece();
             this.piece.removeGamePiece();
-            if (this.body) this.body.removeFromWorld()
         };
 
         return GameActor

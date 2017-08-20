@@ -273,7 +273,7 @@ define([
             chassisShape = new CANNON.Box(new CANNON.Vec3(length, width, height));
             var chassisBody = new CANNON.Body({ mass: mass });
             chassisBody.addShape(chassisShape);
-            chassisBody.position.set(25, 50, 25);
+            chassisBody.position.set(25, 25, 150);
             chassisBody.angularVelocity.set(0, 0, 0.2);
 
 

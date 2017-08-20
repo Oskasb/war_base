@@ -265,7 +265,13 @@ define([],
 
             var opts = terrainOpts;
             var matrix = makeMatrix2D(array1d);
-            var body = this.CannonAPI.buildPhysicalTerrain(matrix, opts.terrain_size, posX, posZ, opts.min_height,opts.max_height);
+            var body = this.CannonAPI.buildPhysicalTerrain(
+                matrix,
+                opts.terrain_size,
+                posX-opts.terrain_size/2,
+                posZ-opts.terrain_size/2,
+                opts.min_height,
+                opts.max_height);
 
             return body;
         };

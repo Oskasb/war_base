@@ -56,7 +56,9 @@ define([
         };
 
         GameAPI.closeLevel = function(level) {
+            GameAPI.removeActor(level.actor);
             level.removeGameLevel();
+
         };
 
         GameAPI.attachTerrainToLevel = function(actor, level, onOk) {

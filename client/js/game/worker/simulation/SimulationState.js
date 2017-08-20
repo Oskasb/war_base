@@ -72,7 +72,13 @@ define([
         SimulationState.prototype.removeActor = function(actorId, cb) {
             var actor = this.getActorById(actorId);
             actors.splice(actors.indexOf(actor, 1));
+
             this.protocolSystem.removeProtocol(actor);
+            if (actor.body) {
+                this.cannonApi.excludeBody(actor.body);
+            }
+
+            actor.removeGameActor();
             cb();
         };
 
