@@ -172,9 +172,10 @@ define([
 
         VisualModule.prototype.removeVisualModule = function() {
             if (this.model) {
-                this.rootObj.remove(this.model);
+             //   this.rootObj.remove(this.model);
                 ThreeAPI.removeModel(this.model);
             }
+            this.removeModuleDebugBox();
         };
 
         VisualModule.prototype.processVisualEffect = function(target) {

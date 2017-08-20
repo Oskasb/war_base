@@ -2,6 +2,16 @@
   "PIECE_DATA":{
     "PIECES":[
       {
+        "id":"passive_control_piece",
+        "data":{
+          "root_slot":"root",
+          "slots":[
+            {"slot":"root",         "module":"control_root_module"   }
+          ],
+          "attachments":[]
+        }
+      },
+      {
         "id":"selection_control_piece",
         "data":{
           "root_slot":"root",
@@ -21,7 +31,8 @@
             {"slot":"state_heading","ap":"ap_yaw",          "child":"state_yaw"}
           ]
         }
-      },      {
+      },
+      {
         "id":"vehicle_control_piece",
         "data":{
           "root_slot":"root",

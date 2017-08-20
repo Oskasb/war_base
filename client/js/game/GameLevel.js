@@ -19,7 +19,7 @@ define([
 
             this.id = levelId;
             this.dataKey = dataKey;
-            this.piece = null;
+            this.actor = null;
 
             var applyData = function() {
                 this.applyData(this.pipeObj.buildConfig()[dataKey], ready);
@@ -28,9 +28,9 @@ define([
             this.pipeObj = new PipelineObject('LEVEL_DATA', 'LEVELS', applyData);
         };
 
-        GameLevel.prototype.setGamePiece = function (piece) {
-            if (this.piece) this.piece.removeGamePiece();
-            this.piece = piece;
+        GameLevel.prototype.setLevelActor = function (actor) {
+            if (this.actor) this.actor.removeGameActor();
+            this.actor = actor;
 
         };
 
@@ -41,8 +41,8 @@ define([
 
         GameLevel.prototype.removeGameLevel = function () {
             this.pipeObj.removePipelineObject();
-            if (this.piece) {
-                this.piece.removeGamePiece();
+            if (this.actor) {
+                this.actor.removeGameActor();
             }
         };
 

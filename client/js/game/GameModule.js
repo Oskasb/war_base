@@ -71,6 +71,8 @@ define([
             }
             if (config[ENUMS.ModuleParams.channels]) {
                 this.applyModuleChannels(config[ENUMS.ModuleParams.channels], ready);
+            } else {
+                ready(this);
             }
         };
 
@@ -104,6 +106,8 @@ define([
                     new ModuleChannel(channelData[i], cready);
                 }
             }
+
+            if (!channelData.length) ready(this);
         };
 
         GameModule.prototype.getAttachmentPointById = function (id) {

@@ -39,7 +39,13 @@ define([
             this.simulationState.removeActor(actorId, ready);
         };
 
-
+        SimulationRequests.prototype.attachTerrainToLevel = function(data) {
+            var opts = JSON.parse(data);
+            var ready = function(res) {
+                postMessage(['attachTerrainToLevel', res]);
+            };
+            this.simulationState.attachActorToLevel(opts.levelId, opts.actorId, ready);
+        };
 
         SimulationRequests.prototype.createTerrain = function(options) {
             console.log("opts:", options);

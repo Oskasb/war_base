@@ -4,7 +4,7 @@
       {
         "id":"default_game_level",
         "data":{
-          "piece":"default_terrain_piece"
+          "actor":"default_terrain_actor"
         }
       }
     ]

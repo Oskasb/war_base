@@ -42,31 +42,38 @@ define([
 
         GameAPI.createLevel = function(options, onData) {
 
-            var levelResponse = function(response) {
+            var onRes = function(response) {
                 var res = JSON.parse(response);
                 new GameLevel(res.levelId, res.dataKey, onData);
             };
-            gameWorker.makeGameRequest('createLevel', options, levelResponse);
+            gameWorker.makeGameRequest('createLevel', options, onRes);
         //    gameWorker.makeGameRequest('createLevel', options, onData);
 
         };
 
         GameAPI.closeLevel = function(level) {
-
             level.removeGameLevel();
-
         };
 
-        GameAPI.createTerrain = function(options, onData) {
-            gameWorker.makeGameRequest('createTerrain', options, onData);
+        GameAPI.attachTerrainToLevel = function(actor, level, onOk) {
+
+            var onRes = function(res) {
+                onOk(res);
+            };
+
+            gameWorker.makeGameRequest('attachTerrainToLevel', {actorId:actor.id, levelId:level.id}, onRes);
+        };
+
+        GameAPI.createTerrain = function(options, onRes) {
+            gameWorker.makeGameRequest('createTerrain', options, onRes);
         };
 
         GameAPI.createActor = function(options, onData) {
-            var actorResponse = function(response) {
+            var onRes = function(response) {
                 var res = JSON.parse(response);
                 new GameActor(res.actorId, res.dataKey, onData);
             };
-            gameWorker.makeGameRequest('createActor', options, actorResponse);
+            gameWorker.makeGameRequest('createActor', options, onRes);
         };
 
         GameAPI.registerActivePiece = function(piece) {
@@ -102,11 +109,11 @@ define([
             this.removePiece(actor.piece);
             actor.removeGameActor();
 
-            var response = function(msg) {
+            var onRes = function(msg) {
                 console.log("Actor Despwned", msg);
             };
 
-            gameWorker.makeGameRequest('despawnActor', actor.id, response);
+            gameWorker.makeGameRequest('despawnActor', actor.id, onRes);
         };
 
         GameAPI.addPiece = function(piece) {

@@ -66,7 +66,6 @@ define(['game/worker/DataProtocol'],
 
             for (var key in controlStateMap.controlStates) {
 
-
                     var callback = function(src, value) {
                         dataProtocol.postState(src, value)
                     };

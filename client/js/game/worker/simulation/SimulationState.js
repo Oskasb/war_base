@@ -55,6 +55,15 @@ define([
             console.log("No actor by id:", actorId, actors);
         };
 
+        SimulationState.prototype.getLevelById = function(leveId) {
+            for (var i = 0; i < levels.length; i++) {
+                if (levels[i].id === leveId) {
+                    return levels[i];
+                }
+            }
+            console.log("No level by id:", leveId, actors);
+        };
+
         SimulationState.prototype.removeActor = function(actorId, cb) {
             var actor = this.getActorById(actorId);
             actors.splice(actors.indexOf(actor, 1));
@@ -62,8 +71,17 @@ define([
             cb();
         };
 
-        SimulationState.prototype.createTerrain = function(options) {
+        SimulationState.prototype.attachActorToLevel = function(levelId, actorId, cb) {
+            var level = this.getLevelById(levelId);
+            var actor = this.getActorById(actorId);
 
+            if (actor && level) {
+                level.setLevelActor(actor);
+                cb({actorId:actorId, levelId:levelId});
+            } else {
+                cb({levelActorError:{actorId:actorId, levelId:levelId}});
+                console.log("Fail connectinr actor to level", actorId, levelId);
+            };
         };
 
         SimulationState.prototype.updateState = function(tpf) {

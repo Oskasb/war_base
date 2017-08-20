@@ -50,6 +50,7 @@ define([], function() {
             console.log("No protocol for actor:", [actor.piece.pieceId, actor]);
             return;
         }
+        var count = 0;
 
         var msg = [prot[0], prot[1]];
 
@@ -58,19 +59,23 @@ define([], function() {
                 var targetKey = actor.piece.pieceStates[i].id;
                 if (prot[j] === targetKey) {
                     var targetChannel = prot.indexOf(targetKey);
-                    prot[targetChannel+1] = actor.piece.pieceStates[i].getValue();
-                    msg.push(targetChannel);
-                    msg.push(prot[targetChannel+1]);
-                    msg.push(tpf*2);
-                    if (self.SharedArrayBuffer) {
-                        prot[targetChannel+2][0] = prot[targetChannel+1];
-                        prot[targetChannel+2][1] = tpf*2;
+                    actor.piece.pieceStates[i].value = Math.sin(new Date().getTime() * 1000)*100;
+                    if (prot[targetChannel+1] !== actor.piece.pieceStates[i].getValue()) {
+                        count++;
+                        prot[targetChannel+1] = actor.piece.pieceStates[i].getValue();
+                        msg.push(targetChannel);
+                        msg.push(prot[targetChannel+1]);
+                        msg.push(tpf*2);
+                        if (self.SharedArrayBuffer) {
+                            prot[targetChannel+2][0] = prot[targetChannel+1];
+                            prot[targetChannel+2][1] = tpf*2;
+                        }
                     }
                 }
             }
         }
 
-        if (self.SharedArrayBuffer) return;
+        if (count && self.SharedArrayBuffer) return;
         self.postMessage(msg);
     };
 
