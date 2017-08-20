@@ -59,7 +59,7 @@ define([], function() {
                 var targetKey = actor.piece.pieceStates[i].id;
                 if (prot[j] === targetKey) {
                     var targetChannel = prot.indexOf(targetKey);
-                    actor.piece.pieceStates[i].value = Math.sin(new Date().getTime() * 1000)*100;
+                //    actor.piece.pieceStates[i].value = Math.sin(new Date().getTime() * 1000)*100;
                     if (prot[targetChannel+1] !== actor.piece.pieceStates[i].getValue()) {
                         count++;
                         prot[targetChannel+1] = actor.piece.pieceStates[i].getValue();

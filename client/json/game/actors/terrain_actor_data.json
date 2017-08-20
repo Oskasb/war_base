@@ -6,6 +6,7 @@
         "data":{
           "piece":"default_terrain_piece",
           "controls":"passive_control_piece",
+          "physics":"physical_terrain",
           "state_map":[]
         }
       }

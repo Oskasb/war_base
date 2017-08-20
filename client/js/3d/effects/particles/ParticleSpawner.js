@@ -122,19 +122,18 @@ define([
             return effect;
         };
 
-        var adding = false;
 
         ParticleSpawner.prototype.duplicateRenderer = function(renderer, effect) {
 
-            if (adding) return this.renderEffect(renderer, effect);;
+            if (renderer.adding) return this.renderEffect(renderer, effect);
 
             var onReady = function(rndr) {
                 rendererReady(rndr);
                 console.log("add renderer for particle group");
-                adding = false;
+                renderer.adding = false;
             }
 
-            adding = true;
+            renderer.adding = true;
             //   if (!renderer.particles.length) {
             console.log("request new renderer...");
             this.addRenderer(renderer.config, onReady);

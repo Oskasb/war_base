@@ -146,6 +146,17 @@ define([
 
                     }
 
+                    var buildIt = function(mod) {
+                        var onData = function(resData) {
+                            var model = ThreeAPI.loadGround(mod.config.options, resData, ThreeAPI.createRootObject());
+                            model.position.x -= mod.config.options.terrain_size / 2;
+                            model.position.z -= mod.config.options.terrain_size / 2;
+                            mod.setModel(model);
+
+                        };
+                        //    console.log("Create Terrain unbound")
+                        GameAPI.createTerrain(mod.config.options, onData);
+                    }
 
 
                     for (var i = 0; i < piece.pieceSlots.length; i++) {
@@ -154,15 +165,8 @@ define([
                         mod.visualModule.addModuleDebugBox();
 
                         if (mod.config.terrain) {
-                            var onData = function(resData) {
-                                var model = ThreeAPI.loadGround(mod.config.options, resData, ThreeAPI.createRootObject());
-                                model.position.x -= mod.config.options.terrain_size / 2;
-                                model.position.z -= mod.config.options.terrain_size / 2;
-                                mod.setModel(model);
+                            buildIt(mod)
 
-                            };
-                            //    console.log("Create Terrain unbound")
-                            GameAPI.createTerrain(mod.config.options, onData);
                         };
                     }
 
@@ -171,7 +175,7 @@ define([
                 //    mod.monitorGameModule(true);
                     rootModels[id].push(piece);
                     _this.monitorPieceModules(piece, true);
-                    GameAPI.registerActivePiece(piece);
+                //    GameAPI.registerActivePiece(piece);
                 };
 
                 new GamePiece('view_', id, ready);

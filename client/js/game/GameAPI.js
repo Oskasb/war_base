@@ -2,21 +2,24 @@
 
 define([
         'PipelineAPI',
+        'ThreeAPI',
         'game/GameActor',
-        'game/GameLevel',
+        'game/levels/LevelBuilder',
         'game/worker/GameWorker',
         'game/worker/io/ConfigPublisher'
     ],
 
     function(
         PipelineAPI,
+        ThreeAPI,
         GameActor,
-        GameLevel,
+        LevelBuilder,
         GameWorker,
         ConfigPublisher
     ) {
 
         var gameWorker;
+        var levelBuilder;
         var configPublisher = ConfigPublisher;
 
         var pieces = [];
@@ -27,6 +30,8 @@ define([
         };
 
         GameAPI.setupGameWorker = function() {
+
+            levelBuilder = new LevelBuilder(GameAPI);
 
             var workerReady = function() {
                 configPublisher.publishConfigs(gameWorker);
@@ -43,12 +48,11 @@ define([
         GameAPI.createLevel = function(options, onData) {
 
             var onRes = function(response) {
-                var res = JSON.parse(response);
-                new GameLevel(res.levelId, res.dataKey, onData);
+                levelBuilder.createLevel(JSON.parse(response), onData);
             };
-            gameWorker.makeGameRequest('createLevel', options, onRes);
-        //    gameWorker.makeGameRequest('createLevel', options, onData);
 
+            gameWorker.makeGameRequest('createLevel', options, onRes);
+            //    gameWorker.makeGameRequest('createLevel', options, onData);
         };
 
         GameAPI.closeLevel = function(level) {
@@ -69,9 +73,14 @@ define([
         };
 
         GameAPI.createActor = function(options, onData) {
+            var actorReady = function(actor) {
+                gameWorker.bindPieceControls(actor.piece, actor.controls, actor.controlStateMap);
+                onData(actor);
+            };
+
             var onRes = function(response) {
                 var res = JSON.parse(response);
-                new GameActor(res.actorId, res.dataKey, onData);
+                new GameActor(res.actorId, res.dataKey, actorReady);
             };
             gameWorker.makeGameRequest('createActor', options, onRes);
         };
@@ -81,7 +90,7 @@ define([
         };
 
         GameAPI.registerPieceControls = function(piece, pieceControls, stateMap) {
-            gameWorker.bindPieceControls(piece, pieceControls, stateMap)
+
         };
 
         GameAPI.detatchPieceControls = function(pieceControls, stateMap) {
@@ -91,10 +100,6 @@ define([
         GameAPI.addActor = function(actor) {
             this.addPiece(actor.piece);
             this.addPiece(actor.controls);
-        };
-
-        GameAPI.controlActor = function(actor) {
-            GameAPI.registerPieceControls(actor.piece, actor.controls, actor.controlStateMap);
         };
 
         GameAPI.dropActorControl = function(actor) {

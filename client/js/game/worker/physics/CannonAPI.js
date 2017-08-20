@@ -32,8 +32,8 @@ define(['worker/physics/PhysicsFunctions'],
             }
         };
 
-        CannonAPI.prototype.buildRigidBody = function(spatial, bodyParams) {
-            return this.physicsFunctions.buildCannonBody(this.world, spatial, bodyParams);
+        CannonAPI.prototype.setupPhysicalActor = function(actor) {
+            return this.physicsFunctions.addPhysicalActor(this.world, actor);
         };
 
         CannonAPI.prototype.includeBody = function(body) {
@@ -64,7 +64,7 @@ define(['worker/physics/PhysicsFunctions'],
 
 
         CannonAPI.prototype.fetchCannonStatus = function() {
-            if (Math.random() < 0.001) {
+            if (Math.random() < 0.01) {
                 console.log("BODIES:", this.world.bodies.length);
             }
 

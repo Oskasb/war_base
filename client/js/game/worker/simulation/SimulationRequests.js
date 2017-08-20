@@ -44,12 +44,14 @@ define([
             var ready = function(res) {
                 postMessage(['attachTerrainToLevel', res]);
             };
-            this.simulationState.attachActorToLevel(opts.levelId, opts.actorId, ready);
+            this.simulationState.attachTerrainActorToLevel(opts.levelId, opts.actorId, ready);
         };
 
         SimulationRequests.prototype.createTerrain = function(options) {
             console.log("opts:", options);
-            var array = this.terrainFunctions.createTerrainArray1d(JSON.parse(options));
+            var terrain = this.terrainFunctions.createTerrain(JSON.parse(options));
+
+            var array = this.terrainFunctions.getTerrainBuffers(terrain);
             postMessage(['createTerrain', array]);
         };
 

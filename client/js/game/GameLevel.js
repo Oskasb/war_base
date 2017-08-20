@@ -21,6 +21,9 @@ define([
             this.dataKey = dataKey;
             this.actor = null;
 
+            this.terrainOpts = null;
+            this.terrain = null;
+
             var applyData = function() {
                 this.applyData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
@@ -28,10 +31,13 @@ define([
             this.pipeObj = new PipelineObject('LEVEL_DATA', 'LEVELS', applyData);
         };
 
+        GameLevel.prototype.setTerrainOptions = function (opts) {
+            this.terrainOpts = opts;
+        };
+
         GameLevel.prototype.setLevelActor = function (actor) {
             if (this.actor) this.actor.removeGameActor();
             this.actor = actor;
-
         };
 
         GameLevel.prototype.applyData = function (config, ready) {

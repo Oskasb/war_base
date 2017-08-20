@@ -27,9 +27,9 @@ define([
             }
 
             if (this.data.terrain) {
-            //    this.module.transform.pos[0]  = this.data.options.terrain_size / 1;
+            //    this.module.transform.pos[0]  = //-this.data.options.terrain_size / 1;
                 this.module.transform.pos[1]  = this.data.options.max_height   / 2;
-            //    this.module.transform.pos[2]  = this.data.options.terrain_size / 1;
+            //    this.module.transform.pos[2]  = //-this.data.options.terrain_size / 1;
                 this.module.transform.size[0] = this.data.options.terrain_size;
                 this.module.transform.size[1] = this.data.options.max_height  ;
                 this.module.transform.size[2] = this.data.options.terrain_size;
@@ -47,11 +47,10 @@ define([
             }
 
             if (this.data.terrain) {
-                var onData = function(resData) {
-                    this.model = ThreeAPI.loadGround(this.data.options, resData, ThreeAPI.createRootObject());
-                    this.rootObj.add(this.model);
-                }.bind(this);
-                console.log("Create Terrain unbound")
+
+                var parent = this.rootObj;
+                parent.position.x -= this.data.options.terrain_size / 1;
+                parent.position.z -= this.data.options.terrain_size / 1;
             //    GameAPI.createTerrain(this.data.options, onData);
             }
         };

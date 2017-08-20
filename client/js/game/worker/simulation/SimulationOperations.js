@@ -27,9 +27,16 @@ define([
             new GameActor('actor_'+actorCount, options.dataKey, ready);
         };
 
-        SimulationOperations.prototype.createTerrain = function(options) {
-
+        SimulationOperations.prototype.getActorTerrainOptions = function(actor) {
+            for (var i = 0; i < actor.piece.pieceSlots.length; i++) {
+                var mod = actor.piece.pieceSlots[i].module;
+                if (mod.config.terrain) {
+                    return mod.config.options;
+                }
+            }
+            console.log("No terrain options on actor:", actor);
         };
+
 
         SimulationOperations.prototype.updateState = function(tpf) {
 

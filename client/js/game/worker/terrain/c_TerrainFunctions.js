@@ -23,6 +23,7 @@ define([],
         };
 
 
+
         TerrainFunctions.prototype.getPieceTerrainModule = function(piece) {
             return piece.getModuleByIndex(0);
         };
@@ -81,14 +82,13 @@ define([],
                 steps: applies.steps,
                 stretch: true,
                 turbulent: false,
-                //    useBufferGeometry: true,
+            //    useBufferGeometry: true,
                 xSegments: applies.terrain_segments,
                 xSize: applies.terrain_size,
                 ySegments: applies.terrain_segments,
                 ySize: applies.terrain_size
             }
         };
-
 
 
         TerrainFunctions.prototype.setEdgeVerticeHeight = function(array1d, height) {
@@ -126,7 +126,6 @@ define([],
 
         };
 
-
         TerrainFunctions.prototype.createTerrain = function(moduleOptions) {
 
 
@@ -157,11 +156,29 @@ define([],
 
             var array1d = THREE.Terrain.toArray1D(terrain.children[0].geometry.vertices, terrain.edges.invert);
 
+        //    this.setEdgeVerticeHeight(array1d, 0);
+
             return array1d;
 
         };
 
 
+        TerrainFunctions.prototype.setupTerrainPiece = function(piece, elevation) {
+            var module = this.getPieceTerrainModule(piece);
+
+            var applies = module.data.applies;
+
+            var array1d = this.createTerrainArray1d(applies);
+
+            // THREE.Terrain.fromArray1D(terrain.children[0].geometry.vertices, array1d);
+
+            //  module.terrain = terrain.children[0];
+            if (elevation) elevateTerrain(array1d, elevation);
+            this.setEdgeVerticeHeight(array1d, elevation);
+
+            module.setModuleState(array1d);
+
+        };
 
         TerrainFunctions.prototype.applyEdgeElevation = function(piece, isMinX, isMaxX, isMinY, isMaxY, elevation) {
 
@@ -178,9 +195,12 @@ define([],
 
             var shoreBumb = 1;
 
+
+
             var half = Math.ceil(sideVerts/2);
 
             var idx = Math.floor(array1d.length / 2);
+
 
             var setHeight = MATH.expand(array1d[idx]+4, -2, 2);
 
@@ -261,12 +281,18 @@ define([],
         };
 
 // get a height at point from matrix
-        TerrainFunctions.prototype.addTerrainToPhysics = function(terrainOpts, array1d, posX, posZ) {
+        TerrainFunctions.prototype.addTerrainToPhysics = function(piece) {
+            var module = this.getPieceTerrainModule(piece);
 
-            var opts = terrainOpts;
-            var matrix = makeMatrix2D(array1d);
-            var body = this.CannonAPI.buildPhysicalTerrain(matrix, opts.terrain_size, posX, posZ, opts.min_height,opts.max_height);
+            var applies = module.data.applies;
+            var opts = this.getTerrainModuleOpts(applies);
 
+            //   THREE.Terrain.fromArray1D(module.terrain.geometry.vertices, module.state.value);
+
+            var matrix = makeMatrix2D(module.state.value);
+
+            var body = this.CannonAPI.buildPhysicalTerrain(matrix, module.data.applies.terrain_size, piece.spatial.posX(), piece.spatial.posZ(), module.data.applies.min_height,module.data.applies.max_height)
+            module.body = body;
             return body;
         };
 
@@ -523,8 +549,6 @@ define([],
             return this.getDisplacedHeight(array1d, segments, pos[0], pos[2], htP, htN, normalStore);
 
         };
-
-
 
         return TerrainFunctions;
 

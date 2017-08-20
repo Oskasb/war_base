@@ -39,15 +39,15 @@ define([
         };
 
         ModuleCallbacks.transform = function(module, target) {
-            module.visualModule.rootObj[target.config.parameter][target.config.axis] = target.state.getValue();
+            module.visualModule.getParentObject3d()[target.config.parameter][target.config.axis] = target.state.getValue();
         };
 
         ModuleCallbacks.scale_uniform = function(module, target) {
-            module.visualModule.rootObj.scale.setScalar(target.state.getValue());
+            module.visualModule.getParentObject3d().scale.setScalar(target.state.getValue());
         };
 
         ModuleCallbacks.quat_axis = function(module, target) {
-            module.visualModule.rootObj.quaternion[target.config.axis] = target.state.getValue();
+            module.visualModule.getParentObject3d().quaternion[target.config.axis] = target.state.getValue();
             module.needsNormalize = true;
 
         };

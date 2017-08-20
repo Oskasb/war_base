@@ -6,13 +6,15 @@ define([
         'Events',
         'PipelineObject',
         'game/GamePiece',
-    'game/controls/ControlStateMap'
+        'game/controls/ControlStateMap',
+        'game/worker/physics/PhysicalPiece'
     ],
     function(
         evt,
         PipelineObject,
         GamePiece,
-        ControlStateMap
+        ControlStateMap,
+        PhysicalPiece
     ) {
 
         var GameActor = function(actorId, dataKey, ready) {
@@ -20,6 +22,7 @@ define([
             this.id = actorId;
             this.dataKey = dataKey;
             this.piece = null;
+            this.physicalPiece = null;
             this.controls = null;
 
             this.controlStateMap = new ControlStateMap();
@@ -34,8 +37,17 @@ define([
         GameActor.prototype.setGamePiece = function (piece) {
             if (this.piece) this.piece.removeGamePiece();
             this.piece = piece;
-
         };
+
+        GameActor.prototype.setPhysicalPiece = function (physicalPiece) {
+            this.physicalPiece = physicalPiece;
+        };
+
+        GameActor.prototype.setPhysicsBody = function (body) {
+            if (this.body) this.body.removeFromWorld();
+            this.body = body;
+        };
+
 
         GameActor.prototype.setControlPiece = function (controlPiece) {
             if (this.controls) this.controls.removeGamePiece();
@@ -58,7 +70,7 @@ define([
             var count = 0;
             var pieceReady = function() {
                 count++;
-                if (count == 2) {
+                if (count == 3) {
                     this.bindControlStateMap(config.state_map);
                     ready(this)
                 }
@@ -66,13 +78,20 @@ define([
 
             this.setGamePiece(new GamePiece(this.id, config.piece, pieceReady));
             this.setControlPiece(new GamePiece(this.id, config.controls, pieceReady));
+            this.setPhysicalPiece(new PhysicalPiece(this.id, config.physics, pieceReady))
+        };
 
+        GameActor.prototype.samplePhysicsState = function () {
+            if (this.body) {
+                this.physicalPiece.sampleState(this.body, this.piece)
+            }
         };
 
         GameActor.prototype.removeGameActor = function () {
             this.pipeObj.removePipelineObject();
             this.controls.removeGamePiece();
             this.piece.removeGamePiece();
+            if (this.body) this.body.removeFromWorld()
         };
 
         return GameActor

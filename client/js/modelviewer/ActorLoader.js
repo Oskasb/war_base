@@ -138,7 +138,6 @@ define([
                 var ready = function(actor) {
 
                     GameAPI.addActor(actor);
-                    GameAPI.controlActor(actor);
 
                     if (rootModels[id]) {
 

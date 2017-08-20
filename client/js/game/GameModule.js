@@ -210,7 +210,7 @@ define([
                 this.moduleChannels[i].updateChannelState(this);
             }
             if (this.needsNormalize) {
-                this.visualModule.rootObj.quaternion.normalize();
+                this.visualModule.getParentObject3d().quaternion.normalize();
             }
         };
 
