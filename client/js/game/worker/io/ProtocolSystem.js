@@ -43,7 +43,7 @@ define([], function() {
         console.log('Actor protocol removes:', actor.piece.pieceId, this.protocols, this.targetMap);
     };
 
-    ProtocolSystem.prototype.updateActorProtocol = function(actor, tpf) {
+    ProtocolSystem.prototype.updateActorSendProtocol = function(actor, tpf) {
         var prot = this.protocols[actor.piece.pieceId];
 
         if (!prot) {
@@ -61,15 +61,15 @@ define([], function() {
                     var targetChannel = prot.indexOf(targetKey);
                 //    actor.piece.pieceStates[i].value = Math.sin(new Date().getTime() * 1000)*100;
                     if (prot[targetChannel+1] !== actor.piece.pieceStates[i].getValue()) {
-                        count++;
                         prot[targetChannel+1] = actor.piece.pieceStates[i].getValue();
                         msg.push(targetChannel);
                         msg.push(prot[targetChannel+1]);
                         msg.push(tpf*2);
-                        if (self.SharedArrayBuffer) {
+                    //    if (self.SharedArrayBuffer) {
                             prot[targetChannel+2][0] = prot[targetChannel+1];
                             prot[targetChannel+2][1] = tpf*2;
-                        }
+                    //    }
+                        count++;
                     }
                 }
             }
@@ -83,6 +83,27 @@ define([], function() {
         this.protocols[protocol[0]] = protocol;
     };
 
+    ProtocolSystem.prototype.applyProtocolToActorState = function(actor, tpf) {
+        var prot = this.protocols[actor.piece.pieceId];
+
+        if (!prot) {
+            console.log("No protocol for actor:", [actor.piece.pieceId, actor]);
+            return;
+        }
+
+        for (var i = 0; i < actor.piece.pieceStates.length; i++) {
+            for (var j = 2; j < prot.length; j++) {
+                var targetKey = actor.piece.pieceStates[i].id;
+                if (prot[j] === targetKey) {
+                    var targetChannel = prot.indexOf(targetKey);
+                    //  actor.piece.pieceStates[i].setValue(prot[targetChannel+2][0]);
+                    actor.piece.pieceStates[i].buffer = prot[targetChannel+2];
+                    prot[targetChannel+2][0] = prot[targetChannel+1];
+                    prot[targetChannel+2][1] = tpf*2;
+                }
+            }
+        }
+    };
 
     ProtocolSystem.prototype.updateTargetProtocol = function(target, channels, protocol) {
         var msg = [target[0], target[1]];
@@ -95,14 +116,15 @@ define([], function() {
 
             target[targetChannel+1] = protocol[sourceChannel+1];
 
-            if (self.SharedArrayBuffer) {
+
+        //    if (self.SharedArrayBuffer) {
                 target[targetChannel+2][0] = target[targetChannel+1];
                 target[targetChannel+2][1] = 0.2;
-            } else {
+         //   } else {
                 msg.push(targetChannel);
                 msg.push(target[targetChannel+1]);
                 msg.push(0.2);
-            }
+
         };
 
         for (var i = 0; i < channels.length; i++) {

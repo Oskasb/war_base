@@ -14,6 +14,7 @@
             {"channelid":"channel_pos_y",  "stateid": "pos_state_y"},
             {"channelid":"channel_pos_z",  "stateid": "pos_state_z"}
           ],
+
           "attachment_points":[
             {"id":"ap_pointer_state",
               "transform":{
@@ -118,8 +119,8 @@
             "size": [0.4, 0.1,  0.4]
           },
           "channels":[
-            {"channelid":"channel_input_direction",     "stateid":"state_yaw"},
-            {"channelid":"channel_yaw",                 "stateid":"state_yaw"}
+            {"channelid":"channel_input_direction",     "stateid":"steer_state_yaw"},
+            {"channelid":"channel_yaw",                 "stateid":"steer_state_yaw"}
           ],
           "attachment_points":[
             {"id":"ap_forward",

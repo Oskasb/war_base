@@ -1,6 +1,15 @@
 [{
   "MODULE_CHANNELS":{
     "CHANNELS":[
+
+      {
+        "id":"channel_follow_target",
+        "data":{
+          "targets":[
+            {"targetid":"target_follow_position"}
+          ]
+        }
+      },
       {
         "id":"channel_sample_press",
         "data":{

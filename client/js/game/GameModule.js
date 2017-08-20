@@ -158,50 +158,14 @@ define([
             }
         };
 
+        GameModule.prototype.setAsRootSlot = function (obj3d) {
+            this.visualModule.replaceRootObject(obj3d);
+        };
 
         GameModule.prototype.attachModuleToParent = function (parentModule) {
             this.visualModule.attachToParent(parentModule);
         };
 
-        GameModule.prototype.enableClientModule = function () {
-            this.visualModule.loadVisualModule();
-        };
-
-        GameModule.prototype.disableClientModule = function () {
-            this.visualModule.detatchEffects();
-        };
-
-
-        GameModule.prototype.applyModuleServerState = function (serverState) {
-
-            if (!serverState[this.id]) {
-                console.log("No server state for", this.id);
-                return;
-            }
-            
-            this.state.value = serverState[this.id][0].value;
-            this.notifyModuleStateForUi()
-        };
-
-        GameModule.prototype.notifyModuleStateForUi = function () {
-                        
-            if (this.state.value) {
-
-                if (!this.on && this.clientPiece.isOwnPlayer) {
-                    evt.fire(evt.list().NOTIFY_MODULE_ONOFF, {id:this.id, on:true})
-                }
-
-                this.on = true;
-            } else {
-
-                if (this.on && this.clientPiece.isOwnPlayer) {
-                    evt.fire(evt.list().NOTIFY_MODULE_ONOFF, {id:this.id, on:false})
-                }
-
-                this.on = false;
-            }
-
-        };
 
         GameModule.prototype.sampleModuleFrame = function (render) {
             this.visualModule.setVisibility(render);

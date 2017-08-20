@@ -26,6 +26,16 @@ define([
 
         var ModuleCallbacks = function() {};
 
+
+
+        ModuleCallbacks.apply_target_piece_position = function(module, target) {
+            if (mouseState.action[0]) {
+
+            //    module.visualModule.getParentObject3d()[target.config.parameter][target.config.axis] = target.state.getValue();
+
+            }
+        };
+
         ModuleCallbacks.read_press_active = function(module, target) {
             if (mouseState.action[0] + 0.00001 !== target.stateValue && !mouseState.action[1]) {
                 target.state.setValueAtTime(mouseState.action[0] * target.config.factor + 0.00001, target.config.time);
@@ -39,15 +49,15 @@ define([
         };
 
         ModuleCallbacks.transform = function(module, target) {
-            module.visualModule.getParentObject3d()[target.config.parameter][target.config.axis] = target.state.getValue();
+            module.visualModule.getRootObject3d()[target.config.parameter][target.config.axis] = target.state.getValue();
         };
 
         ModuleCallbacks.scale_uniform = function(module, target) {
-            module.visualModule.getParentObject3d().scale.setScalar(target.state.getValue());
+            module.visualModule.getRootObject3d().scale.setScalar(target.state.getValue());
         };
 
         ModuleCallbacks.quat_axis = function(module, target) {
-            module.visualModule.getParentObject3d().quaternion[target.config.axis] = target.state.getValue();
+            module.visualModule.getRootObject3d().quaternion[target.config.axis] = target.state.getValue();
             module.needsNormalize = true;
 
         };

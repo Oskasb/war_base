@@ -159,8 +159,23 @@ define([
 
         };
 
+        VisualModule.prototype.getRootObject3d = function() {
+            return this.rootObj;
+        };
+
         VisualModule.prototype.getParentObject3d = function() {
             return this.parentObject3d;
+        };
+
+        VisualModule.prototype.replaceRootObject = function(obj3d) {
+            while (this.rootObj.children.length) {
+                var child = this.rootObj.children[0];
+                this.rootObj.remove(child);
+                obj3d.add(child);
+            }
+
+            this.rootObj = obj3d;
+
         };
 
         VisualModule.prototype.attachToParent = function(parentObject3d) {

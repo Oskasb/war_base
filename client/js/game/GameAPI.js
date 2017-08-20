@@ -23,7 +23,7 @@ define([
         var configPublisher = ConfigPublisher;
 
         var pieces = [];
-
+        var actors = [];
 
         var GameAPI = function() {
 
@@ -102,6 +102,7 @@ define([
         GameAPI.addActor = function(actor) {
             this.addPiece(actor.piece);
             this.addPiece(actor.controls);
+            actors.push(actor);
         };
 
         GameAPI.dropActorControl = function(actor) {
@@ -115,6 +116,10 @@ define([
             this.removePiece(actor.controls);
             this.removePiece(actor.piece);
             actor.removeGameActor();
+
+            if (actors.indexOf(actor) !== -1) {
+                actors.splice(actors.indexOf(actor), 1);
+            }
 
             var onRes = function(msg) {
                 console.log("Actor Despwned", msg);
@@ -136,8 +141,14 @@ define([
 
         GameAPI.tickGame = function(tpf, time) {
             for (var i = 0; i < pieces.length; i++) {
+                pieces[i].determineVisibility();
                 pieces[i].updateGamePiece(tpf, time);
             }
+
+            for (var i = 0; i < actors.length; i++) {
+                actors[i].updateActpr();
+            }
+
         };
 
         return GameAPI;

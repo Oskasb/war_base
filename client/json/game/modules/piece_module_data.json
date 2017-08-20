@@ -57,7 +57,19 @@
           ]
         }
       },
-
+      {
+        "id":"sherman_steering_module",
+        "data":{
+          "transform":{
+            "rot":  [0.2,   0,    0],
+            "pos":  [0,     0,    0],
+            "size": [0.4, 0.3,   0.4]
+          },
+          "channels":[
+            {"channelid":"channel_yaw",   "stateid":"steer_turn_state"}
+          ]
+        }
+      },
       {
         "id":"sherman_engine_module",
         "data":{
@@ -126,7 +138,7 @@
           "model":"sherman_turret",
           "channels":[
             {"channelid":"fire_channel", "stateid":"fire_state"},
-            {"channelid":"channel_yaw", "stateid":"turret_yaw"}
+            {"channelid":"channel_yaw",  "stateid":"turret_yaw"}
           ],
 
           "attachment_points":[

@@ -115,8 +115,11 @@ define([
             this.cannonApi.updatePhysicsSimulation(time);
 
             for (var i = 0; i < actors.length; i++) {
+                this.protocolSystem.applyProtocolToActorState(actors[i], tpf);
+                actors[i].piece.updateGamePiece(tpf, time);
                 actors[i].samplePhysicsState();
-                this.protocolSystem.updateActorProtocol(actors[i], tpf);
+                this.protocolSystem.updateActorSendProtocol(actors[i], tpf);
+
             }
             var status = this.cannonApi.fetchCannonStatus();
         };

@@ -85,6 +85,11 @@ define([
             }
         };
 
+        GameActor.prototype.updateActpr = function () {
+            this.controls.rootObj3D.position.copy(this.piece.rootObj3D.position);
+            this.controls.rootObj3D.rotation.y = this.piece.rootObj3D.rotation.y;
+        };
+
         GameActor.prototype.removeGameActor = function () {
             this.pipeObj.removePipelineObject();
             this.controls.removeGamePiece();

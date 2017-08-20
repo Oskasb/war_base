@@ -4,7 +4,7 @@
       {
         "id":"physical_terrain",
         "data":{
-          "shape":"Terrain",
+          "shape":"terrain",
           "rigid_body":{},
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
@@ -16,11 +16,58 @@
       {
         "id":"physical_sherman_tank",
         "data":{
-          "shape":"Vehicle",
+          "shape":"vehicle",
           "rigid_body":{
-            "mass":5,
-            "size":4
+            "torque"     : 125000,
+            "enginePower": 5000000,
+            "brake"     : 8,
+            "mass"      : 55000,
+            "width"     : 1.8,
+            "length"    : 3.2,
+            "height"    : 0.7,
+            "clearance" : 0.4,
+
+            "steerMatrix":[
+              -0.3, -0.3,
+              0.3,  0.3
+            ],
+
+            "brakeMatrix":[
+              0, 0,
+              3, 3
+            ],
+
+            "transmissionMatrix":[
+              0.5, 0.5,
+              1.5, 1.5
+            ],
+
+            "transmissionYawMatrix":[
+              -5, 5,
+              -5, 5
+            ],
+
+            "wheelMatrix":[
+              [-0.9,     1, 1],[0.9,    1, 1],
+              [-0.7,    -1, 1],[0.7,   -1, 1]
+            ],
+
+            "wheelOptions":{
+              "radius":0.5,
+              "suspensionStiffness":15,
+              "suspensionLength":0.5,
+              "dampening":2.2,
+              "rollInfluence":0.3,
+              "frictionSlip":15,
+              "maxSuspensionForce":500000
+            }
           },
+          "control_map":[
+              {"control":"yaw_state",      "stateid":"steer_turn_state","factor":-1},
+              {"control":"throttle_state", "stateid":"engine_state",  "factor":3000},
+              {"control":"brake_state",    "stateid":"gun_pitch",     "factor":100}
+          ],
+
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "pos_state_x"},
             {"param":"position",  "axis":"y",   "stateid": "pos_state_y"},

@@ -45,7 +45,8 @@ define([
 
 
         GamePiece.prototype.buildHierarchy = function () {
-            this.getSlotById(this.config.root_slot).attachToObject3d(this.rootObj3D);
+
+            this.getSlotById(this.config.root_slot).setObject3dToPieceRoot(this.rootObj3D);
 
             for (var i = 0; i < this.config.attachments.length;i++) {
                var aps = this.config.attachments[i];
@@ -185,7 +186,7 @@ define([
 
 
         GamePiece.prototype.updateGamePiece = function(tpf, time) {
-            this.determineVisibility();
+
             for (var i = 0; i < this.pieceStates.length; i++) {
                 this.pieceStates[i].updateStateFrame(tpf, time)
             }

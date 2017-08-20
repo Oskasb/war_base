@@ -8,9 +8,8 @@
           "controls":"vehicle_control_piece",
           "physics":"physical_sherman_tank",
           "state_map":[
-            {"control":"state_forward", "target":"engine_state"},
-            {"control":"state_forward", "target":"track_speed_r"},
-            {"control":"state_forward", "target":"track_speed_l"}
+            {"control":"state_forward",  "target":"engine_state"},
+            {"control":"steer_state_yaw","target":"steer_turn_state"}
           ]
         }
       }
