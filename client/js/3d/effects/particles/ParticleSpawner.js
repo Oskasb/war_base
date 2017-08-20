@@ -62,7 +62,7 @@ define([
     //        console.log("SETUP PARTICLE RENDERERS");
 
             var addRen = function(data) {
-                this.addRenderer(data);
+                this.addRenderer(data, rendererReady);
             }.bind(this);
 
             
@@ -88,8 +88,8 @@ define([
             new PipelineObject("PARTICLE_SYSTEMS", "RENDERERS", renderersData);
         };
 
-        ParticleSpawner.prototype.addRenderer = function(rendererData) {
-            new ParticleRenderer(rendererData, rendererReady);
+        ParticleSpawner.prototype.addRenderer = function(rendererData, onReady) {
+            new ParticleRenderer(rendererData, onReady);
         };
 
         ParticleSpawner.prototype.getRenderersById = function(id) {
@@ -120,6 +120,26 @@ define([
             }
 
             return effect;
+        };
+
+        var adding = false;
+
+        ParticleSpawner.prototype.duplicateRenderer = function(renderer, effect) {
+
+            if (adding) return this.renderEffect(renderer, effect);;
+
+            var onReady = function(rndr) {
+                rendererReady(rndr);
+                console.log("add renderer for particle group");
+                adding = false;
+            }
+
+            adding = true;
+            //   if (!renderer.particles.length) {
+            console.log("request new renderer...");
+            this.addRenderer(renderer.config, onReady);
+            return this.renderEffect(renderer, effect);
+
         };
 
         ParticleSpawner.prototype.buildEffect = function(id, pos, vel, size, quat) {
@@ -156,15 +176,12 @@ define([
             }
 
             for (var i = 0; i < renderer.length; i++) {
-                if (renderer[i].particles.length) {
+                if (renderer[i].particles.length > 25) {
                     return this.renderEffect(renderer[i], effect);
                 }
             }
 
-         //   if (!renderer.particles.length) {
-                console.log("Not enough available particles...");
-                return;
-         //   }
+            return this.duplicateRenderer(renderer[0], effect);
 
         };
 

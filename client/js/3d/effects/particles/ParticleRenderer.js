@@ -57,7 +57,7 @@ define([
 
             var materialReady = function(material) {
     //            console.log("MaterialReady", material);
-                this.setMaterial(material, rendererReady);
+               this.setMaterial(material, rendererReady);
             }.bind(this);
 
             for (var i = 0; i < data.length; i++) {
