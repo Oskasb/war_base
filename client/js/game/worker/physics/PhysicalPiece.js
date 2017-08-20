@@ -30,6 +30,7 @@ define([
             this.config = config;
             this.stateMap = config.state_map;
             this.controlMap = config.control_map;
+            this.feedbackMap = config.feedback_map;
 
             this.controls = {};
 
@@ -38,9 +39,9 @@ define([
 
         PhysicalPiece.prototype.sampleBody = function(body) {
 
-            threeObj.quaternion.x = body.quaternion.x;
+            threeObj.quaternion.x = body.quaternion.y;
             threeObj.quaternion.y = -body.quaternion.z;
-            threeObj.quaternion.z = body.quaternion.y;
+            threeObj.quaternion.z = body.quaternion.x;
             threeObj.quaternion.w = body.quaternion.w;
 
             threeObj.rotateY(Math.PI*0.5)
@@ -49,7 +50,17 @@ define([
 
         };
 
+        PhysicalPiece.prototype.applyBody = function(piece) {
 
+            for (var i = 0; i < this.stateMap.length; i++) {
+                var state = piece.getPieceStateByStateId(this.stateMap[i].stateid);
+                var param = this.stateMap[i].param;
+                var axis = this.stateMap[i].axis;
+                var value = threeObj[param][axis];
+                state.value = value;
+            }
+
+        };
         PhysicalPiece.prototype.applyControlState = function(target, piece) {
 
                 for (var i = 0; i < this.controlMap.length; i++) {
@@ -70,6 +81,22 @@ define([
                 target.setSteeringValue(yaw_state*forward * info.steerFactor, i);
             }
 
+
+
+        };
+
+        PhysicalPiece.prototype.sampleVehicle = function(target, piece) {
+
+            for (var i = 0; i < this.feedbackMap.length; i++) {
+                var param = this.feedbackMap[i].param;
+                var key = this.feedbackMap[i].key;
+                var property = this.feedbackMap[i].property;
+                var targetStateId = this.feedbackMap[i].stateid;
+                var factor = this.feedbackMap[i].factor;
+                var state = piece.getPieceStateByStateId(targetStateId);
+                state.value = target[param][key][property]*factor;
+            }
+
         };
 
         PhysicalPiece.prototype.sampleState = function (body, piece) {
@@ -79,14 +106,13 @@ define([
             }
 
             this.sampleBody(body);
-
-            for (var i = 0; i < this.stateMap.length; i++) {
-                var state = piece.getPieceStateByStateId(this.stateMap[i].stateid);
-                var param = this.stateMap[i].param;
-                var axis = this.stateMap[i].axis;
-                var value = threeObj[param][axis];
-                state.value = value;
+            this.applyBody(piece);
+            if (this.feedbackMap) {
+                this.sampleVehicle(body[this.config.shape], piece);
             }
+
+
+
         };
 
         return PhysicalPiece

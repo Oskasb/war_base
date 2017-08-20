@@ -28,28 +28,33 @@
             "clearance" : 0.4,
 
             "steerMatrix":[
-              -0.3, -0.3,
-              0.3,  0.3
+              -0.4, -0.4,
+               0,      0,
+               0.6,  0.6
             ],
 
             "brakeMatrix":[
+              0, 0,
               0, 0,
               3, 3
             ],
 
             "transmissionMatrix":[
-              0.5, 0.5,
+              0.8, 0.8,
+              1.0, 1.0,
               1.5, 1.5
             ],
 
             "transmissionYawMatrix":[
+              -3, 3,
               -5, 5,
-              -5, 5
+              -2, 2
             ],
 
             "wheelMatrix":[
-              [-0.9,     1, 1],[0.9,    1, 1],
-              [-0.7,    -1, 1],[0.7,   -1, 1]
+              [-0.95,  1.1, 1],[0.95, 1.1, 1],
+              [-0.9,     0, 1],[0.9,    0, 1],
+              [-0.8,    -1, 1],[0.8,   -1, 1]
             ],
 
             "wheelOptions":{
@@ -58,7 +63,7 @@
               "suspensionLength":0.5,
               "dampening":2.2,
               "rollInfluence":0.3,
-              "frictionSlip":15,
+              "frictionSlip":25,
               "maxSuspensionForce":500000
             }
           },
@@ -67,7 +72,10 @@
               {"control":"throttle_state", "stateid":"engine_state",  "factor":3000},
               {"control":"brake_state",    "stateid":"gun_pitch",     "factor":100}
           ],
-
+          "feedback_map":[
+            {"param":"wheelInfos",     "key":2,  "property":"rotation", "stateid":"track_speed_r",   "factor":1},
+            {"param":"wheelInfos",     "key":3,  "property":"rotation", "stateid":"track_speed_l",   "factor":1}
+          ],
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "pos_state_x"},
             {"param":"position",  "axis":"y",   "stateid": "pos_state_y"},

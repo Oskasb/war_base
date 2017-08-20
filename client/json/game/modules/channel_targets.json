@@ -32,7 +32,7 @@
         "data":{
             "callback":"animate_texture",
             "offsetxy":[0, 1],
-            "factor":0.002
+            "factor":-1
         }
       },
       {

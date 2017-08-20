@@ -14,8 +14,8 @@ define([
     };
 
     var applyToTextures = function(material, x, y) {
-        material.map.offset.x += x;
-        material.map.offset.y += y;
+        material.map.offset.x = x;
+        material.map.offset.y = y;
         material.needsUpdate = true;
         material.special = true;
     };
