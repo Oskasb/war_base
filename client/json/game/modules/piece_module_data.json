@@ -168,6 +168,27 @@
             {"channelid":"channel_pitch", "stateid":"gun_pitch"}
           ]
         }
+      },
+      {
+        "id":"terrain_root_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,  0],
+            "pos":  [0,   0,  0],
+            "size": [0,   0,  0]
+          },
+          "channels":[
+            {"channelid":"channel_pitch", "stateid":"gun_pitch"}
+          ],
+          "attachment_points":[
+            {"id":"ap_ground",
+              "transform":{
+                "rot":[0, 0, 0],
+                "pos":[0, 0, 0]
+              }
+            }
+          ]
+        }
       }
     ]
   }

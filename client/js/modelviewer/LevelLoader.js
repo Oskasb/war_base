@@ -11,6 +11,7 @@ define([
         'ui/dom/DomPanel',
         'ui/GameScreen',
         'game/GameActor',
+        'game/GamePiece',
         'game/PieceState',
         'modelviewer/ModuleStateViewer'
     ],
@@ -24,6 +25,7 @@ define([
         DomPanel,
         GameScreen,
         GameActor,
+        GamePiece,
         PieceState,
         ModuleStateViewer
     ) {
@@ -79,34 +81,8 @@ define([
 
             addButton();
 
-            var t = 0;
-
             var tick = function(e) {
 
-                t += evt.args(e).tpf;
-
-                for (var key in rootModels) {
-
-
-                    if (rootModels[key].length) {
-
-                        var actor = rootModels[key][0];
-
-                        var piece = actor.piece;
-
-                        for (var i = 0; i < piece.pieceSlots.length;i++) {
-
-                            var mod = piece.pieceSlots[i].module;
-
-                            var dataCat = "MODULE_DEBUG_"+mod.id;
-
-                            for (var j = 0; j < mod.moduleChannels.length; j++) {
-                                PipelineAPI.setCategoryKeyValue(dataCat, mod.moduleChannels[j].state.id, mod.moduleChannels[j].state.getValueRunded(100));
-                            }
-                        }
-
-                    }
-                }
                 GameAPI.tickGame(evt.args(e).tpf, evt.args(e).time);
             };
 
@@ -119,7 +95,7 @@ define([
         };
 
 
-        LevelLoader.prototype.loadActor = function(id, value) {
+        LevelLoader.prototype.loadLevel = function(id, value) {
 
             if (!loadedModules[id]) {
                 loadedModules[id] = [];
@@ -130,34 +106,52 @@ define([
             var _this = this;
 
             if (value === true) {
-                console.log("Load Model: ", id, value);
+                console.log("Load Level: ", id, value);
 
                 if (rootModels[id].length) return;
 
 
-                var ready = function(actor) {
-
-                    GameAPI.addActor(actor);
-                    GameAPI.controlActor(actor);
+                var levelready = function(level) {
 
                     if (rootModels[id]) {
 
                         while (rootModels[id].length) {
                             var p = rootModels[id].pop();
-                            _this.monitorPieceModules(p.piece, false);
-                            p.setGamePiece(null);
-                            p.removeGameActor();
+                            GameAPI.closeLevel(p);
                         }
+
                     }
 
-                    ThreeAPI.addToScene(actor.piece.rootObj3D);
-                    ThreeAPI.addToScene(actor.controls.rootObj3D);
+                    var ready = function(piece) {
 
-                    rootModels[id].push(actor);
-                    _this.monitorPieceModules(actor.piece, true);
+                        for (var i = 0; i < piece.pieceSlots.length; i++) {
+                            var mod = piece.pieceSlots[i].module;
+
+                            mod.visualModule.addModuleDebugBox();
+
+                            if (mod.config.terrain) {
+                                var onData = function(resData) {
+                                    var model = ThreeAPI.loadGround(mod.config.options, resData, ThreeAPI.createRootObject());
+                                    model.position.x -= mod.config.options.terrain_size / 2;
+                                    model.position.z -= mod.config.options.terrain_size / 2;
+                                    mod.setModel(model);
+
+                                };
+                                //    console.log("Create Terrain unbound")
+                                GameAPI.createTerrain(mod.config.options, onData);
+                            };
+                        }
+
+                        ThreeAPI.addToScene(piece.rootObj3D);
+                        level.setGamePiece(piece);
+
+                    };
+
+                    new GamePiece('level_', level.config.piece, ready);
+                    rootModels[id].push(level);
                 };
 
-                GameAPI.createActor({dataKey:id}, ready);
+                GameAPI.createLevel({dataKey:id}, levelready);
 
             } else {
 
@@ -165,8 +159,7 @@ define([
 
                     while (rootModels[id].length) {
                         var p = rootModels[id].pop();
-                        _this.monitorPieceModules(p.piece, false);
-                        GameAPI.removeActor(p);
+                        GameAPI.closeLevel(p);
                     }
                 }
             }
@@ -185,7 +178,7 @@ define([
 
             var buttonFunc = function(src, value) {
                 setTimeout(function() {
-                    _this.loadActor(src, value)
+                    _this.loadLevel(src, value)
                 }, 10);
             };
 

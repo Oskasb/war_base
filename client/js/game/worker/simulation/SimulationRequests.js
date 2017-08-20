@@ -12,6 +12,17 @@ define([
             this.terrainFunctions = simulationState.terrainFunctions;
         };
 
+
+        SimulationRequests.prototype.createLevel = function(options) {
+            var opts = JSON.parse(options);
+
+            var ready = function(levelData) {
+                postMessage(['createLevel', JSON.stringify(levelData)]);
+            };
+            this.simulationState.addLevel(opts, ready);
+        };
+
+
         SimulationRequests.prototype.createActor = function(options) {
             var opts = JSON.parse(options);
 

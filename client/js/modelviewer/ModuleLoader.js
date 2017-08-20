@@ -6,6 +6,7 @@ define([
         'PipelineAPI',
         'PipelineObject',
         'ThreeAPI',
+        'GameAPI',
         'ui/dom/DomSelectList',
         'ui/dom/DomPanel',
         'ui/GameScreen',
@@ -18,6 +19,7 @@ define([
         PipelineAPI,
         PipelineObject,
         ThreeAPI,
+        GameAPI,
         DomSelectList,
         DomPanel,
         GameScreen,
@@ -127,6 +129,17 @@ define([
                     loadedModules[mod.id].push(mod);
 
                     rootModels[mod.id].push(rootObj);
+
+                    if (mod.config.terrain) {
+
+                        var onData = function(resData) {
+                            var model = ThreeAPI.loadGround(mod.config.options, resData, ThreeAPI.createRootObject());
+                            mod.setModel(model);
+                        }.bind(this);
+                    //    console.log("Create Terrain unbound")
+                        GameAPI.createTerrain(mod.config.options, onData);
+
+                    };
 
                     ThreeAPI.addToScene(rootObj);
                     mod.monitorGameModule(true);

@@ -3,6 +3,7 @@
 define([
         'PipelineAPI',
         'game/GameActor',
+        'game/GameLevel',
         'game/worker/GameWorker',
         'game/worker/io/ConfigPublisher'
     ],
@@ -10,6 +11,7 @@ define([
     function(
         PipelineAPI,
         GameActor,
+        GameLevel,
         GameWorker,
         ConfigPublisher
     ) {
@@ -35,6 +37,23 @@ define([
         };
 
         GameAPI.initGame = function() {
+
+        };
+
+        GameAPI.createLevel = function(options, onData) {
+
+            var levelResponse = function(response) {
+                var res = JSON.parse(response);
+                new GameLevel(res.levelId, res.dataKey, onData);
+            };
+            gameWorker.makeGameRequest('createLevel', options, levelResponse);
+        //    gameWorker.makeGameRequest('createLevel', options, onData);
+
+        };
+
+        GameAPI.closeLevel = function(level) {
+
+            level.removeGameLevel();
 
         };
 

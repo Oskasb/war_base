@@ -27,9 +27,9 @@ define([
             }
 
             if (this.data.terrain) {
-                this.module.transform.pos[0] = this.data.options.terrain_size / 2;
-                this.module.transform.pos[1] = this.data.options.max_height   / 2;
-                this.module.transform.pos[2] = this.data.options.terrain_size / 2;
+            //    this.module.transform.pos[0]  = this.data.options.terrain_size / 1;
+                this.module.transform.pos[1]  = this.data.options.max_height   / 2;
+            //    this.module.transform.pos[2]  = this.data.options.terrain_size / 1;
                 this.module.transform.size[0] = this.data.options.terrain_size;
                 this.module.transform.size[1] = this.data.options.max_height  ;
                 this.module.transform.size[2] = this.data.options.terrain_size;
@@ -43,8 +43,7 @@ define([
             }
 
             if (this.data.model) {
-                this.model = ThreeAPI.loadMeshModel(this.data.model, ThreeAPI.createRootObject());
-                this.rootObj.add(this.model);
+                this.attachModel(ThreeAPI.loadMeshModel(this.data.model, ThreeAPI.createRootObject()));
             }
 
             if (this.data.terrain) {
@@ -55,6 +54,14 @@ define([
                 console.log("Create Terrain unbound")
             //    GameAPI.createTerrain(this.data.options, onData);
             }
+        };
+
+        VisualModule.prototype.attachModel = function(model) {
+            if (this.model) {
+                ThreeAPI.removeModel(this.model);
+            }
+            this.model = model;
+            this.rootObj.add(this.model);
         };
 
         VisualModule.prototype.showVisualModule = function() {
@@ -92,10 +99,12 @@ define([
             }
 
             if (this.data.terrain) {
-                if (bool) {
-                    this.rootObj.add(this.model);
-                } else {
-                    this.rootObj.remove(this.model);
+                if (this.model) {
+                    if (bool) {
+                        this.rootObj.add(this.model);
+                    } else {
+                        this.rootObj.remove(this.model);
+                    }
                 }
             }
 

@@ -15,11 +15,23 @@ define([
     ) {
 
         var actors = [];
+        var levels = [];
         var SimulationState = function(protocolSystem) {
             this.protocolSystem = protocolSystem;
             this.cannonApi = new CannonAPI();
             this.terrainFunctions = new TerrainFunctions(this.cannonApi);
-            this.SimulationOperations = new SimulationOperations();
+            this.simulationOperations = new SimulationOperations();
+
+        };
+
+        SimulationState.prototype.addLevel = function(options, ready) {
+
+            var levelBuilt = function(level) {
+                levels.push(level);
+                ready({dataKey:level.dataKey, levelId:level.id, config:level.config});
+            }.bind(this);
+
+            this.simulationOperations.buildLevel(options, levelBuilt);
 
         };
 
@@ -30,7 +42,7 @@ define([
                 ready({dataKey:actor.dataKey, actorId:actor.id});
             }.bind(this);
 
-            this.SimulationOperations.buildActor(options, actorBuilt);
+            this.simulationOperations.buildActor(options, actorBuilt);
 
         };
 

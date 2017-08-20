@@ -74,6 +74,23 @@ define([
 
         };
 
+
+        GamePiece.prototype.calculateBoundingRadius = function() {
+
+            var biggest = 1;
+            for (var i = 0; i < this.pieceSlots.length; i++) {
+                var slot = this.pieceSlots[i];
+                if (slot.module.transform) {
+                    for (var j = 0; j < slot.module.transform.size.length; j++) {
+                        if (slot.module.transform.size[j] > biggest) {
+                            biggest = slot.module.transform.size[j];
+                        }
+                    }
+                }
+            }
+            return biggest * 0.65;
+        };
+
         GamePiece.prototype.attachPieceSlots = function (slots, slotsReady) {
 
 
@@ -87,6 +104,7 @@ define([
 
                 if (this.pieceSlots.length === slots.length) {
                     slotsReady();
+                    this.boundingSize = this.calculateBoundingRadius();
                 }
             }.bind(this);
 
@@ -148,7 +166,6 @@ define([
                 this.setRendereable(true);
                 return this.render;
             }
-
 
             this.getScreenPosition(this.frustumCoords);
 

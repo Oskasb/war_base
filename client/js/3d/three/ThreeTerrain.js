@@ -99,10 +99,10 @@ define([
                     terrain = new THREE.Terrain(opts);
 
                     terrain.children[0].geometry = new THREE.BufferGeometry();
-                    terrain.children[0].geometry.addAttribute('position', array1d[0] ,3);
-                    terrain.children[0].geometry.addAttribute('normal', array1d[1],3);
-                    terrain.children[0].geometry.addAttribute('color', array1d[2],3);
-                    terrain.children[0].geometry.addAttribute('uv', array1d[3],2)
+                    terrain.children[0].geometry.addAttribute('position', new THREE.BufferAttribute( array1d[0] ,3 ));
+                    terrain.children[0].geometry.addAttribute('normal', new THREE.BufferAttribute( array1d[1] ,3 ));
+                    terrain.children[0].geometry.addAttribute('color', new THREE.BufferAttribute( array1d[2] ,3 ));
+                    terrain.children[0].geometry.addAttribute('uv', new THREE.BufferAttribute( array1d[3] ,2 ))
                 } else {
                     terrain = new THREE.Terrain(opts);
                     THREE.Terrain.fromArray1D(terrain.children[0].geometry.vertices, array1d);
@@ -141,38 +141,17 @@ define([
             var setup = ThreeSetup;
             var modelId = applies.three_terrain;
 
-        //    var attachMaterial = function(src, data) {
-
-
-
-
                 var attachModel = function(model) {
-                    
-                //    setMaterialRepeat(src, model.children[0].material.map, modelId);
 
                     setup.addToScene(model);
                     rootObject.add(model);
                     ThreeTerrain.addTerrainToIndex(model, rootObject);
                     transformModel(terrainList[modelId].transform, model);
 
-                    //partsReady();
-
-
                 };
 
-                //    model.material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
                 createTerrain(attachModel, applies, array1d);
 
-        //    };
-
-        //    var materials = terrainList[modelId].materials;
-
-        //    for (var i = 0; i < materials.length; i++) {
-         //       new PipelineObject('THREE_MATERIAL', materials[i].id, attachMaterial);
-         //   }
-            
-
-            //    attachModel(new THREE.Mesh(new THREE.PlaneGeometry( 200,  200, 10 ,10)));
             return rootObject;
         };
 

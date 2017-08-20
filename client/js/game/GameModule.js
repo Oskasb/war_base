@@ -42,6 +42,10 @@ define([
             return this.transform;
         };
 
+        GameModule.prototype.setModel = function (model) {
+            this.visualModule.attachModel(model);
+        };
+
         GameModule.prototype.copyTransform = function (trnsf) {
             this.transform.pos[0] = trnsf.pos[0];
             this.transform.pos[1] = trnsf.pos[1];
