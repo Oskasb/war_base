@@ -1,7 +1,7 @@
 
 "use strict";
 
-
+window.SharedArrayBuffer = null;
 define([],
     function() {
 

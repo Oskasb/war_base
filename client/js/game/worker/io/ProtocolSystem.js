@@ -1,6 +1,6 @@
 "use strict";
 
-// self.SharedArrayBuffer = null
+ self.SharedArrayBuffer = null
 
 define([], function() {
 

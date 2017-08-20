@@ -30,7 +30,10 @@ define([
         var ready = function() {};
         
         var rendererReady = function(renderer) {
-            renderers[renderer.id] = renderer;
+            if (!renderers[renderer.id]) {
+                renderers[renderer.id] = [];
+            }
+            renderers[renderer.id].push(renderer);
             finished ++;
 
     //        console.log("ParticleSpawner load: r/s", started, finished);
@@ -58,7 +61,10 @@ define([
 
     //        console.log("SETUP PARTICLE RENDERERS");
 
-            
+            var addRen = function(data) {
+                this.addRenderer(data);
+            }.bind(this);
+
             
             
             var renderersData = function(src, data) {
@@ -67,19 +73,26 @@ define([
                     started++;
 
     //                console.log("SETUP PARTICLE RENDERER:", src, data[i]);
+                /*
                     if (renderers[data[i].id]) {
                         console.log("DELETE EXISTING PARTICLE RENDERER", data[i].id);
                         renderers[data[i].id].dispose();
                         delete renderers[data[i].id];
                     }
-                    new ParticleRenderer(data[i], rendererReady);
+                 */
+                    addRen(data[i]);
+
                 }
             };
             
             new PipelineObject("PARTICLE_SYSTEMS", "RENDERERS", renderersData);
         };
 
-        ParticleSpawner.prototype.getRendererById = function(id) {
+        ParticleSpawner.prototype.addRenderer = function(rendererData) {
+            new ParticleRenderer(rendererData, rendererReady);
+        };
+
+        ParticleSpawner.prototype.getRenderersById = function(id) {
 
             return renderers[id];
 
@@ -96,6 +109,18 @@ define([
         };
 
 
+        ParticleSpawner.prototype.renderEffect = function(renderer, effect) {
+            EffectDataTranslator.interpretCustomEffectData(effect.effectData, effect.effectData.particle.config);
+
+            effect.attachSimulators();
+            effect.applyRenderer(renderer, systemTime);
+
+            if (!effect.aliveParticles.length) {
+                return
+            }
+
+            return effect;
+        };
 
         ParticleSpawner.prototype.buildEffect = function(id, pos, vel, size, quat) {
 
@@ -123,33 +148,29 @@ define([
             effect.setEffectVelocity(vel);
             effect.setEffectData(this.particleEffectData.buildEffect(effect.effectData, 'THREE', id));
 
-            var renderer = this.getRendererById(effect.effectData.effect.renderer_id);
+            var renderer = this.getRenderersById(effect.effectData.effect.renderer_id);
 
             if (!renderer) {
                 console.log("Renderer not yet ready...", effect.effectData.effect.renderer_id);
                 return;
             }
 
-            if (!renderer.particles.length) {
+            for (var i = 0; i < renderer.length; i++) {
+                if (renderer[i].particles.length) {
+                    return this.renderEffect(renderer[i], effect);
+                }
+            }
+
+         //   if (!renderer.particles.length) {
                 console.log("Not enough available particles...");
                 return;
-            }
+         //   }
 
-            EffectDataTranslator.interpretCustomEffectData(effect.effectData, effect.effectData.particle.config);
-
-            effect.attachSimulators();
-            effect.applyRenderer(renderer, systemTime);
-            
-            if (!effect.aliveParticles.length) {
-                return 
-            }
-            
-            return effect;
         };
 
 
         ParticleSpawner.prototype.spawnActiveParticleEffect = function(id, pos, vel) {
-            fxAdds++;
+
 
             var effect = this.buildEffect(id, pos, vel);
 
@@ -157,7 +178,7 @@ define([
                 console.log("Undefined effect created...", id, pos, vel);
                 return;
             }
-
+            fxAdds++;
             activeEffects.push(effect);
         };
 
@@ -192,7 +213,9 @@ define([
             systemTime += tpf;
 
             for (var key in renderers) {
-                renderers[key].updateParticleRenderer(systemTime);
+                for (var i = 0; i < renderers[key].length; i++) {
+                    renderers[key][i].updateParticleRenderer(systemTime);
+                }
             }
 
             while (endedEffects.length) {
@@ -234,7 +257,11 @@ define([
             var poolTotal = 0;
             
             for (var key in renderers) {
-                poolTotal += renderers[key].particles.length;
+                for (var i = 0; i < renderers[key].length; i++) {
+                    poolTotal += renderers[key][i].particles.length;
+                }
+
+
             }
 
             return poolTotal;
@@ -267,19 +294,21 @@ define([
             
             
             for (var key in renderers) {
-                var activeParticles = renderers[key].poolSize - renderers[key].particles.length;
-                if (activeParticles) {
-                    if (!renderers[key].isRendering) {
-                        renderers[key].enableParticleRenderer();
+                for (var i = 0; i < renderers[key].length; i++) {
+                    var activeParticles = renderers[key][i].poolSize - renderers[key][i].particles.length;
+                    if (activeParticles) {
+                        if (!renderers[key][i].isRendering) {
+                            renderers[key][i].enableParticleRenderer();
+                        }
+                        activeRenderes++;
+                    } else {
+                        if (renderers[key][i].isRendering) {
+                            renderers[key][i].disableParticleRenderer();
+                        }
                     }
-                    activeRenderes++;
-                } else {
-                    if (renderers[key].isRendering) {
-                        renderers[key].disableParticleRenderer();
-                    }
+
+                    totalRenderers++
                 }
-                
-                totalRenderers++
             }
             return count;
         };

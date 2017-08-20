@@ -28,6 +28,8 @@ define([
 
             this.isRendering = false;
 
+            this.particleBuffers = [];
+
             this.config = rendererConfig;
             this.poolSize = rendererConfig.particle_pool;
             this.particleGeometry = rendererConfig.particle_geometry;
@@ -100,6 +102,7 @@ define([
             var geom = ParticleMesh[this.particleGeometry]();
             this.particleBuffer = new ParticleBuffer(geom.verts, geom.uvs, geom.indices);
 
+
             for (var key in this.attributes) {
                 this.particleBuffer.geometry.addAttribute( key, this.attributes[key] );
             }
@@ -109,6 +112,7 @@ define([
             }
 
             this.particleBuffer.addToScene();
+        //    this.particleBuffers.push(this.particleBuffer);
         };
 
         ParticleRenderer.prototype.attachMaterial = function() {
