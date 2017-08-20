@@ -9,10 +9,7 @@ define([
         PipelineObject
     ) {
 
-
-
         var threeObj = new THREE.Object3D();
-        var threeObj2 = new THREE.Object3D();
 
         var PhysicalPiece = function(hostId, dataKey, ready) {
 

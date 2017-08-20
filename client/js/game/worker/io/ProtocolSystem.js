@@ -1,6 +1,6 @@
 "use strict";
 
- self.SharedArrayBuffer = null
+// self.SharedArrayBuffer = null
 
 define([], function() {
 
@@ -67,7 +67,7 @@ define([], function() {
                         msg.push(tpf*2);
                     //    if (self.SharedArrayBuffer) {
                             prot[targetChannel+2][0] = prot[targetChannel+1];
-                            prot[targetChannel+2][1] = tpf*2;
+                            prot[targetChannel+2][1] = tpf;
                     //    }
                         count++;
                     }
@@ -99,7 +99,7 @@ define([], function() {
                     //  actor.piece.pieceStates[i].setValue(prot[targetChannel+2][0]);
                     actor.piece.pieceStates[i].buffer = prot[targetChannel+2];
                     prot[targetChannel+2][0] = prot[targetChannel+1];
-                    prot[targetChannel+2][1] = tpf*2;
+                    prot[targetChannel+2][1] = tpf;
                 }
             }
         }
@@ -119,12 +119,11 @@ define([], function() {
 
         //    if (self.SharedArrayBuffer) {
                 target[targetChannel+2][0] = target[targetChannel+1];
-                target[targetChannel+2][1] = 0.2;
+                target[targetChannel+2][1] = 0.05;
          //   } else {
                 msg.push(targetChannel);
                 msg.push(target[targetChannel+1]);
-                msg.push(0.2);
-
+                msg.push(0.05);
         };
 
         for (var i = 0; i < channels.length; i++) {

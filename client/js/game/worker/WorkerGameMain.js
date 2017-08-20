@@ -19,7 +19,7 @@ define([
         var WorkerGameMain = function() {
             this.protocolSystem = new ProtocolSystem();
             this.gameSimulation = new GameSimulation(this.protocolSystem);
-            this.gameSimulation.runGameLoop(0.04);
+            this.gameSimulation.runGameLoop(0.05);
         };
 
         WorkerGameMain.prototype.handleMessage = function(msg) {
