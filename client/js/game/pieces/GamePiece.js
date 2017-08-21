@@ -6,8 +6,8 @@ define([
         'Events',
         'PipelineObject',
         'ThreeAPI',
-        'game/PieceSlot',
-        'game/PieceState'
+        'game/pieces/PieceSlot',
+        'game/pieces/PieceState'
     ],
     function(
         evt,

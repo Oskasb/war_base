@@ -2,12 +2,10 @@
 
 
 define([
-        'game/ClientPiece',
         'Events',
         'PipelineAPI'
     ],
     function(
-        ClientPiece,
         evt,
         PipelineAPI
     ) {

@@ -1,0 +1,14 @@
+[{
+  "CAMERA_DATA":{
+    "CONTROLS":[
+      {
+        "id":"target_read_press_0",
+        "data":{
+          "callback":"read_press_active",
+          "factor":1,
+          "time":0.1
+        }
+      }
+    ]
+  }
+}]

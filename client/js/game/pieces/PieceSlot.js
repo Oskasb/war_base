@@ -3,7 +3,7 @@
 
 
 define([
-        'game/GameModule'
+        'game/modules/GameModule'
     ],
     function(
         GameModule

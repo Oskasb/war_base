@@ -7,7 +7,7 @@ define([
         'PipelineObject',
         'game/modules/VisualModule',
         'game/modules/ModuleChannel',
-        'game/AttachmentPoint'
+        'game/modules/AttachmentPoint'
     
     ],
     function(

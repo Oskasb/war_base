@@ -2,7 +2,7 @@
 
 define([
         'game/GameActor',
-        'game/GameLevel'
+        'game/levels/GameLevel'
 
     ],
     function(

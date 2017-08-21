@@ -11,8 +11,8 @@ define([
         'ui/dom/DomPanel',
         'ui/GameScreen',
         'game/GameActor',
-        'game/GamePiece',
-        'game/PieceState',
+        'game/pieces/GamePiece',
+        'game/pieces/PieceState',
         'modelviewer/ModuleStateViewer'
     ],
     function(

@@ -4,7 +4,7 @@ define([
         'PipelineAPI',
         'ThreeAPI',
         'game/GameActor',
-        'game/GameLevel'
+        'game/levels/GameLevel'
     ],
 
     function(

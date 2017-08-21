@@ -5,7 +5,7 @@
 define([
         'Events',
         'PipelineObject',
-        'game/GamePiece',
+        'game/pieces/GamePiece',
         'game/controls/ControlStateMap',
         'game/worker/physics/PhysicalPiece'
     ],

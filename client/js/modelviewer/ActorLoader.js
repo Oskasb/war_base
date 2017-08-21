@@ -11,7 +11,7 @@ define([
         'ui/dom/DomPanel',
         'ui/GameScreen',
         'game/GameActor',
-        'game/PieceState',
+        'game/pieces/PieceState',
         'modelviewer/ModuleStateViewer'
     ],
     function(
@@ -138,6 +138,7 @@ define([
                 var ready = function(actor) {
 
                     GameAPI.addActor(actor);
+                    GameAPI.controlActor(actor);
 
                     if (rootModels[id]) {
 

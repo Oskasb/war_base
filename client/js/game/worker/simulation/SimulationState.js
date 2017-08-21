@@ -79,7 +79,13 @@ define([
             }
 
             actor.removeGameActor();
-            cb();
+            cb(actorId);
+        };
+
+        SimulationState.prototype.removeLevel = function(levelId, cb) {
+            var level = this.getLevelById(levelId);
+            levels.splice(levels.indexOf(level, 1));
+            cb(levelId);
         };
 
         SimulationState.prototype.attachTerrainActorToLevel = function(levelId, actorId, cb) {
@@ -111,8 +117,11 @@ define([
         };
 
         SimulationState.prototype.updateState = function(tpf) {
-            time += tpf;
-            this.cannonApi.updatePhysicsSimulation(time);
+
+            if (levels.length) {
+                time += tpf;
+                this.cannonApi.updatePhysicsSimulation(time);
+            }
 
             for (var i = 0; i < actors.length; i++) {
                 this.protocolSystem.applyProtocolToActorState(actors[i], tpf);

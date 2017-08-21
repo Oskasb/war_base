@@ -4,15 +4,11 @@
 
 define([
         'Events',
-        'PipelineObject',
-        'game/GamePiece',
-        'game/controls/ControlStateMap'
+        'PipelineObject'
     ],
     function(
         evt,
-        PipelineObject,
-        GamePiece,
-        ControlStateMap
+        PipelineObject
     ) {
 
         var GameLevel = function(levelId, dataKey, ready) {

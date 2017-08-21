@@ -9,8 +9,8 @@ define([
         'ui/dom/DomSelectList',
         'ui/dom/DomPanel',
         'ui/GameScreen',
-        'game/GamePiece',
-        'game/PieceState',
+        'game/pieces/GamePiece',
+        'game/pieces/PieceState',
         'modelviewer/ModuleStateViewer'
     ],
     function(

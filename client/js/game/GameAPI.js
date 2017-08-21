@@ -24,6 +24,7 @@ define([
 
         var pieces = [];
         var actors = [];
+        var levels = [];
 
         var GameAPI = function() {
 
@@ -45,20 +46,38 @@ define([
 
         };
 
+
+        GameAPI.getLevelById = function(leveId) {
+            for (var i = 0; i < levels.length; i++) {
+                if (levels[i].id === leveId) {
+                    return levels[i];
+                }
+            }
+            console.log("No level by id:", leveId, actors);
+        };
+
         GameAPI.createLevel = function(options, onData) {
 
+            var levelReady = function(level) {
+                levels.push(level);
+                onData(level);
+            }
+
             var onRes = function(response) {
-                levelBuilder.createLevel(JSON.parse(response), onData);
+                levelBuilder.createLevel(JSON.parse(response), levelReady);
             };
 
             gameWorker.makeGameRequest('createLevel', options, onRes);
-            //    gameWorker.makeGameRequest('createLevel', options, onData);
         };
 
         GameAPI.closeLevel = function(level) {
-            GameAPI.removeActor(level.actor);
-            level.removeGameLevel();
 
+            var onRes = function (levelId) {
+                var lvl = GameAPI.getLevelById(levelId);
+                GameAPI.removeLevel(lvl);
+            };
+
+            gameWorker.makeGameRequest('despawnLevel', level.id, onRes);
         };
 
         GameAPI.attachTerrainToLevel = function(actor, level, onOk) {
@@ -72,6 +91,10 @@ define([
 
         GameAPI.createTerrain = function(options, onRes) {
             gameWorker.makeGameRequest('createTerrain', options, onRes);
+        };
+
+        GameAPI.controlActor = function(actor) {
+
         };
 
         GameAPI.createActor = function(options, onData) {
@@ -107,6 +130,14 @@ define([
 
         GameAPI.dropActorControl = function(actor) {
             GameAPI.detatchPieceControls(actor.controls, actor.controlStateMap);
+        };
+
+        GameAPI.removeLevel = function(level) {
+            if (levels.indexOf(level) !== -1) {
+                levels.splice(levels.indexOf(level), 1);
+            }
+            GameAPI.removeActor(level.actor);
+            level.removeGameLevel();
         };
 
         GameAPI.removeActor = function(actor) {

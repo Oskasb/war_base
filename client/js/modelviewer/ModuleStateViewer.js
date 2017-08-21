@@ -8,9 +8,7 @@ define([
         'ThreeAPI',
         'ui/dom/DomSelectList',
         'ui/dom/DomPanel',
-        'ui/GameScreen',
-        'game/GameModule',
-        'game/PieceState'
+        'ui/GameScreen'
     ],
     function(
         evt,
@@ -19,9 +17,7 @@ define([
         ThreeAPI,
         DomSelectList,
         DomPanel,
-        GameScreen,
-        GameModule,
-        PieceState
+        GameScreen
     ) {
 
         var panel;

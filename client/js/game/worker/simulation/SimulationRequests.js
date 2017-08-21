@@ -22,6 +22,12 @@ define([
             this.simulationState.addLevel(opts, ready);
         };
 
+        SimulationRequests.prototype.despawnLevel = function(levelId) {
+            var ready = function(res) {
+                postMessage(['despawnLevel', res]);
+            };
+            this.simulationState.removeLevel(levelId, ready);
+        };
 
         SimulationRequests.prototype.createActor = function(options) {
             var opts = JSON.parse(options);
