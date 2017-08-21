@@ -31,6 +31,7 @@ define([
             };
 
             new PipelineAPI.subscribeToCategoryKey('CAMERA_DATA', 'CAMERA', camFuncs);
+            new PipelineAPI.subscribeToCategoryKey('CAMERA_DATA', 'CONTROLS', applyData);
 
         };
 
