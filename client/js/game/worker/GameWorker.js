@@ -3,11 +3,22 @@
 define(['game/worker/DataProtocol'],
     function(DataProtocol) {
 
+        var calls = 0;
+
+        var Call = function(callback) {
+            calls++;
+            this.idx = calls;
+            this.callback = callback;
+        };
+
+        Call.prototype.res = function(msg) {
+            this.callback(msg);
+        };
+
+
         var GameWorker = function(workerReady) {
 
-            this.callbacks = {
-                ready:workerReady
-            };
+            this.callbacks = [new Call(workerReady)];
 
             this.pieceProtocolMap = {};
             this.worker = new Worker('./client/js/game/worker/MainGameWorker.js');
@@ -26,11 +37,15 @@ define(['game/worker/DataProtocol'],
                 return;
             }
 
-            if (typeof(this.callbacks[msg.data[0]]) === 'function') {
-                this.callbacks[msg.data[0]](msg.data[1]);
-                delete this.callbacks[msg.data[0]];
-                return;
+            for (var i = 0; i < this.callbacks.length; i++) {
+                if (this.callbacks[i].idx === msg.data[0]) {
+                    this.callbacks[i].res(msg.data[1]);
+                    this.callbacks.splice(i, 1);
+                    return;
+                }
             }
+
+            console.log("Something not ok with worker callback stack", msg, this.callbacks);
 
         };
 
@@ -40,13 +55,18 @@ define(['game/worker/DataProtocol'],
         };
 
         GameWorker.prototype.makeGameRequest = function(requestName, data, callback) {
-            this.callbacks[requestName] = callback;
+
+
+            var call = new Call(callback);
+
+            this.callbacks.push(call);
 
             if (typeof(data) === 'object') {
                 data = JSON.stringify(data);
             };
 
-            this.worker.postMessage(['gameRequest', [requestName, data]]);
+            this.worker.postMessage(['gameRequest', [requestName, call.idx, data]]);
+
         };
 
         GameWorker.prototype.registerPieceStates = function(piece) {

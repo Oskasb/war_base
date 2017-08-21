@@ -18,11 +18,9 @@ define([
     ) {
 
 
-    var gamePieces = 0;
-
         var GamePiece = function(hostId, dataKey, ready) {
-            gamePieces++;
-            this.pieceId = hostId+'_piece_'+gamePieces;
+
+            this.pieceId = hostId+'_piece_'+dataKey;
             this.dataKey = dataKey;
             this.render = false;
             this.frustumCoords = new THREE.Vector3();

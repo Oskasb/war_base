@@ -129,6 +129,10 @@ define([
 
             var _this = this;
 
+            var onRemove = function(msg) {
+                console.log("Removed Actor", msg)
+            };
+
             if (value === true) {
                 console.log("Load Model: ", id, value);
 
@@ -166,7 +170,7 @@ define([
                     while (rootModels[id].length) {
                         var p = rootModels[id].pop();
                         _this.monitorPieceModules(p.piece, false);
-                        GameAPI.removeActor(p);
+                        GameAPI.removeActor(p, onRemove);
                     }
                 }
             }

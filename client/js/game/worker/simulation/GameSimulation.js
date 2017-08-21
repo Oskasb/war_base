@@ -19,7 +19,7 @@ define([
 
         GameSimulation.prototype.processRequest = function(msg) {
             if (typeof(this.simulationRequests[msg[0]]) === 'function') {
-                this.simulationRequests[msg[0]](msg[1])
+                this.simulationRequests[msg[0]](msg[1], msg[2])
             } else {
                 console.log("No simulationRequests", msg[0])
             }

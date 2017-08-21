@@ -13,52 +13,52 @@ define([
         };
 
 
-        SimulationRequests.prototype.createLevel = function(options) {
+        SimulationRequests.prototype.createLevel = function(idx, options) {
             var opts = JSON.parse(options);
 
-            var ready = function(levelData) {
-                postMessage(['createLevel', JSON.stringify(levelData)]);
+            var ready = function(res) {
+                postMessage([idx, JSON.stringify(res)]);
             };
             this.simulationState.addLevel(opts, ready);
         };
 
-        SimulationRequests.prototype.despawnLevel = function(levelId) {
+        SimulationRequests.prototype.despawnLevel = function(idx, levelId) {
             var ready = function(res) {
-                postMessage(['despawnLevel', res]);
+                postMessage([idx, res]);
             };
             this.simulationState.removeLevel(levelId, ready);
         };
 
-        SimulationRequests.prototype.createActor = function(options) {
+        SimulationRequests.prototype.createActor = function(idx, options) {
             var opts = JSON.parse(options);
 
-            var ready = function(actorSpawnData) {
-                postMessage(['createActor', JSON.stringify(actorSpawnData)]);
+            var ready = function(res) {
+                postMessage([ idx, JSON.stringify(res)]);
             };
             this.simulationState.spawnActor(opts, ready);
         };
 
-        SimulationRequests.prototype.despawnActor = function(actorId) {
-            var ready = function() {
-                postMessage(['despawnActor', 'despawned '+actorId]);
+        SimulationRequests.prototype.despawnActor = function(idx, actorId) {
+            var ready = function(res) {
+                postMessage([idx,  res]);
             };
             this.simulationState.removeActor(actorId, ready);
         };
 
-        SimulationRequests.prototype.attachTerrainToLevel = function(data) {
+        SimulationRequests.prototype.attachTerrainToLevel = function(idx, data) {
             var opts = JSON.parse(data);
             var ready = function(res) {
-                postMessage(['attachTerrainToLevel', res]);
+                postMessage([idx, res]);
             };
             this.simulationState.attachTerrainActorToLevel(opts.levelId, opts.actorId, ready);
         };
 
-        SimulationRequests.prototype.createTerrain = function(options) {
+        SimulationRequests.prototype.createTerrain = function(idx, options) {
             console.log("opts:", options);
             var terrain = this.terrainFunctions.createTerrain(JSON.parse(options));
 
             var array = this.terrainFunctions.getTerrainBuffers(terrain);
-            postMessage(['createTerrain', array]);
+            postMessage([idx, array]);
         };
 
         return SimulationRequests;

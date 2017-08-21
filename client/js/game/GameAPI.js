@@ -24,7 +24,8 @@ define([
 
         var pieces = [];
         var actors = [];
-        var levels = [];
+
+        var calls = {};
 
         var GameAPI = function() {
 
@@ -46,22 +47,20 @@ define([
 
         };
 
-
-        GameAPI.getLevelById = function(leveId) {
-            for (var i = 0; i < levels.length; i++) {
-                if (levels[i].id === leveId) {
-                    return levels[i];
+        GameAPI.getActorById = function(actorId) {
+            for (var i = 0; i < actors.length; i++) {
+                if (actors[i].id === actorId) {
+                    return actors[i];
                 }
             }
-            console.log("No level by id:", leveId, actors);
+            console.log("No actor by id:", actorId, actors);
         };
 
         GameAPI.createLevel = function(options, onData) {
 
             var levelReady = function(level) {
-                levels.push(level);
                 onData(level);
-            }
+            };
 
             var onRes = function(response) {
                 levelBuilder.createLevel(JSON.parse(response), levelReady);
@@ -72,12 +71,17 @@ define([
 
         GameAPI.closeLevel = function(level) {
 
-            var onRes = function (levelId) {
-                var lvl = GameAPI.getLevelById(levelId);
-                GameAPI.removeLevel(lvl);
+            var onRemove = function(actorId) {
+                console.log("Removed levelActor", actorId);
             };
 
+            var onRes = function (levelId) {
+                GameAPI.removeActor(level.actor, onRemove);
+            };
+
+            level.removeGameLevel();
             gameWorker.makeGameRequest('despawnLevel', level.id, onRes);
+
         };
 
         GameAPI.attachTerrainToLevel = function(actor, level, onOk) {
@@ -95,11 +99,19 @@ define([
 
         GameAPI.controlActor = function(actor) {
 
+            var controlReady = function(controlPiece) {
+                GameAPI.registerActivePiece(controlPiece);
+                gameWorker.bindPieceControls(actor.piece, controlPiece, actor.controlStateMap);
+                GameAPI.addPiece(controlPiece);
+            };
+
+            actor.initiateActorControls(controlReady);
+
         };
 
         GameAPI.createActor = function(options, onData) {
             var actorReady = function(actor) {
-                gameWorker.bindPieceControls(actor.piece, actor.controls, actor.controlStateMap);
+                GameAPI.registerActivePiece(actor.piece);
                 onData(actor);
             };
 
@@ -118,49 +130,54 @@ define([
 
         };
 
-        GameAPI.detatchPieceControls = function(pieceControls, stateMap) {
+        GameAPI.detatchPieceProtocol = function(pieceControls, stateMap) {
             gameWorker.clearPieceControls(pieceControls, stateMap)
         };
 
         GameAPI.addActor = function(actor) {
             this.addPiece(actor.piece);
-            this.addPiece(actor.controls);
             actors.push(actor);
         };
 
         GameAPI.dropActorControl = function(actor) {
-            GameAPI.detatchPieceControls(actor.controls, actor.controlStateMap);
-        };
-
-        GameAPI.removeLevel = function(level) {
-            if (levels.indexOf(level) !== -1) {
-                levels.splice(levels.indexOf(level), 1);
+            if (!actor.controls) {
+                console.log("Actor Not under control..", actor);
+                return;
             }
-            GameAPI.removeActor(level.actor);
-            level.removeGameLevel();
-        };
-
-        GameAPI.removeActor = function(actor) {
-            GameAPI.dropActorControl(actor);
-            GameAPI.detatchPieceControls(actor.piece, actor.controlStateMap);
-
+            GameAPI.detatchPieceProtocol(actor.controls, actor.controlStateMap);
+            actor.releaseActorControls();
             this.removePiece(actor.controls);
-            this.removePiece(actor.piece);
-            actor.removeGameActor();
+        };
 
-            if (actors.indexOf(actor) !== -1) {
-                actors.splice(actors.indexOf(actor), 1);
-            }
+
+        GameAPI.removeActor = function(actor, removeOk) {
+
 
             var onRes = function(msg) {
-                console.log("Actor Despwned", msg);
+
+                var actr = GameAPI.getActorById(msg);
+                GameAPI.dropActorControl(actr);
+                GameAPI.detatchPieceProtocol(actr.piece, actr.controlStateMap);
+
+                GameAPI.removePiece(actr.piece);
+
+                if (actors.indexOf(actr) !== -1) {
+                    actors.splice(actors.indexOf(actr), 1);
+                } else {
+                    console.log("No actor to remove by id:", msg);
+                }
+
+                actr.removeGameActor();
+                removeOk(msg);
+
+
             };
 
             gameWorker.makeGameRequest('despawnActor', actor.id, onRes);
         };
 
         GameAPI.addPiece = function(piece) {
-            this.removePiece(piece);
+            GameAPI.removePiece(piece);
             pieces.push(piece);
         };
 

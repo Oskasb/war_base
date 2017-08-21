@@ -10,21 +10,20 @@ define([
         GameLevel
     ) {
 
-        var actorCount = 0;
-        var levelCount = 0;
+        var count = 0;
 
         var SimulationOperations = function() {
 
         };
 
         SimulationOperations.prototype.buildLevel = function(options, ready) {
-            levelCount++
-            new GameLevel('level_'+levelCount, options.dataKey, ready);
+            count++
+            new GameLevel('level_'+count, options.dataKey, ready);
         };
 
         SimulationOperations.prototype.buildActor = function(options, ready) {
-            actorCount++
-            new GameActor('actor_'+actorCount, options.dataKey, ready);
+            count++
+            new GameActor('actor_'+count, options.dataKey, ready);
         };
 
         SimulationOperations.prototype.getActorTerrainOptions = function(actor) {

@@ -39,7 +39,7 @@ require(
 		};
 
         mainGameWorker = new MainGameWorker();
-		postMessage(['ready']);
+		postMessage([1, 'ready']);
 	}
 );
 

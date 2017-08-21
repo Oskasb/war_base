@@ -81,6 +81,7 @@ define([], function() {
 
     ProtocolSystem.prototype.addProtocol = function(protocol) {
         this.protocols[protocol[0]] = protocol;
+        this.targetMap[protocol[0]] = [];
     };
 
     ProtocolSystem.prototype.applyProtocolToActorState = function(actor, tpf) {

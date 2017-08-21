@@ -43,9 +43,6 @@ define([
 
         GameLevel.prototype.removeGameLevel = function () {
             this.pipeObj.removePipelineObject();
-            if (this.actor) {
-                this.actor.removeGameActor();
-            }
         };
 
         return GameLevel

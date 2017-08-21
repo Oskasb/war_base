@@ -53,7 +53,7 @@ define([
 
         SimulationState.prototype.getActorById = function(actorId) {
             for (var i = 0; i < actors.length; i++) {
-                if (actors[i].id === actorId) {
+                if (actors[i].id == actorId) {
                     return actors[i];
                 }
             }
@@ -71,7 +71,8 @@ define([
 
         SimulationState.prototype.removeActor = function(actorId, cb) {
             var actor = this.getActorById(actorId);
-            actors.splice(actors.indexOf(actor, 1));
+
+            actors.splice(actors.indexOf(actor), 1);
 
             this.protocolSystem.removeProtocol(actor);
             if (actor.body) {
@@ -84,7 +85,7 @@ define([
 
         SimulationState.prototype.removeLevel = function(levelId, cb) {
             var level = this.getLevelById(levelId);
-            levels.splice(levels.indexOf(level, 1));
+            levels.splice(levels.indexOf(level), 1);
             cb(levelId);
         };
 

@@ -47,9 +47,24 @@ define([
             this.body = body;
         };
 
+        GameActor.prototype.initiateActorControls = function (controlReady) {
+            var pieceReady = function(ctrlPiece) {
+                this.bindControlStateMap(this.config.state_map);
+                controlReady(ctrlPiece)
+            }.bind(this);
+
+            this.setControlPiece(new GamePiece(this.id, this.config.controls, pieceReady));
+        };
+
+        GameActor.prototype.releaseActorControls = function () {
+            if (this.controls) this.controls.removeGamePiece();
+            this.controls = null;
+        };
+
         GameActor.prototype.setControlPiece = function (controlPiece) {
             if (this.controls) this.controls.removeGamePiece();
             this.controls = controlPiece;
+
         };
 
         GameActor.prototype.addControlState = function (controlStateId, targetStateId) {
@@ -68,14 +83,12 @@ define([
             var count = 0;
             var pieceReady = function() {
                 count++;
-                if (count == 3) {
-                    this.bindControlStateMap(config.state_map);
+                if (count == 2) {
                     ready(this)
                 }
             }.bind(this);
 
             this.setGamePiece(new GamePiece(this.id, config.piece, pieceReady));
-            this.setControlPiece(new GamePiece(this.id, config.controls, pieceReady));
             this.setPhysicalPiece(new PhysicalPiece(this.id, config.physics, pieceReady))
         };
 
@@ -86,14 +99,16 @@ define([
         };
 
         GameActor.prototype.updateActpr = function () {
-            this.controls.rootObj3D.position.copy(this.piece.rootObj3D.position);
-            this.controls.rootObj3D.quaternion.copy(this.piece.rootObj3D.quaternion); //.y = this.piece.rootObj3D.rotation.y;
-            // this.controls.rootObj3D.quaternion.normalize();
+            if (this.controls) {
+                this.controls.rootObj3D.position.copy(this.piece.rootObj3D.position);
+                this.controls.rootObj3D.quaternion.copy(this.piece.rootObj3D.quaternion); //.y = this.piece.rootObj3D.rotation.y;
+                // this.controls.rootObj3D.quaternion.normalize();
+            }
         };
 
         GameActor.prototype.removeGameActor = function () {
             this.pipeObj.removePipelineObject();
-            this.controls.removeGamePiece();
+            if (this.controls) this.controls.removeGamePiece();
             this.piece.removeGamePiece();
         };
 
