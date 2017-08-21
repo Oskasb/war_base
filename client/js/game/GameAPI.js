@@ -25,8 +25,6 @@ define([
         var pieces = [];
         var actors = [];
 
-        var calls = {};
-
         var GameAPI = function() {
 
         };

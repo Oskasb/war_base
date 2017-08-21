@@ -4,34 +4,48 @@
 
 define([
         'PipelineObject',
-        'game/modules/ModuleCallbacks'
+        'game/modules/ModuleCallbacks',
+        'PipelineAPI'
     ],
     function(
         PipelineObject,
-        ModuleCallbacks
+        ModuleCallbacks,
+        PipelineAPI
     ) {
 
-        var CameraControl = function(targetData, ready) {
-            this.id = targetData.targetid;
+        var cameraFunctions;
+
+        var CameraControl = function(dataKey, ready) {
+
+            this.dataKey = dataKey;
 
             var applyData = function() {
-                this.applyData(this.pipeObj.buildConfig()[this.id]);
+                this.applyData(this.pipeObj.buildConfig()[dataKey]);
                 ready(this);
             }.bind(this);
 
             this.pipeObj = new PipelineObject('CAMERA_DATA', 'CONTROLS', applyData);
+
+            var camFuncs = function(src, data) {
+                cameraFunctions = data;
+            };
+
+            new PipelineAPI.subscribeToCategoryKey('CAMERA_DATA', 'CAMERA', camFuncs);
+
         };
 
         CameraControl.prototype.applyData = function(config) {
             this.config = config;
         };
 
-        CameraControl.prototype.sampleModuleState = function(module, state, tpf, time) {
-            //   if (isNaN(state.getValue())) state.setValue(0);
-            this.state = state;
-            ModuleCallbacks[this.config.callback](module, this)
+        CameraControl.prototype.sampleTargetState = function(rootObj3d, pieceStates) {
+
+            cameraFunctions[this.config.cameraFunction](rootObj3d, this.config.params)
         };
 
+        CameraControl.prototype.removeCameraControls = function() {
+            this.pipeObj.removePipelineObject();
+        };
 
         return CameraControl
     });

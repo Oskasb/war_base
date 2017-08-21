@@ -21,6 +21,7 @@ define(['Events',
         evt.on(evt.list().CLIENT_TICK, updateCamera);
         
         cameraFunctions = new CameraFunctions();
+        PipelineAPI.setCategoryKeyValue('CAMERA_DATA', 'CAMERA', cameraFunctions);
     };
     
     var ownPiece;

@@ -38,6 +38,7 @@
       "game/physics/physics_data.json",
 
       "game/modules/piece_module_data.json",
+      "game/modules/camera_data.json",
       "game/modules/control_module_data.json",
       "game/modules/module_channels.json",
       "game/modules/channel_targets.json",

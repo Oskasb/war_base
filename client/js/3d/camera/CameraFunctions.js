@@ -273,10 +273,19 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
 
     };
 
-
     CameraFunctions.prototype.moochIt = function() {
         this.mooch(this.targetIdeal, this.frameTPos, this.posLerpFactor);
         this.mooch(this.cameraIdeal, this.frameCPos, this.camLerpFactor);
+    };
+
+    CameraFunctions.prototype.orbit_target_obj = function(obj3d, params) {
+        orbitControls.target.copy(obj3d.position);
+
+        for (var i = 0; i < params.length; i++) {
+            orbitControls[params[i].param] = params[i].value;
+        }
+
+        orbitControls.update();
     };
 
     CameraFunctions.prototype.updateCamera = function() {

@@ -7,6 +7,7 @@ define([
         'PipelineObject',
         'game/pieces/GamePiece',
         'game/controls/ControlStateMap',
+        'game/controls/CameraControls',
         'game/worker/physics/PhysicalPiece'
     ],
     function(
@@ -14,6 +15,7 @@ define([
         PipelineObject,
         GamePiece,
         ControlStateMap,
+        CameraControls,
         PhysicalPiece
     ) {
 
@@ -54,6 +56,12 @@ define([
             }.bind(this);
 
             this.setControlPiece(new GamePiece(this.id, this.config.controls, pieceReady));
+
+            var camReaedy = function(cc) {
+                this.setCameraControl(cc);
+            }.bind(this);
+
+            new CameraControls(this.config.camera, camReaedy)
         };
 
         GameActor.prototype.releaseActorControls = function () {
@@ -64,6 +72,12 @@ define([
         GameActor.prototype.setControlPiece = function (controlPiece) {
             if (this.controls) this.controls.removeGamePiece();
             this.controls = controlPiece;
+
+        };
+
+        GameActor.prototype.setCameraControl = function (camControl) {
+            if (this.cameraControls) this.cameraControls.removeCameraControls();
+            this.cameraControls = camControl;
 
         };
 
@@ -103,6 +117,9 @@ define([
                 this.controls.rootObj3D.position.copy(this.piece.rootObj3D.position);
                 this.controls.rootObj3D.quaternion.copy(this.piece.rootObj3D.quaternion); //.y = this.piece.rootObj3D.rotation.y;
                 // this.controls.rootObj3D.quaternion.normalize();
+                if (this.cameraControls) {
+                    this.cameraControls.sampleTargetState(this.controls.rootObj3D, this.controls.pieceStates);
+                }
             }
         };
 

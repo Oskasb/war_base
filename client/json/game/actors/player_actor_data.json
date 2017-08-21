@@ -6,6 +6,7 @@
         "data":{
           "piece":"sherman_tank_piece",
           "controls":"vehicle_control_piece",
+          "camera":"vehicle_control_camera",
           "physics":"physical_sherman_tank",
           "state_map":[
             {"control":"state_forward",  "target":"engine_state"},

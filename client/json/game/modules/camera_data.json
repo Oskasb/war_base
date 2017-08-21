@@ -2,11 +2,12 @@
   "CAMERA_DATA":{
     "CONTROLS":[
       {
-        "id":"target_read_press_0",
+        "id":"vehicle_control_camera",
         "data":{
-          "callback":"read_press_active",
-          "factor":1,
-          "time":0.1
+          "cameraFunction":"orbit_target_obj",
+          "params":[
+            {"param":"maxDistance", "value":100}
+          ]
         }
       }
     ]
