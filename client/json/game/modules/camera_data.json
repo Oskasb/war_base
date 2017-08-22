@@ -7,12 +7,12 @@
           "cameraFunction":"orbit_target_obj",
           "view_heading":{"slot_id":"state_forward"},
           "master_state":{"state_id":"state_control_active"},
-          "min_elevation":12,
+          "min_elevation":8,
           "offsets":[
             {"property":"target", "axis":"y","value":4}
           ],
           "params":[
-            {"param":"maxDistance",   "value":22},
+            {"param":"maxDistance",   "value":15},
             {"param":"minDistance",   "value":7},
             {"param":"enableDamping", "value":true},
             {"param":"dampingFactor", "value":0.82},
@@ -22,8 +22,8 @@
             {"param":"minPolarAngle",   "value":0.448},
             {"param":"maxPolarAngle",   "value":2.348}
           ],
-          "lerp":0.04,
-          "radial_lerp":0.02
+          "lerp":0.02,
+          "radial_lerp":0.08
         }
       }
     ]

@@ -6,8 +6,8 @@
         "data":{
           "callback":"read_press_active",
           "factor":1,
-          "time":0.23,
-          "release_time":0.5
+          "time":0.4,
+          "release_time":0.25
         }
       },
       {
@@ -16,11 +16,11 @@
           "callback":"read_input_vector",
           "parameter":"zrot",
           "factor":0.8,
-          "threshold_upper":9,
-          "threshold_lower":-9,
+          "threshold_upper":1.7,
+          "threshold_lower":-1.7,
           "clamp_max":1.55,
           "clamp_min":-1.55,
-          "time":0.9,
+          "time":1.2,
           "release_time":4
         }
       },

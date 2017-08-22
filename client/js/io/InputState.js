@@ -39,12 +39,15 @@ define([
             this.dragTargets = [];
         };
 
+        var minLine = 70;
+
         InputState.prototype.setLine = function(x1, y1, x2, y2, distance, zrot) {
             this.line.fromX = x1;
             this.line.fromY=y1;
             this.line.toX = x2;
             this.line.toY = y2;
             this.line.w = 2*1+(distance+0.4);
+            if (this.line.w < minLine) zrot = 0.00001;
             this.line.zrot = zrot;
         };
 
