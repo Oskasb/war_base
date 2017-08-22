@@ -149,7 +149,7 @@ define([],
             var normal = bufferGeo.attributes.normal.array;
             var color = bufferGeo.attributes.color.array;
             var uv = bufferGeo.attributes.uv.array;
-            return [position, normal, color, uv];
+            return [position, normal, color, uv, this.getTerrainArray1d(terrain)];
 
         };
 
@@ -434,7 +434,7 @@ define([],
 
 
         TerrainFunctions.prototype.setHeightAt = function(module, posVec, array1d, terrainSize, segments, height, reach) {
-            pos = posVec.data;
+            var pos = posVec.data;
 
             var htP = terrainSize;
             var htN = -htP;

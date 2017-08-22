@@ -73,8 +73,10 @@
               {"control":"brake_state",    "stateid":"gun_pitch",     "factor":100}
           ],
           "feedback_map":[
-            {"param":"wheelInfos",     "key":2,  "property":"rotation", "stateid":"track_speed_r",   "factor":0.5},
-            {"param":"wheelInfos",     "key":3,  "property":"rotation", "stateid":"track_speed_l",   "factor":0.5}
+            {"param":"wheelInfos",     "key":2,  "property":"deltaRotation", "stateid":"track_speed_r", "factor":-1},
+            {"param":"wheelInfos",     "key":3,  "property":"deltaRotation", "stateid":"track_speed_l", "factor":-1},
+            {"param":"wheelInfos",     "key":2,  "property":"rotation", "stateid":"track_rotation_r",   "factor":0.5},
+            {"param":"wheelInfos",     "key":3,  "property":"rotation", "stateid":"track_rotation_l",   "factor":0.5}
           ],
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "pos_state_x"},

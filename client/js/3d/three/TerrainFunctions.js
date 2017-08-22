@@ -44,7 +44,7 @@ define([
             var xFactor = x;
 
             var idx = (yFactor + xFactor);
-//    console.log(y, yFactor, xFactor, idx);
+
             return array1d[idx];
         };
 
@@ -129,6 +129,7 @@ define([
                 }
 
                 calcVec1.normalize();
+                normalStore.copy(calcVec1);
 
                 //    if (calcVec1.data[1] != 1) {
                 //        console.log(calcVec1.data);

@@ -58,7 +58,7 @@ define([
 
         var pre = 0;
 
-        ModuleEffectCreator.createModelTransformedEffects = function(calcVec, transform, calcQuat, stateValue, velStore, posStore) {
+        ModuleEffectCreator.setupModuleTransform = function(calcVec, transform, calcQuat, stateValue, velStore, posStore) {
 
             posStore.x = transform.size[0]*Math.random() - transform.size[0]*0.5;
             posStore.y = transform.size[1]*Math.random() - transform.size[1]*0.5;
@@ -104,7 +104,7 @@ define([
 
             for (var i = 0; i < fx.length; i++) {
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
-                    ModuleEffectCreator.createModelTransformedEffects(piece, calcVec, transform, calcQuat, 1, calcVec2, calcVec3);
+                    ModuleEffectCreator.setupModuleTransform(piece, calcVec, transform, calcQuat, 1, calcVec2, calcVec3);
 
                     ModuleEffectCreator.createActiveEffect(fx[i].particle_effects[j].id, calcVec2, calcVec3)
                 }
@@ -157,7 +157,7 @@ define([
                 }
 
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
-                    ModuleEffectCreator.createModelTransformedEffects(calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
+                    ModuleEffectCreator.setupModuleTransform(calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
 
                     if (glueToGround) {
                         pre = calcVec2.y;
@@ -174,21 +174,15 @@ define([
         };
 
 
-        ModuleEffectCreator.addGrundPrintEmitEffect = function(piece, model, emit_effect, transform, stateValue, glueToGround) {
+        ModuleEffectCreator.addGrundPrintEmitEffect = function(model, emit_effect, transform, stateValue, glueToGround) {
 
             var fx = PipelineAPI.readCachedConfigKey('MODULE_EFFECTS', emit_effect);
 
-            if (!model.matrixWorld) {
-                console.log("No model matrix world?");
-                return;
-            }
 
             calcVec.setFromMatrixPosition( model.matrixWorld );
             model.getWorldQuaternion(calcQuat);
 
             if (!calcVec.x) return;
-            if (!piece.spatial.pos.data) return;
-
 
             for (var i = 0; i < fx.length; i++) {
 
@@ -198,7 +192,7 @@ define([
                 }
 
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
-                    ModuleEffectCreator.createModelTransformedEffects(calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
+                    ModuleEffectCreator.setupModuleTransform(calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
 
                     if (glueToGround) {
                         pre = calcVec2.y;
@@ -307,6 +301,21 @@ define([
                 )
             }
         };
+
+
+
+        ModuleEffectCreator.module_ground_print_effect = function(visualModule, target) {
+            if (Math.random() < target.state.getValue()) {
+                ModuleEffectCreator.addGrundPrintEmitEffect(
+                    visualModule.model || visualModule.rootObj,
+                    target.config.module_effect,
+                    visualModule.module.transform,
+                    target.state.getValue(),
+                    target.config.glue_to_ground
+                )
+            }
+        };
+
 
         ModuleEffectCreator.createPassiveEffect = function(fxId, pos, vel, size, quat, store) {
 

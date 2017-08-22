@@ -36,6 +36,7 @@ define([
             }
         };
 
+
         VisualModule.prototype.loadVisualModule = function() {
 
             if (this.model) {
@@ -44,15 +45,17 @@ define([
 
             if (this.data.model) {
                 this.attachModel(ThreeAPI.loadMeshModel(this.data.model, ThreeAPI.createRootObject()));
+                return;
             }
 
             if (this.data.terrain) {
-
                 var parent = this.rootObj;
                 parent.position.x -= this.data.options.terrain_size / 1;
                 parent.position.z -= this.data.options.terrain_size / 1;
             //    GameAPI.createTerrain(this.data.options, onData);
+                return;
             }
+
         };
 
         VisualModule.prototype.attachModel = function(model) {
@@ -89,13 +92,8 @@ define([
                 return;
             }
 
-            if (this.data.model) {
-                if (bool) {
-                    this.showVisualModule()
-                } else {
-                    this.hideVisualModule()
-                }
-            }
+
+            this.isVisible = bool;
 
             if (this.data.terrain) {
                 if (this.model) {
@@ -105,9 +103,18 @@ define([
                         this.rootObj.remove(this.model);
                     }
                 }
+                return;
             }
 
-            this.isVisible = bool;
+                if (bool) {
+                    this.showVisualModule()
+                } else {
+                    this.hideVisualModule()
+                }
+
+
+
+
         };
 
         VisualModule.prototype.transformObj = function(obj3d, transform) {

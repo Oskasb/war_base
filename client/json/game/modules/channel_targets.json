@@ -28,6 +28,22 @@
         }
       },
       {
+        "id":"channel_track_ground_print",
+        "data":{
+          "callback":"module_ground_print_effect",
+          "module_effect":"track_ground_print_fx",
+          "glue_to_ground":true
+        }
+      },
+      {
+        "id":"channel_track_dirt_spray",
+        "data":{
+          "callback":"module_emit_effect",
+          "module_effect":"tank_track_fx",
+          "glue_to_ground":false
+        }
+      },
+      {
         "id":"model_track_animate_texture",
         "data":{
             "callback":"animate_texture",

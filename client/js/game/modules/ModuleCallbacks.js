@@ -70,6 +70,12 @@ define([
             module.visualModule.addEffectTarget(target);
         };
 
+
+        ModuleCallbacks.module_ground_print_effect = function(module, target) {
+            module.visualModule.addEffectTarget(target);
+        };
+
+
         return ModuleCallbacks;
 
     });

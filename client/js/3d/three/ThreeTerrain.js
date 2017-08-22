@@ -93,16 +93,22 @@ define([
             var terrain;
 
             if (array1d) {
-                if (array1d.length === 4) {
+                if (array1d.length === 5) {
                     opts.xSegments = 3;
                     opts.ySegments = 3;
                     terrain = new THREE.Terrain(opts);
 
+                    var vertexBuffer = new THREE.BufferAttribute( array1d[0] ,3 );
                     terrain.children[0].geometry = new THREE.BufferGeometry();
-                    terrain.children[0].geometry.addAttribute('position', new THREE.BufferAttribute( array1d[0] ,3 ));
+                    terrain.children[0].geometry.addAttribute('position', vertexBuffer);
+
                     terrain.children[0].geometry.addAttribute('normal', new THREE.BufferAttribute( array1d[1] ,3 ));
                     terrain.children[0].geometry.addAttribute('color', new THREE.BufferAttribute( array1d[2] ,3 ));
                     terrain.children[0].geometry.addAttribute('uv', new THREE.BufferAttribute( array1d[3] ,2 ))
+
+
+                    array1d = array1d[4];
+
                 } else {
                     terrain = new THREE.Terrain(opts);
                     THREE.Terrain.fromArray1D(terrain.children[0].geometry.vertices, array1d);
@@ -160,9 +166,17 @@ define([
 
             if (!parentObj.parent) return;
 
+
             var pPosx = parentObj.parent.position.x;
             var pPosz = parentObj.parent.position.z;
             var size = terrainModel.size;
+
+            if (parentObj.parent.parent) {
+                pPosx += parentObj.parent.parent.position.x;
+                pPosz += parentObj.parent.parent.position.z;
+            }
+            pPosx -= size/2;
+            pPosz -= size/2;
 
             if (pPosx <= pos.x && pPosx + size > pos.x) {
                 if (pPosz <= pos.z && pPosz + size > pos.z) {
@@ -201,12 +215,13 @@ define([
 
             if (terrainStore) {
                 calcVec.subVectors(pos, terrainStore.parent.parent.position);
-
+                calcVec.x += terrainStore.model.size/2;
+                calcVec.z += terrainStore.model.size/2;
                 pos.y = ThreeTerrain.getThreeTerrainHeightAt(terrainStore.model, calcVec, normalStore);
 
                 return terrainStore.model;
             } else {
-
+                console.log("Not on terrain")
             }
             
         };

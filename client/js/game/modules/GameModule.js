@@ -66,6 +66,9 @@ define([
             if (this.config.transform) this.copyTransform(this.config.transform);
 
             this.visualModule.setModuleData(this.config);
+
+
+
             if (config[ENUMS.ModuleParams.attachment_points]) {
                 this.applyAttachmentPoints(config[ENUMS.ModuleParams.attachment_points]);
             }
@@ -166,9 +169,20 @@ define([
             this.visualModule.attachToParent(parentModule);
         };
 
+        GameModule.prototype.setVisibility = function (bool) {
+            if (this.isVisible === bool) {
+                return;
+            }
+
+        //    if (this.visualModule.data.model) {
+                this.visualModule.setVisibility(bool);
+        //    }
+
+            this.isVisible = bool;
+        };
 
         GameModule.prototype.sampleModuleFrame = function (render) {
-            this.visualModule.setVisibility(render);
+            this.setVisibility(render);
             this.visualModule.updateVisualModule(render);
             for (var i = 0; i < this.moduleChannels.length; i++) {
                 this.moduleChannels[i].updateChannelState(this);

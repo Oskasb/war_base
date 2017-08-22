@@ -511,6 +511,14 @@ THREE.Terrain.toArray1D = function(vertices) {
     return tgt;
 };
 
+THREE.Terrain.toArray1DfromPositionBuffer = function(positionBuffer) {
+    var tgt = new Float64Array(vertices.length);
+    for (var i = 0, l = tgt.length; i < l; i++) {
+        tgt[i] = vertices[i].z;
+    }
+    return tgt;
+};
+
 /**
  * Set the height of plane vertices from a 1D array of heightmap values.
  *
