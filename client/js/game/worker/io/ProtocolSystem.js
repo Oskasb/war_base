@@ -67,7 +67,7 @@ define([], function() {
                         msg.push(tpf*2);
                     //    if (self.SharedArrayBuffer) {
                             prot[targetChannel+2][0] = prot[targetChannel+1];
-                            prot[targetChannel+2][1] = tpf;
+                            prot[targetChannel+2][1] = tpf*2;
                     //    }
                         count++;
                     }

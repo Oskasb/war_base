@@ -201,6 +201,7 @@ define([
         ParticleSpawner.prototype.updateActiveParticleEffect = function(effect, pos, state, tpf) {
             effect.updateEffectPositionSimulator(pos, tpf);
         };
+
         
         ParticleSpawner.prototype.spawnPassiveEffect = function(id, pos, vel, size, quat) {
             return this.buildEffect(id, pos, vel, size, quat);

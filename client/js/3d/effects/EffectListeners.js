@@ -52,17 +52,15 @@ define([
                 } else {
                     EffectsAPI.requestParticleEffect(evt.args(e).effect, posVec, velVec);
                 }
-
-            };
-
-            var tickEffectPlayer = function(e) {
-                EffectsAPI.tickEffectSimulation(evt.args(e).tpf);
             };
 
             evt.on(evt.list().GAME_EFFECT, playGameEffect);
-            evt.on(evt.list().CLIENT_TICK, tickEffectPlayer);
         };
 
+
+        EffectsListeners.tickEffects = function(tpf) {
+            EffectsAPI.tickEffectSimulation(tpf);
+        };
 
         EffectsListeners.setEffectCallbacks = function(callbacks) {
             ThreeAPI.setEffectCallbacks(callbacks);

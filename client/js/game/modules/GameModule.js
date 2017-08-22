@@ -181,15 +181,18 @@ define([
             this.isVisible = bool;
         };
 
-        GameModule.prototype.sampleModuleFrame = function (render) {
+        GameModule.prototype.sampleModuleFrame = function (render, tpf) {
             this.setVisibility(render);
-            this.visualModule.updateVisualModule(render);
             for (var i = 0; i < this.moduleChannels.length; i++) {
                 this.moduleChannels[i].updateChannelState(this);
             }
             if (this.needsNormalize) {
                 this.visualModule.getParentObject3d().quaternion.normalize();
             }
+        };
+
+        GameModule.prototype.updateVisualState = function (tpf) {
+            this.visualModule.updateVisualModule(tpf);
         };
 
         GameModule.prototype.removeClientModule = function () {

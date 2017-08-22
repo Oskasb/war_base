@@ -59,10 +59,10 @@
 
             "wheelOptions":{
               "radius":0.5,
-              "suspensionStiffness":10,
+              "suspensionStiffness":12,
               "suspensionLength":0.9,
-              "dampening":1.1,
-              "rollInfluence":0.4,
+              "dampening":1.2,
+              "rollInfluence":0.3,
               "frictionSlip":2,
               "maxSuspensionForce":400000
             }

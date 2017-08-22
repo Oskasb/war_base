@@ -40,7 +40,7 @@
         "data":{
           "callback":"module_emit_effect",
           "module_effect":"tank_track_fx",
-          "glue_to_ground":false
+          "glue_to_ground":true
         }
       },
       {
@@ -55,16 +55,22 @@
         "id":"module_channel_on_fire",
         "data":{
           "callback":"module_emit_effect",
-          "module_effect":"module_on_fire_fx",
-          "glue_to_ground":false
+          "module_effect":"module_on_fire_fx"
+        }
+      },
+      {
+        "id":"channel_engine_power",
+        "data":{
+          "callback":"module_static_state_effect",
+          "module_effect":"shield_module_effect",
+          "scale":0.001
         }
       },
       {
         "id":"module_channel_engine_smoke",
         "data":{
             "callback":"module_emit_effect",
-            "module_effect":"tank_engine_fx",
-            "glue_to_ground":false
+            "module_effect":"tank_engine_fx"
         }
       },
       {

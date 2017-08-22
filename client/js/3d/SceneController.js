@@ -28,6 +28,11 @@ define([
         EffectListeners.setupListeners();
         EffectListeners.setEffectCallbacks(ModuleEffectCreator)
     };
+
+    SceneController.prototype.tickEffectPlayers = function(tpf) {
+        EffectListeners.tickEffects(tpf)
+    };
+
     
     return SceneController;
 

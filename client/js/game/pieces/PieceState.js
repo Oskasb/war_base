@@ -17,7 +17,7 @@ define([],
             this.lastUpdate = 0;
             this.stateProgress = 0;
 
-            var state = [this.value, 0];
+            var state = [this.value, 0, 0];
 
             if (window.SharedArrayBuffer) {
                 var buffer = new SharedArrayBuffer(Float32Array.BYTES_PER_ELEMENT * state.length);
@@ -36,7 +36,7 @@ define([],
                 this.buffer[0] = value;
             }
             this.value = value;
-            this.notifyUpdate();
+
         };
 
 
@@ -98,7 +98,7 @@ define([],
                 this.updateTargetValues()
             }
             this.updateStateProgress(tpf);
-
+            this.notifyUpdate();
         };
 
         return PieceState

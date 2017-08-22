@@ -131,7 +131,6 @@ define(['3d/effects/particles/EffectSimulators',
 
         ParticleEffect.prototype.updateEffectPositionSimulator = function(pos, tpf) {
 
-            //    this.updateEffectAge(tpf);
             for (var i = 0; i < this.aliveParticles.length; i++) {
 
                 this.aliveParticles[i].setPosition(pos);

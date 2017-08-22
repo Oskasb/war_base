@@ -23,9 +23,9 @@ define([
 
         var maxGroundContactDistance = 0.5;
 
-        var maxActiveGroundPrints = 800;
+        var maxActiveGroundPrints = 2000;
 
-        var maxGeometryEffetcs = 500;
+        var maxGeometryEffetcs = 2000;
 
         var groundprints = [];
         var geometryEffects = [];
@@ -45,11 +45,11 @@ define([
         };
 
         var posFromTransform = function(pos, transform, storeVec3) {
-            storeVec3.set(pos.data[0]+ transform.pos.data[0], pos.data[1] + transform.pos.data[1], pos.data[2] + transform.pos.data[2]);
+            storeVec3.set(pos.x+ transform.pos[0], pos.y + transform.pos[1], pos.z + transform.pos[2]);
         };
 
         var sizeFromTransform = function(transform, storeVec3) {
-            storeVec3.set(transform.size.data[0], transform.size.data[1],  transform.size.data[2]);
+            storeVec3.set(transform.size[0], transform.size[1],  transform.size[2]);
         };
 
         var ModuleEffectCreator = function() {
@@ -221,19 +221,17 @@ define([
         };
         
         
-        ModuleEffectCreator.createModuleStaticEffect = function(effectId, pos, transform, vel) {
+        ModuleEffectCreator.createModuleStaticEffect = function(fxArray, effectId, transform, scale) {
 
-            posFromTransform(pos, transform, calcVec);
             sizeFromTransform(transform, calcVec2);
-            var fxArray = [];
+
+            if (scale) {
+                calcVec2.multiplyScalar(scale);
+            }
+
             var fx = PipelineAPI.readCachedConfigKey('MODULE_EFFECTS', effectId);
 
-
-            if (!vel) {
                 calcVec3.set(0, 0, 0);
-            } else {
-                calcVec3.set(vel.data[0], vel.data[1], vel.data[2]);
-            }
 
             for (var i = 0; i < fx.length; i++) {
 
@@ -316,6 +314,36 @@ define([
             }
         };
 
+        ModuleEffectCreator.module_static_state_effect = function(visualModule, target, tpf) {
+
+            if (target.effectArray.length) {
+                ModuleEffectCreator.updateEffect(
+                    target.effectArray,
+                    visualModule.model || visualModule.rootObj,
+                    target.state.getValue(),
+                    tpf
+                )
+            } else {
+                if (target.state.getValue() !== 0) {
+
+                    target.effectArray =  ModuleEffectCreator.createModuleStaticEffect(
+                        target.effectArray,
+                        target.config.module_effect,
+                        visualModule.module.transform,
+                        target.config.scale
+                    )
+
+                }
+            }
+
+                if (target.effectArray) {
+                    if (target.state.getValue() === 0 || target.remove) {
+                        ModuleEffectCreator.removeModuleStaticEffect(target.effectArray)
+                    }
+                }
+
+        };
+
 
         ModuleEffectCreator.createPassiveEffect = function(fxId, pos, vel, size, quat, store) {
 
@@ -329,23 +357,24 @@ define([
         };
 
         ModuleEffectCreator.removeModuleStaticEffect = function(fxArray) {
-            for (var i = 0; i < fxArray.length; i++) {
-                if (!fxArray[i]) {
-                    console.log("Returning empty effect")
-                } else {
-                    EffectsAPI.returnPassiveEffect(fxArray[i]);
-                }
+
+            while (fxArray.length) {
+                EffectsAPI.returnPassiveEffect(fxArray.pop())
             }
+
         };
 
-        ModuleEffectCreator.updateEffect = function(fxArray, model, pos, transform, state, tpf) {
+        ModuleEffectCreator.remove_module_static_effect = function(fxArray) {
+            this.removeModuleStaticEffect(fxArray);
+        };
 
+        ModuleEffectCreator.updateEffect = function(fxArray, model, state, tpf) {
+
+            model.updateMatrixWorld(true);
             calcVec.setFromMatrixPosition( model.matrixWorld );
 
-            // posFromTransform(pos, transform, calcVec);
-
             for (var i = 0; i < fxArray.length; i++) {
-                EffectsAPI.updateEffectPosition(fxArray[i], calcVec, state, tpf);
+                EffectsAPI.updateEffectPosition(fxArray[i], calcVec, state, 0);
             }
         };
 

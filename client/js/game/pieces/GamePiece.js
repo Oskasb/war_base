@@ -189,9 +189,14 @@ define([
                 this.pieceStates[i].updateStateFrame(tpf, time)
             }
 
-            for (var i = 0; i < this.pieceSlots.length;i++) {
-                this.pieceSlots[i].updatePieceSlot(tpf, time, this.render);
+            for (i = 0; i < this.pieceSlots.length;i++) {
+                this.pieceSlots[i].updatePieceSlot(this.render);
             }
+
+            for (i = 0; i < this.pieceSlots.length;i++) {
+                this.pieceSlots[i].updatePieceVisuals(tpf);
+            }
+
         };
 
         GamePiece.prototype.removeGamePiece = function () {

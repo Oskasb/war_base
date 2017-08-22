@@ -127,7 +127,8 @@
         "data":{
           "targets":[
             {"targetid":"channel_track_ground_print"},
-            {"targetid":"channel_track_dirt_spray"}
+            {"targetid":"channel_track_dirt_spray"},
+            {"targetid":"channel_engine_power"}
           ]
         }
       },
@@ -135,7 +136,8 @@
         "id":"engine_channel",
         "data":{
           "targets":[
-            {"targetid":"module_channel_engine_smoke"}
+            {"targetid":"module_channel_engine_smoke"},
+            {"targetid":"channel_engine_power"}
           ]
         }
       },

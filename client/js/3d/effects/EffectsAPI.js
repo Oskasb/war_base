@@ -60,8 +60,8 @@ define([
         };
         
         EffectsAPI.tickEffectSimulation = function(tpf) {
-            vegetation.updateVegetation(tpf);
-            particleSpawner.updateSpawnedParticles(tpf);
+            if (vegetation) vegetation.updateVegetation(tpf);
+            if (particleSpawner) particleSpawner.updateSpawnedParticles(tpf);
         };
 
         EffectsAPI.sampleTotalParticlePool = function() {

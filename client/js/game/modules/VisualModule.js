@@ -8,6 +8,8 @@ define([
         ThreeAPI
     ) {
 
+    var cbs;
+
         var VisualModule = function(module) {
             this.module = module;
             this.rootObj = ThreeAPI.createRootObject();
@@ -68,6 +70,7 @@ define([
 
         VisualModule.prototype.showVisualModule = function() {
             console.log("show")
+            cbs = ThreeAPI.getEffectCallbacks();
             if (this.model) {
                 ThreeAPI.showModel(this.model);
                 this.rootObj.add(this.model);
@@ -111,9 +114,6 @@ define([
                 } else {
                     this.hideVisualModule()
                 }
-
-
-
 
         };
 
@@ -192,6 +192,15 @@ define([
         };
 
         VisualModule.prototype.removeVisualModule = function() {
+            for (var i = 0; i < this.effectTargets.length; i++) {
+                this.effectTargets[i].removeEffectTarget();
+                if (this.effectTargets[i].effectArray.length) {
+                    cbs.remove_module_static_effect(this.effectTargets[i].effectArray)
+                }
+                
+            //    this.processVisualEffect(this.effectTargets[i], 0);
+            };
+
             if (this.model) {
              //   this.rootObj.remove(this.model);
                 ThreeAPI.removeModel(this.model);
@@ -199,17 +208,14 @@ define([
             this.removeModuleDebugBox();
         };
 
-        VisualModule.prototype.processVisualEffect = function(target) {
-            if (target.state.getValue()) {
-                var cbs = ThreeAPI.getEffectCallbacks();
-                cbs[target.config.callback](this, target);
-            }
+        VisualModule.prototype.processVisualEffect = function(target, tpf) {
+            cbs[target.config.callback](this, target, tpf);
         };
 
-        VisualModule.prototype.updateVisualModule = function() {
+        VisualModule.prototype.updateVisualModule = function(tpf) {
             if (!this.checkVisibility()) return;
             for (var i = 0; i < this.effectTargets.length; i++) {
-                this.processVisualEffect(this.effectTargets[i]);
+                this.processVisualEffect(this.effectTargets[i], tpf);
             }
         };
 

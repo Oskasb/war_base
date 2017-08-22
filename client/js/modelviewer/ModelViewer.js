@@ -125,6 +125,7 @@ define([
 
             var clientTick = function(tpf) {
                 _this.tick(tpf)
+                sceneController.tickEffectPlayers(tpf);
             };
 
             var systems = 0;
