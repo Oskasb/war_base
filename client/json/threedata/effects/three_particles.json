@@ -264,7 +264,7 @@
           "sprite_id":"double_arc",
           "config":{
             "age":     {"min":0.001, "max":0.03},
-            "lifeTime":{"min":0.3,"max":0.7},
+            "lifeTime":{"min":0.4,"max":0.6},
             "positionSpread":{"x":0.0002, "y":0.00001, "z":0.0002},
             "gravity":0.01,
             "drag":2.7,
@@ -274,7 +274,7 @@
             "alphaCurve":"sin",
             "diffusionCurve":"qubeIn",
             "scaleCurve":"qubeIn",
-            "size":{"value":2.8, "min": 0.001, "max": 0.001},
+            "size":{"value":4.8, "min": 0.001, "max": 0.001},
             "spin":{"value":0.1, "min": -25.01, "max": 20.01},
             "velocityDiffusion":0.0001,
             "accelerationDiffusion":0.0001,
@@ -288,8 +288,8 @@
           "sprite_key":"ATLAS",
           "sprite_id":"double_arc",
           "config":{
-            "age":     {"min":0.5, "max":0.8},
-            "lifeTime":{"min":0.7,"max":0.9},
+            "age":     {"min":0.001, "max":2.1},
+            "lifeTime":{"min":2.5,"max":2.9},
             "positionSpread":{"x":0.002, "y":0.001, "z":0.002},
             "gravity":0.01,
             "drag":2.7,

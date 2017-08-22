@@ -197,7 +197,7 @@ define([
                 if (this.effectTargets[i].effectArray.length) {
                     cbs.remove_module_static_effect(this.effectTargets[i].effectArray)
                 }
-                
+
             //    this.processVisualEffect(this.effectTargets[i], 0);
             };
 

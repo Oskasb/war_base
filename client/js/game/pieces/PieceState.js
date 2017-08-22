@@ -36,7 +36,7 @@ define([],
                 this.buffer[0] = value;
             }
             this.value = value;
-
+            this.notifyUpdate();
         };
 
 

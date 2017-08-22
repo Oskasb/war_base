@@ -127,8 +127,7 @@
         "data":{
           "targets":[
             {"targetid":"channel_track_ground_print"},
-            {"targetid":"channel_track_dirt_spray"},
-            {"targetid":"channel_engine_power"}
+            {"targetid":"channel_track_dirt_spray"}
           ]
         }
       },

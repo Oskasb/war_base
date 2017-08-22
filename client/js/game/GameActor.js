@@ -118,7 +118,7 @@ define([
                 this.controls.rootObj3D.quaternion.copy(this.piece.rootObj3D.quaternion); //.y = this.piece.rootObj3D.rotation.y;
                 // this.controls.rootObj3D.quaternion.normalize();
                 if (this.cameraControls) {
-                    this.cameraControls.sampleTargetState(this.controls.rootObj3D, this.controls.pieceStates);
+                    this.cameraControls.sampleTargetState(this.controls, this.controls.pieceStates);
                 }
             }
         };

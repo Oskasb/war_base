@@ -50,6 +50,10 @@ define([
 
         };
 
+        PieceSLot.prototype.getVisualObj3d = function () {
+            return this.module.visualModule.getRootObject3d();
+        };
+
         PieceSLot.prototype.setObject3dToPieceRoot = function (obj3d) {
             this.attachToObject3d(obj3d);
             this.module.setAsRootSlot(obj3d);

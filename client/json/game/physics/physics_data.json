@@ -24,13 +24,13 @@
             "mass"      : 55000,
             "width"     : 1.8,
             "length"    : 3.2,
-            "height"    : 0.7,
-            "clearance" : 0.2,
+            "height"    : 0.6,
+            "clearance" : 0.1,
 
             "steerMatrix":[
-              -0.4, -0.4,
-               0,      0,
-               0.6,  0.6
+              -0.5, -0.5,
+              -0.0, -0.0,
+               0.5,  0.5
             ],
 
             "brakeMatrix":[
@@ -46,9 +46,9 @@
             ],
 
             "transmissionYawMatrix":[
-              -3, 3,
               -5, 5,
-              -2, 2
+              -5, 5,
+              -25,25
             ],
 
             "wheelMatrix":[
@@ -63,7 +63,7 @@
               "suspensionLength":0.9,
               "dampening":1.2,
               "rollInfluence":0.3,
-              "frictionSlip":2,
+              "frictionSlip":1,
               "maxSuspensionForce":400000
             }
           },
@@ -73,10 +73,10 @@
               {"control":"brake_state",    "stateid":"gun_pitch",     "factor":100}
           ],
           "feedback_map":[
-            {"param":"wheelInfos",     "key":2,  "property":"deltaRotation", "stateid":"track_speed_r", "factor":-1},
-            {"param":"wheelInfos",     "key":3,  "property":"deltaRotation", "stateid":"track_speed_l", "factor":-1},
-            {"param":"wheelInfos",     "key":2,  "property":"rotation", "stateid":"track_rotation_r",   "factor":0.5},
-            {"param":"wheelInfos",     "key":3,  "property":"rotation", "stateid":"track_rotation_l",   "factor":0.5}
+            {"param":"wheelInfos",     "key":4,  "property":"deltaRotation", "stateid":"track_speed_r", "factor":-1},
+            {"param":"wheelInfos",     "key":5,  "property":"deltaRotation", "stateid":"track_speed_l", "factor":-1},
+            {"param":"wheelInfos",     "key":4,  "property":"rotation", "stateid":"track_rotation_r",   "factor":0.6},
+            {"param":"wheelInfos",     "key":5,  "property":"rotation", "stateid":"track_rotation_l",   "factor":0.6}
           ],
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "pos_state_x"},

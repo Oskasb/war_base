@@ -69,20 +69,6 @@
           ]
         }
       },{
-        "id":"control_axis_module",
-        "data":{
-          "transform":{
-            "rot":  [0,   0,    0],
-            "pos":  [0,   0.0, -0],
-            "size": [0.5, 0.3, 1.5]
-          },
-          "model":"control_forward_model",
-          "channels":[
-            {"channelid":"channel_input_length",    "stateid":"state_forward"},
-            {"channelid":"channel_pos_z",           "stateid":"state_forward"}
-          ]
-        }
-      },{
         "id":"control_forward_module",
         "data":{
           "transform":{

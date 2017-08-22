@@ -6,7 +6,8 @@
         "data":{
           "callback":"read_press_active",
           "factor":1,
-          "time":0.1
+          "time":0.23,
+          "release_time":0.5
         }
       },
       {
@@ -14,8 +15,13 @@
         "data":{
           "callback":"read_input_vector",
           "parameter":"zrot",
-          "factor":1,
-          "time":0.1
+          "factor":0.8,
+          "threshold_upper":9,
+          "threshold_lower":-9,
+          "clamp_max":1.55,
+          "clamp_min":-1.55,
+          "time":0.9,
+          "release_time":4
         }
       },
       {
@@ -23,8 +29,13 @@
         "data":{
           "callback":"read_input_vector",
           "parameter":"w",
-          "factor":0.01,
-          "time":0.2
+          "factor":0.03,
+          "threshold_upper":9999,
+          "threshold_lower":1.2,
+          "clamp_max":5,
+          "clamp_min":1.4,
+          "time":0.04,
+          "release_time":2
         }
       },
       {
@@ -62,8 +73,8 @@
         "id":"channel_engine_power",
         "data":{
           "callback":"module_static_state_effect",
-          "module_effect":"shield_module_effect",
-          "scale":0.001
+          "module_effect":"hyper_module_effect",
+          "scale":0.3
         }
       },
       {

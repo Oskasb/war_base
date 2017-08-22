@@ -15,6 +15,12 @@ define([
 
         var cameraFunctions;
 
+        var targetPos = new THREE.Vector3();
+        var calcQuat = new THREE.Quaternion();
+        var calcEuler = new THREE.Euler();
+        var calcVec = new THREE.Vector3();
+
+
         var CameraControl = function(dataKey, ready) {
 
             this.dataKey = dataKey;
@@ -31,7 +37,7 @@ define([
             };
 
             new PipelineAPI.subscribeToCategoryKey('CAMERA_DATA', 'CAMERA', camFuncs);
-            new PipelineAPI.subscribeToCategoryKey('CAMERA_DATA', 'CONTROLS', applyData);
+        //    new PipelineAPI.subscribeToCategoryKey('CAMERA_DATA', 'CONTROLS', applyData);
 
         };
 
@@ -39,9 +45,45 @@ define([
             this.config = config;
         };
 
-        CameraControl.prototype.sampleTargetState = function(rootObj3d, pieceStates) {
+        CameraControl.prototype.sampleTargetState = function(controls, pieceStates) {
 
-            cameraFunctions[this.config.cameraFunction](rootObj3d, this.config.params)
+            var targetObj3d = controls.rootObj3D;
+            var masterValue = 0;
+
+            if (!targetObj3d) return;
+
+            if (this.config.master_state) {
+                var state = controls.getPieceStateByStateId(this.config.master_state.state_id);
+                if (!state) return;
+                masterValue = state.getValue();
+            };
+
+
+
+            if (this.config.view_heading) {
+                var slot = controls.getSlotById(this.config.view_heading.slot_id);
+                if (slot) {
+                    var steeringObj = slot.getVisualObj3d();
+
+
+                    steeringObj.getWorldQuaternion(calcQuat);
+
+                    calcVec.set(0, 0, Math.PI*2);
+                    calcVec.applyQuaternion(calcQuat);
+
+                    var rotY = Math.atan2(calcVec.x, calcVec.z) - Math.PI;
+                }
+
+
+            };
+        //    masterValue = 1;
+
+        //    rotY = Math.sin(new Date().getTime()* 0.001) * Math.PI;
+
+            targetObj3d.getWorldPosition(targetPos);
+        //    if (isNaN(targetPos.y)) targetPos.copy(controls.rootObj3D.position);
+
+            cameraFunctions[this.config.cameraFunction](targetPos, this.config, masterValue, rotY)
         };
 
         CameraControl.prototype.removeCameraControls = function() {
