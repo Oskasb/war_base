@@ -400,6 +400,16 @@ define([
             return rootObject;
         };
 
+        ThreeModelLoader.removeGroundMesh = function(pos) {
+            var terrain = ThreeTerrain.getThreeTerrainByPosition(pos);
+            if (!terrain) {
+                console.log("No terrain found at position", pos);
+                return;
+            }
+            ThreeTerrain.removeTerrainFromIndex(terrain);
+        };
+
+
         ThreeModelLoader.terrainVegetationAt = function(pos, nmStore) {
             return ThreeTerrain.terrainVegetationIdAt(pos, nmStore);
         };

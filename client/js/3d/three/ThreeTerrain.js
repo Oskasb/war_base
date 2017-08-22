@@ -195,6 +195,11 @@ define([
             }
         };
 
+
+        ThreeTerrain.removeTerrainFromIndex = function(terrain) {
+            delete terrainIndex[terrain.model.uuid]
+        };
+
         ThreeTerrain.getThreeTerrainHeightAt = function(terrain, pos, normalStore) {
 
             return terrainFunctions.getHeightAt(pos, terrain.array1d, terrain.size, terrain.segments, normalStore)

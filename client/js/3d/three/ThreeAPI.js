@@ -214,7 +214,11 @@ define([
         ThreeAPI.loadGround = function(applies, array1d, rootObject, partsReady) {
             return ThreeModelLoader.loadGroundMesh(applies, array1d, rootObject, ThreeSetup, partsReady);
         };
-        
+
+        ThreeAPI.removeTerrainByPosition = function(pos) {
+            return ThreeModelLoader.removeGroundMesh(pos);
+        };
+
 
         ThreeAPI.addChildToObject3D = function(child, parent) {
             ThreeSetup.addChildToParent(child, parent);

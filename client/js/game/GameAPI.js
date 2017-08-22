@@ -74,6 +74,7 @@ define([
             };
 
             var onRes = function (levelId) {
+                ThreeAPI.removeTerrainByPosition(level.actor.piece.rootObj3D.position);
                 GameAPI.removeActor(level.actor, onRemove);
             };
 

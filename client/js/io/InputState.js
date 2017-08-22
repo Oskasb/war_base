@@ -46,7 +46,7 @@ define([
             this.line.fromY=y1;
             this.line.toX = x2;
             this.line.toY = y2;
-            this.line.w = 2*1+(distance+0.4);
+            this.line.w = distance+0.4;
             if (this.line.w < minLine) zrot = 0.00001;
             this.line.zrot = zrot;
         };
