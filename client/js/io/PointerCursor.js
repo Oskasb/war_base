@@ -43,9 +43,12 @@ define([
 				_this.tick();
 			};
 
+			this.enabled = false;
+
 			function configureListener(e) {
 				if (evt.args(e).inputModel) {
-					evt.on(evt.list().CLIENT_TICK, tickCursor);
+				//	evt.on(evt.list().CLIENT_TICK, tickCursor);
+					_this.enabled = true;
 					evt.removeListener(evt.list().SCREEN_CONFIG, configureListener);
 				}
 			}
@@ -107,7 +110,9 @@ define([
 		};
 
 		PointerCursor.prototype.tick = function() {
-			this.inputState.updateInputState(this);
+			if (this.enabled) {
+                this.inputState.updateInputState(this);
+			}
 		};
 
 		return PointerCursor;

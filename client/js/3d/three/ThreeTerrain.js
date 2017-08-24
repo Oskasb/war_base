@@ -226,7 +226,7 @@ define([
 
                 return terrainStore.model;
             } else {
-                console.log("Not on terrain")
+            //    console.log("Not on terrain")
             }
             
         };

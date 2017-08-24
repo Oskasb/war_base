@@ -62,6 +62,13 @@ define([
                 materials[matId].side = THREE[data.settings.side]
             }
 
+            if (data.blending) materials[matId].blending = THREE[data.blending];
+            if (data.color) {
+                materials[matId].color.r = data.color.r;
+                materials[matId].color.g = data.color.g;
+                materials[matId].color.b = data.color.b;
+            }
+
             PipelineAPI.setCategoryKeyValue('THREE_MATERIAL', matId, materials[matId]);
         //    console.log("Loaded all...", matId, loaded, data.textures[0]);
         };

@@ -63,6 +63,7 @@ define([
         GameModule.prototype.applyModuleData = function (config, ready) {
             this.config = config;
 
+            if (!this.config) return;
             if (this.config.transform) this.copyTransform(this.config.transform);
 
             this.visualModule.setModuleData(this.config);
@@ -169,20 +170,10 @@ define([
             this.visualModule.attachToParent(parentModule);
         };
 
-        GameModule.prototype.setVisibility = function (bool) {
-            if (this.isVisible === bool) {
-                return;
-            }
 
-        //    if (this.visualModule.data.model) {
-                this.visualModule.setVisibility(bool);
-        //    }
-
-            this.isVisible = bool;
-        };
 
         GameModule.prototype.sampleModuleFrame = function (render, tpf) {
-            this.setVisibility(render);
+            this.visualModule.setVisibility(render);
             for (var i = 0; i < this.moduleChannels.length; i++) {
                 this.moduleChannels[i].updateChannelState(this);
             }
@@ -192,6 +183,7 @@ define([
         };
 
         GameModule.prototype.updateVisualState = function (tpf) {
+            if (this.hidden) return;
             this.visualModule.updateVisualModule(tpf);
         };
 

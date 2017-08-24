@@ -306,9 +306,12 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
         this.calcVec2.copy(orbitControls.object.position);
 
         ThreeAPI.setYbyTerrainHeightAt(this.calcVec2);
-        var minElevation = config.min_elevation || 5;
-        if (orbitControls.object.position.y < this.calcVec2.y+minElevation) {
-            orbitControls.object.position.y = this.calcVec2.y+minElevation
+
+        if (this.calcVec2.y !== orbitControls.object.position.y) {
+            var minElevation = config.min_elevation || 5;
+            if (orbitControls.object.position.y < this.calcVec2.y+minElevation) {
+                orbitControls.object.position.y = this.calcVec2.y+minElevation
+            }
         }
 
     };

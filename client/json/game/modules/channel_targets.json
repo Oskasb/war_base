@@ -11,31 +11,87 @@
         }
       },
       {
-        "id":"module_channel_sample_angle",
+        "id":"target_sample_input_steering",
         "data":{
           "callback":"read_input_vector",
+          "conditions":[{
+            "parameter":"w",
+            "threshold_upper":9999,
+            "threshold_lower":20
+          },{
+            "parameter":"zrot",
+            "threshold_upper":1.85,
+            "threshold_lower":-1.85
+          }],
           "parameter":"zrot",
-          "factor":0.8,
-          "threshold_upper":1.7,
-          "threshold_lower":-1.7,
-          "clamp_max":1.55,
-          "clamp_min":-1.55,
-          "time":1.2,
+          "factor":1.2,
+          "clamp_max":1.95,
+          "clamp_min":-1.95,
+          "time":2,
           "release_time":4
         }
       },
       {
-        "id":"module_channel_sample_length",
+        "id":"target_sample_input_steering_reverse",
         "data":{
           "callback":"read_input_vector",
+          "conditions":[{
+            "parameter":"w",
+            "threshold_upper":9999,
+            "threshold_lower":40
+          },{
+            "parameter":"zrot",
+            "threshold_upper":-1.25,
+            "threshold_lower":1.25
+          }],
+          "parameter":"zrot",
+          "factor":0.8,
+          "clamp_max":-1.25,
+          "clamp_min":1.25,
+          "time":3,
+          "release_time":5
+        }
+      },
+      {
+        "id":"target_sample_input_forward",
+        "data":{
+          "callback":"read_input_vector",
+          "conditions":[{
+            "parameter":"w",
+            "threshold_upper":9999,
+            "threshold_lower":60
+          },{
+            "parameter":"zrot",
+            "threshold_upper":1.4,
+            "threshold_lower":-1.4
+          }],
           "parameter":"w",
           "factor":0.03,
-          "threshold_upper":9999,
-          "threshold_lower":1.2,
-          "clamp_max":5,
+          "clamp_max":3,
           "clamp_min":1.4,
-          "time":0.04,
-          "release_time":2
+          "time":0.2,
+          "release_time":0.8
+        }
+      },
+      {
+        "id":"target_sample_input_reverse",
+        "data":{
+          "callback":"read_input_vector",
+          "conditions":[{
+            "parameter":"w",
+            "threshold_upper":9999,
+            "threshold_lower":60
+          },{
+            "parameter":"zrot",
+            "threshold_upper":-2.2,
+            "threshold_lower": 2.2
+          }],
+          "parameter":"w",
+          "factor":0.015,
+          "clamp_max":2.0,
+          "clamp_min":0.7,
+          "time":0.1,
+          "release_time":0.4
         }
       },
       {
@@ -52,6 +108,15 @@
           "callback":"module_emit_effect",
           "module_effect":"tank_track_fx",
           "glue_to_ground":true
+        }
+      },
+      {
+        "id":"model_animate_texture_cumulative",
+        "data":{
+          "callback":"animate_texture",
+          "offsetxy":[0, 1],
+          "factor":-0.001,
+          "cumulative":1
         }
       },
       {
@@ -85,10 +150,11 @@
         }
       },
       {
-        "id":"target_uniform_scale",
+        "id":"target_scale_activate",
         "data":{
           "callback":"scale_uniform",
-          "parameter":"scale"
+          "clamp_min":0.01,
+          "clamp_max":1
         }
       },
       {

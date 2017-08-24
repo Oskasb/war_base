@@ -224,8 +224,8 @@ define([
             ThreeSetup.addChildToParent(child, parent);
         };
 
-        ThreeAPI.animateModelTexture = function(model, z, y) {
-            ThreeFeedbackFunctions.applyModelTextureTranslation(model, z, y)
+        ThreeAPI.animateModelTexture = function(model, z, y, cumulative) {
+            ThreeFeedbackFunctions.applyModelTextureTranslation(model, z, y, cumulative)
         };
         
         ThreeAPI.setObjectVisibility = function(object3d, bool) {

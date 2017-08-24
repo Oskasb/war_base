@@ -65,8 +65,8 @@ define([
                     this.controls[this.controlMap[i].control] = state * this.controlMap[i].factor;
                 }
 
-                var yaw_state = this.controls.yaw_state;
-                var throttle_state = this.controls.throttle_state;
+                var yaw_state = this.controls.yaw_state + this.controls.steer_reverse;
+                var throttle_state = this.controls.forward_state + this.controls.reverse_state ;
                 var brake_state = this.controls.brake_state;
                 var forward = 1;
 

@@ -12,6 +12,7 @@ define([
 
         var VisualModule = function(module) {
             this.module = module;
+            this.hidden = false;
             this.rootObj = ThreeAPI.createRootObject();
             this.staticEffect = null;
             this.dynamicEffect = null;
@@ -58,6 +59,18 @@ define([
                 return;
             }
 
+        };
+
+        VisualModule.prototype.hide = function() {
+            this.hidden = true;
+            this.rootObj.remove(this.model);
+        };
+
+        VisualModule.prototype.show = function() {
+            this.hidden = false;
+            if (this.model) {
+                this.rootObj.add(this.model);
+            }
         };
 
         VisualModule.prototype.attachModel = function(model) {
@@ -133,7 +146,6 @@ define([
                     return false;
                 }
             }
-
             return this.isVisible;
         };
 
@@ -187,7 +199,12 @@ define([
 
         VisualModule.prototype.attachToParent = function(parentObject3d) {
 
-            ThreeAPI.addChildToObject3D(this.rootObj, parentObject3d);
+            if (this.rootObj == parentObject3d) {
+                console.log("Parent Equals Root:", this)
+            } else {
+                ThreeAPI.addChildToObject3D(this.rootObj, parentObject3d);
+            }
+
             this.parentObject3d = parentObject3d;
         };
 

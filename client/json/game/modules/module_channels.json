@@ -19,10 +19,18 @@
         }
       },
       {
-        "id":"channel_input_length",
+        "id":"channel_input_forward",
         "data":{
           "targets":[
-            {"targetid":"module_channel_sample_length"}
+            {"targetid":"target_sample_input_forward"}
+          ]
+        }
+      },
+      {
+        "id":"channel_input_reverse",
+        "data":{
+          "targets":[
+            {"targetid":"target_sample_input_reverse"}
           ]
         }
       },
@@ -30,15 +38,23 @@
         "id":"channel_input_direction",
         "data":{
           "targets":[
-            {"targetid":"module_channel_sample_angle"}
+            {"targetid":"target_sample_input_steering"}
           ]
         }
       },
       {
-        "id":"channel_scale_uniform",
+        "id":"channel_input_direction_reverse",
         "data":{
           "targets":[
-            {"targetid":"target_uniform_scale"}
+            {"targetid":"target_sample_input_steering_reverse"}
+          ]
+        }
+      },
+      {
+        "id":"channel_scale_activate",
+        "data":{
+          "targets":[
+            {"targetid":"target_scale_activate"}
           ]
         }
       },
@@ -111,6 +127,14 @@
         "data":{
           "targets":[
             {"targetid":"model_rotate_yaw"}
+          ]
+        }
+      },
+      {
+        "id":"animate_texture_cumulative",
+        "data":{
+          "targets":[
+            {"targetid":"model_animate_texture_cumulative"}
           ]
         }
       },

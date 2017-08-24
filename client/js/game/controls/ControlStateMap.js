@@ -12,6 +12,11 @@ define([],
         };
 
         ControlStateMap.prototype.addControlState = function (controlState, targetState) {
+            if (!controlState) {
+                console.log("No control state for target:", targetState.id, targetState);
+                return;
+            }
+
             this.controlStates[controlState.id] = controlState;
             if (!this.controlTarget[controlState.id]) {
                 this.controlTarget[controlState.id] = [];

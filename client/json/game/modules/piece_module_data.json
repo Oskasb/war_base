@@ -66,7 +66,8 @@
             "size": [0.4, 0.3,   0.4]
           },
           "channels":[
-            {"channelid":"channel_yaw",   "stateid":"steer_turn_state"}
+            {"channelid":"channel_yaw",   "stateid":"wheel_turn_forward"},
+            {"channelid":"channel_yaw",   "stateid":"wheel_turn_reverse"}
           ]
         }
       },
@@ -79,7 +80,8 @@
             "size": [1.4, 0.7, 1.4]
           },
           "channels":[
-            {"channelid":"engine_channel", "stateid":"engine_state"}
+            {"channelid":"engine_channel", "stateid":"engine_forward"},
+            {"channelid":"engine_channel", "stateid":"engine_reverse"}
           ]
         }
       },

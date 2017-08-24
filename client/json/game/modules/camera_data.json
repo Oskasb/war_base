@@ -7,7 +7,7 @@
           "cameraFunction":"orbit_target_obj",
           "view_heading":{"slot_id":"state_forward"},
           "master_state":{"state_id":"state_control_active"},
-          "min_elevation":8,
+          "min_elevation":10,
           "offsets":[
             {"property":"target", "axis":"y","value":4}
           ],

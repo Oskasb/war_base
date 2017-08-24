@@ -3,6 +3,28 @@
     "MODELS": {
       "THREE": [
         {
+          "id": "control_wavearrow_outer_model",
+          "material": "wave_control_additive",
+          "url": "./client/assets/models/controls/wavearrow_outer",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, -1, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "control_wavearrow_model",
+          "material": "wave_control_opaque",
+          "url": "./client/assets/models/controls/wavearrow",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, -1, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
           "id": "control_heading_model",
           "material": "main_atlas",
           "url": "./client/assets/models/controls/heading",

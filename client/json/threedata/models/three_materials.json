@@ -81,8 +81,6 @@
           "shader":"MeshPhysicalMaterial",
           "settings":{
             "blending":"NoBlending",
-            "emissive":{"r":1.0, "g":1.0, "b":1.0},
-            "color":{"r":1.0, "g":1.0, "b":1.0},
             "clearCoat":0,
             "roughness":0.2,
             "reflectivity":1.4,
@@ -97,6 +95,33 @@
             "normalMap":"./client/assets/images/textures/track_nm.png",
             "aoMap":"./client/assets/images/textures/tank_lm.png"
           }]
+
+        },{
+          "id":"wave_control_additive",
+          "shader":"MeshBasicMaterial",
+          "blending":"AdditiveBlending",
+          "color":{"r":0.05, "g":0.95, "b":0.99},
+          "settings":{
+            "transparent":true,
+            "depthTest":false,
+            "depthWrite":false,
+            "opacity":1
+          },
+          "textures":[{
+            "map":"./client/assets/images/textures/pointer_surface.png"
+          }]
+
+        },{
+          "id":"wave_control_opaque",
+          "shader":"MeshBasicMaterial",
+          "color":{"r":0.2, "g":0.95, "b":0.98},
+          "settings":{
+
+          },
+          "textures":[{
+            "map":"./client/assets/images/textures/pointer_surface.png"
+          }]
+
         },{
           "id":"natrue_alphakill",
           "shader":"MeshPhongMaterial",

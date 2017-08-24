@@ -29,16 +29,23 @@
         "data":{
           "transform":{
             "rot":  [0,   0,    0],
-            "pos":  [0,   0,     0],
+            "pos":  [0,  -0.5,   0],
             "size": [0.4, 0.2, 0.5]
           },
           "channels":[
-            {"channelid":"channel_sample_press", "stateid":"state_control_active"},
-            {"channelid":"channel_scale_uniform", "stateid":"state_control_active"}
+            {"channelid":"channel_sample_press",      "stateid":"state_control_active"},
+            {"channelid":"channel_scale_activate",     "stateid":"state_control_active"}
           ],
           "attachment_points":[
             {
               "id":"ap_element",
+              "transform":{
+                "rot":[0,     0, 0],
+                "pos":[0.0, 0.0, 0]
+              }
+            },
+            {
+              "id":"ap_element_2",
               "transform":{
                 "rot":[0,     0, 0],
                 "pos":[0.0, 0.0, 0]
@@ -54,10 +61,7 @@
             "pos":  [0,   0.0, -0],
             "size": [0.5, 0.2,0.5]
           },
-          "model":"control_heading_model",
-          "channels":[
-            {"channelid":"channel_yaw", "stateid":"state_heading"}
-          ],
+
           "attachment_points":[
             {
               "id":"ap_yaw",
@@ -69,17 +73,74 @@
           ]
         }
       },{
-        "id":"control_forward_module",
+        "id":"control_backwards_module",
+        "data":{
+          "transform":{
+            "rot":  [0,     0, 0],
+            "pos":  [0,   0.0, -0],
+            "size": [0.5, 0.2,0.5]
+          },
+
+
+          "attachment_points":[
+            {
+              "id":"ap_yaw_reverse",
+              "transform":{
+                "rot":[0,      0, 0],
+                "pos":[0.0, 0.0, 0]
+              }
+            }
+          ]
+        }
+      },{
+        "id":"highlight_forward_module",
         "data":{
           "transform":{
             "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [0.4, 0.1,  0.4]
+          },
+          "model":"control_wavearrow_outer_model",
+          "channels":[
+            {"channelid":"animate_texture_cumulative",  "stateid":"state_forward"}
+          ]
+        }
+      },{
+        "id":"control_forward_module",
+        "data":{
+          "transform":{
+            "rot":  [0,    0,    0],
             "pos":  [0,   0.0, -0],
             "size": [0.5, 0.3, 1.5]
           },
-          "model":"control_forward_model",
+
+          "model":"control_wavearrow_model",
+          "attachment_points":[
+            {
+              "id":"ap_highlight",
+              "transform":{
+                "rot":[0,      0, 0],
+                "pos":[0.0, 0.0, 0]
+              }
+            }
+          ],
           "channels":[
-            {"channelid":"channel_input_length",    "stateid":"state_forward"},
-            {"channelid":"channel_pos_z",           "stateid":"state_forward"}
+            {"channelid":"animate_texture_cumulative",  "stateid":"state_forward"},
+            {"channelid":"channel_input_forward",       "stateid":"state_forward"},
+            {"channelid":"channel_pos_z",               "stateid":"state_forward"}
+          ]
+        }
+      },{
+        "id":"highlight_reverse_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [0.4, 0.1,  0.4]
+          },
+          "model":"control_wavearrow_outer_model",
+          "channels":[
+            {"channelid":"animate_texture_cumulative",  "stateid":"state_reverse"}
           ]
         }
       },{
@@ -90,9 +151,21 @@
             "pos":  [0.0, 0.0, 0.0],
             "size": [0.4, 0.1,  0.4]
           },
-          "model":"control_yaw_model",
+
+          "model":"control_wavearrow_model",
+          "attachment_points":[
+            {
+              "id":"ap_highlight",
+              "transform":{
+                "rot":[0,      0, 0],
+                "pos":[0.0, 0.0, 0]
+              }
+            }
+          ],
           "channels":[
-            {"channelid":"channel_pos_z",           "stateid":"state_reverse"}
+            {"channelid":"animate_texture_cumulative",  "stateid":"state_reverse"},
+            {"channelid":"channel_input_reverse",      "stateid":"state_reverse"},
+            {"channelid":"channel_pos_z",              "stateid":"state_reverse"}
 
           ]
         }
@@ -104,21 +177,40 @@
             "pos":  [0.0, 0.0, 0.0],
             "size": [0.4, 0.1,  0.4]
           },
+
           "channels":[
-            {"channelid":"channel_input_direction",     "stateid":"steer_state_yaw"},
-            {"channelid":"channel_yaw",                 "stateid":"steer_state_yaw"}
+            {"channelid":"channel_input_direction",     "stateid":"state_steer_yaw"},
+            {"channelid":"channel_yaw",                 "stateid":"state_steer_yaw"},
+            {"channelid":"channel_scale_activate",      "stateid":"state_forward"}
           ],
           "attachment_points":[
             {"id":"ap_forward",
               "transform":{
                 "rot":[  0, -3.147,  0],
-                "pos":[0.0,  0.0, -4.5]
+                "pos":[0.0,  0.0, -2.2]
               }
-            },
+            }
+          ]
+        }
+      },{
+        "id":"control_yaw_reverse_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [0.4, 0.1,  0.4]
+          },
+
+          "channels":[
+            {"channelid":"channel_input_direction_reverse",   "stateid":"state_steer_reverse"},
+            {"channelid":"channel_yaw",                       "stateid":"state_steer_reverse"},
+            {"channelid":"channel_scale_activate",            "stateid":"state_reverse"}
+          ],
+          "attachment_points":[
             {"id":"ap_reverse",
               "transform":{
-                "rot":[  0,    0,  0],
-                "pos":[0.0,  0.0, -4.5]
+                "rot":[  0,   -0,  0],
+                "pos":[0.0,  0.0, 2.2]
               }
             }
           ]

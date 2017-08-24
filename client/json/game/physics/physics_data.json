@@ -68,9 +68,10 @@
             }
           },
           "control_map":[
-              {"control":"yaw_state",      "stateid":"steer_turn_state","factor":-1},
-              {"control":"throttle_state", "stateid":"engine_state",  "factor":5000},
-              {"control":"brake_state",    "stateid":"gun_pitch",     "factor":100}
+              {"control":"yaw_state",      "stateid":"wheel_turn_forward","factor":-1},
+              {"control":"forward_state", "stateid":"engine_forward", "factor":5000},
+              {"control":"reverse_state", "stateid":"engine_reverse","factor":-5000},
+              {"control":"steer_reverse", "stateid":"wheel_turn_reverse", "factor":1}
           ],
           "feedback_map":[
             {"param":"wheelInfos",     "key":4,  "property":"deltaRotation", "stateid":"track_speed_r", "factor":-1},

@@ -68,9 +68,9 @@ define([
 
             velStore.addVectors(calcVec, posStore);
 
-        //    posStore.x = piece.spatial.vel.getX() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
-        //    posStore.y = piece.spatial.vel.getY() + Math.abs(stateValue);
-        //    posStore.z = piece.spatial.vel.getZ() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
+            //    posStore.x = piece.spatial.vel.getX() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
+            //    posStore.y = piece.spatial.vel.getY() + Math.abs(stateValue);
+            //    posStore.z = piece.spatial.vel.getZ() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
 
             velStore.x += posStore.x*0.02;
             velStore.z += posStore.z*0.02;
@@ -80,7 +80,7 @@ define([
 
         ModuleEffectCreator.createActiveEffect = function(effectId, posVec, velVec) {
             emitEffect(effectId, posVec, velVec)
-        //    evt.fire(evt.list().GAME_EFFECT, {effect:effectId, pos:posVec, vel:velVec});
+            //    evt.fire(evt.list().GAME_EFFECT, {effect:effectId, pos:posVec, vel:velVec});
         };
 
 
@@ -126,7 +126,7 @@ define([
             } else {
                 calcVec2.set(vel.data[0], vel.data[1], vel.data[2]);
             }
-            
+
             for (var i = 0; i < fx.length; i++) {
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
                     ModuleEffectCreator.createActiveEffect(fx[i].particle_effects[j].id, calcVec, calcVec2);
@@ -202,10 +202,10 @@ define([
                         }
                         calcVec2.y += 0.01+Math.random()*0.1;
                         threeObj.lookAt(calcVec);
-                    //    calcQuat.setFromAxisAngle(calcVec, 1);
+                        //    calcQuat.setFromAxisAngle(calcVec, 1);
                     }
 
-                //    calcVec3.set(0, 0, 0);
+                    //    calcVec3.set(0, 0, 0);
 
                     ModuleEffectCreator.createPassiveEffect(fx[i].particle_effects[j].id, calcVec2, zeroVec, zeroVec, threeObj.quaternion, groundprints);
                 }
@@ -219,8 +219,8 @@ define([
                 }
             }
         };
-        
-        
+
+
         ModuleEffectCreator.createModuleStaticEffect = function(fxArray, effectId, transform, scale) {
 
             sizeFromTransform(transform, calcVec2);
@@ -231,7 +231,7 @@ define([
 
             var fx = PipelineAPI.readCachedConfigKey('MODULE_EFFECTS', effectId);
 
-                calcVec3.set(0, 0, 0);
+            calcVec3.set(0, 0, 0);
 
             for (var i = 0; i < fx.length; i++) {
 
@@ -251,7 +251,7 @@ define([
 
         ModuleEffectCreator.addGeometryEffect = function(model, effectId, transform, stateValue, glueToGround) {
 
-        //    posFromTransform(pos, transform, calcVec);
+            //    posFromTransform(pos, transform, calcVec);
             sizeFromTransform(transform, calcVec2);
 
             calcVec.setFromMatrixPosition( model.matrixWorld );
@@ -281,11 +281,16 @@ define([
         };
 
         ModuleEffectCreator.animate_texture = function(visualModule, target) {
-            ThreeAPI.animateModelTexture(
-                visualModule.model,
-                target.state.getValue()*target.config.offsetxy[0]*target.config.factor,
-                target.state.getValue()*target.config.offsetxy[1]*target.config.factor
-            );//
+            var config = target.config;
+            var value = target.state.getValue();
+            var cumulative = config.cumulative || 0;
+            var factor = config.factor || 1;
+            var offsetx = config.offsetxy[0];
+            var offsety = config.offsetxy[1];
+            var x = value * offsetx * factor;
+            var y = value * offsety * factor;
+
+            ThreeAPI.animateModelTexture(visualModule.model, x, y,cumulative);
         };
 
         ModuleEffectCreator.module_emit_effect = function(visualModule, target) {
@@ -336,11 +341,11 @@ define([
                 }
             }
 
-                if (target.effectArray) {
-                    if (target.state.getValue() === 0 || target.remove) {
-                        ModuleEffectCreator.removeModuleStaticEffect(target.effectArray)
-                    }
+            if (target.effectArray) {
+                if (target.state.getValue() === 0 || target.remove) {
+                    ModuleEffectCreator.removeModuleStaticEffect(target.effectArray)
                 }
+            }
 
         };
 

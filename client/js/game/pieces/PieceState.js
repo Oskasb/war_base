@@ -10,6 +10,7 @@ define([],
             this.value = 0 || value;
             this.startValue = value;
 
+            this.sampler = null;
             this.callbacks = [];
 
             this.targetTime = 0;
@@ -55,6 +56,14 @@ define([],
             if (this.callbacks.indexOf(callback) !== -1) {
                 this.callbacks.splice(this.callbacks.indexOf(callback), 1);
             }
+        };
+
+        PieceState.prototype.setSampler = function (sampler) {
+            this.sampler = sampler;
+        };
+
+        PieceState.prototype.getSampler = function () {
+            return this.sampler;
         };
 
         PieceState.prototype.getValue = function () {

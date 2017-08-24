@@ -178,6 +178,7 @@ define([
             tickEvent.frame = frame;
             tickEvent.tpf = tpf;
 
+            this.pointerCursor.tick()
             PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
             evt.fire(evt.list().CLIENT_TICK, tickEvent);
             this.viewerMain.tickViewerClient(tpf);

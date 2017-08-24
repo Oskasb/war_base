@@ -21,14 +21,17 @@
             {"slot":"state_heading","module":"control_heading_module"},
             {"slot":"state_forward","module":"control_forward_module"},
             {"slot":"state_reverse","module":"control_reverse_module"},
-            {"slot":"state_yaw",    "module":"control_yaw_module"}
-          ],
+            {"slot":"state_yaw",    "module":"control_yaw_module"},
+            {"slot":"state_yaw_reverse", "module":"control_yaw_reverse_module"}
+        ],
           "attachments":[
             {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
             {"slot":"pointer_state","ap":"ap_element",      "child":"state_heading"},
             {"slot":"state_yaw",    "ap":"ap_forward",      "child":"state_forward"},
             {"slot":"state_yaw",    "ap":"ap_reverse",      "child":"state_reverse"},
-            {"slot":"state_heading","ap":"ap_yaw",          "child":"state_yaw"}
+            {"slot":"state_heading","ap":"ap_yaw",          "child":"state_yaw"},
+            {"slot":"state_yaw",    "ap":"ap_forward",      "child":"state_forward"},
+            {"slot":"state_yaw",    "ap":"ap_reverse",      "child":"state_reverse"}
           ]
         }
       },
@@ -38,18 +41,32 @@
           "root_slot":"root",
           "slots":[
             {"slot":"root",         "module":"control_root_module"   },
-            {"slot":"pointer_state","module":"control_pointer_module"},
-            {"slot":"state_heading","module":"control_heading_module"},
-            {"slot":"state_forward","module":"control_forward_module"},
-            {"slot":"state_reverse","module":"control_reverse_module"},
-            {"slot":"state_yaw",    "module":"control_yaw_module"}
+              {"slot":"pointer_state","module":"control_pointer_module"},
+
+              {"slot":"state_heading","module":"control_heading_module"},
+              {"slot":"state_reverse_root", "module":"control_backwards_module"},
+                {"slot":"state_yaw",           "module":"control_yaw_module"},
+                {"slot":"state_yaw_reverse",   "module":"control_yaw_reverse_module"},
+
+                  {"slot":"state_forward",      "module":"control_forward_module"},
+                  {"slot":"state_reverse",      "module":"control_reverse_module"},
+                    {"slot":"slot_forward_highlight","module":"highlight_forward_module"},
+                    {"slot":"slot_reverse_highlight","module":"highlight_reverse_module"}
+
           ],
           "attachments":[
             {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
-            {"slot":"pointer_state","ap":"ap_element",      "child":"state_heading"},
-            {"slot":"state_yaw",    "ap":"ap_forward",      "child":"state_forward"},
-            {"slot":"state_yaw",    "ap":"ap_reverse",      "child":"state_reverse"},
-            {"slot":"state_heading","ap":"ap_yaw",          "child":"state_yaw"}
+              {"slot":"pointer_state","ap":"ap_element",      "child":"state_heading"},
+              {"slot":"pointer_state","ap":"ap_element_2",    "child":"state_reverse_root"},
+
+                {"slot":"state_heading",      "ap":"ap_yaw",          "child":"state_yaw"},
+                {"slot":"state_reverse_root", "ap":"ap_yaw_reverse",  "child":"state_yaw_reverse"},
+                  {"slot":"state_yaw",            "ap":"ap_forward",      "child":"state_forward"},
+                  {"slot":"state_yaw_reverse",    "ap":"ap_reverse",      "child":"state_reverse"},
+
+                    {"slot":"state_forward",         "ap":"ap_highlight",      "child":"slot_forward_highlight"},
+                    {"slot":"state_reverse",         "ap":"ap_highlight",      "child":"slot_reverse_highlight"}
+
           ]
         }
       }
