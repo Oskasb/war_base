@@ -6418,6 +6418,10 @@ RaycastVehicle.prototype.updateWheelTransformWorld = function(wheel){
  * @method updateWheelTransform
  * @param {integer} wheelIndex The wheel index to update.
  */
+
+var tmpQuat1 = new Quaternion();
+var tmpQuat2 = new Quaternion();
+
 RaycastVehicle.prototype.updateWheelTransform = function(wheelIndex){
     var up = tmpVec4;
     var right = tmpVec5;
@@ -6434,10 +6438,10 @@ RaycastVehicle.prototype.updateWheelTransform = function(wheelIndex){
 
     // Rotate around steering over the wheelAxle
     var steering = wheel.steering;
-    var steeringOrn = new Quaternion();
+    var steeringOrn = tmpQuat1;
     steeringOrn.setFromAxisAngle(up, steering);
 
-    var rotatingOrn = new Quaternion();
+    var rotatingOrn = tmpQuat2;
     rotatingOrn.setFromAxisAngle(right, wheel.rotation);
 
     // World rotation of the wheel

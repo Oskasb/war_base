@@ -139,32 +139,6 @@
         }
       },
       {
-        "id":"track_rotation",
-        "data":{
-          "targets":[
-            {"targetid":"model_track_animate_texture"}
-          ]
-        }
-      },
-      {
-        "id":"track_speed",
-        "data":{
-          "targets":[
-            {"targetid":"channel_track_ground_print"},
-            {"targetid":"channel_track_dirt_spray"}
-          ]
-        }
-      },
-      {
-        "id":"engine_channel",
-        "data":{
-          "targets":[
-            {"targetid":"module_channel_engine_smoke"},
-            {"targetid":"channel_engine_power"}
-          ]
-        }
-      },
-      {
         "id":"fire_channel",
         "data":{
           "targets":[

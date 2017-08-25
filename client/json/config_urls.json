@@ -41,6 +41,7 @@
       "game/modules/camera_data.json",
       "game/modules/control_module_data.json",
       "game/modules/module_channels.json",
+      "game/modules/vehicle_channels.json",
       "game/modules/channel_targets.json",
 
       "threedata/models/three_materials.json",

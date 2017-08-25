@@ -284,9 +284,13 @@ define([
 
             chassisBody.vehicle = vehicle;
 
-            vehicle.brake  = bodyParams.brake  || 5;
-            vehicle.torque = bodyParams.torque || 50;
-            vehicle.enginePower = bodyParams.enginePower || 800000;
+            vehicle.config = bodyParams.config || {};
+            vehicle.dynamic = {
+                gearIndex:{state:0},
+                clutch:{state:0},
+                rpm:{state:0},
+                brake:{state:1}
+            };
 
             vehicle.addToWorld(world);
 
@@ -308,8 +312,6 @@ define([
                 customSlidingRotationalSpeed: 0,
                 useCustomSlidingRotationalSpeed: false
             };
-
-
 
             length -= options.radius;
 

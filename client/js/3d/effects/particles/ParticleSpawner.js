@@ -219,9 +219,9 @@ define([
                 return;
             }
 
-            effect.age = effect.effectDuration+effect.lastTpf;
+            effect.age = effect.lastTpf;
 
-            activeEffects.push(effect)
+            activeEffects.push(effect);
         };
 
 

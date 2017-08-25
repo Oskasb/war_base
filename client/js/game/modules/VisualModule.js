@@ -220,7 +220,8 @@ define([
 
             if (this.model) {
              //   this.rootObj.remove(this.model);
-                ThreeAPI.removeModel(this.model);
+                if (this.hidden) this.show();
+                ThreeAPI.removeModel(this.rootObj);
             }
             this.removeModuleDebugBox();
         };

@@ -80,6 +80,9 @@
             "size": [1.4, 0.7, 1.4]
           },
           "channels":[
+            {"channelid":"rpm_channel",    "stateid":"engine_rpm"},
+            {"channelid":"gear_channel",   "stateid":"engine_gear"},
+            {"channelid":"clutch_channel", "stateid":"engine_clutch"},
             {"channelid":"engine_channel", "stateid":"engine_forward"},
             {"channelid":"engine_channel", "stateid":"engine_reverse"}
           ]
@@ -97,6 +100,7 @@
           "model":"sherman_track_r",
           "channels":[
             {"channelid":"track_speed",    "stateid":"track_speed_r"},
+            {"channelid":"track_brake",    "stateid":"track_brake"},
             {"channelid":"track_rotation", "stateid":"track_rotation_r"}
           ]
         }
@@ -113,6 +117,7 @@
           "model":"sherman_track_l",
           "channels":[
             {"channelid":"track_speed",    "stateid":"track_speed_l"},
+            {"channelid":"track_brake",    "stateid":"track_brake"},
             {"channelid":"track_rotation", "stateid":"track_rotation_l"}
           ]
         }
@@ -170,14 +175,14 @@
             "three_terrain":"plain_ground",
             "vegetation_system":"basic_grassland",
             "terrain_size":1000,
-            "terrain_segments":127,
+            "terrain_segments":63,
             "invert_hill":false,
             "terrain_edge_size":175,
             "edge_easing":"clampSin",
             "max_height":50,
             "min_height":0,
-            "frequency":0.2,
-            "steps":1
+            "frequency":2,
+            "steps":4
           },
           "terrain":"plain_ground",
           "channels":[

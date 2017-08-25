@@ -144,8 +144,8 @@ define([
                 return;
             }
             GameAPI.detatchPieceProtocol(actor.controls, actor.controlStateMap);
-            actor.releaseActorControls();
             this.removePiece(actor.controls);
+            actor.releaseActorControls();
         };
 
 
@@ -168,7 +168,6 @@ define([
 
                 actr.removeGameActor();
                 removeOk(msg);
-
 
             };
 

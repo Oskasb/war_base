@@ -28,15 +28,19 @@ define([
 
         var poolMesh = function(id, mesh, count) {
             var poolCount = count || 3;
-            modelPool[id] = [];
+
+            if (!modelPool[id]) {
+                modelPool[id] = [];
+            }
 
             for (var i = 0; i < poolCount; i++) {
                 var clone = mesh.clone();
                 clone.userData.poolId = id;
                 clone.frustumCulled = false;
                 modelPool[id].push(clone);
-            }
 
+            }
+            console.log("CACHE MESH", [id, modelPool, clone]);
         };
 
         var cacheMesh = function(id, mesh, pool) {
@@ -131,7 +135,7 @@ define([
 
             var loadUrl = function(url, id, meshFound) {
                 loader.load(url, function ( object ) {
-                    //        console.log("THREE_MODEL OBJ", object);
+
                     getMesh(object, id, meshFound)
                 });
             };
@@ -248,12 +252,17 @@ define([
 */
                     transformModel(modelList[modelId].transform, model);
 
-                var attachMaterial = function(src, data) {
-                    model.material = data;
-                    rootObject.add(model);
-                };
+                    if (model.material.special) {
+                        rootObject.add(model);
+                    } else {
+                        var attachMaterial = function(src, data) {
+                            model.material = data;
+                            rootObject.add(model);
+                        };
 
-                new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial);
+                        new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial);
+                    }
+
             };
 
         //    ThreeModelLoader.loadModelId(modelId);
@@ -296,7 +305,7 @@ define([
                 if (!modelPool[src].length) {
                     console.log("Increase Model Pool", id);
                     mesh = data.clone();
-                    mesh.userData.poolId = data.userData.poolId;
+                    mesh.userData.poolId = src;
                 } else {
                     mesh = modelPool[src].pop()
                 }
