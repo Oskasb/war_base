@@ -100,7 +100,7 @@
           "id":"wave_control_additive",
           "shader":"MeshBasicMaterial",
           "blending":"AdditiveBlending",
-          "color":{"r":0.05, "g":0.95, "b":0.99},
+          "color":{"r":0.02, "g":0.55, "b":0.89},
           "settings":{
             "transparent":true,
             "depthTest":false,
@@ -114,7 +114,7 @@
         },{
           "id":"wave_control_opaque",
           "shader":"MeshBasicMaterial",
-          "color":{"r":0.2, "g":0.95, "b":0.98},
+          "color":{"r":0.2, "g":0.99, "b":0.98},
           "settings":{
 
           },

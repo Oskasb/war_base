@@ -59,5 +59,9 @@ define([
             }
         };
 
+        ModuleChannel.prototype.removeModuleChannel = function () {
+            this.pipeObj.removePipelineObject();
+        };
+
         return ModuleChannel
     });

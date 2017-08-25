@@ -13,6 +13,7 @@ define([
         var PieceSLot = function(id) {
             this.id = id;
             this.module;
+            this.isRootSlot = false;
         };
 
         PieceSLot.prototype.setSlotModuleId = function(moduleId, ready) {
@@ -23,16 +24,11 @@ define([
             new GameModule(moduleId, moduleReady);
         };
 
-
         PieceSLot.prototype.setSlotModule = function (module) {
             if (this.module && this.module !== module) {
                 this.module.removeClientModule();
             }
             this.module = module;
-        };
-
-        PieceSLot.prototype.getModuleChannels = function () {
-            return this.module.moduleChannels;
         };
 
         PieceSLot.prototype.getModuleChannels = function () {
@@ -56,7 +52,9 @@ define([
 
         PieceSLot.prototype.setObject3dToPieceRoot = function (obj3d) {
             this.attachToObject3d(obj3d);
+            console.log("Set as root", obj3d);
             this.module.setAsRootSlot(obj3d);
+            this.isRootSlot = true;
         };
 
         PieceSLot.prototype.attachToObject3d = function (obj3d) {

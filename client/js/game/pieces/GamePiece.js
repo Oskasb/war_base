@@ -24,14 +24,6 @@ define([
             this.dataKey = dataKey;
             this.render = false;
             this.frustumCoords = new THREE.Vector3();
-
-            this.rootObj3D = ThreeAPI.createRootObject();
-
-            this.attachmentPoints = [];
-            this.moduleChannels = [];
-
-            this.boundingSize = 10;
-            this.pieceSlots = [];
             this.pieceStates = [];
 
             var applyPieceData = function() {
@@ -42,9 +34,39 @@ define([
         };
 
 
+
+        GamePiece.prototype.initGamePiece = function() {
+
+            this.resetGamePiece();
+
+            this.rootObj3D = ThreeAPI.createRootObject();
+
+            this.pieceSlots = [];
+            this.attachmentPoints = [];
+            this.moduleChannels = [];
+            this.boundingSize = 10;
+        };
+
+        GamePiece.prototype.resetGamePiece = function() {
+
+            if (this.rootObj3D) {
+                ThreeAPI.removeModel(this.rootObj3D);
+            }
+
+            if (this.pieceSlots) {
+                while (this.pieceSlots.length) {
+                    this.pieceSlots.pop().removePieceSlot();
+                }
+            }
+        };
+
         GamePiece.prototype.buildHierarchy = function () {
 
-            this.getSlotById(this.config.root_slot).setObject3dToPieceRoot(this.rootObj3D);
+
+            if (!this.getSlotById(this.config.root_slot).isRootSlot) {
+                this.getSlotById(this.config.root_slot).setObject3dToPieceRoot(this.rootObj3D);
+            }
+
 
             for (var i = 0; i < this.config.attachments.length;i++) {
                var aps = this.config.attachments[i];
@@ -54,13 +76,14 @@ define([
 
         GamePiece.prototype.setSlotAttachment = function(parentSlotId, apId, childSlotId) {
             var ap = this.getSlotById(parentSlotId).getAttachmentPointById(apId);
+            console.log("Set attachment", [ap, apId]);
             this.getSlotById(childSlotId).attachToObject3d(ap.object3D);
         };
 
 
         GamePiece.prototype.applyPieceData = function (config, ready) {
             this.config = config;
-
+            this.initGamePiece();
             var slotsReady = function() {
                 this.attachPieceStates();
                 this.buildHierarchy();
@@ -92,16 +115,20 @@ define([
 
         GamePiece.prototype.attachPieceSlots = function (slots, slotsReady) {
 
+            var attachCount = slots.length;
+            var attached = 0;
 
             var ready = function(slot) {
 
+                attached++;
                 if (this.getSlotById(slot.id)) {
                     this.getSlotById(slot.id).setSlotModule(slot.module);
                 } else {
                     this.pieceSlots.push(slot);
                 }
 
-                if (this.pieceSlots.length === slots.length) {
+                if (attached === attachCount) {
+                    console.log("Slots Ready!");
                     slotsReady();
                     this.boundingSize = this.calculateBoundingRadius();
                 }
@@ -116,7 +143,7 @@ define([
         GamePiece.prototype.attachPieceStates = function() {
 
             for (var i = 0; i < this.pieceSlots.length; i++) {
-                var slot = this.pieceSlots[i];3
+                var slot = this.pieceSlots[i];
                 this.attachStatesToChannels(slot.getModuleChannels());
             }
         };
