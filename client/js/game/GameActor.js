@@ -114,6 +114,12 @@ define([
 
         GameActor.prototype.updateActpr = function () {
             if (this.controls) {
+                /*
+                if (!this.controls.rootObj3D) {
+                    console.log("No control root object", this);
+                    return;
+                }
+             */
                 this.controls.rootObj3D.position.copy(this.piece.rootObj3D.position);
                 this.controls.rootObj3D.quaternion.copy(this.piece.rootObj3D.quaternion); //.y = this.piece.rootObj3D.rotation.y;
                 // this.controls.rootObj3D.quaternion.normalize();

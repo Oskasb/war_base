@@ -25,6 +25,7 @@ define([
             this.render = false;
             this.frustumCoords = new THREE.Vector3();
             this.pieceStates = [];
+            this.rootObj3D = ThreeAPI.createRootObject();
 
             var applyPieceData = function() {
                 this.applyPieceData(this.pipeObj.buildConfig()[dataKey], ready);
@@ -37,9 +38,9 @@ define([
 
         GamePiece.prototype.initGamePiece = function() {
 
-            this.resetGamePiece();
-
-            this.rootObj3D = ThreeAPI.createRootObject();
+            if (this.pieceStates.length) {
+                this.resetGamePiece();
+            }
 
             this.pieceSlots = [];
             this.attachmentPoints = [];
@@ -49,9 +50,7 @@ define([
 
         GamePiece.prototype.resetGamePiece = function() {
 
-            if (this.rootObj3D) {
-                ThreeAPI.removeModel(this.rootObj3D);
-            }
+            ThreeAPI.removeChildrenFrom(this.rootObj3D);
 
             if (this.pieceSlots) {
                 while (this.pieceSlots.length) {
@@ -82,6 +81,7 @@ define([
 
 
         GamePiece.prototype.applyPieceData = function (config, ready) {
+            if (this.config === config) return;
             this.config = config;
             this.initGamePiece();
             var slotsReady = function() {

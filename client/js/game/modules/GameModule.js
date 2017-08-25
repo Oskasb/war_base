@@ -189,13 +189,14 @@ define([
 
         GameModule.prototype.removeClientModule = function () {
             this.pipeObj.removePipelineObject();
+            this.visualModule.removeVisualModule();
             this.removeAttachmentPoints();
 
             while (this.moduleChannels.length) {
                 this.moduleChannels.pop().removeModuleChannel();
             }
 
-            this.visualModule.removeVisualModule();
+
         };
         
         return GameModule

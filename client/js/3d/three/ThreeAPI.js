@@ -187,6 +187,12 @@ define([
             return ThreeModelLoader.createObject3D();
         };
 
+        ThreeAPI.removeChildrenFrom = function(object) {
+            while (object.children.length) {
+                ThreeAPI.removeModel(object.children.pop());
+            }
+        };
+
         ThreeAPI.loadMeshModel = function(modelId, rootObject, partsReady) {
             return ThreeModelLoader.loadThreeMeshModel(modelId, rootObject, ThreeSetup, partsReady);
         };

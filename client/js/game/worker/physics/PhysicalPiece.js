@@ -36,12 +36,11 @@ define([
 
         PhysicalPiece.prototype.sampleBody = function(body) {
 
-            threeObj.quaternion.x = body.quaternion.y;
-            threeObj.quaternion.y = -body.quaternion.z;
-            threeObj.quaternion.z = body.quaternion.x;
-            threeObj.quaternion.w = body.quaternion.w;
+            threeObj.quaternion.x = -body.quaternion.x;
+            threeObj.quaternion.y = -body.quaternion.z+body.quaternion.w;
+            threeObj.quaternion.z = -body.quaternion.y;
+            threeObj.quaternion.w = body.quaternion.w+body.quaternion.z;
 
-            threeObj.rotateY(Math.PI*0.5)
 
             threeObj.position.set(body.position.x, body.position.z, body.position.y);
 
@@ -107,8 +106,6 @@ define([
             if (this.feedbackMap) {
                 this.sampleVehicle(body[this.config.shape], piece);
             }
-
-
 
         };
 

@@ -176,8 +176,8 @@
             "edge_easing":"clampSin",
             "max_height":50,
             "min_height":0,
-            "frequency":5,
-            "steps":3
+            "frequency":0.2,
+            "steps":1
           },
           "terrain":"plain_ground",
           "channels":[
