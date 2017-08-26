@@ -5,7 +5,8 @@
         "id":"track_brake",
         "data":{
           "targets":[
-            {"targetid":"module_channel_engine_smoke"}
+            {"targetid":"channel_track_ground_print"},
+            {"targetid":"channel_track_dirt_spray"}
           ]
         }
       },
@@ -30,8 +31,7 @@
         "id":"engine_channel",
         "data":{
           "targets":[
-            {"targetid":"module_channel_engine_smoke"},
-            {"targetid":"channel_engine_power"}
+
           ]
         }
       },
@@ -39,8 +39,7 @@
         "id":"rpm_channel",
         "data":{
           "targets":[
-            {"targetid":"module_channel_engine_smoke"},
-            {"targetid":"channel_engine_power"}
+            {"targetid":"module_channel_engine_smoke"}
           ]
         }
       },
@@ -48,8 +47,7 @@
         "id":"gear_channel",
         "data":{
           "targets":[
-            {"targetid":"module_channel_engine_smoke"},
-            {"targetid":"channel_engine_power"}
+
           ]
         }
       },
@@ -57,7 +55,7 @@
         "id":"clutch_channel",
         "data":{
           "targets":[
-            {"targetid":"module_channel_engine_smoke"},
+            {"targetid":"module_channel_on_fire"},
             {"targetid":"channel_engine_power"}
           ]
         }

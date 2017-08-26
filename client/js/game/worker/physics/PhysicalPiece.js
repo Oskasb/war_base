@@ -62,20 +62,6 @@ define([
         };
 
 
-        PhysicalPiece.prototype.sampleVehicle = function(target, piece) {
-
-            for (var i = 0; i < this.feedbackMap.length; i++) {
-                var param =         this.feedbackMap[i].param;
-                var key =           this.feedbackMap[i].key;
-                var property =      this.feedbackMap[i].property;
-                var targetStateId = this.feedbackMap[i].stateid;
-                var factor =        this.feedbackMap[i].factor;
-                var state =         piece.getPieceStateByStateId(targetStateId);
-                state.value =       target[param][key][property]*factor;
-            }
-
-        };
-
         PhysicalPiece.prototype.sampleState = function (body, piece) {
 
             this.sampleBody(body);

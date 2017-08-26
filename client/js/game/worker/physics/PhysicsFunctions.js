@@ -256,6 +256,8 @@ define([
         };
 
 
+
+
         PhysicsFunctions.prototype.createVehicle = function(world, bodyParams) {
 
             var vehicle;
@@ -284,12 +286,12 @@ define([
 
             chassisBody.vehicle = vehicle;
 
-            vehicle.config = bodyParams.config || {};
+            vehicle.drive_train = bodyParams.drive_train || {};
             vehicle.dynamic = {
-                gearIndex:{state:0},
-                clutch:{state:0},
-                rpm:{state:0},
-                brake:{state:1}
+                gearIndex:  {state:0},
+                clutch:     {state:0},
+                rpm:        {state:0},
+                brake:      {state:0}
             };
 
             vehicle.addToWorld(world);

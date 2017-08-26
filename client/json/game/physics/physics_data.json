@@ -18,13 +18,13 @@
         "data":{
           "shape":"vehicle",
           "rigid_body":{
-            "config":{
+            "drive_train":{
               "rpm_min":200,
-              "rpm_max":4000,
-              "gears":[100, 33, 10, 3, 1],
+              "rpm_max":2500,
+              "gears":[120, 40, 20, 12, 3, 2, 1],
               "torque"     : 125000,
-              "enginePower": 5000000,
-              "brake"      : 8
+              "enginePower": 1000,
+              "brake"      : 800
             },
 
             "mass"      : 55000,
@@ -65,7 +65,7 @@
 
             "wheelOptions":{
               "radius":0.5,
-              "suspensionStiffness":12,
+              "suspensionStiffness":10,
               "suspensionLength":0.9,
               "dampening":1.2,
               "rollInfluence":0.3,
@@ -75,8 +75,8 @@
           },
           "control_map":[
               {"control":"yaw_state",      "stateid":"wheel_turn_forward","factor":-1},
-              {"control":"forward_state",  "stateid":"engine_forward", "factor":5000},
-              {"control":"reverse_state",  "stateid":"engine_reverse","factor":-5000},
+              {"control":"forward_state",  "stateid":"engine_forward", "factor":    1},
+              {"control":"reverse_state",  "stateid":"engine_reverse","factor":    -1},
               {"control":"steer_reverse",  "stateid":"wheel_turn_reverse", "factor":1}
           ],
           "feedback_map":[
