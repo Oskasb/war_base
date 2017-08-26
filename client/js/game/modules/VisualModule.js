@@ -221,7 +221,7 @@ define([
             if (this.model) {
              //   this.rootObj.remove(this.model);
                 if (this.hidden) this.show();
-                ThreeAPI.removeModel(this.rootObj);
+                ThreeAPI.removeModel(this.model);
             }
             this.removeModuleDebugBox();
         };

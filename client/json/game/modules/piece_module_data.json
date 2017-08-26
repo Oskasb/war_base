@@ -66,8 +66,9 @@
             "size": [0.4, 0.3,   0.4]
           },
           "channels":[
-            {"channelid":"channel_yaw",   "stateid":"wheel_turn_forward"},
-            {"channelid":"channel_yaw",   "stateid":"wheel_turn_reverse"}
+            {"channelid":"channel_brake_cmd",   "stateid":"command_brake"},
+            {"channelid":"channel_yaw",         "stateid":"wheel_turn_forward"},
+            {"channelid":"channel_yaw",         "stateid":"wheel_turn_reverse"}
           ]
         }
       },

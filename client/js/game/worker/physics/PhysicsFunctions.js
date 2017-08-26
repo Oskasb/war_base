@@ -291,7 +291,8 @@ define([
                 gearIndex:  {state:0},
                 clutch:     {state:0},
                 rpm:        {state:0},
-                brake:      {state:0}
+                brake:      {state:0},
+                brakeCommand:{state:0}
             };
 
             vehicle.addToWorld(world);

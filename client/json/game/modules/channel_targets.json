@@ -24,7 +24,7 @@
             "threshold_lower":-1.85
           }],
           "parameter":"zrot",
-          "factor":1.2,
+          "factor":1.1,
           "clamp_max":1.95,
           "clamp_min":-1.95,
           "time":3,
@@ -66,9 +66,9 @@
             "threshold_lower":-1.4
           }],
           "parameter":"w",
-          "factor":0.03,
-          "clamp_max":2,
-          "clamp_min":0.4,
+          "factor":0.005,
+          "clamp_max":1,
+          "clamp_min":0.3,
           "time":0.5,
           "release_time":1.4
         }
@@ -87,8 +87,8 @@
             "threshold_lower": 2.2
           }],
           "parameter":"w",
-          "factor":0.015,
-          "clamp_max":1.5,
+          "factor":0.005,
+          "clamp_max":1,
           "clamp_min":0.3,
           "time":0.4,
           "release_time":0.9

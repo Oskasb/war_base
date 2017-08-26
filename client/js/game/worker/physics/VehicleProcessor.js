@@ -11,28 +11,29 @@ define([
 
         var drive_train = {
             "rpm_min":200,
-            "rpm_max":4000,
-            "gears":[100, 33, 10, 3, 1],
-            "torque"     : 125000,
-            "enginePower": 5000000,
-            "brake"      : 8
+            "rpm_max":2500,
+            "gears":[120, 40, 20, 12, 3, 2, 1],
+            "enginePower": 1000,
+            "brake"      : 800
         };
 
         var dyn = {
             gearIndex:  {state:0},
             clutch:     {state:0},
             rpm:        {state:0},
-            brake:      {state:1}
+            brake:      {state:0},
+            brakeCommand:{state:0}
         };
 
         var VehicleProcessor = function(conf) {
             this.controls = {};
 
-            this.lastYawState = 0;
-            this.lastThrottleState = 0;
+            this.lastInputState = 0;
             this.gearIndex = 0;
+
             this.lastbrakeState = 0;
             this.framelWheelRotation = 0;
+            this.brakeCommand = 0;
         };
 
 
@@ -45,31 +46,65 @@ define([
             }
         };
 
-        VehicleProcessor.prototype.determineRpm = function(dynamic, driveTrain) {
+        VehicleProcessor.prototype.determineRpm = function(dynamic, driveTrain, accelerateIntent) {
 
             var gears = driveTrain.gears;
-            dynamic.rpm.state = MATH.clamp(Math.abs(gears[this.gearIndex] * this.framelWheelRotation * 60),
-                driveTrain.rpm_min+1,
-                driveTrain.rpm_max-1
-            ) / driveTrain.rpm_max;
+
+            var transmissionScale = 0.001;
+
+            var gearFactor = Math.abs(gears[this.gearIndex] * this.framelWheelRotation) * transmissionScale;
+
+
+            var minRpm = driveTrain.rpm_min+1;
+            var rpmSpan = driveTrain.rpm_max - minRpm;
+
+
+            var revUpFrameLimit = 0.001 * rpmSpan;
+
+            var maxRpm = minRpm + rpmSpan * 0.55 + rpmSpan* 0.45 * accelerateIntent;
+
+            var targetRpm = gearFactor * maxRpm ;
+
+            var clutch = 1-dynamic.clutch.state;
+
+            if (accelerateIntent > 0) {
+            //    targetRpm = Math.clamp(targetRpm, minRpm, dynamic.rpm.state * driveTrain.rpm_max + revUpFrameLimit);
+
+                targetRpm = Math.clamp(targetRpm + clutch * revUpFrameLimit, minRpm, driveTrain.rpm_max) ;
+            } else {
+                targetRpm = Math.clamp((targetRpm - clutch * revUpFrameLimit*2), minRpm, maxRpm) ;
+            }
+
+            if (targetRpm > dynamic.rpm.state * driveTrain.rpm_max) {
+
+            } else {
+
+            }
+
+            dynamic.rpm.state = targetRpm / driveTrain.rpm_max;
 
         };
 
-        VehicleProcessor.prototype.determineGearIndex = function(dynamic, driveTrain) {
+        VehicleProcessor.prototype.determineGearIndex = function(dynamic, driveTrain, brake) {
             var gears = driveTrain.gears;
             dynamic.clutch.state = 0;
 
-            var rpm = dynamic.rpm.state * driveTrain.rpm_max
+            var rpm = dynamic.rpm.state * driveTrain.rpm_max;
 
-            if (rpm < driveTrain.rpm_min + Math.random() * driveTrain.rpm_min * 0.2) {
+
+            var gearModulation = (driveTrain.rpm_max - driveTrain.rpm_min) * (gears.length - this.gearIndex) / driveTrain.rpm_max;
+
+            if (rpm * gearModulation < driveTrain.rpm_min + Math.random() * driveTrain.rpm_min * 0.1 + brake * driveTrain.rpm_max) {
+
+                dynamic.clutch.state = 1;
+
                 if (this.gearIndex === 0) {
-                    dynamic.clutch.state = 1;
+
                 } else {
-                    dynamic.clutch.state = 1;
                     this.gearIndex--;
                 }
 
-            } else if (rpm > driveTrain.rpm_max - Math.random() * driveTrain.rpm_min) {
+            } else if (rpm * gearModulation > driveTrain.rpm_max - Math.random() * driveTrain.rpm_max*0.1) {
                 if (this.gearIndex === gears.length - 1) {
 
                 } else {
@@ -82,7 +117,40 @@ define([
         };
 
         VehicleProcessor.prototype.determineBrakeState = function(dynamic, speedInputState, driveTrain) {
-            dynamic.brake.state = MATH.clamp(speedInputState*this.framelWheelRotation*driveTrain.brake, 0, driveTrain.brake) / driveTrain.brake;
+        //    if ()
+
+            var wheelBrake = speedInputState*this.framelWheelRotation;
+
+            var brakeState = MATH.clamp(wheelBrake, 0, 1);
+
+            if (wheelBrake > 0) {
+                this.brakeCommand = 1;
+            }
+
+            dynamic.brake.state = brakeState;
+            dynamic.brakeCommand.state = this.brakeCommand;
+            this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.5, 0, 1);
+        };
+
+        VehicleProcessor.prototype.determineForwardState = function(speedInputState) {
+            if (speedInputState === 0) {
+                return this.lastInputState;
+            }
+
+            var sameDir = speedInputState * this.lastInputState;
+            var forward = speedInputState;
+
+            if (sameDir > 0) {
+                if (Math.abs(forward) > Math.abs(this.lastInputState)) {
+                    this.brakeCommand = 0;
+                }
+            } else {
+                this.brakeCommand = 1;
+            }
+
+            this.lastInputState = forward;
+
+            return forward;
         };
 
 
@@ -94,35 +162,30 @@ define([
 
             var speedInputState = controls.forward_state + controls.reverse_state;
 
-            this.determineBrakeState(dynamic, speedInputState, driveTrain);
+            var accelerateIntent = this.determineForwardState(speedInputState);
 
-            this.determineRpm(dynamic, driveTrain);
 
-            this.determineGearIndex(dynamic, driveTrain);
+            this.determineBrakeState(dynamic, accelerateIntent, driveTrain);
+
+            this.determineRpm(dynamic, driveTrain, accelerateIntent);
+
+            this.determineGearIndex(dynamic, driveTrain, dynamic.brake.state);
 
             var yaw_state = controls.yaw_state + controls.steer_reverse;
 
-            var throttle_state = speedInputState * driveTrain.enginePower * driveTrain.gears[dynamic.gearIndex.state];
-
-
-
-            var brake_state = dynamic.brake.state;
-
-
+            var powerState = accelerateIntent * driveTrain.enginePower * driveTrain.gears[dynamic.gearIndex.state] * dynamic.rpm.state;
 
             this.framelWheelRotation = 0;
 
             for (var i = 0; i < target.wheelInfos.length; i++) {
                 var info = target.wheelInfos[i];
                 var yawFactor = info.transmissionYawMatrix * yaw_state;
-                target.applyEngineForce(throttle_state * info.transmissionFactor + throttle_state * yawFactor , i);
-                target.setBrake(brake_state * info.brakeFactor * driveTrain.brake, i);
+                target.applyEngineForce(powerState * info.transmissionFactor + powerState * yawFactor , i);
+                target.setBrake(this.lastbrakeState * info.brakeFactor * driveTrain.brake, i);
                 target.setSteeringValue(yaw_state* info.steerFactor, i);
                 this.framelWheelRotation += info.deltaRotation;
             }
 
-            this.lastYawState = yaw_state;
-            this.lastThrottleState = throttle_state;
             this.lastbrakeState = 0;
 
         };

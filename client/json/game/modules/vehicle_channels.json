@@ -2,6 +2,14 @@
   "MODULE_CHANNELS":{
     "CHANNELS":[
       {
+        "id":"channel_brake_cmd",
+        "data":{
+          "targets":[
+            {"targetid":"channel_engine_power"}
+          ]
+        }
+      },
+      {
         "id":"track_brake",
         "data":{
           "targets":[
@@ -55,7 +63,6 @@
         "id":"clutch_channel",
         "data":{
           "targets":[
-            {"targetid":"module_channel_on_fire"},
             {"targetid":"channel_engine_power"}
           ]
         }

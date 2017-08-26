@@ -19,12 +19,11 @@
           "shape":"vehicle",
           "rigid_body":{
             "drive_train":{
-              "rpm_min":200,
-              "rpm_max":2500,
-              "gears":[120, 40, 20, 12, 3, 2, 1],
-              "torque"     : 125000,
-              "enginePower": 1000,
-              "brake"      : 800
+              "rpm_min":120,
+              "rpm_max":1000,
+              "gears":[1800, 600, 340, 185, 68],
+              "enginePower": 500,
+              "brake"      : 2000
             },
 
             "mass"      : 55000,
@@ -34,31 +33,31 @@
             "clearance" : 0.1,
 
             "steerMatrix":[
-              -0.5, -0.5,
+              -0.3, -0.3,
               -0.0, -0.0,
-               0.5,  0.5
+               0.3,  0.3
             ],
 
             "brakeMatrix":[
-              0, 0,
-              0, 0,
-              3, 3
+              0.4, 0.4,
+              0.6, 0.6,
+              0.0, 0.0
             ],
 
             "transmissionMatrix":[
-              0.8, 0.8,
-              1.0, 1.0,
-              1.5, 1.5
+              0.25, 0.25,
+              0.50, 0.50,
+              0.25, 0.25
             ],
 
             "transmissionYawMatrix":[
+              -0, 0,
               -5, 5,
-              -15,15,
-              -25,25
+              -10,10
             ],
 
             "wheelMatrix":[
-              [-0.9,  0.9, 1],[0.9,  0.9, 1],
+              [-1.1,  0.9, 1],[1.1,  0.9, 1],
               [-1.0,    0, 1],[1.0,    0, 1],
               [-0.9, -0.9, 1],[0.9, -0.9, 1]
             ],
@@ -69,7 +68,7 @@
               "suspensionLength":0.9,
               "dampening":1.2,
               "rollInfluence":0.3,
-              "frictionSlip":1,
+              "frictionSlip":1.3,
               "maxSuspensionForce":400000
             }
           },
@@ -88,7 +87,8 @@
             {"param":"dynamic",     "key":"gearIndex",  "property":"state", "stateid":"engine_gear",    "factor":1},
             {"param":"dynamic",     "key":"rpm",        "property":"state", "stateid":"engine_rpm",     "factor":1},
             {"param":"dynamic",     "key":"clutch",     "property":"state", "stateid":"engine_clutch",  "factor":1},
-            {"param":"dynamic",     "key":"brake",      "property":"state", "stateid":"track_brake",    "factor":1}
+            {"param":"dynamic",     "key":"brake",      "property":"state", "stateid":"track_brake",    "factor":1},
+            {"param":"dynamic",     "key":"brakeCommand","property":"state", "stateid":"command_brake", "factor":1}
 
           ],
           "state_map":[
