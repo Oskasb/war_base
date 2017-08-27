@@ -10,10 +10,10 @@ define([
 
 
     var getMaterial = function(model) {
-        if (model.userData.animMat) {
-            return model.userData.animMat;
+        if (model.material) {
+            return model.material.userData.animMat;
         }
-        return model.children[0].userData.animMat;
+        return model.children[0].material.userData.animMat;
     };
 
     var ThreeFeedbackFunctions = function() {
@@ -24,11 +24,12 @@ define([
 
             var map =  model.children[0].material.map.clone();
             map.version = model.children[0].material.map.version;
-            model.children[0].material = model.children[0].material.clone();
+            var mat = model.children[0].material.clone();
+            model.children[0].material = mat;
             model.children[0].material.map = map;
-            model.children[0].userData.animMat = model.children[0].material;
+            model.children[0].material.userData.animMat = mat;
+            return mat;
 
-        //    model.children[0].material = model.userData.animMat;
     };
 
     var applyToTextures = function(material, x, y, cumulative) {
@@ -53,12 +54,12 @@ define([
     //    if (cumulative) console.log(cumulative)
         var mat = getMaterial(model);
         if (!mat) {
-            setupMaterial(model);
-            console.log("No material", model);
-            return;
+            mat = setupMaterial(model);
+            console.log("create anim material", model);
+
         }
 
-        applyToTextures(model.children[0].material, x, y, cumulative);
+        applyToTextures(mat, x, y, cumulative);
     };
 
     return ThreeFeedbackFunctions;

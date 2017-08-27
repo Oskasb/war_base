@@ -7,8 +7,8 @@
           "shape":"primitive",
           "rigid_body":{
             "shape":"Cylinder",
-            "args":[0.65, 0.65, 1.93, 8],
-            "mass":200
+            "args":[0.65, 0.65, 1.93, 10],
+            "mass":2000
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "pos_state_x"},

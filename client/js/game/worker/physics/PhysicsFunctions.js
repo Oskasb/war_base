@@ -78,12 +78,13 @@ define([
 
             world.defaultContactMaterial.friction = 0.01;
             world.defaultContactMaterial.contactEquationStiffness = 10000000;
+            world.defaultContactMaterial.restitution = 0.1;
 
             groundMaterial = new CANNON.Material("groundMaterial");
             wheelMaterial = new CANNON.Material("wheelMaterial");
             wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, groundMaterial, {
                 friction: 0.4,
-                restitution: 0,
+                restitution: 0.1,
                 contactEquationStiffness: 1000
             });
 
