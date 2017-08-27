@@ -21,7 +21,7 @@ define([
             this.protocolSystem = protocolSystem;
             this.cannonApi = new CannonAPI();
             this.terrainFunctions = new TerrainFunctions(this.cannonApi);
-            this.simulationOperations = new SimulationOperations();
+            this.simulationOperations = new SimulationOperations(this.terrainFunctions);
             this.cannonApi.initPhysics();
         };
 
@@ -39,6 +39,7 @@ define([
         SimulationState.prototype.spawnActor = function(options, ready) {
 
             var actorBuilt = function(actor) {
+                this.simulationOperations.getRandomPointOnTerrain(actor.piece.rootObj3D.position, levels);
                 this.cannonApi.setupPhysicalActor(actor);
                 if (actor.body) {
                     this.cannonApi.includeBody(actor.body);
@@ -106,14 +107,17 @@ define([
 
             var terrain = this.terrainFunctions.createTerrain(terrainOpts);
 
-            var array1d = this.terrainFunctions.getTerrainArray1d(terrain);
-            var terrainBody = this.terrainFunctions.addTerrainToPhysics(terrainOpts, array1d, 0, 0);
+            level.addTerrainToLevel(terrain);
+
+            var buffers = this.terrainFunctions.getTerrainBuffers(terrain);
+
+            terrain.array1d = buffers[4];
+            var terrainBody = this.terrainFunctions.addTerrainToPhysics(terrainOpts, terrain.array1d, 0, 0);
 
             this.cannonApi.includeBody(terrainBody);
 
             actor.setPhysicsBody(terrainBody);
-
-            var buffers = this.terrainFunctions.getTerrainBuffers(terrain);
+            
             cb([JSON.stringify({actorId:actorId, levelId:levelId}), buffers]);
         };
 

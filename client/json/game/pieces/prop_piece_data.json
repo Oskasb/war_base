@@ -12,6 +12,18 @@
 
           ]
         }
+      },
+      {
+        "id":"piece_platform_35x25",
+        "data":{
+          "root_slot":"piece_root",
+          "slots":[
+            {"slot":"piece_root",         "module":"module_platform_35x25"}
+          ],
+          "attachments":[
+
+          ]
+        }
       }
     ]
   }

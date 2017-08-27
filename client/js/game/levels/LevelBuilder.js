@@ -3,6 +3,7 @@
 define([
         'PipelineAPI',
         'ThreeAPI',
+        'EffectsAPI',
         'game/GameActor',
         'game/levels/GameLevel'
     ],
@@ -10,6 +11,7 @@ define([
     function(
         PipelineAPI,
         ThreeAPI,
+        EffectsAPI,
         GameActor,
         GameLevel
     ) {
@@ -40,9 +42,9 @@ define([
                 var model = ThreeAPI.loadGround(mod.config.options, buffers, ThreeAPI.createRootObject());
                 mod.setModel(model);
                 level.addLevelTerrainActor(actor);
+                EffectsAPI.enableTerrainVegetation();
                 onOk(level);
             };
-
 
             var piece = actor.piece;
 

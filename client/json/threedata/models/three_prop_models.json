@@ -1,0 +1,32 @@
+[
+  {
+    "MODELS": {
+      "THREE": [
+        {
+          "id": "oil_drum",
+          "material": "main_atlas",
+          "format":"obj",
+          "url": "./client/assets/models/props/oil_drum",
+          "pool": 30,
+          "transform": {
+            "pos":   [0, 0, 0],
+            "rot":   [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "platform_base_35x25",
+          "material": "main_atlas",
+          "format":"obj",
+          "url": "./client/assets/models/props/platform_base_35x25",
+          "pool": 15,
+          "transform": {
+            "pos":   [0, 0, 0],
+            "rot":   [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        }
+      ]
+    }
+  }
+]

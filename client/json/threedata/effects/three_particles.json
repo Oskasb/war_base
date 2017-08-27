@@ -606,6 +606,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"little_shrub",
           "config":{
+            "lifeTime":{"min":1.0,"max":3.01},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -622,6 +623,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"little_shrub",
           "config":{
+            "lifeTime":{"min":1.0,"max":3.01},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -638,6 +640,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"fuzzy_shrub",
           "config":{
+            "lifeTime":{"min":1.0,"max":3.01},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -654,6 +657,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"fuzzy_shrub",
           "config":{
+            "lifeTime":{"min":1.0,"max":3.01},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -670,6 +674,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"red_flower",
           "config":{
+            "lifeTime":{"min":1.0,"max":3.01},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -683,6 +688,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"white_flower",
           "config":{
+            "lifeTime":{"min":1.0,"max":3.01},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -696,6 +702,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"standing_grass",
           "config":{
+            "lifeTime":{"min":1.0,"max":3.01},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -709,6 +716,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"standing_fern",
           "config":{
+            "lifeTime":{"min":1.0,"max":3.01},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -722,6 +730,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"smokey",
           "config":{
+            "lifeTime":{"min":1.0,"max":3.01},
             "positionSpread":{"x":0.01, "y":0.01, "z":0.01},
             "colorCurve":"dirt",
             "alphaCurve":"quickIn",
@@ -739,6 +748,7 @@
           "sprite_key":"ATLAS",
           "sprite_id":"thick_smoke",
           "config":{
+            "lifeTime":{"min":2.0,"max":2.01},
             "positionSpread":{"x":0.01, "y":0.01, "z":0.01},
             "colorCurve":"dirt",
             "alphaCurve":"quickIn",
@@ -761,7 +771,7 @@
             "gravity":-9.81,
             "drag":0.0001,
             "spinDrag":1,
-            "lifeTime":{"min":55.1,"max":55.1},
+            "lifeTime":{"min":25.1,"max":25.1},
             "colorCurve":"randomYellow",
             "alphaCurve":"nearWhite",
             "diffusionCurve":"nearWhite",

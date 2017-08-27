@@ -14,8 +14,8 @@ define([],
         var TerrainFunctions = function(CNNAPI) {
             this.CannonAPI = CNNAPI;
             CannonAPI = CNNAPI;
-            calcVec1 = new MATH.Vec3();
-            calcVec2 = new MATH.Vec3();
+            calcVec1 = new THREE.Vector3();
+            calcVec2 = new THREE.Vector3();
 
             iWeightCurve = new MATH.CurveState(MATH.curves['zeroOneZero'], 1);
             jWeightCurve = new MATH.CurveState(MATH.curves['zeroOneZero'], 1);
@@ -303,7 +303,7 @@ define([],
             var xFactor = x;
 
             var idx = (yFactor + xFactor);
-//    console.log(y, yFactor, xFactor, idx);
+
             return array1d[idx];
         };
 
@@ -355,8 +355,10 @@ define([],
 
             p1.z = this.getAt(array1d, segments, xf, yc);
 
+
             setTri(p1, xf, yc, this.getAt(array1d, segments,xf, yc));
             setTri(p2, xc, yf, this.getAt(array1d, segments,xc, yf));
+
 
             if (fracX < 1-fracY) {
                 setTri(p3,xf,yf,this.getAt(array1d, segments,xf, yf));
@@ -383,31 +385,34 @@ define([],
         };
 
 
-
-        TerrainFunctions.prototype.getPreciseHeight = function(array1d, segments, x, z, normalStore) {
+        TerrainFunctions.prototype.getPreciseHeight = function(array1d, segments, x, z, normalStore, htN, htP) {
             var tri = this.getTriangleAt(array1d, segments, x, z);
 
             setTri(p0, x, z, 0);
 
             var find = MATH.barycentricInterpolation(tri[0], tri[1], tri[2], p0);
 
+
             if (normalStore) {
-                calcVec1.setXYZ((tri[1].x-tri[0].x), (tri[1].z-tri[0].z), (tri[1].y-tri[0].y));
-                calcVec2.setXYZ((tri[2].x-tri[0].x), (tri[2].z-tri[0].z), (tri[2].y-tri[0].y));
-                calcVec1.crossVec(calcVec2);
-                if (calcVec1.data[1] < 0) {
-                    calcVec1.invert();//
+
+                tri[0].x = this.returnToWorldDimensions(tri[0].x, htN, htP, segments);
+                tri[0].y = this.returnToWorldDimensions(tri[0].y, htN, htP, segments);
+                tri[1].x = this.returnToWorldDimensions(tri[1].x, htN, htP, segments);
+                tri[1].y = this.returnToWorldDimensions(tri[1].y, htN, htP, segments);
+                tri[2].x = this.returnToWorldDimensions(tri[2].x, htN, htP, segments);
+                tri[2].y = this.returnToWorldDimensions(tri[2].y, htN, htP, segments);
+
+                calcVec1.set((tri[1].x-tri[0].x), (tri[1].z-tri[0].z), (tri[1].y-tri[0].y));
+                calcVec2.set((tri[2].x-tri[0].x), (tri[2].z-tri[0].z), (tri[2].y-tri[0].y));
+
+                calcVec1.cross(calcVec2);
+                if (calcVec1.y < 0) {
+                    calcVec1.negate();
                 }
 
                 calcVec1.normalize();
+                normalStore.copy(calcVec1);
 
-                //    if (calcVec1.data[1] != 1) {
-                //        console.log(calcVec1.data);
-                //    }
-
-                normalStore.x = calcVec1.getX();
-                normalStore.y = calcVec1.getY();
-                normalStore.z = calcVec1.getZ();
             }
 
             return find.z;
@@ -486,48 +491,42 @@ define([],
 
 
 
-        TerrainFunctions.prototype.getTerrainHeightAt = function(groundPiece, pos, normalStore) {
+        TerrainFunctions.prototype.getTerrainHeightAt = function(terrain, pos, rootObj3D, normalStore) {
 
-            var module = this.getPieceTerrainModule(groundPiece);
 
-            calcVec1.setVec(groundPiece.spatial.pos);
-            calcVec2.setVec(pos);
-            calcVec2.subVec(calcVec1);
+            calcVec1.copy(rootObj3D.position);
+            calcVec2.copy(pos);
+            pos.subVectors(calcVec1, calcVec2);
 
-            var terrainSize = this.getTerrainModuleSize(module);
-            var segments = this.getTerrainSegmentse(module);
+            var terrainSize = terrain.opts.xSize;
+            var segments = terrain.opts.xSegments;
 
-            return this.getHeightAt(module, calcVec2, module.state.value, terrainSize, segments, normalStore)
+            return this.getHeightAt(pos, terrain.array1d, terrainSize, segments, normalStore)
         };
 
         TerrainFunctions.prototype.getDisplacedHeight = function(array1d, segments, x, z, htP, htN, normalStore) {
             var tx = this.displaceAxisDimensions(x, htN, htP, segments);
             var tz = this.displaceAxisDimensions(z, htN, htP, segments);
 
-            return this.getPreciseHeight(array1d, segments, tx, tz, normalStore);
+            return this.getPreciseHeight(array1d, segments, tx, tz, normalStore, htN, htP);
 
         };
 
 
-        TerrainFunctions.prototype.getHeightAt = function(module, posVec, array1d, terrainSize, segments, normalStore) {
-            var pos = posVec.data;
+        TerrainFunctions.prototype.getHeightAt = function(pos, array1d, terrainSize, segments, normalStore) {
 
-            var htP = terrainSize;
-            var htN = 0;
+            var htP = terrainSize / 2;
+            var htN = - htP;
 
-            if (pos[0] < htN || pos[0] > htP || pos[2] < htN || pos[2] > htP) {
+            if (pos.x < htN || pos.x > htP || pos.z < htN || pos.z > htP) {
 
-                //    console.log("Terrain!", pos[0], pos[2], "Is Outside")
+                console.log("Terrain!", pos.x, pos.z, "Is Outside")
                 //    return -1000;
-
-                return 0;
-
-                pos[0] = MATH.clamp(pos[0], htN, htP);
-                pos[2] = MATH.clamp(pos[2], htN, htP);
+                pos.x = MATH.clamp(pos.x, htN, htP);
+                pos.z = MATH.clamp(pos.z, htN, htP);
             }
 
-            return this.getDisplacedHeight(array1d, segments, pos[0], pos[2], htP, htN, normalStore);
-
+            return this.getDisplacedHeight(array1d, segments, pos.x, pos.z, htP, htN, normalStore);
         };
 
 

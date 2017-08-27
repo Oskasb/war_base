@@ -32,8 +32,11 @@ define([
         var currentTime;
 
         var groundMaterial;
-        var wheelMaterial;
-        var wheelGroundContactMaterial;
+        var propMaterial;
+        var chassisMaterial;
+        var propGroundContactMaterial;
+        var groundPropContactMaterial;
+        var chassisGroundContactMaterial;
 
         var threeQuat;
 
@@ -76,23 +79,38 @@ define([
 
             //  world.broadphase = new CANNON.NaiveBroadphase();
 
-            world.defaultContactMaterial.friction = 0.01;
-            world.defaultContactMaterial.contactEquationStiffness = 10000000;
-            world.defaultContactMaterial.restitution = 0.1;
+            world.defaultContactMaterial.friction = 0.0;
+            world.defaultContactMaterial.contactEquationStiffness = 100000000;
+            world.defaultContactMaterial.restitution = 0.0;
 
             groundMaterial = new CANNON.Material("groundMaterial");
-            wheelMaterial = new CANNON.Material("wheelMaterial");
-            wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, groundMaterial, {
-                friction: 0.4,
-                restitution: 0.1,
-                contactEquationStiffness: 1000
+            chassisMaterial = new CANNON.Material("chassisMaterial");
+            propMaterial = new CANNON.Material("propMaterial");
+
+            chassisGroundContactMaterial = new CANNON.ContactMaterial(chassisMaterial, groundMaterial, {
+                friction: 0.0,
+                restitution: 0.0,
+                contactEquationStiffness: 5000000
+            });
+
+            propGroundContactMaterial = new CANNON.ContactMaterial(propMaterial, groundMaterial, {
+                friction: 0.8,
+                restitution: 0.85,
+                contactEquationStiffness: 10000000000
+            });
+
+            groundPropContactMaterial = new CANNON.ContactMaterial(groundMaterial, propMaterial,  {
+                friction: 0.05,
+                restitution: 0.01,
+                contactEquationStiffness: 1000000000
             });
 
             // We must add the contact materials to the world
-            world.addContactMaterial(wheelGroundContactMaterial);
+            world.addContactMaterial(propGroundContactMaterial);
+            world.addContactMaterial(groundPropContactMaterial);
+            world.addContactMaterial(chassisGroundContactMaterial);
 
             world.gravity.set(0,  0, -9.82); // m/s²
-            world = world;
 
             fixedTimeStep = 1.0 / 120.0; // seconds
             maxSubSteps = 3;
@@ -207,7 +225,10 @@ define([
             var hfShape = new CANNON.Heightfield(matrix, {
                 elementSize: ((totalSize) / (data.length-1))
             });
-            var hfBody = new CANNON.Body({ mass: 0 });
+            var hfBody = new CANNON.Body({
+                mass: 0,
+                material: groundPropContactMaterial
+            });
             hfBody.addShape(hfShape);
             hfBody.position.set(posx, posz, minHeight);
             return hfBody;
@@ -217,6 +238,8 @@ define([
             var conf = actor.physicalPiece.config;
             var shapeKey = conf.shape;
 
+            var position = actor.piece.rootObj3D.position;
+
             var rigidBody;
 
             if (shapeKey === "terrain") {
@@ -224,11 +247,11 @@ define([
             }
 
             if (shapeKey === "primitive") {
-                rigidBody = this.createPrimitiveBody(world, conf.rigid_body);
+                rigidBody = this.createPrimitiveBody(world, conf.rigid_body, position);
             }
 
             if (shapeKey === "vehicle") {
-                rigidBody = this.createVehicle(world, conf.rigid_body);
+                rigidBody = this.createVehicle(world, conf.rigid_body, position);
             }
 
             actor.setPhysicsBody(rigidBody);
@@ -237,19 +260,51 @@ define([
 
         };
 
-        PhysicsFunctions.prototype.createPrimitiveBody = function(world, bodyParams) {
+        PhysicsFunctions.prototype.createPrimitiveBody = function(world, bodyParams, pos) {
             var args = bodyParams.args;
 
-                var shape = new CANNON[bodyParams.shape](args[0],args[1],args[2],args[3]);
-                var body = {
-                    mass: bodyParams.mass, // kg
-                    position: new CANNON.Vec3(0, 0, 50), // m
-                    shape: shape
-                };
+            var shape
+            var halfHeight
 
-                var ridigBody = new CANNON.Body(body);
-                world.addBody(ridigBody);
-                return ridigBody;
+            if (bodyParams.shape === 'Cylinder') {
+                shape = new CANNON[bodyParams.shape](args[0],args[1],args[2],args[3]);
+                halfHeight = args[2] / 2
+            }
+
+            if (bodyParams.shape === 'Box') {
+                shape = new CANNON[bodyParams.shape](new CANNON.Vec3(args[2],args[0],args[1]));
+                halfHeight = args[1]
+            }
+
+            var heightOffset = halfHeight;
+            var material = propGroundContactMaterial;
+            var mass = bodyParams.mass;
+
+            var allowSleep = true;
+
+                var sleepSpeedLimit = 0.5;
+                var sleepTimeLimit = 5;
+
+
+            if (!mass) {
+                heightOffset = 0;
+                material = groundPropContactMaterial;
+                allowSleep = false;
+            }
+
+            var body = {
+                mass: mass, // kg
+                position: new CANNON.Vec3(pos.x, pos.z, pos.y+heightOffset), // m
+                shape: shape,
+                material:material,
+                allowSleep:allowSleep,
+                sleepSpeedLimit:sleepSpeedLimit,
+                sleepTimeLimit:sleepTimeLimit
+            };
+
+            var ridigBody = new CANNON.Body(body);
+            world.addBody(ridigBody);
+            return ridigBody;
 
 
         };
@@ -257,7 +312,7 @@ define([
 
 
 
-        PhysicsFunctions.prototype.createVehicle = function(world, bodyParams) {
+        PhysicsFunctions.prototype.createVehicle = function(world, bodyParams, pos) {
 
             var vehicle;
 
@@ -271,12 +326,12 @@ define([
             chassisShape = new CANNON.Box(new CANNON.Vec3(length, width, height));
             var chassisBody = new CANNON.Body({
                 mass: mass ,
-                material: wheelGroundContactMaterial,
+                material: chassisGroundContactMaterial,
                 linearDamping: 0.05
             });
             chassisBody.addShape(chassisShape);
-            chassisBody.position.set(25, 25, 50);
-            chassisBody.angularVelocity.set(0, 0, 0.1);
+            chassisBody.position.set(pos.x, pos.z, pos.y+height+clearance);
+            chassisBody.angularVelocity.set(0, 0, 0.01);
 
             // Create the vehicle
             vehicle = new CANNON.RaycastVehicle({

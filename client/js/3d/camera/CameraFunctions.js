@@ -17,7 +17,9 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
 
     var CameraFunctions = function() {
 
-        orbitControls = new THREE.OrbitControls(ThreeAPI.getCamera(), GameScreen.getElement());
+        this.camera = ThreeAPI.getCamera();
+
+        orbitControls = new THREE.OrbitControls(this.camera, GameScreen.getElement());
 
         headingVec = new MATH.Vec3(0, 0, 0);
         calcVec = new MATH.Vec3(0, 0, 0);

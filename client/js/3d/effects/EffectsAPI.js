@@ -88,6 +88,11 @@ define([
             return particleSpawner.getEffectActivationCount();
         };
 
+        EffectsAPI.enableTerrainVegetation = function() {
+            vegetation.createVegetationSystems();
+        };
+
+
         EffectsAPI.setVegetationDebug = function(bool) {
             debugVegetation = bool;
             if (vegetation) vegetation.setDebug(bool);

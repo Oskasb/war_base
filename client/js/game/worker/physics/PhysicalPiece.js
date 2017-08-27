@@ -59,6 +59,8 @@ define([
                 state.value = value;
             }
 
+            piece.rootObj3D.position.copy(threeObj.position);
+            piece.rootObj3D.quaternion.copy(threeObj.quaternion);
         };
 
 

@@ -57,9 +57,13 @@ define([
             console.log("opts:", options);
             var terrain = this.terrainFunctions.createTerrain(JSON.parse(options));
 
-            var array = this.terrainFunctions.getTerrainBuffers(terrain);
-            postMessage([idx, array]);
+            var buffers = this.terrainFunctions.getTerrainBuffers(terrain);
+            terrain.array1d = buffers[4];
+
+            postMessage([idx, buffers]);
         };
+
+
 
         return SimulationRequests;
 

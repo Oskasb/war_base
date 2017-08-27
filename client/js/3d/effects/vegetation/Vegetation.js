@@ -46,7 +46,7 @@ define([
             };
 
             var getCamera = function(src, data) {
-                camera = data;
+                camera = data.camera;
             };
 
             var vegSysData = function(src, data) {
@@ -66,7 +66,7 @@ define([
             PipelineAPI.subscribeToCategoryKey('VEGETATION', 'MASTER_CONFIG', vegMasterData);
 
             PipelineAPI.subscribeToCategoryKey('GAME_DATA', 'OWN_PLAYER', playerPiece);
-            PipelineAPI.subscribeToCategoryKey('GAME_DATA', 'CAMERA', getCamera);
+            PipelineAPI.subscribeToCategoryKey('CAMERA_DATA', 'CAMERA', getCamera);
         };
 
 
@@ -78,7 +78,7 @@ define([
 
         Vegetation.prototype.updateVegetation = function(tpf) {
             for (var i = 0; i < this.vegetationSystems.length; i++) {
-                this.vegetationSystems[i].updateVegetationSystem(tpf, ownPiece, camera);
+                this.vegetationSystems[i].updateVegetationSystem(tpf, ThreeAPI.getCamera());
             }
         };
 

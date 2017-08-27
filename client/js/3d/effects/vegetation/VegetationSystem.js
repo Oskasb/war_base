@@ -100,21 +100,22 @@ define([
             }
         };
 
-        VegetationSystem.prototype.positionBeneathCamera = function(ownPiece, camera) {
+        VegetationSystem.prototype.positionBeneathCamera = function(camera) {
 
-            tempVec.x = ownPiece.spatial.posX();
+            tempVec.x = 0;
             tempVec.y = 0;
-            tempVec.z = ownPiece.spatial.posZ();
+            tempVec.z = -60;
 
+            tempVec.applyQuaternion(camera.quaternion);
 
-            tempVec2.subVectors(tempVec, camera.position);
+        //    tempVec2.subVectors(tempVec, camera.position);
 
-            tempVec2.multiplyScalar(this.conf().vegetationSectorSize * 0.02);
+        //    tempVec2.multiplyScalar(this.conf().vegetationSectorSize * 0.02);
 
-            tempVec.addVectors(tempVec, tempVec2);
+            tempVec2.addVectors(tempVec,  camera.position);
 
-            var posX = Math.floor(tempVec.x / this.conf().vegetationSectorSize);
-            var posZ = Math.floor(tempVec.z / this.conf().vegetationSectorSize);
+            var posX = Math.floor(tempVec2.x / this.conf().vegetationSectorSize);
+            var posZ = Math.floor(tempVec2.z / this.conf().vegetationSectorSize);
             
             if (this.lastX != posX || this.lastZ != posZ) {
                 this.lastX = posX;
@@ -133,11 +134,11 @@ define([
 
         };
         
-        VegetationSystem.prototype.updateVegetationSystem = function(tpf, ownPiece, camera) {
+        VegetationSystem.prototype.updateVegetationSystem = function(tpf, camera) {
 
             if (!camera) return;
             
-            this.positionBeneathCamera(ownPiece, camera);
+            this.positionBeneathCamera(camera);
 
 
         //    for (var i = 0; i < sectorPool.length; i++) {

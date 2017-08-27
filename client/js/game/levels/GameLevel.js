@@ -22,7 +22,7 @@ define([
             this.populations = [];
             this.terrains = [];
 
-            this.terrain = null;
+            this.terrainActors = [];
 
             var applyData = function() {
                 this.applyData(this.pipeObj.buildConfig()[dataKey], ready);
@@ -53,8 +53,12 @@ define([
             return this.populations;
         };
 
+        GameLevel.prototype.addTerrainToLevel = function (terrain) {
+            this.terrains.push(terrain);
+        };
+
         GameLevel.prototype.addLevelTerrainActor = function (actor) {
-            this.terrains.push(actor);
+            this.terrainActors.push(actor);
         };
 
 
