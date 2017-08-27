@@ -4,7 +4,8 @@
       {
         "id":"default_game_level",
         "data":{
-          "actor":"default_terrain_actor"
+          "actor":"default_terrain_actor",
+          "populations":["default_level_population"]
         }
       }
     ]

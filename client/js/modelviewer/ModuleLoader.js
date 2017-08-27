@@ -132,13 +132,6 @@ define([
 
                     if (mod.config.terrain) {
 
-                        var onData = function(resData) {
-                            var model = ThreeAPI.loadGround(mod.config.options, resData, ThreeAPI.createRootObject());
-                            mod.setModel(model);
-                        }.bind(this);
-                    //    console.log("Create Terrain unbound")
-                        GameAPI.createTerrain(mod.config.options, onData);
-
                     };
 
                     ThreeAPI.addToScene(rootObj);

@@ -1,0 +1,14 @@
+[{
+  "POPULATION_DATA":{
+    "POPULATIONSS":[
+      {
+        "id":"default_level_population",
+        "data":{
+          "actors":[
+            {"options":{"dataKey":"actor_prop_oil_drum"}, "count":20, "onGround":true}
+          ]
+        }
+      }
+    ]
+  }
+}]

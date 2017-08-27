@@ -30,6 +30,7 @@
       "modules/canvas3d_elements.json",
 
       "game/levels/level_data.json",
+      "game/levels/level_population_data.json",
 
       "game/actors/terrain_actor_data.json",
       "game/actors/player_actor_data.json",

@@ -1,8 +1,12 @@
 "use strict";
 
-define([        'game/GameActor'],
+define([
+    'game/GameActor'
+    ],
 
-    function(GameActor) {
+    function(
+        GameActor
+    ) {
 
 
     var GameAPI;
@@ -34,16 +38,33 @@ define([        'game/GameActor'],
             console.log("No entry by in list:", array, entry);
         };
 
+
+
         GameCommander.prototype.initLevel = function(levels, options, onOk) {
 
-            var levelReady = function(level) {
-                levels.push(level);
-                onOk(level);
+            var levelPopulated = function(lvl) {
+                onOk(lvl);
             };
 
 
+            var levelReady = function(level) {
+                levels.push(level);
+                levelBuilder.populateLevel(level, levelPopulated);
+            };
+
+            var levelActorReady = function(level, actor) {
+
+                var terrainAttachedOk = function(res) {
+                    var idMap = JSON.parse(res[0]);
+                    var buffers = res[1];
+                    levelBuilder.createLevelTerrainActor(level, actor, buffers, levelReady);
+                };
+
+                gameWorker.makeGameRequest('attachTerrainToLevel', {actorId:actor.id, levelId:level.id}, terrainAttachedOk);
+            };
+
             var onRes = function(response) {
-                levelBuilder.createLevel(JSON.parse(response), levelReady);
+                levelBuilder.createLevel(JSON.parse(response), levelActorReady);
             };
 
             gameWorker.makeGameRequest('createLevel', options, onRes);
@@ -51,15 +72,12 @@ define([        'game/GameActor'],
 
         GameCommander.prototype.removeLevel = function(level) {
 
-            var onRemove = function(actorId) {
-                console.log("Removed level Actor", actorId);
+            var onRemove = function(l) {
+                console.log("Removed level Poplupation", l);
             };
 
             var removeLevelActors = function(lvl) {
-                for (var i = 0; i < lvl.actors.length; i++) {
-                    var actor = lvl.actors[i];
-                    GameAPI.removeActor(actor, onRemove);
-                }
+                levelBuilder.dePopulateLevel(lvl, onRemove);
             };
 
             var onRes = function (levelId) {
@@ -74,7 +92,7 @@ define([        'game/GameActor'],
 
         GameCommander.prototype.enableActorControls = function(actor) {
             var controlReady = function(controlPiece) {
-                GameAPI.registerActivePiece(controlPiece);
+                gameWorker.registerPieceStates(controlPiece);
                 gameWorker.bindPieceControls(actor.piece, controlPiece, actor.controlStateMap);
                 GameAPI.addPiece(controlPiece);
             };
@@ -87,7 +105,8 @@ define([        'game/GameActor'],
                 console.log("Actor Not under control..", actor);
                 return;
             }
-            GameAPI.detatchPieceProtocol(actor.controls, actor.controlStateMap);
+
+            gameWorker.clearPieceControls(actor.controls, actor.controlStateMap);
             GameAPI.removePiece(actor.controls);
             actor.releaseActorControls();
         };
@@ -95,7 +114,7 @@ define([        'game/GameActor'],
 
         GameCommander.prototype.createGameActor = function(options, onData) {
             var actorReady = function(actor) {
-                GameAPI.registerActivePiece(actor.piece);
+                gameWorker.registerPieceStates(actor.piece);
                 onData(actor);
             };
 
@@ -112,7 +131,7 @@ define([        'game/GameActor'],
 
                 var actr = GameAPI.getActorById(msg);
                 GameAPI.dropActorControl(actr);
-                GameAPI.detatchPieceProtocol(actr.piece, actr.controlStateMap);
+                gameWorker.clearPieceControls(actr.piece, actr.controlStateMap);
 
                 GameAPI.removePiece(actr.piece);
 

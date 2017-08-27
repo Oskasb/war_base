@@ -1,7 +1,6 @@
 "use strict";
 
 define([
-        'ThreeAPI',
         'game/GameCommander',
         'game/levels/LevelBuilder',
         'game/worker/GameWorker',
@@ -9,7 +8,6 @@ define([
     ],
 
     function(
-        ThreeAPI,
         GameCommander,
         LevelBuilder,
         GameWorker,
@@ -62,13 +60,6 @@ define([
             gameCommander.removeLevel(level)
         };
 
-        GameAPI.attachTerrainToLevel = function(actor, level, onRes) {
-            gameWorker.makeGameRequest('attachTerrainToLevel', {actorId:actor.id, levelId:level.id}, onRes)
-        };
-
-        GameAPI.createTerrain = function(options, onRes) {
-            gameWorker.makeGameRequest('createTerrain', options, onRes)
-        };
 
         GameAPI.controlActor = function(actor) {
             gameCommander.enableActorControls(actor)
@@ -78,17 +69,6 @@ define([
             gameCommander.createGameActor(options, onRes)
         };
 
-        GameAPI.registerActivePiece = function(piece) {
-            gameWorker.registerPieceStates(piece)
-        };
-
-        GameAPI.registerPieceControls = function(piece, pieceControls, stateMap) {
-
-        };
-
-        GameAPI.detatchPieceProtocol = function(pieceControls, stateMap) {
-            gameWorker.clearPieceControls(pieceControls, stateMap)
-        };
 
         GameAPI.addActor = function(actor) {
             this.addPiece(actor.piece);

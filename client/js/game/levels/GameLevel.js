@@ -4,11 +4,13 @@
 
 define([
         'Events',
-        'PipelineObject'
+        'PipelineObject',
+        'game/levels/LevelPopulation'
     ],
     function(
         evt,
-        PipelineObject
+        PipelineObject,
+        LevelPopulation
     ) {
 
         var GameLevel = function(levelId, dataKey, ready) {
@@ -17,10 +19,9 @@ define([
             this.dataKey = dataKey;
             this.actor = null;
 
-            this.actors = [];
+            this.populations = [];
             this.terrains = [];
 
-            this.terrainOpts = null;
             this.terrain = null;
 
             var applyData = function() {
@@ -30,22 +31,33 @@ define([
             this.pipeObj = new PipelineObject('LEVEL_DATA', 'LEVELS', applyData);
         };
 
-        GameLevel.prototype.setTerrainOptions = function (opts) {
-            this.terrainOpts = opts;
+        GameLevel.prototype.applyData = function (config, ready) {
+            this.config = config;
+            ready(this)
         };
 
-        GameLevel.prototype.addLevelActor = function (actor) {
-            this.actors.push(actor);
+        GameLevel.prototype.createLevelPopulations = function(onReady) {
+
+            var dataReady = function(population) {
+                this.populations.push(population);
+                onReady(population);
+            }.bind(this);
+
+            for (var i = 0; i < this.config.populations.length; i++) {
+                 new LevelPopulation(this.config.populations[i], dataReady);
+
+            }
+        };
+
+        GameLevel.prototype.getLevelPopulations = function () {
+            return this.populations;
         };
 
         GameLevel.prototype.addLevelTerrainActor = function (actor) {
             this.terrains.push(actor);
         };
 
-        GameLevel.prototype.applyData = function (config, ready) {
-            this.config = config;
-            ready(this)
-        };
+
 
         GameLevel.prototype.removeGameLevel = function () {
             this.pipeObj.removePipelineObject();
