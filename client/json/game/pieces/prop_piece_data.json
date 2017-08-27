@@ -1,0 +1,18 @@
+[{
+  "PIECE_DATA":{
+    "PIECES":[
+      {
+        "id":"piece_oil_drum",
+        "data":{
+          "root_slot":"piece_root",
+          "slots":[
+            {"slot":"piece_root",         "module":"module_root_oil_drum"}
+          ],
+          "attachments":[
+
+          ]
+        }
+      }
+    ]
+  }
+}]

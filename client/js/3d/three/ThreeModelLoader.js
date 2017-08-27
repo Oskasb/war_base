@@ -36,11 +36,22 @@ define([
             for (var i = 0; i < poolCount; i++) {
                 var clone = mesh.clone();
                 clone.userData.poolId = id;
+
+                if (typeof(clone) === 'Group') {
+                    if (clone.animations.length) {
+
+                    }
+
+                    clone.mixer = new THREE.AnimationMixer( clone );
+                    var action = clone.mixer.clipAction( clone.animations[ 0 ] );
+                    action.play();
+                }
+
                 clone.frustumCulled = false;
                 modelPool[id].push(clone);
-
             }
-            console.log("CACHE MESH", [id, modelPool, clone]);
+
+            console.log("CACHE MESH", [id, modelPool, clone, mesh]);
         };
 
         var cacheMesh = function(id, mesh, pool) {
@@ -66,18 +77,10 @@ define([
             var loader = new THREE.FBXLoader();
             //   loader.options.convertUpAxis = true;
             loader.load( modelList[modelId].url+'.FBX', function ( model ) {
-                console.log("FBX LOADED: ",model)
-                fbx = model.scene;
+                console.log("FBX LOADED: ",model);
 
-                fbx.traverse( function ( child ) {
-
-                    if ( child instanceof THREE.Mesh ) {
-                        console.log(child)
-                        child.rotation.x += Math.PI/2;
-                        cacheMesh(modelId, child, pool);
-
-                    }
-                } );
+                cacheMesh(modelId, model, pool);
+                console.log("Model Pool:", modelPool);
             }, prog, err);
         };
 
@@ -244,24 +247,35 @@ define([
 
             var attachModel = function(model) {
 
-                    //    console.log("Attach MAterial to Model", data, model);
-                /*
-                    for (var i = 0; i < rootObject.children.length; i++) {
-                        rootObject.remove(rootObject.children[i]);
-                    }
-*/
                     transformModel(modelList[modelId].transform, model);
 
-                    if (model.material.special) {
-                        rootObject.add(model);
-                    } else {
+                    if (model.material) {
+                        if (model.material.special) {
+                            rootObject.add(model);
+                            return;
+                        }
+
                         var attachMaterial = function(src, data) {
                             model.material = data;
                             rootObject.add(model);
                         };
-
                         new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial);
+
+                    } else {
+
+
+                    //    var root = new THREE.Object3D();
+                    //    root.add(model)
+                    //    setup.addToScene(root);
+
+                        for (var i = 0; i < model.children.length; i++) {
+                            setup.addToScene(model.children[i])
+                        }
+
+
+                        rootObject.add(model);
                     }
+
 
             };
 
@@ -295,6 +309,7 @@ define([
 
 
             if (!modelPool[id]) {
+                console.log("Queue Fetch", id, modelPool);
                 queueFetch(id, cb);
                 return;
             }
@@ -324,9 +339,41 @@ define([
 
         };
 
+
+        var getPoolEntry = function(object, id, cb) {
+
+            if (!object) {
+                console.log("Bad object", id);
+            }
+
+            if ( object.userData.poolId) {
+                cb(object, id);
+            }
+
+            if (typeof(object.traverse) != 'function') {
+                console.log("No Traverse function", object);
+                return;
+            }
+
+            object.traverse( function ( child ) {
+                //    object.remove(child);
+
+                if ( child.userData.poolId ) {
+                    //    var geom = child.geometry;
+                    //    child.geometry = geom;
+                    //    geom.uvsNeedUpdate = true;
+                    //    console.log("Obj Mesh: ", child);
+                    cb(child, id);
+                }
+            });
+        };
+
+
         ThreeModelLoader.returnModelToPool = function(model) {
 
             var meshFound = function(mesh) {
+
+                if (!mesh) console.log("Try return nothing to the pool", model);
 
                 if (mesh.parent) {
                     mesh.parent.remove(mesh);
@@ -348,7 +395,7 @@ define([
 
             if (!model.userData.poolId) {
                 //        console.log("Shave scrap objects from mesh before returning it...");
-                getMesh(model, null, meshFound)
+                getPoolEntry(model, null, meshFound)
             } else {
                 meshFound(model);
             }

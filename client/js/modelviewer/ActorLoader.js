@@ -34,6 +34,8 @@ define([
         var rootModels = {};
         var stateData;
 
+        var controledActor = null;
+
         function addButton() {
             var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.ACTOR_LOADER, type:ENUMS.Type.toggle};
 
@@ -136,14 +138,16 @@ define([
             if (value === true) {
                 console.log("Load Model: ", id, value);
 
-                if (rootModels[id].length) return;
+            //    if (rootModels[id].length) return;
 
 
                 var ready = function(actor) {
 
                     GameAPI.addActor(actor);
-                    GameAPI.controlActor(actor);
 
+
+
+/*
                     if (rootModels[id]) {
 
                         while (rootModels[id].length) {
@@ -153,9 +157,21 @@ define([
                             p.removeGameActor();
                         }
                     }
+*/
 
                     ThreeAPI.addToScene(actor.piece.rootObj3D);
-                    ThreeAPI.addToScene(actor.controls.rootObj3D);
+
+                    if (actor.config.controls) {
+
+                        if (controledActor) {
+                            GameAPI.dropActorControl(controledActor);
+                            controledActor = null;
+                        }
+
+                        GameAPI.controlActor(actor);
+                        ThreeAPI.addToScene(actor.controls.rootObj3D);
+                        controledActor = actor;
+                    };
 
                     rootModels[id].push(actor);
                     _this.monitorPieceModules(actor.piece, true);
@@ -165,8 +181,18 @@ define([
 
             } else {
 
-                if (rootModels[id]) {
 
+
+                if (rootModels[id]) {
+                    if (controledActor) {
+
+                    if (controledActor.dataKey === id) {
+                        GameAPI.dropActorControl(controledActor);
+                        controledActor = null;
+                    }
+                    }
+
+                    return;
                     while (rootModels[id].length) {
                         var p = rootModels[id].pop();
                         _this.monitorPieceModules(p.piece, false);

@@ -2,7 +2,7 @@
   "PIECE_DATA":{
     "PIECES":[
       {
-        "id":"sherman_tank_piece",
+        "id":"piece_tank_sherman",
         "data":{
           "root_slot":"hull",
           "slots":[
@@ -21,19 +21,6 @@
             {"slot":"hull",         "ap":"ap_engine",   "child":"engine"  },
             {"slot":"main_turret",  "ap":"ap_cannon",   "child":"main_gun"},
             {"slot":"main_turret",  "ap":"ap_hatch",    "child":"steering"}
-          ]
-        }
-      },
-      {
-        "id":"default_terrain_piece",
-        "data":{
-          "root_slot":"ground_root",
-          "slots":[
-            {"slot":"ground_root",    "module":"terrain_root_module"},
-            {"slot":"ground",         "module":"terrain_plain_ground"}
-          ],
-          "attachments":[
-            {"slot":"ground_root",    "ap":"ap_ground",   "child":"ground"}
           ]
         }
       }

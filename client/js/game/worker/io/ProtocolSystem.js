@@ -44,6 +44,9 @@ define([], function() {
     };
 
     ProtocolSystem.prototype.updateActorSendProtocol = function(actor, tpf) {
+
+        var targetTime = tpf * 2;
+
         var prot = this.protocols[actor.piece.pieceId];
 
         if (!prot) {
@@ -64,10 +67,10 @@ define([], function() {
                         prot[targetChannel+1] = actor.piece.pieceStates[i].getValue();
                         msg.push(targetChannel);
                         msg.push(prot[targetChannel+1]);
-                        msg.push(tpf*2);
+                        msg.push(targetTime);
                     //    if (self.SharedArrayBuffer) {
                             prot[targetChannel+2][0] = prot[targetChannel+1];
-                            prot[targetChannel+2][1] = tpf*2;
+                            prot[targetChannel+2][1] = targetTime;
                     //    }
                         count++;
                     }

@@ -2,12 +2,10 @@
   "PIECE_DATA":{
     "ACTORS":[
       {
-        "id":"actor_sherman_tank",
+        "id":"actor_prop_oil_drum",
         "data":{
-          "piece":"piece_tank_sherman",
-          "controls":"piece_control_vehicle",
-          "camera":"vehicle_control_camera",
-          "physics":"physical_sherman_tank",
+          "piece":"piece_oil_drum",
+          "physics":"physical_oil_drum",
           "state_map":[
             {"control":"state_forward",  "target":"engine_forward"},
             {"control":"state_reverse",  "target":"engine_reverse"},

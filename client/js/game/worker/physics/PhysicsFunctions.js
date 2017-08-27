@@ -76,12 +76,12 @@ define([
 
             //  world.broadphase = new CANNON.NaiveBroadphase();
 
-            world.defaultContactMaterial.friction = 0;
+            world.defaultContactMaterial.friction = 0.5;
 
             groundMaterial = new CANNON.Material("groundMaterial");
             wheelMaterial = new CANNON.Material("wheelMaterial");
             wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, groundMaterial, {
-                friction: 0.3,
+                friction: 0.5,
                 restitution: 0,
                 contactEquationStiffness: 1000
             });
@@ -214,44 +214,41 @@ define([
         PhysicsFunctions.prototype.addPhysicalActor = function(world, actor) {
             var conf = actor.physicalPiece.config;
             var shapeKey = conf.shape;
+
+            var rigidBody;
+
             if (shapeKey === "terrain") {
-                // Handle elsewhere...
+                return;
             }
 
-                if (shapeKey === "vehicle") {
-                    var rigidBody = this.createVehicle(world, conf.rigid_body);
-                    actor.setPhysicsBody(rigidBody);
-                    return actor;
-                }
+            if (shapeKey === "primitive") {
+                rigidBody = this.createPrimitiveBody(world, conf.rigid_body);
+            }
+
+            if (shapeKey === "vehicle") {
+                rigidBody = this.createVehicle(world, conf.rigid_body);
+            }
+
+            actor.setPhysicsBody(rigidBody);
+
+            return actor;
 
         };
 
-        PhysicsFunctions.prototype.buildCannonBody = function(world, bodyParams) {
+        PhysicsFunctions.prototype.createPrimitiveBody = function(world, bodyParams) {
+            var args = bodyParams.args;
 
-//    console.log("ELEVATION FOR BODY:", spatial.pos.data, bodyParams.size);
-
-            if (bodyParams.shape == 'vehicle') {
-                var rigidBody = createVehicle(world, spatial, bodyParams);
-                return rigidBody;
-
-
-
-            } else {
-
-                var shape = new CANNON[bodyParams.shape](bodyParams.size);
+                var shape = new CANNON[bodyParams.shape](args[0],args[1],args[2],args[3]);
                 var body = {
                     mass: bodyParams.mass, // kg
-                    position: new CANNON.Vec3(spatial.posX(), spatial.posZ(), spatial.posY()+bodyParams.size), // m
+                    position: new CANNON.Vec3(0, 0, 50), // m
                     shape: shape
                 };
 
                 var ridigBody = new CANNON.Body(body);
-                //    world.addBody(ridigBody);
-                ridigBody.calcVec = new CANNON.Vec3();
-                ridigBody.calcVec2 = new CANNON.Vec3();
                 world.addBody(ridigBody);
                 return ridigBody;
-            }
+
 
         };
 

@@ -30,19 +30,31 @@
       "modules/canvas3d_elements.json",
 
       "game/levels/level_data.json",
+
       "game/actors/terrain_actor_data.json",
-
       "game/actors/player_actor_data.json",
-      "game/pieces/piece_data.json",
-      "game/pieces/control_piece_data.json",
-      "game/physics/physics_data.json",
+      "game/actors/prop_actor_data.json",
 
+      "game/pieces/terrain_piece_data.json",
+      "game/pieces/player_piece_data.json",
+      "game/pieces/prop_piece_data.json",
+      "game/pieces/control_piece_data.json",
+
+      "game/physics/terrain_physics_data.json",
+      "game/physics/vehicle_physics_data.json",
+      "game/physics/prop_physics_data.json",
+
+      "game/modules/prop_module_data.json",
+      "game/modules/terrain_module_data.json",
       "game/modules/piece_module_data.json",
       "game/modules/camera_data.json",
       "game/modules/control_module_data.json",
-      "game/modules/module_channels.json",
-      "game/modules/vehicle_channels.json",
-      "game/modules/channel_targets.json",
+
+
+
+      "game/channels/module_channels.json",
+      "game/channels/vehicle_channels.json",
+      "game/channels/channel_targets.json",
 
       "threedata/models/three_materials.json",
       "threedata/models/three_models.json",

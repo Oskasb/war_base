@@ -75,6 +75,14 @@ define([
                 for (var key in loadedModels) {
                     if (loadedModels[key].length) {
 
+                        if (loadedModels[key][0]) {
+
+                            if (loadedModels[key][0].children[0].mixer) {
+                                loadedModels[key].children[0].mixer.update(evt.args(e).tpf);
+                            }
+
+                        }
+
                         if (countdown < 0) {
                             reloadcount++;
                             ThreeAPI.getModelLoader().loadModelId(key);

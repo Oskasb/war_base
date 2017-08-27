@@ -92,7 +92,7 @@ define([
             var rpm = dynamic.rpm.state * driveTrain.rpm_max;
 
 
-            var gearModulation = (driveTrain.rpm_max - driveTrain.rpm_min) * (gears.length - this.gearIndex) / driveTrain.rpm_max;
+            var gearModulation = 1 // 0.8 - 0.2 * (driveTrain.rpm_max - driveTrain.rpm_min) * (gears.length - this.gearIndex) / gears.length * driveTrain.rpm_max;
 
             if (rpm * gearModulation < driveTrain.rpm_min + Math.random() * driveTrain.rpm_min * 0.1 + brake * driveTrain.rpm_max) {
 

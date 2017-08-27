@@ -3,6 +3,18 @@
     "MODELS": {
       "THREE": [
         {
+          "id": "oil_drum",
+          "material": "main_atlas",
+          "format":"obj",
+          "url": "./client/assets/models/props/oil_drum",
+          "pool": 25,
+          "transform": {
+            "pos":   [0, 0, 0],
+            "rot":   [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
           "id": "modern_transport_hull",
           "material": "modern_transport_atlas",
           "format":"obj",
