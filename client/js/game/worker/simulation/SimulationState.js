@@ -94,7 +94,7 @@ define([
             var actor = this.getActorById(actorId);
 
             if (actor && level) {
-                level.setLevelActor(actor);
+                level.addLevelTerrainActor(actor);
             } else {
                 cb({levelActorError:{actorId:actorId, levelId:levelId}});
                 console.log("Fail connectinr actor to level", actorId, levelId);

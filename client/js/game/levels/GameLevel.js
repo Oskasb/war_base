@@ -17,6 +17,9 @@ define([
             this.dataKey = dataKey;
             this.actor = null;
 
+            this.actors = [];
+            this.terrains = [];
+
             this.terrainOpts = null;
             this.terrain = null;
 
@@ -31,9 +34,12 @@ define([
             this.terrainOpts = opts;
         };
 
-        GameLevel.prototype.setLevelActor = function (actor) {
-            if (this.actor) this.actor.removeGameActor();
-            this.actor = actor;
+        GameLevel.prototype.addLevelActor = function (actor) {
+            this.actors.push(actor);
+        };
+
+        GameLevel.prototype.addLevelTerrainActor = function (actor) {
+            this.terrains.push(actor);
         };
 
         GameLevel.prototype.applyData = function (config, ready) {
