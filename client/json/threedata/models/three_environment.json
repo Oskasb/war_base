@@ -54,20 +54,20 @@
         {
           "id":"fadeout",
           "sky":{
-            "luminance":        0 ,
-            "turbidity":        0 ,
-            "rayleigh":         0 ,
-            "mieCoefficient":   0 ,
-            "mieDirectionalG":  0 ,
-            "inclination": 0.5,
-            "azimuth": 0.5,
-            "distance": 1000
+            "luminance":         0.0,
+            "turbidity":         20.7 ,
+            "rayleigh":          20.5 ,
+            "mieCoefficient":    20.5 ,
+            "mieDirectionalG":   20.5 ,
+            "inclination": 0.10,
+            "azimuth": 0.0092,
+            "distance": 15000
           },
           "configs":[
             {"id":"sun",     "color":[0,  0,  0]},
             {"id":"moon",    "color":[0,  0,  0]},
             {"id":"ambient", "color":[0,  0,  0]},
-            {"id":"fog",     "color":[0,  0,  0],  "density":1}
+            {"id":"fog",     "color":[0,  0,  0],  "density":1.0}
           ]
         },
         {

@@ -330,7 +330,7 @@ define([
                 linearDamping: 0.05
             });
             chassisBody.addShape(chassisShape);
-            chassisBody.position.set(pos.x, pos.z, pos.y+height+clearance);
+            chassisBody.position.set(pos.x, pos.z, pos.y+height+clearance + 0.5);
             chassisBody.angularVelocity.set(0, 0, 0.01);
 
             // Create the vehicle

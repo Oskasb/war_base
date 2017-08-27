@@ -81,12 +81,12 @@ define([
 
             addButton();
 
-            var time = 0;
+            var time = 15;
 
             var envs = ['morning', 'evening', 'sunny_day', 'high_noon'];
 
             var switchTime = 25;
-            var transitTime = 20;
+            var transitTime = 23;
 
             var envIdx = 0;
 
@@ -94,7 +94,8 @@ define([
 
                 time += evt.args(e).tpf;
 
-                if (time > switchTime) {
+
+                if (time > switchTime && activeLevel) {
                     setEnvironment(envs[envIdx], 0, transitTime);
                     envIdx++
                     if (envIdx == envs.length) envIdx = 0;
@@ -106,7 +107,7 @@ define([
 
             evt.on(evt.list().CLIENT_TICK, tick);
 
-            setEnvironment('fadeout', 0, 0.3);
+            setEnvironment('fadeout', 0, 0.1);
             ThreeAPI.getEnvironment().enableEnvironment();
         };
 
@@ -132,12 +133,11 @@ define([
             if (value === true) {
                 console.log("Load Level: ", id, value);
 
-
                 var levelready = function(level) {
 
                     activeLevel = level;
 
-                    setEnvironment('evening', 1000, 3);
+                    setEnvironment('evening', 500, 3);
 
 
                     GameAPI.createActor({dataKey:"actor_sherman_tank"}, playerAdded);
@@ -179,11 +179,14 @@ define([
 
             } else  {
 
-                setEnvironment('fadeout', 0, 0.3);
+                setEnvironment('fadeout', 0,    0.1);
+                setEnvironment('fadeout', 1000, 0.1);
+
 
                 if (playerActor) GameAPI.removeActor(playerActor, playerRemoved);
 
                 if (activeLevel) GameAPI.closeLevel(activeLevel);
+                activeLevel = null;
 
                 evt.fire(evt.list().QUIT_ACTIVE_LEVEL, {});
 
