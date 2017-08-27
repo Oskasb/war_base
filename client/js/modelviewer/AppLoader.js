@@ -137,8 +137,7 @@ define([
 
                     activeLevel = level;
 
-                    setEnvironment('evening', 500, 3);
-
+                    setEnvironment('evening', 300, 2.5);
 
                     GameAPI.createActor({dataKey:"actor_sherman_tank"}, playerAdded);
 

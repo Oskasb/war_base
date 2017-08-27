@@ -7,7 +7,6 @@
           "actors":[
             {"options":{"dataKey":"actor_prop_platform_35x25"}, "count":15, "onGround":true},
             {"options":{"dataKey":"actor_prop_oil_drum"},       "count":15, "onGround":true}
-
           ]
         }
       }
