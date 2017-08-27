@@ -168,7 +168,7 @@ define([
         var MODEL = {};
 
         MODEL.PhysicsStepTime = 0.01;
-        MODEL.PhysicsMaxSubSteps = 5;
+        MODEL.PhysicsMaxSubSteps = 1;
         MODEL.SpatialTolerance = 1;
         MODEL.AngularVelocityTolerance = 1;
         MODEL.TemporalTolerance = 1;
@@ -181,7 +181,7 @@ define([
 
                 remaining = dt + remaining;
 
-                while (remaining > MODEL.PhysicsStepTime*MODEL.PhysicsMaxSubSteps) {
+                while (remaining >= 0) {
 
                     world.step(MODEL.PhysicsStepTime, dt, MODEL.PhysicsMaxSubSteps);
 

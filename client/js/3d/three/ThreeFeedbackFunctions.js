@@ -10,7 +10,10 @@ define([
 
 
     var getMaterial = function(model) {
-        return model.userData.animMat;
+        if (model.userData.animMat) {
+            return model.userData.animMat;
+        }
+        return model.children[0].userData.animMat;
     };
 
     var ThreeFeedbackFunctions = function() {
@@ -23,15 +26,15 @@ define([
             map.version = model.children[0].material.map.version;
             model.children[0].material = model.children[0].material.clone();
             model.children[0].material.map = map;
-            model.userData.animMat = model.children[0].material;
+            model.children[0].userData.animMat = model.children[0].material;
 
         //    model.children[0].material = model.userData.animMat;
     };
 
     var applyToTextures = function(material, x, y, cumulative) {
 
-        material.polygonOffsetFactor = Math.random();
-        material.polygonOffsetUnits  = 1;
+    //    material.polygonOffsetFactor = Math.random();
+    //    material.polygonOffsetUnits  = 1;
 
         material.map.offset.x = x + (material.map.offset.x * cumulative);
         material.map.offset.y = y + (material.map.offset.y * cumulative);
@@ -55,7 +58,7 @@ define([
             return;
         }
 
-        applyToTextures(model.userData.animMat, x, y, cumulative);
+        applyToTextures(model.children[0].material, x, y, cumulative);
     };
 
     return ThreeFeedbackFunctions;

@@ -250,7 +250,7 @@ define([
                     transformModel(modelList[modelId].transform, model);
 
                     if (model.material) {
-                        if (model.material.special) {
+                        if (model.material.userData.animMat) {
                             rootObject.add(model);
                             return;
                         }
