@@ -76,12 +76,13 @@ define([
 
             //  world.broadphase = new CANNON.NaiveBroadphase();
 
-            world.defaultContactMaterial.friction = 0.5;
+            world.defaultContactMaterial.friction = 0.01;
+            world.defaultContactMaterial.contactEquationStiffness = 10000000;
 
             groundMaterial = new CANNON.Material("groundMaterial");
             wheelMaterial = new CANNON.Material("wheelMaterial");
             wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, groundMaterial, {
-                friction: 0.5,
+                friction: 0.4,
                 restitution: 0,
                 contactEquationStiffness: 1000
             });

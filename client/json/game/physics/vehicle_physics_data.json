@@ -16,9 +16,9 @@
 
             "mass"      : 55000,
             "width"     : 1.65,
-            "length"    : 2.8,
-            "height"    : 1.3,
-            "clearance" : 0.15,
+            "length"    : 2.6,
+            "height"    : 1.0,
+            "clearance" : 0.2,
 
             "steerMatrix":[
               -0.4, -0.4,
@@ -45,19 +45,19 @@
             ],
 
             "wheelMatrix":[
-              [-1.0,  1.1, 1],[1.0, 1.1, 1],
-              [-1.0,  0,   1],[1.0,  0,  1],
-              [-1.0, -1.1, 1],[1.0,-1.1, 1]
+              [-1.0,  1.2, 2],[1.0, 1.2, 2],
+              [-1.0,  0,   2],[1.0,  0,  2],
+              [-1.0, -1.1, 2],[1.0,-1.1, 2]
             ],
 
             "wheelOptions":{
               "radius":0.5,
-              "suspensionStiffness":12,
-              "suspensionLength":0.8,
+              "suspensionStiffness":16,
+              "suspensionLength":0.6,
               "dampening":1.1,
-              "rollInfluence":0.5,
-              "frictionSlip":1.3,
-              "maxSuspensionForce":300000
+              "rollInfluence":0.4,
+              "frictionSlip":1.2,
+              "maxSuspensionForce":200000
             }
           },
           "control_map":[
