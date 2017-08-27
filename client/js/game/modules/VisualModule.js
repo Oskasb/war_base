@@ -82,7 +82,7 @@ define([
         };
 
         VisualModule.prototype.showVisualModule = function() {
-            console.log("show")
+    //        console.log("show")
             cbs = ThreeAPI.getEffectCallbacks();
             if (this.model) {
                 ThreeAPI.showModel(this.model);
@@ -95,7 +95,7 @@ define([
         };
 
         VisualModule.prototype.hideVisualModule = function() {
-            console.log("hide");
+    //        console.log("hide");
             if (this.model) {
                 ThreeAPI.removeModel(this.model);
                 this.model = null;

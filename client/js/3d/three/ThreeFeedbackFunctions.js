@@ -55,7 +55,7 @@ define([
         var mat = getMaterial(model);
         if (!mat) {
             mat = setupMaterial(model);
-            console.log("create anim material", model);
+        //    console.log("create anim material", model);
 
         }
 

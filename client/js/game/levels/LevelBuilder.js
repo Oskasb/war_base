@@ -51,7 +51,7 @@ define([
                 for (var i = 0; i < piece.pieceSlots.length; i++) {
                     var mod = piece.pieceSlots[i].module;
 
-                    mod.visualModule.addModuleDebugBox();
+                //    mod.visualModule.addModuleDebugBox();
 
                     if (mod.config.terrain) {
                         createIt(mod, actor, buffers);
@@ -69,8 +69,9 @@ define([
                 console.log("Removed level TerrainActor", actorId);
             };
 
-            for (var i = 0; i < level.terrains.length; i++) {
-                var terrainActor = level.terrains[i];
+            for (var i = 0; i < level.terrainActors.length; i++) {
+                var terrainActor = level.terrainActors[i];
+                EffectsAPI.disableTerrainVegetation();
                 ThreeAPI.removeTerrainByPosition(terrainActor.piece.rootObj3D.position);
                 GameAPI.removeActor(terrainActor, onRemove);
             }
@@ -82,7 +83,6 @@ define([
             var adds = 0;
 
             var actorRes = function(actor) {
-                console.log("Spawn Population Actor:", actor);
                 adds--;
 
                 if (actor) {
@@ -93,12 +93,16 @@ define([
                 if (adds === 0){
                     onRes(level);
                 }
-
             };
 
-            var addPopulationActor = function(actorConfig) {
+            var addPopulationActor = function(actorConfig,population) {
                 adds++;
-                GameAPI.createActor(actorConfig, actorRes);
+                var actorMade = function(actor) {
+                    population.registerPopulationActor(actor);
+                    actorRes(actor);
+                };
+
+                GameAPI.createActor(actorConfig, actorMade);
             };
 
 
@@ -109,7 +113,7 @@ define([
                     var count = actorsConfig[i].count;
 
                     for (var j = 0; j < count; j++) {
-                        addPopulationActor(actorsConfig[i].options)
+                        addPopulationActor(actorsConfig[i].options,population)
                     }
                     adds++;
                     actorRes(null);

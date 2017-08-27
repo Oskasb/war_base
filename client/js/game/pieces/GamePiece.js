@@ -75,7 +75,6 @@ define([
 
         GamePiece.prototype.setSlotAttachment = function(parentSlotId, apId, childSlotId) {
             var ap = this.getSlotById(parentSlotId).getAttachmentPointById(apId);
-            console.log("Set attachment", [ap, apId]);
             this.getSlotById(childSlotId).attachToObject3d(ap.object3D);
         };
 
@@ -128,7 +127,6 @@ define([
                 }
 
                 if (attached === attachCount) {
-                    console.log("Slots Ready!");
                     slotsReady();
                     this.boundingSize = this.calculateBoundingRadius();
                 }

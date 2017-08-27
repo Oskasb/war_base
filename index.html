@@ -2,20 +2,18 @@
 
 <head>
 
-    <title>Model Viewer</title>
+    <title>Levels</title>
 
     <link rel="stylesheet" type="text/css" href="./client/css/base.css" />
 
     <script src="./client/js/ENUMS.js"></script>
-    <script src="./client/js/lib/three/inflate.min.js"></script>
     <script src="./client/js/lib/three/three.js"></script>
     <script src="./client/js/lib/three/OBJLoader.js"></script>
-    <script src="./client/js/lib/three/FBXLoader.js"></script>
     <script src="./client/js/lib/three/OrbitControls.js"></script>
     <script src="./client/js/3d/three/THREE.Terrain.js"></script>
     <script src="./client/js/lib/three/SkyShader.js"></script>
 
-    <script data-main="./client/js/ModelsMain" src="./client/js/lib/require.js"></script>
+    <script data-main="./client/js/Main" src="./client/js/lib/require.js"></script>
 
 </head>
 
@@ -42,6 +40,41 @@
             data_pipeline:'./lib/data_pipeline/src/'
         }
     });
+
+    require([
+        'Events',
+        'modelviewer/Setup',
+        'application/DevConfigurator',
+        'application/FullScreenConfigurator',
+        'modelviewer/ModelViewer',
+        'modelviewer/EnvironmentLoader',
+        'modelviewer/AppLoader',
+        'modelviewer/ViewerPointer'
+    ], function(
+        evt,
+        Setup,
+        DevConfigurator,
+        FullScreenConfigurator,
+        ModelViewer,
+        EnvironmentLoader,
+        AppLoader,
+        ViewerPointer
+    ) {
+
+        var playerReady = function() {
+            new DevConfigurator();
+            new FullScreenConfigurator();
+        //    new EnvironmentLoader();
+            new ViewerPointer();
+            new AppLoader();
+        };
+
+        evt.on(evt.list().PLAYER_READY, playerReady);
+
+        Setup.init(ModelViewer)
+
+    });
+
 
 
 </script>

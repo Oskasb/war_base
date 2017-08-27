@@ -140,20 +140,25 @@ define([
             
             this.positionBeneathCamera(camera);
 
-
-        //    for (var i = 0; i < sectorPool.length; i++) {
-    //    //        sectorPool[i].checkVisibility(activePatches, patchPool);
-        //    }
-            
-
-            
-
             this.sectorPool[this.lastChecked % this.sectorPool.length].checkVisibility(this.activePatches, this.patchPool);
 
             this.lastChecked++;
 
             for (var i = 0; i < this.activePatches.length; i++) {
                 this.activePatches[i].checkSectorVisibility(this.sectorPool, this.activePatches, this.patchPool);
+            }
+
+        };
+
+        VegetationSystem.prototype.cleanupVegetationSystem = function() {
+
+            for (var i = 0; i < this.sectorPool.length; i++) {
+                this.sectorPool[i].disableVegetationSector();
+                this.sectorPool[i].isVisible = false;
+            }
+
+            for (var i = 0; i < this.activePatches.length; i++) {
+                this.activePatches[i].clearPatch();
             }
 
         };

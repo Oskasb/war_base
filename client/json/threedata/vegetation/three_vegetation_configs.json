@@ -9,21 +9,21 @@
           "vegetationSectorSize":37,
           "rowsNColumns":3,
           "spawnFrames":63,
-          "plantCount":7
+          "plantCount":4
         },
         {
           "name":"medium",
           "vegetationSectorSize":43,
           "rowsNColumns":3,
           "spawnFrames":126,
-          "plantCount":14
+          "plantCount":7
         },
         {
           "name":"big",
           "vegetationSectorSize":62,
           "rowsNColumns":5,
           "spawnFrames":126,
-          "plantCount":21
+          "plantCount":14
         }
       ],
       "SYSTEMS":[

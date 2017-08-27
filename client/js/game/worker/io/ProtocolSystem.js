@@ -40,7 +40,6 @@ define([], function() {
         }
 
         delete this.protocols[actor.piece.pieceId];
-        console.log('Actor protocol removes:', actor.piece.pieceId, this.protocols, this.targetMap);
     };
 
     ProtocolSystem.prototype.updateActorSendProtocol = function(actor, tpf) {
@@ -50,7 +49,6 @@ define([], function() {
         var prot = this.protocols[actor.piece.pieceId];
 
         if (!prot) {
-            console.log("No protocol for actor:", [actor.piece.pieceId, actor]);
             return;
         }
         var count = 0;
@@ -91,7 +89,6 @@ define([], function() {
         var prot = this.protocols[actor.piece.pieceId];
 
         if (!prot) {
-            console.log("No protocol for actor:", [actor.piece.pieceId, actor]);
             return;
         }
 

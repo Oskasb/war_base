@@ -76,6 +76,13 @@ define([
             }
         };
 
+        Vegetation.prototype.removeVegetationSystems = function() {
+            for (var i = 0; i < this.vegetationSystems.length; i++) {
+                this.vegetationSystems[i].cleanupVegetationSystem();
+            }
+            this.vegetationSystems = [];
+        };
+
         Vegetation.prototype.updateVegetation = function(tpf) {
             for (var i = 0; i < this.vegetationSystems.length; i++) {
                 this.vegetationSystems[i].updateVegetationSystem(tpf, ThreeAPI.getCamera());

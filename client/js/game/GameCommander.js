@@ -32,12 +32,8 @@ define([
         GameCommander.prototype.removeArrayEntry = function(array, entry) {
             if (array.indexOf(entry) !== -1) {
                 array.splice(array.indexOf(entry), 1);
-                return;
             }
-
-            console.log("No entry by in list:", array, entry);
         };
-
 
 
         GameCommander.prototype.initLevel = function(levels, options, onOk) {
@@ -101,8 +97,11 @@ define([
         };
 
         GameCommander.prototype.disableActorControls = function(actor) {
+            if (!actor) {
+                console.log("Not actor to disable");
+                return;
+            }
             if (!actor.controls) {
-                console.log("Actor Not under control..", actor);
                 return;
             }
 

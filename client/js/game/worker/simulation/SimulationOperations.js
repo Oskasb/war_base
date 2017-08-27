@@ -57,7 +57,7 @@ define([
                 }
 
             } else {
-                console.log("No Parent object for Terrain root", terrainModel);
+        //        console.log("No Parent object for Terrain root", terrainModel);
             }
 
 

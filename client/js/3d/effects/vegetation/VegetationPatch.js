@@ -265,7 +265,11 @@ define([
             }
         };
 
-
+        VegetationPatch.prototype.clearPatch = function() {
+            while (this.spawnedPlants.length) {
+                EffectAPI.returnPassiveEffect(this.spawnedPlants.pop());
+            }
+        };
 
         return VegetationPatch;
 

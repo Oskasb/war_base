@@ -59,6 +59,7 @@ define(function() {
 
         CAMERA_READY:{type:'CAMERA_READY', args:{}},
         CONNECTION_OPEN:{type:'CONNECTION_OPEN', args:{}},
-        PLAYER_READY:{type:'PLAYER_READY', args:{}}
+        PLAYER_READY:{type:'PLAYER_READY', args:{}},
+        QUIT_ACTIVE_LEVEL:{type:'QUIT_ACTIVE_LEVEL', args:{}}
     }
 });

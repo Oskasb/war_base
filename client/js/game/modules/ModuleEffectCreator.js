@@ -44,6 +44,18 @@ define([
             evt.fire(evt.list().GAME_EFFECT, effectData);
         };
 
+        var onQuitActiveLevel = function() {
+            while (groundprints.length) {
+                EffectsAPI.returnPassiveEffect(groundprints.pop())
+            }
+            while (geometryEffects.length) {
+                EffectsAPI.returnPassiveEffect(geometryEffects.pop())
+            }
+        }
+
+
+        evt.on(evt.list().QUIT_ACTIVE_LEVEL, onQuitActiveLevel);
+
         var posFromTransform = function(pos, transform, storeVec3) {
             storeVec3.set(pos.x+ transform.pos[0], pos.y + transform.pos[1], pos.z + transform.pos[2]);
         };

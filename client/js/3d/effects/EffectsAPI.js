@@ -92,6 +92,9 @@ define([
             vegetation.createVegetationSystems();
         };
 
+        EffectsAPI.disableTerrainVegetation = function() {
+            vegetation.removeVegetationSystems();
+        };
 
         EffectsAPI.setVegetationDebug = function(bool) {
             debugVegetation = bool;

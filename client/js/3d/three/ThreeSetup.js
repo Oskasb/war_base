@@ -61,7 +61,7 @@ define(['../../ui/GameScreen',
             camera = new THREE.PerspectiveCamera( 45, containerElement.innerWidth / containerElement.innerHeight, 1.0, 5000 );
             camera.position.z = 10;
 
-            console.log("Three Camera:", camera);
+         //   console.log("Three Camera:", camera);
             
 
             // renderer = new THREE.WebGLRenderer( { antialias:antialias, devicePixelRatio: pxRatio });

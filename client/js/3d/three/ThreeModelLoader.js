@@ -51,7 +51,7 @@ define([
                 modelPool[id].push(clone);
             }
 
-            console.log("CACHE MESH", [id, modelPool, clone, mesh]);
+        //    console.log("CACHE MESH", [id, modelPool, clone, mesh]);
         };
 
         var cacheMesh = function(id, mesh, pool) {
@@ -210,7 +210,7 @@ define([
             ThreeTerrain.loadData(TAPI);
 
             var modelListLoaded = function(scr, data) {
-                console.log("Models updated:", data);
+            //    console.log("Models updated:", data);
                 for (var i = 0; i < data.length; i++){
                     modelList[data[i].id] = data[i];
                     ThreeModelLoader.loadModelId(data[i].id);

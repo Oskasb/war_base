@@ -44,6 +44,7 @@ if(typeof(ENUMS) === "undefined"){
         LOAD_ENVIRONMENT:'LOAD_ENVIRONMENT',
         LOAD_PARTICLES:'LOAD_PARTICLES',
         LOAD_LEVEL:'LOAD_LEVEL',
+        LOAD_APP:'LOAD_APP',
         GUI_ELEMENT:'GUI_ELEMENT',
         setup:'setup'
     };
@@ -59,6 +60,7 @@ if(typeof(ENUMS) === "undefined"){
         CONTROL_LOADER:'CONTROL_LOADER',
         ACTOR_LOADER:'ACTOR_LOADER',
         LEVEL_LOADER:'LEVEL_LOADER',
+        APP_LOADER:'APP_LOADER',
         PARTICLE_LOADER:'PARTICLE_LOADER',
         ENV_LOADER:'ENV_LOADER',
         ADD:'ADD',
