@@ -7,8 +7,9 @@ var postMessage = self.postMessage;
 importScripts(baseUrl+'client/js/ENUMS.js');
 importScripts(baseUrl+'Transport/MATH.js');
 importScripts(baseUrl+'client/js/lib/three/three.js');
+importScripts(baseUrl+'client/js/lib/ammo/ammo.js');
+importScripts(baseUrl+'client/js/lib/cannon/cannon.js');
 importScripts(baseUrl+'client/js/game/worker/terrain/ServerTerrain.js');
-importScripts(baseUrl+'client/js/game/worker/physics/cannon.js');
 importScripts(baseUrl+'client/js/lib/require.js');
 
 require.config({

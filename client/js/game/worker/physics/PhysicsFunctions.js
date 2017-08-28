@@ -1,10 +1,10 @@
 
 "use strict";
 
-define([
+define([        'game/worker/physics/VehicleProcessor'
     ],
     function(
-
+        VehicleProcessor
     ) {
 
         var threeVec;
@@ -71,7 +71,7 @@ define([
         };
 
 
-        PhysicsFunctions.prototype.createCannonWorld = function() {
+        PhysicsFunctions.prototype.createPhysicalWorld = function() {
 
             var world = new CANNON.World();
 
@@ -119,7 +119,7 @@ define([
             function makeSureNotZero(vec){
                 if(vec.x===0.0){
                     vec.x = 1e-6;
-                }
+                }3
                 if(vec.y===0.0){
                     vec.y = 1e-6;
                 }
@@ -192,7 +192,7 @@ define([
         MODEL.AngularVelocityTolerance = 1;
         MODEL.TemporalTolerance = 1;
 
-        PhysicsFunctions.prototype.updateCannonWorld = function(world, currentTime) {
+        PhysicsFunctions.prototype.updatePhysicalWorld = function(world, currentTime) {
 
 
             if(lastTime !== undefined){
@@ -217,7 +217,7 @@ define([
 
 
 
-        PhysicsFunctions.prototype.createCannonTerrain = function(world, data, totalSize, posx, posz, minHeight, maxHeight) {
+        PhysicsFunctions.prototype.createPhysicalTerrain = function(world, data, totalSize, posx, posz, minHeight, maxHeight) {
 
             //   console.log("POS:",  posx, posz, totalSize, minHeight)
             var matrix = data;
@@ -252,6 +252,7 @@ define([
 
             if (shapeKey === "vehicle") {
                 rigidBody = this.createVehicle(world, conf.rigid_body, position);
+                actor.piece.processor = new VehicleProcessor();
             }
 
             actor.setPhysicsBody(rigidBody);
@@ -282,8 +283,8 @@ define([
 
             var allowSleep = true;
 
-                var sleepSpeedLimit = 0.5;
-                var sleepTimeLimit = 5;
+            var sleepSpeedLimit = 0.5;
+            var sleepTimeLimit = 5;
 
 
             if (!mass) {

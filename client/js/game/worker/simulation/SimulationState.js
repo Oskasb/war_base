@@ -117,7 +117,7 @@ define([
             this.cannonApi.includeBody(terrainBody);
 
             actor.setPhysicsBody(terrainBody);
-            
+
             cb([JSON.stringify({actorId:actorId, levelId:levelId}), buffers]);
         };
 
@@ -135,7 +135,7 @@ define([
                 this.protocolSystem.updateActorSendProtocol(actors[i], tpf);
 
             }
-            var status = this.cannonApi.fetchCannonStatus();
+            var status = this.cannonApi.fetchPhysicsStatus();
         };
 
         return SimulationState;
