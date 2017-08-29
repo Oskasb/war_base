@@ -98,15 +98,10 @@ define([
 
 
         var remaining = 0;
-
-        var doStep = function(world, fixed, dt, maxSteps) {
-            world.step(world, fixed, dt, maxSteps)
-        };
-
         var MODEL = {};
 
         MODEL.PhysicsStepTime = 0.01;
-        MODEL.PhysicsMaxSubSteps = 1;
+        MODEL.PhysicsMaxSubSteps = 10;
         MODEL.SpatialTolerance = 1;
         MODEL.AngularVelocityTolerance = 1;
         MODEL.TemporalTolerance = 1;
@@ -119,15 +114,15 @@ define([
 
                 remaining = dt + remaining;
 
-                while (remaining >= 0) {
+            //    while (remaining >= 0) {
 
                 //    world.step(MODEL.PhysicsStepTime, dt, MODEL.PhysicsMaxSubSteps);
 
-                    physicsWorld.stepSimulation( dt, MODEL.PhysicsStepTime * 1000);
+                    physicsWorld.stepSimulation(dt , MODEL.PhysicsMaxSubSteps, MODEL.PhysicsStepTime);
                     //   doStep(world, fixedTimeStep, dt, maxSubSteps) ;
 
-                    remaining -= MODEL.PhysicsStepTime*MODEL.PhysicsMaxSubSteps;
-                }
+             //       remaining -= MODEL.PhysicsStepTime*MODEL.PhysicsMaxSubSteps;
+             //   }
 
             }
             //   console.log("Sphere xyz position: "+ sphereBody.position.x +' _ '+ sphereBody.position.y+' _ '+ sphereBody.position.z);
@@ -140,7 +135,7 @@ define([
 
             var terrainWidthExtents = sideSize;
             var terrainDepthExtents = sideSize;
-            var terrainWidth = data.length -1;
+            var terrainWidth = data.length;
             var terrainDepth = terrainWidth;
             var terrainHalfWidth = terrainWidth / 2;
             var terrainHalfDepth = terrainDepth / 2;
@@ -160,7 +155,7 @@ define([
             for (var j = 0; j < terrainWidth; j++) {
                 for (var i = 0; i < terrainDepth; i++) {
                     // write 32-bit float data to memory
-                    Ammo.HEAPF32[ammoHeightData + p2 >> 2] = data[p];
+                    Ammo.HEAPF32[ammoHeightData + p2 >> 2] = data[i][j];
                     p++;
                     // 4 bytes/float
                     p2 += 4;
@@ -182,7 +177,7 @@ define([
             var scaleX = terrainWidthExtents / ( terrainWidth - 1 );
             var scaleZ = terrainDepthExtents / ( terrainDepth - 1 );
             heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX, 1, scaleZ));
-            heightFieldShape.setMargin(0.05);
+            heightFieldShape.setMargin(0.01);
             return heightFieldShape;
         }
 
@@ -191,16 +186,18 @@ define([
             var terrainMaxHeight = maxHeight;
             var terrainMinHeight = minHeight;
 
-            var groundShape = this.createTerrainShape( data, totalSize, terrainMaxHeight, terrainMinHeight );
+            console.log("Ground Matrix: ", data.length)
+
+            var groundShape = createTerrainShape( data, totalSize, terrainMaxHeight, terrainMinHeight );
             var groundTransform = new Ammo.btTransform();
             groundTransform.setIdentity();
             // Shifts the terrain, since bullet re-centers it on its bounding box.
-            groundTransform.setOrigin( new Ammo.btVector3( 0, ( terrainMaxHeight + terrainMinHeight ) / 2, 0 ) );
+            groundTransform.setOrigin( new Ammo.btVector3(posx, minHeight + (maxHeight-minHeight) * 0.5 ,posz) );
             var groundMass = 0;
             var groundLocalInertia = new Ammo.btVector3( 0, 0, 0 );
             var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
             var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
-            physicsWorld.addRigidBody( groundBody );
+            world.addRigidBody( groundBody );
 
             return groundBody;
         };
@@ -227,7 +224,7 @@ define([
 
                 actor.piece.processor = ammoVehicle.processor;
                 rigidBody = ammoVehicle.body;
-
+                actor.piece.vehicle = ammoVehicle.vehicle;
             }
 
             actor.setPhysicsBody(rigidBody);
@@ -288,13 +285,13 @@ define([
             if (bodyParams.shape === 'Cylinder') {
                 heightOffset = args[2] / 2;
 
-                shape = ammoCylinderShape(pos, quat, args[0], args[1], args[2], mass, friction);
+                shape = ammoCylinderShape(args[0], args[1], args[2]);
 
             }
 
             if (bodyParams.shape === 'Box') {
                 heightOffset = args[1];
-                shape = ammoBoxShape(pos, quat, args[0], args[1], args[2], mass, friction);
+                shape = ammoBoxShape(args[0], args[1], args[2]);
             //    shape = new CANNON[bodyParams.shape](new CANNON.Vec3(args[2],args[0],args[1]));
 
             }
@@ -304,115 +301,12 @@ define([
             var body = createBody(shape, threeVec, quat, mass, friction);
 
             world.addRigidBody(body);
-            body.setActivationState(DISABLE_DEACTIVATION);
+        //    body.setActivationState(DISABLE_DEACTIVATION);
             return body;
 
         };
 
 
-
-
-        AmmoFunctions.prototype.createVehicle = function(world, bodyParams, pos) {
-
-            var vehicle;
-
-
-
-            var chassisShape;
-            chassisShape = new CANNON.Box(new CANNON.Vec3(length, width, height));
-            var chassisBody = new CANNON.Body({
-                mass: mass ,
-                material: chassisGroundContactMaterial,
-                linearDamping: 0.05
-            });
-            chassisBody.addShape(chassisShape);
-            chassisBody.position.set(pos.x, pos.z, pos.y+height+clearance + 0.5);
-            chassisBody.angularVelocity.set(0, 0, 0.01);
-
-            // Create the vehicle
-            vehicle = new CANNON.RaycastVehicle({
-                chassisBody: chassisBody
-            });
-
-            chassisBody.vehicle = vehicle;
-
-            vehicle.drive_train = bodyParams.drive_train || {};
-            vehicle.dynamic = {
-                gearIndex:  {state:0},
-                clutch:     {state:0},
-                rpm:        {state:0},
-                brake:      {state:0},
-                brakeCommand:{state:0}
-            };
-
-            vehicle.addToWorld(world);
-
-            var wOpts = bodyParams.wheelOptions || {};
-
-            var options = {
-                radius: wOpts.radius || 0.5,
-                directionLocal: new CANNON.Vec3(0, 0, -1),
-                suspensionStiffness: wOpts.suspensionStiffness || 17,
-                suspensionRestLength: wOpts.suspensionLength || 0.6,
-                frictionSlip: wOpts.frictionSlip || 4.8,
-                dampingRelaxation: wOpts.dampening / 2 || 1.81,
-                dampingCompression: wOpts.dampening    || 2.5,
-                maxSuspensionForce: wOpts.maxSuspensionForce || 148000,
-                rollInfluence:  wOpts.rollInfluence    || 0.1,
-                axleLocal: new CANNON.Vec3(0, -1, 0),
-                chassisConnectionPointLocal: new CANNON.Vec3(width/2, length/1.7, height*0.05),
-                maxSuspensionTravel: wOpts.suspensionLength || 0.6,
-                customSlidingRotationalSpeed: 0,
-                useCustomSlidingRotationalSpeed: false
-            };
-
-            length -= options.radius;
-
-            var wheelsMat = [
-                [-1,  0.9,    1],[1, 0.9,     1],
-                [-1, -0.9,    1],[1,-0.9,     1]
-            ];
-
-            var steerMat = [
-                1, 1,
-                0, 0
-            ];
-
-            var brakeMat = [
-                0.2,0.2,
-                1  ,1
-            ];
-
-            var transmissionMat = [
-                1,1,
-                0,0
-            ];
-
-            var transmissionYawMat = [
-                0,0,
-                0,0
-            ];
-
-            var wheelMatrix = bodyParams.wheelMatrix || wheelsMat;
-
-            var steerMatrix = bodyParams.steerMatrix || steerMat;
-            var brakeMatrix = bodyParams.brakeMatrix || brakeMat;
-            var transmissionMatrix = bodyParams.transmissionMatrix || transmissionMat;
-            var transmissionYawMatrix = bodyParams.transmissionYawMatrix || transmissionYawMat;
-
-            for (var i = 0; i < wheelMatrix.length; i++) {
-                options.chassisConnectionPointLocal.set(length * wheelMatrix[i][1], width * wheelMatrix[i][0], -clearance*wheelMatrix[i][2]);
-                vehicle.addWheel(options);
-                vehicle.wheelInfos[i].steerFactor           = steerMatrix[i]            || 0;
-                vehicle.wheelInfos[i].brakeFactor           = brakeMatrix[i]            || 1;
-                vehicle.wheelInfos[i].transmissionFactor    = transmissionMatrix[i]     || 1;
-                vehicle.wheelInfos[i].transmissionYawMatrix = transmissionYawMatrix[i]  || 1;
-                vehicle.setBrake(vehicle.wheelInfos[i].brakeFactor*vehicle.wheelInfos[i].brakeFactor, i);
-            }
-
-            return chassisBody;
-
-        };
 
         return AmmoFunctions;
 

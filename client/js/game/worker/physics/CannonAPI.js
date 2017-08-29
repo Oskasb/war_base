@@ -17,20 +17,8 @@ define(['worker/physics/PhysicsFunctions'],
             this.world = this.physicsFunctions.createPhysicalWorld()
         };
 
-
         CannonAPI.prototype.buildPhysicalTerrain = function(data, size, posx, posz, min_height, max_height) {
             return this.physicsFunctions.createPhysicalTerrain(this.world, data, size, posx, posz, min_height, max_height)
-        };
-
-        CannonAPI.prototype.attachPiecePhysics = function(piece) {
-
-            if (piece.physics.rigid_body) {
-//        console.log("PiecePhysics", piece.id, piece.physics.rigid_body, piece.spatial)
-                piece.physics.body =  this.buildRigidBody(piece.spatial, piece.physics.rigid_body);
-
-            } else {
-                console.log("No body on this!")
-            }
         };
 
         CannonAPI.prototype.setupPhysicalActor = function(actor) {
@@ -45,25 +33,10 @@ define(['worker/physics/PhysicsFunctions'],
             this.world.removeBody(body);
         };
 
-
-        CannonAPI.prototype.removePhysicsPiece = function(piece) {
-            console.log("REMOVE RIGID BODY:", piece.physics.rigid_body);
-            this.world.removeBody(piece.physics.body);
-        };
-
-        CannonAPI.prototype.updatePhysicalPiece = function(piece) {
-            this.physicsFunctions.applyBodyToSpatial(piece);
-        };
-
         CannonAPI.prototype.updatePhysicsSimulation = function(currentTime) {
             this.physicsFunctions.updatePhysicalWorld(this.world, currentTime)
         };
-
-        CannonAPI.prototype.updatePhysicalPiece = function(piece) {
-            this.physicsFunctions.applyBodyToSpatial(piece);
-        };
-
-
+        
         CannonAPI.prototype.fetchPhysicsStatus = function() {
             if (Math.random() < 0.01) {
                 console.log("BODIES:", this.world.bodies.length);

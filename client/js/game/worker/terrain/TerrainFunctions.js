@@ -496,12 +496,16 @@ define([],
 
             calcVec1.copy(rootObj3D.position);
             calcVec2.copy(pos);
-            pos.subVectors(calcVec1, calcVec2);
+            calcVec2.subVectors(calcVec2, calcVec1);
 
             var terrainSize = terrain.opts.xSize;
             var segments = terrain.opts.xSegments;
 
-            return this.getHeightAt(pos, terrain.array1d, terrainSize, segments, normalStore)
+
+            calcVec2.x += terrain.opts.xSize // 0.5;
+            calcVec2.z += terrain.opts.xSize // 0.5;
+
+            return this.getHeightAt(calcVec2, terrain.array1d, terrainSize, segments, normalStore)
         };
 
         TerrainFunctions.prototype.getDisplacedHeight = function(array1d, segments, x, z, htP, htN, normalStore) {
@@ -515,12 +519,12 @@ define([],
 
         TerrainFunctions.prototype.getHeightAt = function(pos, array1d, terrainSize, segments, normalStore) {
 
-            var htP = terrainSize / 2;
-            var htN = - htP;
+            var htP = terrainSize // 2;
+            var htN = 0 // -terrainSize / 2; // - htP;
 
             if (pos.x < htN || pos.x > htP || pos.z < htN || pos.z > htP) {
 
-                console.log("Terrain!", pos.x, pos.z, "Is Outside")
+                console.log("Terrain!", pos.x, pos.z, "Is Outside WORKER")
                 //    return -1000;
                 pos.x = MATH.clamp(pos.x, htN, htP);
                 pos.z = MATH.clamp(pos.z, htN, htP);

@@ -25,7 +25,76 @@ define([
             brakeCommand:{state:0}
         };
 
-        var AmmoVehicleProcessor = function(conf) {
+        var ammoQuat;
+        var quat = new THREE.Quaternion();
+        var vec3 = new THREE.Vector3();
+
+        var propertyMap = {
+            deltaRotation:{key:'transform', funcName:'getRotation', delta:true },
+            rotation:     {key:'transform', funcName:'getRotation', delta:false}
+        };
+
+
+        var InfoParser = function(info, transform) {
+            this.info = info;
+            this.transform = transform;
+            this.value = 0;
+        };
+
+        InfoParser.prototype.getValue = function(property) {
+
+            var prop = propertyMap[property];
+
+            this[prop.key][prop.funcName](ammoQuat);
+
+            quat.x = ammoQuat.x();
+            quat.y = ammoQuat.y();
+            quat.z = ammoQuat.z();
+            quat.w = ammoQuat.w();
+
+            vec3.set(0, 0, 1);
+            vec3.applyQuaternion(quat);
+
+            var value = vec3.x;
+
+            if (prop.delta) {
+                this.value = value - this.value;
+            } else {
+                this.value = value;
+            }
+
+            return this.value;
+        };
+
+
+        var AmmoVehicleProcessor = function(vehicle, bodyParams, dynamic) {
+
+            ammoQuat = new Ammo.btQuaternion(0, 0, 0, 1);
+
+
+
+            var numWheels = vehicle.getNumWheels();
+
+            this.wheelInfos = [];
+
+            for (var i = 0; i < numWheels; i++) {
+                var info = vehicle.getWheelInfo(i);
+                var transform =vehicle.getWheelTransformWS(i);
+                this.wheelInfos.push(new InfoParser(info, transform));
+            }
+
+
+            this.driveTrain = bodyParams.drive_train || drive_train;
+            this.wheelMatrix = bodyParams.wheelMatrix || wheelsMat;
+            this.steerMatrix = bodyParams.steerMatrix || steerMat;
+            this.brakeMatrix = bodyParams.brakeMatrix || brakeMat;
+            this.transmissionMatrix = bodyParams.transmissionMatrix || transmissionMat;
+            this.transmissionYawMatrix = bodyParams.transmissionYawMatrix || transmissionYawMat;
+
+            this.dynamic = dynamic || dyn;
+
+
+
             this.controls = {};
 
             this.lastInputState = 0;
@@ -38,7 +107,10 @@ define([
 
 
 
-        AmmoVehicleProcessor.prototype.sampleControlState = function(target, piece, controlMap) {
+
+
+
+        AmmoVehicleProcessor.prototype.sampleControlState = function(piece, controlMap) {
 
             for (var i = 0; i < controlMap.length; i++) {
                 var state = piece.getPieceStateByStateId(controlMap[i].stateid).getValue();
@@ -132,7 +204,7 @@ define([
             this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.5, 0, 1);
         };
 
-        VehicleProcessor.prototype.determineForwardState = function(speedInputState) {
+        AmmoVehicleProcessor.prototype.determineForwardState = function(speedInputState) {
             if (speedInputState === 0) {
                 return this.lastInputState;
             }
@@ -154,11 +226,16 @@ define([
         };
 
 
+        var getWheelInfo = function(vehicle) {
+            return vehicle.getWheelInfo();
+        };
+
+
         AmmoVehicleProcessor.prototype.applyControlState = function(target, controls) {
 
-            var driveTrain = target.drive_train || drive_train;
+            var driveTrain = this.driveTrain;
 
-            var dynamic = target.dynamic;
+            var dynamic = this.dynamic;
 
             var speedInputState = controls.forward_state + controls.reverse_state;
 
@@ -177,18 +254,31 @@ define([
 
             this.framelWheelRotation = 0;
 
-            for (var i = 0; i < target.wheelInfos.length; i++) {
-                var info = target.wheelInfos[i];
-                var yawFactor = info.transmissionYawMatrix * yaw_state;
-                target.applyEngineForce(powerState * info.transmissionFactor + powerState * yawFactor , i);
-                target.setBrake(this.lastbrakeState * info.brakeFactor * driveTrain.brake, i);
-                target.setSteeringValue(yaw_state* info.steerFactor, i);
-                this.framelWheelRotation += info.deltaRotation;
+            var numWheels = target.getNumWheels();
+
+
+            for (var i = 0; i < numWheels; i++) {
+                var info = target.getWheelInfo(i);
+                var yawFactor = this.transmissionYawMatrix[i] * yaw_state;
+                target.applyEngineForce(powerState * this.transmissionMatrix[i] + powerState * yawFactor , i);
+                target.setBrake(this.lastbrakeState * this.brakeMatrix[i] * driveTrain.brake, i);
+                target.setSteeringValue(yaw_state* this.steerMatrix[i], i);
+                this.framelWheelRotation += this.wheelInfos[i].getValue('deltaRotation');
             }
 
             this.lastbrakeState = 0;
 
         };
+
+        AmmoVehicleProcessor.prototype.interpretVehicleState = function(param, key, property) {
+
+            if (param === "wheelInfos") {
+                return this.wheelInfos[key].getValue(property);
+            }
+
+            return this[param][key][property];
+        };
+
 
         AmmoVehicleProcessor.prototype.applyFeedbackMap = function(target, piece, feedback) {
                 var param =         feedback.param;
@@ -197,7 +287,7 @@ define([
                 var targetStateId = feedback.stateid;
                 var factor =        feedback.factor;
                 var state =         piece.getPieceStateByStateId(targetStateId);
-                state.value =       target[param][key][property]*factor;
+                state.value =       this.interpretVehicleState(param, key, property) * factor;
         };
 
         //  var speed = vehicle.getCurrentSpeedKmHour();
@@ -215,13 +305,13 @@ define([
             var controlMap = config.control_map;
             var feedbackMap = config.feedback_map;
 
-            var target = body[config.shape];
+            var target = piece[config.shape];
 
-            this.sampleControlState(target, piece, controlMap);
+            this.sampleControlState(piece, controlMap);
             this.applyControlState(target, this.controls);
 
             if (feedbackMap) {
-                this.sampleVehicle(body[config.shape], piece, feedbackMap);
+                this.sampleVehicle(target, piece, feedbackMap);
             }
 
         };

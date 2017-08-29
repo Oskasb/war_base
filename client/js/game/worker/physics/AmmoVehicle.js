@@ -34,8 +34,6 @@ define(['game/worker/physics/AmmoVehicleProcessor'
 
         var AmmoVehicle = function(physicsWorld, bodyParams, pos, quat) {
 
-            this.processor = new AmmoVehicleProcessor();
-
             var width       = bodyParams.width      || 1.5;
             var length      = bodyParams.length     || 3.1;
             var height      = bodyParams.height     || 1.1;
@@ -65,7 +63,7 @@ define(['game/worker/physics/AmmoVehicleProcessor'
             var suspensionCompression = 4.4;
             var suspensionRestLength = wOpts.suspensionLength || 0.6;
             var rollInfluence = wOpts.rollInfluence  || 0.1;
-
+            var radius = wOpts.radius || 0.5;
 
             // Chassis
             var geometry = new Ammo.btBoxShape(new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5));
@@ -116,20 +114,24 @@ define(['game/worker/physics/AmmoVehicleProcessor'
                 wheelInfo.set_m_frictionSlip(friction);
                 wheelInfo.set_m_rollInfluence(rollInfluence);
 
-                wheelInfo.steerFactor           = steerMatrix[i]            || 0;
-                wheelInfo.brakeFactor           = brakeMatrix[i]            || 1;
-                wheelInfo.transmissionFactor    = transmissionMatrix[i]     || 1;
-                wheelInfo.transmissionYawMatrix = transmissionYawMatrix[i]  || 1;
-
             }
 
             for (var i = 0; i < wheelMatrix.length; i++) {
                 addWheel(i);
             }
 
+            var dynamic = {
+                gearIndex:  {state:0},
+                clutch:     {state:0},
+                rpm:        {state:0},
+                brake:      {state:0},
+                brakeCommand:{state:0}
+            };
+
             this.body = body;
             this.vehicle = vehicle;
-            this.processor = new AmmoVehicleProcessor();
+
+            this.processor = new AmmoVehicleProcessor(vehicle, bodyParams, dynamic);
         };
 
 

@@ -25,7 +25,11 @@ define([
             brakeCommand:{state:0}
         };
 
-        var VehicleProcessor = function(conf) {
+        var VehicleProcessor = function(driveTrain, dynamic) {
+
+            this.driveTrain = driveTrain || drive_train;
+            this.dynamic = dynamic || dyn;
+
             this.controls = {};
 
             this.lastInputState = 0;
@@ -156,9 +160,9 @@ define([
 
         VehicleProcessor.prototype.applyControlState = function(target, controls) {
 
-            var driveTrain = target.drive_train || drive_train;
+            var driveTrain = this.driveTrain;
 
-            var dynamic = target.dynamic;
+            var dynamic = this.dynamic;
 
             var speedInputState = controls.forward_state + controls.reverse_state;
 

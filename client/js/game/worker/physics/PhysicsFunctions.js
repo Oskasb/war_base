@@ -252,7 +252,7 @@ define([        'game/worker/physics/VehicleProcessor'
 
             if (shapeKey === "vehicle") {
                 rigidBody = this.createVehicle(world, conf.rigid_body, position);
-                actor.piece.processor = new VehicleProcessor();
+                actor.piece.processor = new VehicleProcessor(rigidBody.vehicle.drive_train, rigidBody.vehicle.dynamic);
             }
 
             actor.setPhysicsBody(rigidBody);

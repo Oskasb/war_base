@@ -152,12 +152,12 @@ define([
 
         TerrainFunctions.prototype.getHeightAt = function(pos, array1d, terrainSize, segments, normalStore) {
 
-            var htP = terrainSize;
-            var htN = 0;
+            var htP = 0 //terrainSize / 2;  // 2;
+            var htN = - terrainSize // - htP; // 0;
 
             if (pos.x < htN || pos.x > htP || pos.z < htN || pos.z > htP) {
 
-                console.log("Terrain!", pos.x, pos.z, "Is Outside")
+                console.log("Terrain!", pos.x, pos.z, "Is Outside MAIN")
                 //    return -1000;
                 pos.x = MATH.clamp(pos.x, htN, htP);
                 pos.z = MATH.clamp(pos.z, htN, htP);

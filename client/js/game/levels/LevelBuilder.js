@@ -51,7 +51,7 @@ define([
                 for (var i = 0; i < piece.pieceSlots.length; i++) {
                     var mod = piece.pieceSlots[i].module;
 
-                //    mod.visualModule.addModuleDebugBox();
+                    mod.visualModule.addModuleDebugBox();
 
                     if (mod.config.terrain) {
                         createIt(mod, actor, buffers);

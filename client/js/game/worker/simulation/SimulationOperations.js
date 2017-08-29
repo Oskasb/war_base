@@ -62,8 +62,8 @@ define([
 
 
             var size = terrainModel.opts.xSize;
-        //    pPosx += size/2;
-        //    pPosz += size/2;
+            pPosx += size/2;
+            pPosz += size/2;
 
             if (pPosx <= pos.x && pPosx + size > pos.x) {
                 if (pPosz <= pos.z && pPosz + size > pos.z) {
@@ -91,8 +91,8 @@ define([
             size *= 0.8;
 
             vec3.copy(rootObj3D.position);
-            vec3.x += Math.random()*size - size/2;
-            vec3.z += Math.random()*size - size/2;
+            vec3.x += Math.random()*size  - size/2;
+            vec3.z += Math.random()*size  - size/2;
 
             vec3.y = this.terrainFunctions.getTerrainHeightAt(terrain, vec3, rootObj3D, normalStore)
 

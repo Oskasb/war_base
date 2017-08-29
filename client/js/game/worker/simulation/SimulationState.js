@@ -4,6 +4,7 @@ define([
         'PipelineAPI',
         'worker/simulation/SimulationOperations',
         'worker/physics/CannonAPI',
+        'worker/physics/AmmoAPI',
         'worker/terrain/TerrainFunctions'
 
     ],
@@ -11,18 +12,24 @@ define([
         PipelineAPI,
         SimulationOperations,
         CannonAPI,
+        AmmoAPI,
         TerrainFunctions
     ) {
 
         var actors = [];
         var levels = [];
         var time = 0;
+
+        var physicsApi;
+
         var SimulationState = function(protocolSystem) {
             this.protocolSystem = protocolSystem;
-            this.cannonApi = new CannonAPI();
-            this.terrainFunctions = new TerrainFunctions(this.cannonApi);
+
+
+            physicsApi = new AmmoAPI();
+            this.terrainFunctions = new TerrainFunctions(physicsApi);
             this.simulationOperations = new SimulationOperations(this.terrainFunctions);
-            this.cannonApi.initPhysics();
+            physicsApi.initPhysics();
         };
 
         SimulationState.prototype.addLevel = function(options, ready) {
@@ -40,9 +47,9 @@ define([
 
             var actorBuilt = function(actor) {
                 this.simulationOperations.getRandomPointOnTerrain(actor.piece.rootObj3D.position, levels);
-                this.cannonApi.setupPhysicalActor(actor);
+                physicsApi.setupPhysicalActor(actor);
                 if (actor.body) {
-                    this.cannonApi.includeBody(actor.body);
+                    physicsApi.includeBody(actor.body);
                 }
                 actors.push(actor);
                 ready({dataKey:actor.dataKey, actorId:actor.id});
@@ -77,7 +84,7 @@ define([
 
             this.protocolSystem.removeProtocol(actor);
             if (actor.body) {
-                this.cannonApi.excludeBody(actor.body);
+                physicsApi.excludeBody(actor.body);
             }
 
             actor.removeGameActor();
@@ -114,7 +121,7 @@ define([
             terrain.array1d = buffers[4];
             var terrainBody = this.terrainFunctions.addTerrainToPhysics(terrainOpts, terrain.array1d, 0, 0);
 
-            this.cannonApi.includeBody(terrainBody);
+            physicsApi.includeBody(terrainBody);
 
             actor.setPhysicsBody(terrainBody);
 
@@ -125,7 +132,7 @@ define([
 
             if (levels.length) {
                 time += tpf;
-                this.cannonApi.updatePhysicsSimulation(time);
+                physicsApi.updatePhysicsSimulation(time);
             }
 
             for (var i = 0; i < actors.length; i++) {
@@ -135,7 +142,7 @@ define([
                 this.protocolSystem.updateActorSendProtocol(actors[i], tpf);
 
             }
-            var status = this.cannonApi.fetchPhysicsStatus();
+            var status = physicsApi.fetchPhysicsStatus();
         };
 
         return SimulationState;

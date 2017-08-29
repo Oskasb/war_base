@@ -175,8 +175,8 @@ define([
                 pPosx += parentObj.parent.parent.position.x;
                 pPosz += parentObj.parent.parent.position.z;
             }
-            pPosx -= size/2;
-            pPosz -= size/2;
+            pPosx -= size;
+            pPosz -= size;
 
             if (pPosx <= pos.x && pPosx + size > pos.x) {
                 if (pPosz <= pos.z && pPosz + size > pos.z) {
@@ -200,9 +200,10 @@ define([
             delete terrainIndex[terrain.model.uuid]
         };
 
+
         ThreeTerrain.getThreeTerrainHeightAt = function(terrain, pos, normalStore) {
 
-            return terrainFunctions.getHeightAt(pos, terrain.array1d, terrain.size, terrain.segments, normalStore)
+            return terrainFunctions.getHeightAt(pos, terrain.array1d, terrain.size, terrain.segments, normalStore);
         };
 
         ThreeTerrain.terrainVegetationIdAt = function(pos, normalStore) {
@@ -220,8 +221,8 @@ define([
 
             if (terrainStore) {
                 calcVec.subVectors(pos, terrainStore.parent.parent.position);
-                calcVec.x += terrainStore.model.size/2;
-                calcVec.z += terrainStore.model.size/2;
+            //    calcVec.x -= terrainStore.model.size / 2;
+            //    calcVec.z -= terrainStore.model.size / 2;
                 pos.y = ThreeTerrain.getThreeTerrainHeightAt(terrainStore.model, calcVec, normalStore);
 
                 return terrainStore.model;

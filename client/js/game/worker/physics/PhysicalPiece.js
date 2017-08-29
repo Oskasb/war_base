@@ -75,13 +75,22 @@ define([
                     ms.getWorldTransform(TRANSFORM_AUX);
                     var p = TRANSFORM_AUX.getOrigin();
                     var q = TRANSFORM_AUX.getRotation();
+                    if (isNaN(p.x())) {
+
+                        if (Math.random() < 0.002) {
+                            console.log("Bad body transform", body)
+
+
+                        }
+                        return;
+                    }
                     threeObj.position.set(p.x(), p.y(), p.z());
                     threeObj.quaternion.set(q.x(), q.y(), q.z(), q.w());
                 }
 
                 return;
             }
-            
+
 
             threeObj.quaternion.x = -body.quaternion.x;
             threeObj.quaternion.y = -body.quaternion.z+body.quaternion.w;
