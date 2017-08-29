@@ -26,8 +26,14 @@ define([
         };
 
         var ammoQuat;
+        var threeObj = new THREE.Object3D();
+        var threeObj2 = new THREE.Object3D();
         var quat = new THREE.Quaternion();
+        var vehicleQuat = new THREE.Quaternion();
         var vec3 = new THREE.Vector3();
+        var calcEuler = new THREE.Euler();
+
+        var TRANSFORM_AUX;
 
         var propertyMap = {
             deltaRotation:{key:'transform', funcName:'getRotation', delta:true },
@@ -35,51 +41,86 @@ define([
         };
 
 
+        var count = 0;
+
         var InfoParser = function(info, transform) {
+            this.nr = count;
+            count++;
+            this.euler = new THREE.Euler();
+            this.calcQuat = new THREE.Quaternion();
+            this.lastQuat = new THREE.Quaternion();
+            this.axisVec = new THREE.Vector3();
             this.info = info;
             this.transform = transform;
+            this.lastAngle = 0;
             this.value = 0;
+            this.total = 0;
         };
 
-        InfoParser.prototype.getValue = function(property) {
+        InfoParser.prototype.setTransform = function(transform) {
+            this.transform = transform;
+        };
+
+        InfoParser.prototype.updateValue = function(property, vQuat) {
 
             var prop = propertyMap[property];
 
-            this[prop.key][prop.funcName](ammoQuat);
+            ammoQuat = this[prop.key][prop.funcName]();
 
             quat.x = ammoQuat.x();
             quat.y = ammoQuat.y();
             quat.z = ammoQuat.z();
             quat.w = ammoQuat.w();
 
-            vec3.set(0, 0, 1);
-            vec3.applyQuaternion(quat);
+            quat.conjugate();
 
-            var value = vec3.x;
+            quat.multiply(vQuat);
+
+            this.euler.setFromQuaternion(quat);
+
+            var angle = MATH.subAngles(MATH.nearestAngle(this.euler.x), MATH.nearestAngle(this.lastAngle)); // (MATH.TWO_PI);
+
+            this.lastAngle = this.euler.x;
+
+            this.value = angle;
+            this.total += angle;
 
             if (prop.delta) {
-                this.value = value - this.value;
+                return this.value;
             } else {
-                this.value = value;
+                return this.total;
             }
 
-            return this.value;
+        };
+
+        InfoParser.prototype.getValue = function(property) {
+
+            var prop = propertyMap[property];
+
+            if (prop.delta) {
+                return this.value;
+            } else {
+                return this.total;
+            }
+
         };
 
 
         var AmmoVehicleProcessor = function(vehicle, bodyParams, dynamic) {
 
-            ammoQuat = new Ammo.btQuaternion(0, 0, 0, 1);
-
-
 
             var numWheels = vehicle.getNumWheels();
+
+            if (!TRANSFORM_AUX) {
+                TRANSFORM_AUX = new Ammo.btTransform();
+            }
+
 
             this.wheelInfos = [];
 
             for (var i = 0; i < numWheels; i++) {
                 var info = vehicle.getWheelInfo(i);
-                var transform =vehicle.getWheelTransformWS(i);
+                var transform = vehicle.getWheelTransformWS(i);
                 this.wheelInfos.push(new InfoParser(info, transform));
             }
 
@@ -193,15 +234,15 @@ define([
 
             var wheelBrake = speedInputState*this.framelWheelRotation;
 
-            var brakeState = MATH.clamp(wheelBrake, 0, 1);
+            var brakeState = MATH.clamp(-wheelBrake, 0, 1);
 
-            if (wheelBrake > 0) {
+            if (-wheelBrake > 0.2) {
                 this.brakeCommand = 1;
             }
 
             dynamic.brake.state = brakeState;
             dynamic.brakeCommand.state = this.brakeCommand;
-            this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.5, 0, 1);
+            this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.3, 0, 1);
         };
 
         AmmoVehicleProcessor.prototype.determineForwardState = function(speedInputState) {
@@ -256,14 +297,33 @@ define([
 
             var numWheels = target.getNumWheels();
 
+            target.getRigidBody().getMotionState().getWorldTransform(TRANSFORM_AUX);
+            var q = TRANSFORM_AUX.getRotation();
+
+            vehicleQuat.set(q.x(), q.y(), q.z(), q.w());
+
 
             for (var i = 0; i < numWheels; i++) {
                 var info = target.getWheelInfo(i);
                 var yawFactor = this.transmissionYawMatrix[i] * yaw_state;
+
+                if (Math.abs(this.lastbrakeState)) {
+                    target.setBrake(this.lastbrakeState * this.brakeMatrix[i] * driveTrain.brake, i);
+                //    target.applyEngineForce(0, i);
+                } else {
+                    target.setBrake(0, i);
+
+                }
+
                 target.applyEngineForce(powerState * this.transmissionMatrix[i] + powerState * yawFactor , i);
-                target.setBrake(this.lastbrakeState * this.brakeMatrix[i] * driveTrain.brake, i);
+
                 target.setSteeringValue(yaw_state* this.steerMatrix[i], i);
-                this.framelWheelRotation += this.wheelInfos[i].getValue('deltaRotation');
+
+                target.updateWheelTransform(i, false);
+
+            //    var transform = target.getWheelTransformWS(i);
+             //   this.wheelInfos[i].setTransform(transform);
+                this.framelWheelRotation = this.wheelInfos[i].updateValue('deltaRotation', vehicleQuat);
             }
 
             this.lastbrakeState = 0;

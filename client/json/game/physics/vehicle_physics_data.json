@@ -10,67 +10,69 @@
               "rpm_min":200,
               "rpm_max":1200,
               "gears":[2500, 1000, 400, 160, 85, 68],
-              "enginePower": 500,
-              "brake"      : 2000
+              "enginePower": 350,
+              "brake"      : 5000
             },
 
             "mass"      : 55000,
-            "width"     : 1.65,
-            "length"    : 2.6,
-            "height"    : 1.0,
-            "clearance" : 0.2,
+            "width"     : 3.3,
+            "length"    : 6.1,
+            "height"    : 1.4,
+            "clearance" : 0.0,
 
             "steerMatrix":[
               -0.4, -0.4,
               -0.0, -0.0,
-               0.2,  0.3
+               0.3,  0.3
             ],
 
             "brakeMatrix":[
-              0.1, 0.1,
-              0.9, 0.9,
+              0.6, 0.6,
+              0.4, 0.4,
               0.0, 0.0
             ],
 
             "transmissionMatrix":[
-              0.25, 0.25,
-              0.50, 0.50,
-              0.25, 0.25
+              0.0,  0.0,
+              0.35, 0.35,
+              0.65, 0.65
             ],
 
             "transmissionYawMatrix":[
               -0, 0,
               -5, 5,
-              -10,10
+              -0, 0
             ],
 
             "wheelMatrix":[
-              [-1.0,  1.2, 2],[1.0, 1.2, 2],
-              [-1.0,  0,   2],[1.0,  0,  2],
-              [-1.0, -1.1, 2],[1.0,-1.1, 2]
+              [-1.0, 0.2,  0.9],[1.0, 0.2, 0.9],
+              [-1.0, 0.2,    0],[1.0, 0.2,   0],
+              [-1.0, 0.2, -0.9],[1.0, 0.2,-0.9]
             ],
 
             "wheelOptions":{
               "radius":0.5,
-              "suspensionStiffness":16,
-              "suspensionLength":0.6,
-              "dampening":1.1,
-              "rollInfluence":0.4,
-              "frictionSlip":1.2,
-              "maxSuspensionForce":200000
+              "suspensionLength":0.9,
+              "suspensionTravelCm":90,
+              "suspensionCompression":1,
+              "dampingCompression":600,
+              "dampingRelaxation":800,
+              "dampening": 2.5,
+              "rollInfluence":0.2,
+              "frictionSlip":1500
             }
           },
           "control_map":[
-              {"control":"yaw_state",      "stateid":"wheel_turn_forward","factor":-1},
+              {"control":"yaw_state",      "stateid":"wheel_turn_forward","factor": 1},
               {"control":"forward_state",  "stateid":"engine_forward", "factor":    1},
               {"control":"reverse_state",  "stateid":"engine_reverse","factor":    -1},
-              {"control":"steer_reverse",  "stateid":"wheel_turn_reverse", "factor":1}
+              {"control":"steer_reverse",  "stateid":"wheel_turn_reverse", "factor":-1}
           ],
           "feedback_map":[
-            {"param":"wheelInfos",     "key":4,  "property":"deltaRotation", "stateid":"track_speed_r", "factor":-1},
-            {"param":"wheelInfos",     "key":5,  "property":"deltaRotation", "stateid":"track_speed_l", "factor":-1},
-            {"param":"wheelInfos",     "key":4,  "property":"rotation", "stateid":"track_rotation_r",   "factor":0.6},
-            {"param":"wheelInfos",     "key":5,  "property":"rotation", "stateid":"track_rotation_l",   "factor":0.6},
+            {"param":"wheelInfos",     "key":4,  "property":"deltaRotation", "stateid":"track_speed_r", "factor":1},
+            {"param":"wheelInfos",     "key":5,  "property":"deltaRotation", "stateid":"track_speed_l", "factor":1},
+            {"param":"wheelInfos",     "key":4,  "property":"deltaRotation", "stateid":"track_rotation_r",   "factor":-110},
+            {"param":"wheelInfos",     "key":5,  "property":"deltaRotation", "stateid":"track_rotation_l",   "factor":-110},
 
             {"param":"dynamic",     "key":"gearIndex",  "property":"state", "stateid":"engine_gear",    "factor":1},
             {"param":"dynamic",     "key":"rpm",        "property":"state", "stateid":"engine_rpm",     "factor":1},

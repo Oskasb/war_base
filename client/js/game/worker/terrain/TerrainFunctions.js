@@ -501,11 +501,12 @@ define([],
             var terrainSize = terrain.opts.xSize;
             var segments = terrain.opts.xSegments;
 
+            var height = terrain.opts.maxHeight - terrain.opts.minHeight;
 
             calcVec2.x += terrain.opts.xSize // 0.5;
             calcVec2.z += terrain.opts.xSize // 0.5;
 
-            return this.getHeightAt(calcVec2, terrain.array1d, terrainSize, segments, normalStore)
+            return this.getHeightAt(calcVec2, terrain.array1d, terrainSize, segments, normalStore) + height;
         };
 
         TerrainFunctions.prototype.getDisplacedHeight = function(array1d, segments, x, z, htP, htN, normalStore) {

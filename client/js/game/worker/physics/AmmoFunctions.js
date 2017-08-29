@@ -100,8 +100,8 @@ define([
         var remaining = 0;
         var MODEL = {};
 
-        MODEL.PhysicsStepTime = 0.01;
-        MODEL.PhysicsMaxSubSteps = 10;
+        MODEL.PhysicsStepTime = 0.005;
+        MODEL.PhysicsMaxSubSteps = 1;
         MODEL.SpatialTolerance = 1;
         MODEL.AngularVelocityTolerance = 1;
         MODEL.TemporalTolerance = 1;
@@ -114,15 +114,15 @@ define([
 
                 remaining = dt + remaining;
 
-            //    while (remaining >= 0) {
+                while (remaining >= 0) {
 
                 //    world.step(MODEL.PhysicsStepTime, dt, MODEL.PhysicsMaxSubSteps);
 
-                    physicsWorld.stepSimulation(dt , MODEL.PhysicsMaxSubSteps, MODEL.PhysicsStepTime);
+                    physicsWorld.stepSimulation(MODEL.PhysicsStepTime , MODEL.PhysicsMaxSubSteps, MODEL.PhysicsStepTime);
                     //   doStep(world, fixedTimeStep, dt, maxSubSteps) ;
 
-             //       remaining -= MODEL.PhysicsStepTime*MODEL.PhysicsMaxSubSteps;
-             //   }
+                    remaining -= MODEL.PhysicsStepTime;
+                }
 
             }
             //   console.log("Sphere xyz position: "+ sphereBody.position.x +' _ '+ sphereBody.position.y+' _ '+ sphereBody.position.z);
@@ -257,12 +257,12 @@ define([
 
         }
 
-        function ammoBoxShape(w, l, h) {
+        function ammoBoxShape(w, h, l) {
             return new Ammo.btBoxShape(new Ammo.btVector3(w * 0.5, l * 0.5, h * 0.5));
         }
 
-        function ammoCylinderShape(w, l, h) {
-            return new Ammo.btCylinderShape(new Ammo.btVector3(w * 0.5, l * 0.5, h * 0.5));
+        function ammoCylinderShape(w, h, l) {
+            return new Ammo.btCylinderShape(new Ammo.btVector3(w * 0.5, l * 0.5, h * 1));
         }
 
         AmmoFunctions.prototype.createPrimitiveBody = function(world, bodyParams, pos, quat) {

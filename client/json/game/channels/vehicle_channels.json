@@ -22,7 +22,7 @@
         "id":"track_rotation",
         "data":{
           "targets":[
-            {"targetid":"model_track_animate_texture"}
+            {"targetid":"model_animate_texture_cumulative"}
           ]
         }
       },
