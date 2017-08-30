@@ -127,6 +127,7 @@ define([
 
 
         ModuleCallbacks.quat_axis = function(module, target) {
+            target.state.isRadial(true)
             module.visualModule.getRootObject3d().quaternion[target.config.axis] = target.state.getValue();
             module.needsNormalize = true;
 

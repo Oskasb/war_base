@@ -7,6 +7,7 @@ define([],
 
         var PieceState = function(id, value) {
             this.id = id;
+            this.radial = false;
             this.value = 0 || value;
             this.startValue = value;
 
@@ -70,6 +71,10 @@ define([],
             return this.value;
         };
 
+        PieceState.prototype.isRadial = function (bool) {
+            this.radial = bool;
+        };
+
         PieceState.prototype.setValueAtTime = function(value, time) {
             this.buffer[0] = value;
             this.buffer[1] = time;
@@ -91,7 +96,20 @@ define([],
 
             if (this.stateProgress < this.targetTime) {
                 var frac = MATH.calcFraction(0, this.targetTime, this.stateProgress);
-                this.setValue(MATH.interpolateFromTo(this.startValue, this.targetValue, frac));
+
+                if (this.radial) {
+                    var add = 0;
+                    if ((this.startValue + this.targetValue) > 2) {
+                        add = -1;
+                    }
+                    if ((this.startValue - this.targetValue) < -2) {
+                        add = 1;
+                    }
+                    this.setValue(MATH.interpolateFromTo(this.startValue+add, this.targetValue+add, frac));
+                } else {
+                    this.setValue(MATH.interpolateFromTo(this.startValue, this.targetValue, frac));
+                }
+
             } else {
                 this.setValue(this.targetValue);
             };
