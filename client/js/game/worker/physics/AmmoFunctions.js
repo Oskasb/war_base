@@ -2,10 +2,12 @@
 "use strict";
 
 define([
-        'worker/physics/AmmoVehicle'
+        'worker/physics/AmmoVehicle',
+        'three/ThreeModelLoader'
     ],
     function(
-        AmmoVehicle
+        AmmoVehicle,
+        ThreeModelLoader
     ) {
 
         var threeVec;
@@ -16,7 +18,10 @@ define([
 
         var MATHVec3;
 
-        var AmmoFunctions = function() {
+        var Ammo;
+
+        var AmmoFunctions = function(ammo) {
+            Ammo = ammo;
             MATHVec3 = new MATH.Vec3();
             threeVec = new THREE.Vector3();
             threeObj = new THREE.Object3D();
@@ -26,6 +31,7 @@ define([
             threeEuler2 = new THREE.Euler();
             this.calcVec = new CANNON.Vec3();
             this.calcVec2 = new CANNON.Vec3();
+            ThreeModelLoader.loadData();
         };
 
         var lastTime;
@@ -177,7 +183,7 @@ define([
             var scaleX = terrainWidthExtents / ( terrainWidth - 1 );
             var scaleZ = terrainDepthExtents / ( terrainDepth - 1 );
             heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX, 1, scaleZ));
-            heightFieldShape.setMargin(0.01);
+            heightFieldShape.setMargin(0.5);
             return heightFieldShape;
         }
 
@@ -186,21 +192,26 @@ define([
             var terrainMaxHeight = maxHeight;
             var terrainMinHeight = minHeight;
 
-            console.log("Ground Matrix: ", data.length)
+            var heightDiff = maxHeight-minHeight;
+
+        //    console.log("Ground Matrix: ", data.length)
 
             var groundShape = createTerrainShape( data, totalSize, terrainMaxHeight, terrainMinHeight );
             var groundTransform = new Ammo.btTransform();
             groundTransform.setIdentity();
             // Shifts the terrain, since bullet re-centers it on its bounding box.
-            groundTransform.setOrigin( new Ammo.btVector3(posx, minHeight + (maxHeight-minHeight) * 0.5 ,posz) );
+            groundTransform.setOrigin( new Ammo.btVector3(posx, minHeight + (heightDiff) * 0.5 ,posz) );
             var groundMass = 0;
             var groundLocalInertia = new Ammo.btVector3( 0, 0, 0 );
             var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
             var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
+
             world.addRigidBody( groundBody );
 
             return groundBody;
         };
+
+
 
         AmmoFunctions.prototype.addPhysicalActor = function(world, actor) {
             var conf = actor.physicalPiece.config;
@@ -211,8 +222,8 @@ define([
 
             var rigidBody;
 
-            if (shapeKey === "terrain") {
-                return;
+            if (shapeKey === "mesh") {
+                rigidBody = this.createMeshBody(world, conf.rigid_body, position, quaternion);
             }
 
             if (shapeKey === "primitive") {
@@ -228,6 +239,7 @@ define([
             }
 
             actor.setPhysicsBody(rigidBody);
+
             return actor;
 
         };
@@ -250,6 +262,7 @@ define([
             var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, geometry, localInertia);
             var body = new Ammo.btRigidBody(rbInfo);
 
+            body.setRestitution(0.2);
             body.setFriction(friction);
             //body.setRestitution(.9);
             //body.setDamping(0.2, 0.2);
@@ -265,6 +278,114 @@ define([
             return new Ammo.btCylinderShape(new Ammo.btVector3(w * 0.5, l * 0.5, h * 1));
         }
 
+        function createConvexHullFromBuffer(buffer) {
+            var btConvexHullShape = new Ammo.btConvexHullShape();
+            var _vec3_1 = new Ammo.btVector3(0,0,0);
+            var _vec3_2 = new Ammo.btVector3(0,0,0);
+            var _vec3_3 = new Ammo.btVector3(0,0,0);
+            for (var i = 0; i < buffer.length; i+=9 ) {
+                _vec3_1.setX(buffer[i+0]);
+                _vec3_1.setY(buffer[i+1]);
+                _vec3_1.setZ(buffer[i+2]);
+                _vec3_2.setX(buffer[i+3]);
+                _vec3_2.setY(buffer[i+4]);
+                _vec3_2.setZ(buffer[i+5]);
+                _vec3_3.setX(buffer[i+6]);
+                _vec3_3.setY(buffer[i+7]);
+                _vec3_3.setZ(buffer[i+8]);
+
+                btConvexHullShape.addPoint(_vec3_1,true);
+                btConvexHullShape.addPoint(_vec3_2,true);
+                btConvexHullShape.addPoint(_vec3_3,true);
+            }
+            return btConvexHullShape;
+        }
+
+        function createTriMeshFromBuffer(buffer) {
+            var triangle_mesh = new Ammo.btTriangleMesh;
+            var _vec3_1 = new Ammo.btVector3(0,0,0);
+            var _vec3_2 = new Ammo.btVector3(0,0,0);
+            var _vec3_3 = new Ammo.btVector3(0,0,0);
+            for (var i = 0; i < buffer.length; i+=9 ) {
+                _vec3_1.setX(buffer[i+0]);
+                _vec3_1.setY(buffer[i+1]);
+                _vec3_1.setZ(buffer[i+2]);
+                _vec3_2.setX(buffer[i+3]);
+                _vec3_2.setY(buffer[i+4]);
+                _vec3_2.setZ(buffer[i+5]);
+                _vec3_3.setX(buffer[i+6]);
+                _vec3_3.setY(buffer[i+7]);
+                _vec3_3.setZ(buffer[i+8]);
+                triangle_mesh.addTriangle(
+                    _vec3_1,
+                    _vec3_2,
+                    _vec3_3,
+                    true
+                );
+            }
+            return new Ammo.btBvhTriangleMeshShape( triangle_mesh, true, true );
+        }
+
+
+        function createMeshShape(model_id, convex) {
+
+            var modelPool = ThreeModelLoader.getModelPool();
+
+            var mesh = modelPool[model_id][0];
+
+            console.log("Load mesh", mesh)
+
+
+            if (mesh.shape) {
+                return mesh.shape;
+            }
+
+            var geometry = mesh.geometry;
+
+            if (convex) {
+                mesh.shape = createConvexHullFromBuffer(geometry.attributes.position.array);
+            } else {
+                mesh.shape = createTriMeshFromBuffer(geometry.attributes.position.array);
+            }
+
+
+
+            console.log("Load mesh", mesh.shape);
+
+            return mesh.shape;
+
+        }
+
+        AmmoFunctions.prototype.createMeshBody = function(world, bodyParams, pos, quat) {
+            var args = bodyParams.args;
+
+            threeVec.copy(pos);
+
+            var heightOffset = 0;
+
+            var mass = bodyParams.mass;
+
+            var friction = bodyParams.friction || 2.9;
+
+            var shape = createMeshShape(bodyParams.model_id, bodyParams.convex);
+
+        //    heightOffset = args[2] / 2;
+
+
+            if (!mass) {
+                heightOffset = 0;
+            }
+
+            threeVec.y += heightOffset;
+
+            var body = createBody(shape, threeVec, quat, mass, friction);
+
+            world.addRigidBody(body);
+            //    body.setActivationState(DISABLE_DEACTIVATION);
+            return body;
+
+        };
+
         AmmoFunctions.prototype.createPrimitiveBody = function(world, bodyParams, pos, quat) {
             var args = bodyParams.args;
 
@@ -275,12 +396,7 @@ define([
 
             var mass = bodyParams.mass;
 
-            var friction = bodyParams.friction || 0.5;
-
-
-            if (!mass) {
-                heightOffset = 0;
-            }
+            var friction = bodyParams.friction || 2.9;
 
             if (bodyParams.shape === 'Cylinder') {
                 heightOffset = args[2] / 2;
@@ -291,9 +407,13 @@ define([
 
             if (bodyParams.shape === 'Box') {
                 heightOffset = args[1];
-                shape = ammoBoxShape(args[0], args[1], args[2]);
+                shape = ammoBoxShape(args[0], args[2], args[1]);
             //    shape = new CANNON[bodyParams.shape](new CANNON.Vec3(args[2],args[0],args[1]));
 
+            }
+
+            if (!mass) {
+                heightOffset = 0;
             }
 
             threeVec.y += heightOffset;

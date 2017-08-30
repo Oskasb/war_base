@@ -5,51 +5,66 @@ define(['worker/physics/AmmoFunctions'],
 
     function(AmmoFunctions) {
 
-        var AmmoAPI = function() {
+        var ammoFunctions;
 
-            this.ammoFunctions = new AmmoFunctions();
-            this.status = {
-                bodyCount:0
-            }
+        var bodies = [];
+
+        var status = {
+            bodyCount:0
+        };
+
+        var AmmoAPI = function(Ammo) {
+
+            ammoFunctions = new AmmoFunctions(Ammo);
         };
 
         AmmoAPI.prototype.initPhysics = function() {
-            this.world = this.ammoFunctions.createPhysicalWorld()
+            this.world = ammoFunctions.createPhysicalWorld()
         };
 
 
         AmmoAPI.prototype.buildPhysicalTerrain = function(data, size, posx, posz, min_height, max_height) {
-            return this.ammoFunctions.createPhysicalTerrain(this.world, data, size, posx, posz, min_height, max_height)
+            var body = ammoFunctions.createPhysicalTerrain(this.world, data, size, posx, posz, min_height, max_height);
+            bodies.push(body);
+            return body;
         };
 
 
         AmmoAPI.prototype.setupPhysicalActor = function(actor) {
-            return this.ammoFunctions.addPhysicalActor(this.world, actor);
+
+            ammoFunctions.addPhysicalActor(this.world, actor);
+            bodies.push(actor.getPhysicsBody());
+            return actor;
         };
 
         AmmoAPI.prototype.includeBody = function(body) {
+            if (bodies.indexOf(body) === -1) {
+                bodies.push(body);
+            }
+
             this.world.addRigidBody(body);
         };
 
         AmmoAPI.prototype.excludeBody = function(body) {
+            bodies.splice(bodies.indexOf(body), -1);
             this.world.removeRigidBody(body);
         };
 
 
         AmmoAPI.prototype.updatePhysicsSimulation = function(currentTime) {
-            this.ammoFunctions.updatePhysicalWorld(this.world, currentTime)
+            ammoFunctions.updatePhysicalWorld(this.world, currentTime)
         };
 
 
         AmmoAPI.prototype.fetchPhysicsStatus = function() {
             if (Math.random() < 0.01) {
-                console.log("BODIES:", this.world);
+                console.log("BODIES:", bodies.length);
             }
 
         //    this.status.bodyCount = this.world.bodies.length;
         //    this.status.contactCount = this.world.contacts.length;
 
-            return this.status;
+            return status;
         };
 
         return AmmoAPI;

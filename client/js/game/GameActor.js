@@ -49,6 +49,10 @@ define([
             this.body = body;
         };
 
+        GameActor.prototype.getPhysicsBody = function (body) {
+            return this.body;
+        };
+
         GameActor.prototype.initiateActorControls = function (controlReady) {
             var pieceReady = function(ctrlPiece) {
                 this.bindControlStateMap(this.config.state_map);

@@ -14,8 +14,6 @@ define([
             this.module = module;
             this.hidden = false;
             this.rootObj = ThreeAPI.createRootObject();
-            this.staticEffect = null;
-            this.dynamicEffect = null;
             this.effectTargets = [];
             this.isVisible = false;
             this.model;

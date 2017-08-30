@@ -22,11 +22,11 @@ define([
 
         var physicsApi;
 
-        var SimulationState = function(protocolSystem) {
+        var SimulationState = function(Ammo, protocolSystem) {
             this.protocolSystem = protocolSystem;
 
 
-            physicsApi = new AmmoAPI();
+            physicsApi = new AmmoAPI(Ammo);
             this.terrainFunctions = new TerrainFunctions(physicsApi);
             this.simulationOperations = new SimulationOperations(this.terrainFunctions);
             physicsApi.initPhysics();

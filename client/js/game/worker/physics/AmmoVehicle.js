@@ -59,7 +59,9 @@ define(['game/worker/physics/AmmoVehicleProcessor'
             var maxSusForce = (mass*10 / wheelMatrix.length) * 10;
             var susStiffness = mass / wheelMatrix.length;
 
-            var friction = 2;
+
+
+            var friction = 0.5;
             var frictionSlip = wOpts.frictionSlip || 2;
             var suspensionStiffness = susStiffness;
             var suspensionDamping = wOpts.dampening  || 2.3;
@@ -71,14 +73,16 @@ define(['game/worker/physics/AmmoVehicleProcessor'
             var rollInfluence = wOpts.rollInfluence  || 0.1;
             var radius = wOpts.radius || 0.5;
 
+            var wheelY = -height/2 +radius -clearance;
+
             // Chassis
             var geometry = new Ammo.btBoxShape(new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5));
             var transform = new Ammo.btTransform();
             transform.setIdentity();
-            transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z));
+            transform.setOrigin(new Ammo.btVector3(pos.x, pos.y + height + radius + clearance, pos.z));
             transform.setRotation(new Ammo.btQuaternion(quat.x, quat.y, quat.z, quat.w));
             var motionState = new Ammo.btDefaultMotionState(transform);
-            var localInertia = new Ammo.btVector3(0, 0, 0);
+            var localInertia = new Ammo.btVector3(0, 1, 0);
             geometry.calculateLocalInertia(massVehicle, localInertia);
             var body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, geometry, localInertia));
             body.setActivationState(DISABLE_DEACTIVATION);
@@ -118,9 +122,7 @@ define(['game/worker/physics/AmmoVehicleProcessor'
 
                 oddEven = -oddEven;
 
-                var wheelY = -height/2 +radius -clearance;
-
-                pos = new Ammo.btVector3(width * wheelMatrix[i][0],wheelY + wheelMatrix[i][1], length *  wheelMatrix[i][2] );
+                pos = new Ammo.btVector3(0.5 * width * wheelMatrix[i][0], wheelY + wheelMatrix[i][1], 0.5 * length *  wheelMatrix[i][2] );
 
                 var isFront = false;
                 if (i === 0 || i === 1) {

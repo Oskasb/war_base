@@ -118,6 +118,7 @@ define([
         PhysicalPiece.prototype.sampleState = function (body, piece) {
 
             if (typeof(body.getChassisWorldTransform) === 'function') {
+                console.log("Its a car!")
                 this.sampleVehicleChassis(body);
             } else {
                 this.sampleBody(body);

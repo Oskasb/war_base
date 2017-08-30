@@ -88,13 +88,15 @@ define([
         SimulationOperations.prototype.randomTerrainSetPosVec3 = function(vec3, terrain, rootObj3D, normalStore) {
 
             var size = terrain.opts.xSize;
+            var height = (terrain.opts.maxHeight - terrain.opts.minHeight);
+
             size *= 0.8;
 
             vec3.copy(rootObj3D.position);
             vec3.x += Math.random()*size  - size/2;
             vec3.z += Math.random()*size  - size/2;
 
-            vec3.y = this.terrainFunctions.getTerrainHeightAt(terrain, vec3, rootObj3D, normalStore)
+            vec3.y = this.terrainFunctions.getTerrainHeightAt(terrain, vec3, rootObj3D, normalStore);
 
         };
 

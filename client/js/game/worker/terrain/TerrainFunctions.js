@@ -503,10 +503,10 @@ define([],
 
             var height = terrain.opts.maxHeight - terrain.opts.minHeight;
 
-            calcVec2.x += terrain.opts.xSize // 0.5;
-            calcVec2.z += terrain.opts.xSize // 0.5;
+            calcVec2.x += terrain.opts.xSize / 1;
+            calcVec2.z += terrain.opts.xSize / 1;
 
-            return this.getHeightAt(calcVec2, terrain.array1d, terrainSize, segments, normalStore) + height;
+            return this.getHeightAt(calcVec2, terrain.array1d, terrainSize, segments, normalStore) - height*0.0;
         };
 
         TerrainFunctions.prototype.getDisplacedHeight = function(array1d, segments, x, z, htP, htN, normalStore) {
@@ -520,12 +520,12 @@ define([],
 
         TerrainFunctions.prototype.getHeightAt = function(pos, array1d, terrainSize, segments, normalStore) {
 
-            var htP = terrainSize // 2;
-            var htN = 0 // -terrainSize / 2; // - htP;
+            var htP = terrainSize * 1.5; // 2;
+            var htN = terrainSize / 2; // - htP;
 
             if (pos.x < htN || pos.x > htP || pos.z < htN || pos.z > htP) {
 
-                console.log("Terrain!", pos.x, pos.z, "Is Outside WORKER")
+                console.log("Terrain!", pos.x, pos.z, htP, htN ,"Is Outside WORKER");
                 //    return -1000;
                 pos.x = MATH.clamp(pos.x, htN, htP);
                 pos.z = MATH.clamp(pos.z, htN, htP);

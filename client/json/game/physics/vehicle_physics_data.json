@@ -7,11 +7,11 @@
           "shape":"vehicle",
           "rigid_body":{
             "drive_train":{
-              "rpm_min":200,
-              "rpm_max":1200,
-              "gears":[2500, 1000, 400, 160, 85, 68],
-              "enginePower": 350,
-              "brake"      : 5000
+              "rpm_min":300,
+              "rpm_max":1600,
+              "gears":[1800, 400, 100, 30, 15, 68],
+              "enginePower": 1500,
+              "brake"      : 8000
             },
 
             "mass"      : 55000,
@@ -40,26 +40,26 @@
 
             "transmissionYawMatrix":[
               -0, 0,
-              -5, 5,
-              -0, 0
+              -1, 1,
+              -0.5, 0.5
             ],
 
             "wheelMatrix":[
-              [-1.0, 0.2,  0.9],[1.0, 0.2, 0.9],
-              [-1.0, 0.2,    0],[1.0, 0.2,   0],
-              [-1.0, 0.2, -0.9],[1.0, 0.2,-0.9]
+              [-1.1, 0.4,  1.1],[1.1, 0.4, 1.1],
+              [-1.0, 0.4,    0],[1.0, 0.4,   0],
+              [-1.1, 0.4, -1.1],[1.1, 0.4,-1.1]
             ],
 
             "wheelOptions":{
-              "radius":0.5,
+              "radius":0.9,
               "suspensionLength":0.9,
               "suspensionTravelCm":90,
               "suspensionCompression":1,
-              "dampingCompression":600,
-              "dampingRelaxation":800,
+              "dampingCompression":200,
+              "dampingRelaxation":500,
               "dampening": 2.5,
-              "rollInfluence":0.2,
-              "frictionSlip":1500
+              "rollInfluence":0.3,
+              "frictionSlip":5000
             }
           },
           "control_map":[
@@ -69,10 +69,19 @@
               {"control":"steer_reverse",  "stateid":"wheel_turn_reverse", "factor":-1}
           ],
           "feedback_map":[
-            {"param":"wheelInfos",     "key":4,  "property":"deltaRotation", "stateid":"track_speed_r", "factor":1},
-            {"param":"wheelInfos",     "key":5,  "property":"deltaRotation", "stateid":"track_speed_l", "factor":1},
-            {"param":"wheelInfos",     "key":4,  "property":"deltaRotation", "stateid":"track_rotation_r",   "factor":-110},
-            {"param":"wheelInfos",     "key":5,  "property":"deltaRotation", "stateid":"track_rotation_l",   "factor":-110},
+            {"param":"wheelInfos",     "key":0,  "property":"deltaRotation", "stateid":"track_speed_r",      "factor":1},
+            {"param":"wheelInfos",     "key":1,  "property":"deltaRotation", "stateid":"track_speed_l",      "factor":1},
+            {"param":"wheelInfos",     "key":2,  "property":"deltaRotation", "stateid":"track_speed_r",      "factor":1},
+            {"param":"wheelInfos",     "key":3,  "property":"deltaRotation", "stateid":"track_speed_l",      "factor":1},
+            {"param":"wheelInfos",     "key":4,  "property":"deltaRotation", "stateid":"track_speed_r",      "factor":1},
+            {"param":"wheelInfos",     "key":5,  "property":"deltaRotation", "stateid":"track_speed_l",      "factor":1},
+            {"param":"wheelInfos",     "key":0,  "property":"deltaRotation", "stateid":"track_rotation_r",   "factor":-35},
+            {"param":"wheelInfos",     "key":1,  "property":"deltaRotation", "stateid":"track_rotation_l",   "factor":-35},
+            {"param":"wheelInfos",     "key":2,  "property":"deltaRotation", "stateid":"track_rotation_r",   "factor":-35},
+            {"param":"wheelInfos",     "key":3,  "property":"deltaRotation", "stateid":"track_rotation_l",   "factor":-35},
+            {"param":"wheelInfos",     "key":4,  "property":"deltaRotation", "stateid":"track_rotation_r",   "factor":-35},
+            {"param":"wheelInfos",     "key":5,  "property":"deltaRotation", "stateid":"track_rotation_l",   "factor":-35},
+
 
             {"param":"dynamic",     "key":"gearIndex",  "property":"state", "stateid":"engine_gear",    "factor":1},
             {"param":"dynamic",     "key":"rpm",        "property":"state", "stateid":"engine_rpm",     "factor":1},

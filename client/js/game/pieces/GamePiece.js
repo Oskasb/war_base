@@ -109,7 +109,7 @@ define([
                     }
                 }
             }
-            return biggest * 0.65 * 2;
+            return biggest * 0.65;
         };
 
         GamePiece.prototype.attachPieceSlots = function (slots, slotsReady) {

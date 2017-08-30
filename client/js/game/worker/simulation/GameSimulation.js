@@ -11,9 +11,9 @@ define([
         SimulationState
     ) {
 
-        var GameSimulation = function(protocolSystem) {
+        var GameSimulation = function(Ammo, protocolSystem) {
 
-            this.simulationState = new SimulationState(protocolSystem);
+            this.simulationState = new SimulationState(Ammo, protocolSystem);
             this.simulationRequests = new SimulationRequests(this.simulationState);
         };
 
@@ -32,16 +32,17 @@ define([
 
         GameSimulation.prototype.runGameLoop = function(tpf) {
 
+            console.log("Run Worker Game Loop", tpf);
+
             clearInterval(this.gameLoop);
 
             var frameTime = tpf;
-            var update = function(tickTpf) {
-                this.updateSimulation(tickTpf)
+
+            var update = function() {
+                this.updateSimulation(frameTime)
             }.bind(this);
 
-            this.gameLoop = setInterval(function() {
-                update(frameTime)
-            }, tpf*1000);
+            this.gameLoop = setInterval(update, tpf*1000);
         };
 
         GameSimulation.prototype.stopGameLoop = function() {

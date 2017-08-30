@@ -137,6 +137,17 @@ define([
             var loader = new THREE.OBJLoader();
 
             var loadUrl = function(url, id, meshFound) {
+
+                if (typeof(baseUrl) !== 'undefined') {
+
+                    pool = 1;
+
+                    url = url.substr(2);
+
+                    url = baseUrl+url;
+                    console.log(url);
+                }
+
                 loader.load(url, function ( object ) {
 
                     getMesh(object, id, meshFound)
@@ -181,6 +192,11 @@ define([
             return modelList;
         };
 
+        ThreeModelLoader.getModelPool = function() {
+            console.log(PipelineAPI.getCachedConfigs());
+            return modelPool;
+        };
+
         ThreeModelLoader.loadModelId = function(id) {
 
             if (!modelList[id]) {
@@ -205,9 +221,7 @@ define([
         };
 
 
-        ThreeModelLoader.loadData = function(TAPI) {
-
-            ThreeTerrain.loadData(TAPI);
+        ThreeModelLoader.loadData = function() {
 
             var modelListLoaded = function(scr, data) {
             //    console.log("Models updated:", data);
@@ -221,6 +235,9 @@ define([
             new PipelineObject("MODELS", "THREE_BUILDINGS", modelListLoaded);
         };
 
+        ThreeModelLoader.loadTerrainData = function(TAPI) {
+            ThreeTerrain.loadData(TAPI);
+        };
 
         ThreeModelLoader.createObject3D = function() {
             return new THREE.Object3D();

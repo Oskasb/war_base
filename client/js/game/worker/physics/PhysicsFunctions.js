@@ -192,8 +192,13 @@ define([        'game/worker/physics/VehicleProcessor'
         MODEL.AngularVelocityTolerance = 1;
         MODEL.TemporalTolerance = 1;
 
-        PhysicsFunctions.prototype.updatePhysicalWorld = function(world, currentTime) {
+        var asyncStep = function(world, dt) {
+        //    setTimeout(function() {
+                world.step(MODEL.PhysicsStepTime, dt, MODEL.PhysicsMaxSubSteps);
+        //    }, 0)
+        };
 
+        PhysicsFunctions.prototype.updatePhysicalWorld = function(world, currentTime) {
 
             if(lastTime !== undefined){
                 var dt = (currentTime - lastTime);
@@ -201,11 +206,8 @@ define([        'game/worker/physics/VehicleProcessor'
                 remaining = dt + remaining;
 
                 while (remaining >= 0) {
-
-                    world.step(MODEL.PhysicsStepTime, dt, MODEL.PhysicsMaxSubSteps);
-
+                    asyncStep(world, dt);
                     //   doStep(world, fixedTimeStep, dt, maxSubSteps) ;
-
                     remaining -= MODEL.PhysicsStepTime*MODEL.PhysicsMaxSubSteps;
                 }
 

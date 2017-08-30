@@ -78,7 +78,7 @@ define([
 
             this.euler.setFromQuaternion(quat);
 
-            var angle = MATH.subAngles(MATH.nearestAngle(this.euler.x), MATH.nearestAngle(this.lastAngle)); // (MATH.TWO_PI);
+            var angle = -MATH.subAngles(MATH.nearestAngle(this.euler.x), MATH.nearestAngle(this.lastAngle)); // (MATH.TWO_PI);
 
             this.lastAngle = this.euler.x;
 
@@ -340,6 +340,12 @@ define([
         };
 
 
+        AmmoVehicleProcessor.prototype.clearFeedbackMap = function(piece, feedback) {
+            var targetStateId = feedback.stateid;
+            var state =         piece.getPieceStateByStateId(targetStateId);
+            state.value =       0;
+        };
+
         AmmoVehicleProcessor.prototype.applyFeedbackMap = function(target, piece, feedback) {
                 var param =         feedback.param;
                 var key =           feedback.key;
@@ -347,12 +353,16 @@ define([
                 var targetStateId = feedback.stateid;
                 var factor =        feedback.factor;
                 var state =         piece.getPieceStateByStateId(targetStateId);
-                state.value =       this.interpretVehicleState(param, key, property) * factor;
+                state.value +=      this.interpretVehicleState(param, key, property) * factor;
         };
 
         //  var speed = vehicle.getCurrentSpeedKmHour();
 
         AmmoVehicleProcessor.prototype.sampleVehicle = function(target, piece, feedbackMap) {
+
+            for (var i = 0; i < feedbackMap.length; i++) {
+                this.clearFeedbackMap(piece, feedbackMap[i]);
+            }
 
             for (var i = 0; i < feedbackMap.length; i++) {
                 this.applyFeedbackMap(target, piece, feedbackMap[i]);

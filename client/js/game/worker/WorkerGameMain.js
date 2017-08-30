@@ -16,9 +16,9 @@ define([
     ) {
 
 
-        var WorkerGameMain = function() {
+        var WorkerGameMain = function(Ammo) {
             this.protocolSystem = new ProtocolSystem();
-            this.gameSimulation = new GameSimulation(this.protocolSystem);
+            this.gameSimulation = new GameSimulation(Ammo, this.protocolSystem);
             this.gameSimulation.runGameLoop(0.05);
         };
 
