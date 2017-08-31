@@ -534,7 +534,7 @@ THREE.Terrain.toArray1D = function(vertices, invert) {
     if (invert) {
         inv = -1;
     }
-    var tgt = new Float64Array(vertices.length);
+    var tgt = new Float32Array(vertices.length);
     for (var i = 0, l = tgt.length; i < l; i++) {
         tgt[i] = vertices[i].z * inv;
     }

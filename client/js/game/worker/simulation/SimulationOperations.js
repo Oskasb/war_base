@@ -127,6 +127,12 @@ define([
         };
 
         SimulationOperations.prototype.checkActorIntegrity = function(actor, levels) {
+
+            if (actor.physicalPiece) {
+                var mass = actor.physicalPiece.config.rigid_body.mass;
+                if (!mass) return true;
+            }
+
             var pos = actor.piece.rootObj3D.position;
 
             calcVec.copy(pos);

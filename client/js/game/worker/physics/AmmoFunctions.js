@@ -106,7 +106,7 @@ define([
         var remaining = 0;
         var MODEL = {};
 
-        MODEL.PhysicsStepTime = 0.005;
+        MODEL.PhysicsStepTime = 0.01;
         MODEL.PhysicsMaxSubSteps = 1;
         MODEL.SpatialTolerance = 1;
         MODEL.AngularVelocityTolerance = 1;
@@ -183,7 +183,24 @@ define([
             var scaleX = terrainWidthExtents / ( terrainWidth - 1 );
             var scaleZ = terrainDepthExtents / ( terrainDepth - 1 );
             heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX, 1, scaleZ));
-            heightFieldShape.setMargin(0.0);
+            heightFieldShape.setMargin(0.05);
+            return heightFieldShape;
+        }
+
+        function createTerrainMeshShape(buffer, sideSize, terrainMaxHeight, terrainMinHeight) {
+
+            var terrainWidthExtents = sideSize;
+            var terrainDepthExtents = sideSize;
+            var terrainWidth = Math.sqrt(buffer.length / 3);
+            var terrainDepth = terrainWidth;
+
+            // Creates the heightfield physics shape
+            var heightFieldShape = createTriMeshFromBuffer(buffer);
+            // Set horizontal scale
+            var scaleX = terrainWidthExtents / ( terrainWidth - 1 );
+            var scaleZ = terrainDepthExtents / ( terrainDepth - 1 );
+            heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX*2, 1, scaleZ*2));
+        //    heightFieldShape.setMargin(0.0);
             return heightFieldShape;
         }
 
@@ -193,6 +210,10 @@ define([
             var terrainMinHeight = minHeight;
 
             var heightDiff = maxHeight-minHeight;
+
+            var restitution =  0.2;
+            var damping     =  0.9;
+            var friction    =  0.9;
 
         //    console.log("Ground Matrix: ", data.length)
 
@@ -206,11 +227,14 @@ define([
             var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
             var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
 
+            groundBody.setRestitution(restitution);
+            groundBody.setFriction(friction);
+            groundBody.setDamping(damping, damping);
+
             world.addRigidBody( groundBody );
 
             return groundBody;
         };
-
 
 
         AmmoFunctions.prototype.addPhysicalActor = function(world, actor) {
@@ -248,7 +272,7 @@ define([
         function createBody(geometry, pos, quat, mass, friction) {
 
             if(!mass) mass = 0;
-            if(!friction) friction = 1;
+
 
             var transform = new Ammo.btTransform();
             transform.setIdentity();
@@ -262,10 +286,7 @@ define([
             var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, geometry, localInertia);
             var body = new Ammo.btRigidBody(rbInfo);
 
-            body.setRestitution(0.2);
-            body.setFriction(friction);
-            //body.setRestitution(.9);
-            //body.setDamping(0.2, 0.2);
+
             return body;
 
         }
@@ -378,6 +399,8 @@ define([
 
             threeVec.y += heightOffset;
 
+            shape.setMargin(0.05);
+
             var body = createBody(shape, threeVec, quat, mass, friction);
 
             world.addRigidBody(body);
@@ -394,9 +417,11 @@ define([
             var shape;
             var heightOffset;
 
-            var mass = bodyParams.mass;
-
+            var mass = bodyParams.mass || 0;
+            var restitution = bodyParams.restitution || 0.5;
+            var damping = bodyParams.damping || 0.5;
             var friction = bodyParams.friction || 2.9;
+
 
             if (bodyParams.shape === 'Cylinder') {
                 heightOffset = args[2] / 2;
@@ -419,6 +444,11 @@ define([
             threeVec.y += heightOffset;
 
             var body = createBody(shape, threeVec, quat, mass, friction);
+
+
+            body.setRestitution(restitution);
+            body.setFriction(friction);
+            body.setDamping(damping, damping);
 
             world.addRigidBody(body);
         //    body.setActivationState(DISABLE_DEACTIVATION);

@@ -38,7 +38,11 @@ define(['game/worker/physics/AmmoVehicleProcessor'
             var length      = bodyParams.length     || 3.1;
             var height      = bodyParams.height     || 1.1;
             var clearance   = bodyParams.clearance  || 0.2;
-            var mass        = bodyParams.mass       || 0;
+            var mass        = bodyParams.mass       || 1000;
+
+            var restitution = bodyParams.restitution || 0.5;
+            var damping     = bodyParams.damping || 0.5;
+            var friction    = bodyParams.friction || 2.9;
 
             var wOpts = bodyParams.wheelOptions || {};
 
@@ -56,15 +60,13 @@ define(['game/worker/physics/AmmoVehicleProcessor'
             var transmissionMatrix = bodyParams.transmissionMatrix || transmissionMat;
             var transmissionYawMatrix = bodyParams.transmissionYawMatrix || transmissionYawMat;
 
-            var maxSusForce = (mass*10 / wheelMatrix.length) * 10;
-            var susStiffness = mass / wheelMatrix.length;
+            var maxSusForce = (mass*10 / wheelMatrix.length) * 50;
+            var susStiffness = 10; // wheelMatrix.length;
 
 
-
-            var friction = 0.5;
             var frictionSlip = wOpts.frictionSlip || 2;
             var suspensionStiffness = susStiffness;
-            var suspensionDamping = wOpts.dampening  || 2.3;
+            var suspensionDamping = wOpts.suspensionDamping  || 2.3;
             var dampingRelaxation = wOpts.dampingRelaxation || 5;
             var dampingCompression = wOpts.dampingCompression || 2;
             var suspensionCompression = wOpts.suspensionCompression || 4.4;
@@ -86,15 +88,15 @@ define(['game/worker/physics/AmmoVehicleProcessor'
             geometry.calculateLocalInertia(massVehicle, localInertia);
             var body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, geometry, localInertia));
             body.setActivationState(DISABLE_DEACTIVATION);
+
+            body.setRestitution(restitution);
             body.setFriction(friction);
+            body.setDamping(damping, damping);
+
             physicsWorld.addRigidBody(body);
-            //    var chassisMesh = createChassisMesh(chassisWidth, chassisHeight, chassisLength);
 
-            // Raycast Vehicle
+
             var tuning = new Ammo.btVehicleTuning();
-
-            console.log("TUNING:", tuning);
-
 
             tuning.set_m_frictionSlip(frictionSlip);
             tuning.set_m_maxSuspensionForce(maxSusForce);

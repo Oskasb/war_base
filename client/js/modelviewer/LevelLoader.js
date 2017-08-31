@@ -81,12 +81,6 @@ define([
 
             addButton();
 
-            var tick = function(e) {
-
-                GameAPI.tickGame(evt.args(e).tpf, evt.args(e).time);
-            };
-
-            evt.on(evt.list().CLIENT_TICK, tick);
         };
 
 

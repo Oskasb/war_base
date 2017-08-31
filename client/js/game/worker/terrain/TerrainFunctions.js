@@ -260,13 +260,13 @@ define([],
 
         };
 
-// get a height at point from matrix
-        TerrainFunctions.prototype.addTerrainToPhysics = function(terrainOpts, array1d, posX, posZ) {
+
+        TerrainFunctions.prototype.addTerrainToPhysics = function(terrainOpts, buffer, posX, posZ) {
 
             var opts = terrainOpts;
         //    var matrix = makeMatrix2D(array1d);
             var body = physicsApi.buildPhysicalTerrain(
-                array1d,
+                buffer,
                 opts.terrain_size,
                 posX-opts.terrain_size/2,
                 posZ-opts.terrain_size/2,

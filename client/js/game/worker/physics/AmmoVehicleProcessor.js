@@ -232,11 +232,11 @@ define([
         AmmoVehicleProcessor.prototype.determineBrakeState = function(dynamic, speedInputState, driveTrain) {
         //    if ()
 
-            var wheelBrake = speedInputState*this.framelWheelRotation;
+            var wheelBrake = speedInputState*this.framelWheelRotation * 1;
 
             var brakeState = MATH.clamp(-wheelBrake, 0, 1);
 
-            if (-wheelBrake > 0.2) {
+            if (-wheelBrake > 0.01) {
                 this.brakeCommand = 1;
             }
 
@@ -309,13 +309,12 @@ define([
 
                 if (Math.abs(this.lastbrakeState)) {
                     target.setBrake(this.lastbrakeState * this.brakeMatrix[i] * driveTrain.brake, i);
-                //    target.applyEngineForce(0, i);
+                    target.applyEngineForce(0, i);
                 } else {
                     target.setBrake(0, i);
-
+                    target.applyEngineForce(powerState * this.transmissionMatrix[i] + powerState * yawFactor , i);
                 }
 
-                target.applyEngineForce(powerState * this.transmissionMatrix[i] + powerState * yawFactor , i);
 
                 target.setSteeringValue(yaw_state* this.steerMatrix[i], i);
 
