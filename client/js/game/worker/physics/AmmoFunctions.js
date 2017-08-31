@@ -21,7 +21,7 @@ define([
         var Ammo;
 
         var AmmoFunctions = function(ammo) {
-            Ammo = ammo;
+
             MATHVec3 = new MATH.Vec3();
             threeVec = new THREE.Vector3();
             threeObj = new THREE.Object3D();
@@ -90,8 +90,8 @@ define([
         };
 
 
-        AmmoFunctions.prototype.createPhysicalWorld = function() {
-
+        AmmoFunctions.prototype.createPhysicalWorld = function(ammo) {
+            Ammo = ammo;
             collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
             dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
             broadphase = new Ammo.btDbvtBroadphase();
@@ -99,9 +99,18 @@ define([
             physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
             physicsWorld.setGravity( new Ammo.btVector3( 0, -9.82, 0 ) );
 
+
             return physicsWorld;
         };
 
+        AmmoFunctions.prototype.removeAmmoRigidBody = function(body, destroy) {
+            physicsWorld.removeRigidBody(body, destroy);
+        };
+
+        AmmoFunctions.prototype.cleanupPhysicalWorld = function() {
+
+
+        };
 
         var remaining = 0;
         var MODEL = {};
@@ -124,7 +133,7 @@ define([
 
                 //    world.step(MODEL.PhysicsStepTime, dt, MODEL.PhysicsMaxSubSteps);
 
-                    physicsWorld.stepSimulation(MODEL.PhysicsStepTime , MODEL.PhysicsMaxSubSteps, MODEL.PhysicsStepTime);
+                    world.stepSimulation(MODEL.PhysicsStepTime , MODEL.PhysicsMaxSubSteps, MODEL.PhysicsStepTime);
                     //   doStep(world, fixedTimeStep, dt, maxSubSteps) ;
 
                     remaining -= MODEL.PhysicsStepTime;

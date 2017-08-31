@@ -29,7 +29,11 @@ define([
             physicsApi = new AmmoAPI(Ammo);
             this.terrainFunctions = new TerrainFunctions(physicsApi);
             this.simulationOperations = new SimulationOperations(this.terrainFunctions);
-            physicsApi.initPhysics();
+
+            var physicsRdy = function() {
+
+            };
+            physicsApi.initPhysics(physicsRdy);
         };
 
         SimulationState.prototype.addLevel = function(options, ready) {
@@ -39,7 +43,11 @@ define([
                 ready({dataKey:level.dataKey, levelId:level.id, config:level.config});
             }.bind(this);
 
+        //
             this.simulationOperations.buildLevel(options, levelBuilt);
+        //
+
+
 
         };
 
@@ -84,7 +92,7 @@ define([
 
             this.protocolSystem.removeProtocol(actor);
             if (actor.body) {
-                physicsApi.excludeBody(actor.body);
+                physicsApi.excludeBody(actor.body, true);
             }
 
             actor.removeGameActor();
@@ -92,9 +100,18 @@ define([
         };
 
         SimulationState.prototype.removeLevel = function(levelId, cb) {
+
+            var terrainActorsGone = function(actorId) {
+                cb(levelId);
+            };
+
             var level = this.getLevelById(levelId);
             levels.splice(levels.indexOf(level), 1);
-            cb(levelId);
+
+            while (level.terrainActors.length) {
+                this.removeActor(level.terrainActors.pop(), terrainActorsGone)
+            }
+
         };
 
         SimulationState.prototype.attachTerrainActorToLevel = function(levelId, actorId, cb) {
@@ -146,7 +163,6 @@ define([
             if (levels.length) {
                 time += tpf;
                 physicsApi.updatePhysicsSimulation(time);
-            }
 
             for (var i = 0; i < actors.length; i++) {
 
@@ -157,8 +173,9 @@ define([
                 if (!integrity) {
             //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
                 }
-
             }
+        }
+
             var status = physicsApi.fetchPhysicsStatus();
         };
 

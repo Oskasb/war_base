@@ -38,10 +38,6 @@ define([
         };
 
 
-        SimulationOperations.prototype.updateState = function(tpf) {
-
-        };
-
         var checkPositionWithin = function(pos, terrainModel, parentObj) {
 
             var pPosx = parentObj.position.x;

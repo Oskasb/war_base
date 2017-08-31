@@ -39,15 +39,14 @@ require(
 	    WorkerGameMain
     ) {
 
-		var MainGameWorker = function(Ammo) {
-			this.workerGameMain = new WorkerGameMain(Ammo);
+		var MainGameWorker = function() {
+			this.workerGameMain = new WorkerGameMain();
 		};
 
 
-        Ammo().then(function(Ammo) {
-            mainGameWorker = new MainGameWorker(Ammo);
-            postMessage([1, 'ready']);
-        });
+        mainGameWorker = new MainGameWorker();
+        postMessage([1, 'ready']);
+
 	}
 );
 
