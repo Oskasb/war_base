@@ -38,12 +38,18 @@ define([
 
         LevelBuilder.prototype.createLevelTerrainActor = function(level, actor, buffers, onOk) {
 
+            var delayedOk = function(call, l) {
+                setTimeout(function() {
+                    call(l)
+                }, 500)
+            };
+
             var createIt = function(mod, actor, buffers) {
                 var model = ThreeAPI.loadGround(mod.config.options, buffers, ThreeAPI.createRootObject());
                 mod.setModel(model);
                 level.addLevelTerrainActor(actor);
                 EffectsAPI.enableTerrainVegetation();
-                onOk(level);
+                delayedOk(onOk, level);
             };
 
             var piece = actor.piece;

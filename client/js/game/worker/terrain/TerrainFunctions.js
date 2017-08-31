@@ -7,13 +7,13 @@ define([],
 
         var calcVec1;
         var calcVec2;
-        var CannonAPI;
+        var physicsApi;
         var iWeightCurve;
         var jWeightCurve;
 
         var TerrainFunctions = function(CNNAPI) {
-            this.CannonAPI = CNNAPI;
-            CannonAPI = CNNAPI;
+            this.physicsApi = CNNAPI;
+            physicsApi = CNNAPI;
             calcVec1 = new THREE.Vector3();
             calcVec2 = new THREE.Vector3();
 
@@ -234,12 +234,12 @@ define([],
 
         TerrainFunctions.prototype.enableTerrainPhysics = function(piece) {
             var module = this.getPieceTerrainModule(piece);
-            this.CannonAPI.includeBody(module.body);
+            physicsApi.includeBody(module.body);
         };
 
         TerrainFunctions.prototype.disableTerrainPhysics = function(piece) {
             var module = this.getPieceTerrainModule(piece);
-            this.CannonAPI.excludeBody(module.body);
+            physicsApi.excludeBody(module.body);
         };
 
 
@@ -264,9 +264,9 @@ define([],
         TerrainFunctions.prototype.addTerrainToPhysics = function(terrainOpts, array1d, posX, posZ) {
 
             var opts = terrainOpts;
-            var matrix = makeMatrix2D(array1d);
-            var body = this.CannonAPI.buildPhysicalTerrain(
-                matrix,
+        //    var matrix = makeMatrix2D(array1d);
+            var body = physicsApi.buildPhysicalTerrain(
+                array1d,
                 opts.terrain_size,
                 posX-opts.terrain_size/2,
                 posZ-opts.terrain_size/2,
@@ -506,7 +506,7 @@ define([],
             calcVec2.x += terrain.opts.xSize / 1;
             calcVec2.z += terrain.opts.xSize / 1;
 
-            return this.getHeightAt(calcVec2, terrain.array1d, terrainSize, segments, normalStore) - height*0.0;
+            return this.getHeightAt(calcVec2, terrain.array1d, terrainSize, segments, normalStore);
         };
 
         TerrainFunctions.prototype.getDisplacedHeight = function(array1d, segments, x, z, htP, htN, normalStore) {

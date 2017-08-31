@@ -12,8 +12,11 @@ define([
         var threeObj = new THREE.Object3D();
         var DISABLE_DEACTIVATION = 4;
         var TRANSFORM_AUX;
+        var VECTOR_AUX;
 
         var PhysicalPiece = function(hostId, dataKey, ready) {
+
+
 
             this.id = hostId+'_physical';
             this.dataKey = dataKey;
@@ -39,37 +42,14 @@ define([
             ready();
         };
 
-        PhysicalPiece.prototype.sampleVehicleChassis = function(vehicle) {
-
-            var tm, p, q, i;
-
-            tm = vehicle.getChassisWorldTransform();
-            p = tm.getOrigin();
-            q = tm.getRotation();
-
-            threeObj.position.set(p.x(), p.y(), p.z());
-            threeObj.quaternion.set(q.x(), q.y(), q.z(), q.w());
-
-            return;
-            var n = vehicle.getNumWheels();
-            for (i = 0; i < n; i++) {
-                vehicle.updateWheelTransform(i, true);
-                tm = vehicle.getWheelTransformWS(i);
-                p = tm.getOrigin();
-                q = tm.getRotation();
-                wheelMeshes[i].position.set(p.x(), p.y(), p.z());
-                wheelMeshes[i].quaternion.set(q.x(), q.y(), q.z(), q.w());
-            }
-
-        };
 
         PhysicalPiece.prototype.sampleBody = function(body) {
 
-            if (!TRANSFORM_AUX) {
-                TRANSFORM_AUX = new Ammo.btTransform();
+            if (!body.getMotionState) {
+                console.log("Bad physics body", body);
+                return;
             }
 
-            if (body.getMotionState) {
                 var ms = body.getMotionState();
                 if (ms) {
                     ms.getWorldTransform(TRANSFORM_AUX);
@@ -77,10 +57,8 @@ define([
                     var q = TRANSFORM_AUX.getRotation();
                     if (isNaN(p.x())) {
 
-                        if (Math.random() < 0.002) {
+                        if (Math.random() < 0.02) {
                             console.log("Bad body transform", body)
-
-
                         }
                         return;
                     }
@@ -88,15 +66,32 @@ define([
                     threeObj.quaternion.set(q.x(), q.y(), q.z(), q.w());
                 }
 
+        };
+
+        PhysicalPiece.prototype.setBodyPosition = function(body, posVec3) {
+
+            if (!body.getMotionState) {
+                console.log("Bad physics body", body);
                 return;
             }
 
+            var ms = body.getMotionState();
 
-            threeObj.quaternion.x = -body.quaternion.x;
-            threeObj.quaternion.y = -body.quaternion.z+body.quaternion.w;
-            threeObj.quaternion.z = -body.quaternion.y;
-            threeObj.quaternion.w = body.quaternion.w+body.quaternion.z;
-            threeObj.position.set(body.position.x, body.position.z, body.position.y);
+            ms.getWorldTransform(TRANSFORM_AUX);
+
+            TRANSFORM_AUX.setIdentity();
+
+            TRANSFORM_AUX.getOrigin().setX(posVec3.x);
+            TRANSFORM_AUX.getOrigin().setY(posVec3.y);
+            TRANSFORM_AUX.getOrigin().setZ(posVec3.z);
+
+            body.setWorldTransform(TRANSFORM_AUX);
+
+            body.getLinearVelocity(VECTOR_AUX);
+            VECTOR_AUX.setX(0);
+            VECTOR_AUX.setY(0);
+            VECTOR_AUX.setZ(0);
+            body.setLinearVelocity(VECTOR_AUX);
 
         };
 
@@ -114,15 +109,19 @@ define([
             piece.rootObj3D.quaternion.copy(threeObj.quaternion);
         };
 
+        PhysicalPiece.prototype.setPhysicalPosition = function (body, piece, posVec3) {
+            this.setBodyPosition(body, posVec3);
+        };
+
 
         PhysicalPiece.prototype.sampleState = function (body, piece) {
 
-            if (typeof(body.getChassisWorldTransform) === 'function') {
-                console.log("Its a car!")
-                this.sampleVehicleChassis(body);
-            } else {
-                this.sampleBody(body);
-            }
+            if (!TRANSFORM_AUX) {
+                TRANSFORM_AUX = new Ammo.btTransform();
+                VECTOR_AUX = new Ammo.btVector3()
+            };
+
+            this.sampleBody(body);
 
             this.applyBody(piece);
 

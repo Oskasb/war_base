@@ -122,7 +122,7 @@ define(['game/worker/physics/AmmoVehicleProcessor'
 
                 oddEven = -oddEven;
 
-                pos = new Ammo.btVector3(0.5 * width * wheelMatrix[i][0], wheelY + wheelMatrix[i][1], 0.5 * length *  wheelMatrix[i][2] );
+                pos = new Ammo.btVector3(0.5 * -width * wheelMatrix[i][0], wheelY + wheelMatrix[i][1], 0.5 * length *  wheelMatrix[i][2] );
 
                 var isFront = false;
                 if (i === 0 || i === 1) {

@@ -66,21 +66,22 @@ define([
                     var steeringObj = slot.getVisualObj3d();
 
 
-                    steeringObj.getWorldQuaternion(calcQuat);
+                    calcQuat.setFromRotationMatrix(targetObj3d.matrixWorld);
+                    //  steeringObj.getWorldQuaternion(calcQuat);
 
                     calcVec.set(0, 0, Math.PI*2);
                     calcVec.applyQuaternion(calcQuat);
 
-                    var rotY = Math.atan2(calcVec.x, calcVec.z) - Math.PI;
+                    var rotY = Math.atan2(calcVec.x, calcVec.z) // + Math.PI;
                 }
-
-
             };
         //    masterValue = 1;
 
         //    rotY = Math.sin(new Date().getTime()* 0.001) * Math.PI;
 
-            targetObj3d.getWorldPosition(targetPos);
+            targetPos.setFromMatrixPosition(targetObj3d.matrixWorld);
+            // targetObj3d.getWorldPosition(targetPos);
+
         //    if (isNaN(targetPos.y)) targetPos.copy(controls.rootObj3D.position);
 
             cameraFunctions[this.config.cameraFunction](targetPos, this.config, masterValue, rotY)

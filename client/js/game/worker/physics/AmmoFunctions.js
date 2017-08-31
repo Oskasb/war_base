@@ -141,7 +141,7 @@ define([
 
             var terrainWidthExtents = sideSize;
             var terrainDepthExtents = sideSize;
-            var terrainWidth = data.length;
+            var terrainWidth = Math.sqrt(data.length);
             var terrainDepth = terrainWidth;
             var terrainHalfWidth = terrainWidth / 2;
             var terrainHalfDepth = terrainDepth / 2;
@@ -158,15 +158,15 @@ define([
             // Copy the javascript height data array to the Ammo one.
             var p = 0;
             var p2 = 0;
-            for (var j = 0; j < terrainWidth; j++) {
-                for (var i = 0; i < terrainDepth; i++) {
+        //    for (var j = 0; j < terrainWidth; j++) {
+                for (var i = 0; i < data.length; i++) {
                     // write 32-bit float data to memory
-                    Ammo.HEAPF32[ammoHeightData + p2 >> 2] = data[i][j];
+                    Ammo.HEAPF32[ammoHeightData + p2 >> 2] = data[i];
                     p++;
                     // 4 bytes/float
                     p2 += 4;
                 }
-            }
+        //    }
             // Creates the heightfield physics shape
             var heightFieldShape = new Ammo.btHeightfieldTerrainShape(
                 terrainWidth,
@@ -183,7 +183,7 @@ define([
             var scaleX = terrainWidthExtents / ( terrainWidth - 1 );
             var scaleZ = terrainDepthExtents / ( terrainDepth - 1 );
             heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX, 1, scaleZ));
-            heightFieldShape.setMargin(0.5);
+            heightFieldShape.setMargin(0.0);
             return heightFieldShape;
         }
 

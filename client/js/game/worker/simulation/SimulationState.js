@@ -122,11 +122,24 @@ define([
             var terrainBody = this.terrainFunctions.addTerrainToPhysics(terrainOpts, terrain.array1d, 0, 0);
 
             physicsApi.includeBody(terrainBody);
-
             actor.setPhysicsBody(terrainBody);
+
+        //    time += 0.04;
+        //    physicsApi.updatePhysicsSimulation(time);
+
+        //    this.updateActorFrame(actor, 0.02);
 
             cb([JSON.stringify({actorId:actorId, levelId:levelId}), buffers]);
         };
+
+
+        SimulationState.prototype.updateActorFrame = function(actor, tpf) {
+            this.protocolSystem.applyProtocolToActorState(actor, tpf);
+            actor.piece.updateGamePiece(tpf, time);
+            actor.samplePhysicsState();
+            this.protocolSystem.updateActorSendProtocol(actor, tpf);
+        };
+
 
         SimulationState.prototype.updateState = function(tpf) {
 
@@ -136,10 +149,14 @@ define([
             }
 
             for (var i = 0; i < actors.length; i++) {
-                this.protocolSystem.applyProtocolToActorState(actors[i], tpf);
-                actors[i].piece.updateGamePiece(tpf, time);
-                actors[i].samplePhysicsState();
-                this.protocolSystem.updateActorSendProtocol(actors[i], tpf);
+
+                this.updateActorFrame(actors[i], tpf);
+
+                var integrity = this.simulationOperations.checkActorIntegrity(actors[i], levels);
+
+                if (!integrity) {
+            //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
+                }
 
             }
             var status = physicsApi.fetchPhysicsStatus();

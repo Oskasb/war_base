@@ -11,6 +11,7 @@ define([
     ) {
 
         var count = 0;
+        var calcVec = new THREE.Vector3();
 
         var SimulationOperations = function(terrainFunctions) {
             this.terrainFunctions = terrainFunctions;
@@ -65,8 +66,8 @@ define([
             pPosx += size/2;
             pPosz += size/2;
 
-            if (pPosx <= pos.x && pPosx + size > pos.x) {
-                if (pPosz <= pos.z && pPosz + size > pos.z) {
+            if (pPosx <= pos.x && pPosx + size >= pos.x) {
+                if (pPosz <= pos.z && pPosz + size >= pos.z) {
                     return true;
                 }
             }
@@ -85,6 +86,10 @@ define([
             return false;
         };
 
+        SimulationOperations.prototype.terrainHeightAtPos = function(terrain, vec3, rootObj3D, normalStore) {
+            return this.terrainFunctions.getTerrainHeightAt(terrain, vec3, rootObj3D, normalStore);
+        };
+
         SimulationOperations.prototype.randomTerrainSetPosVec3 = function(vec3, terrain, rootObj3D, normalStore) {
 
             var size = terrain.opts.xSize;
@@ -96,7 +101,7 @@ define([
             vec3.x += Math.random()*size  - size/2;
             vec3.z += Math.random()*size  - size/2;
 
-            vec3.y = this.terrainFunctions.getTerrainHeightAt(terrain, vec3, rootObj3D, normalStore);
+            vec3.y = this.terrainHeightAtPos(terrain, vec3, rootObj3D, normalStore);
 
         };
 
@@ -109,6 +114,70 @@ define([
                 };
             }
             console.log("No Terrain for Pos", vec3);
+        };
+
+        SimulationOperations.prototype.getLevelForPosition = function(vec3, levels) {
+
+            for (var i = 0; i < levels.length; i++) {
+                var index = this.checkPosIsWithinLevelTerrain(vec3, levels[i]);
+                if (typeof(index) === 'number') {
+                    return levels[i];
+                }
+            }
+        };
+
+        SimulationOperations.prototype.checkActorIntegrity = function(actor, levels) {
+            var pos = actor.piece.rootObj3D.position;
+
+            calcVec.copy(pos);
+            calcVec.x += 1000;
+            calcVec.z += 1000;
+
+            var level = this.getLevelForPosition(calcVec , levels);
+
+
+            if (!level) {
+                if (Math.random() < 0.1) {
+                    console.log("Actor not on level", calcVec);
+                    this.positionActorRandomOnTerrain(actor, levels)
+                }
+                return;
+            } else {
+                for (var i = 0; i < level.terrainActors.length; i++) {
+                    if (level.terrainActors[i] === actor) {
+                        return true;
+                    }
+                }
+            }
+
+
+            var terrainIndex  = this.checkPosIsWithinLevelTerrain(calcVec, level);
+
+            var terrainHeight = this.terrainHeightAtPos(level.terrains[terrainIndex], pos, level.terrainActors[terrainIndex].piece.rootObj3D);
+
+            if (terrainHeight > pos.y) {
+                if (Math.random() < 0.1) {
+                    console.log("Actor beneath level terrain")
+                    pos.y = terrainHeight +2;
+                    this.setActorPosition(actor, pos)
+                }
+                return;
+            }
+
+            return true;
+        };
+
+        SimulationOperations.prototype.setActorPosition = function(actor, pos) {
+            actor.forcePosition(pos);
+        };
+
+        SimulationOperations.prototype.positionActorRandomOnTerrain = function(actor, levels) {
+            var pos = actor.piece.rootObj3D.position;
+            pos.x = 1000;
+            pos.z = 1000;
+            this.getRandomPointOnTerrain(pos, levels);
+            pos.y += 10;
+            actor.forcePosition(pos);
         };
 
         return SimulationOperations;

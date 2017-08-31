@@ -102,7 +102,6 @@ define([
                     time = 0;
                 };
 
-                GameAPI.tickGame(evt.args(e).tpf, evt.args(e).time);
             };
 
             evt.on(evt.list().CLIENT_TICK, tick);

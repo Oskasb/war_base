@@ -76,7 +76,8 @@ define([], function() {
             }
         }
 
-        if (count && self.SharedArrayBuffer) return;
+        if (!count) return;
+        if (self.SharedArrayBuffer) return;
         self.postMessage(msg);
     };
 

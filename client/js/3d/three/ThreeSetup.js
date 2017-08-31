@@ -25,9 +25,15 @@ define(['../../ui/GameScreen',
 
     var postrenderEvt = {};
 
+    var renderTime;
+
     function animate(time) {
 
-        requestAnimationFrame( animate );
+    };
+
+
+    ThreeSetup.callPrerender = function(time) {
+        time = time || renderTime;
         idle = (performance.now() / 1000) - renderEnd;
         PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_ANIM_IDLE', idle);
         tpf = (time - lastTime)*0.001;
@@ -37,12 +43,28 @@ define(['../../ui/GameScreen',
             prerenderCallbacks[i](tpf);
         }
 
+        ThreeSetup.callRender(scene, camera);
+
+    };
+
+    ThreeSetup.callRender = function(scn, cam) {
         renderStart = performance.now()/1000;
-        renderer.render(scene, camera);
+        renderer.render(scn, cam);
         renderEnd = performance.now()/1000;
+        ThreeSetup.callPostrender();
+    };
+
+    ThreeSetup.callPostrender = function() {
         PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_ANIM_RENDER', renderEnd - renderStart);
-        evt.fire(evt.list().POSTRENDER_TICK, postrenderEvt)
-    }
+        evt.fire(evt.list().POSTRENDER_TICK, postrenderEvt);
+        requestAnimationFrame( ThreeSetup.callPrerender );
+    };
+
+
+    ThreeSetup.animate = function(time) {
+
+        animate();
+    };
 
 
     ThreeSetup.initThreeRenderer = function(pxRatio, antialias, containerElement, clientTickCallback, store) {
@@ -52,7 +74,7 @@ define(['../../ui/GameScreen',
 
         lastTime = 0;
         init();
-        animate(0.1);
+        ThreeSetup.callPrerender(0.1);
 
         function init() {
 

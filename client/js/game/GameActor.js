@@ -133,6 +133,13 @@ define([
             }
         };
 
+        GameActor.prototype.forcePosition = function (posVec3) {
+            if (this.body) {
+                this.physicalPiece.setPhysicalPosition(this.body, this.piece, posVec3)
+            }
+        };
+
+
         GameActor.prototype.removeGameActor = function () {
             this.pipeObj.removePipelineObject();
             if (this.controls) this.controls.removeGamePiece();

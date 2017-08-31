@@ -2,6 +2,7 @@
 
 define([
 		'Events',
+        'GameAPI',
 		'application/ClientRegistry',
         'application/debug/SetupDebug',
 		'io/Connection',
@@ -13,6 +14,7 @@ define([
     ],
 	function(
         evt,
+        GameAPI,
         ClientRegistry,
         SetupDebug,
         Connection,
@@ -147,9 +149,11 @@ define([
 
 
         var start;
+        var gameTime = 0;
 
         ModelViewer.prototype.tick = function(tpf) {
-            
+
+            gameTime += tpf;
             start = performance.now();
             
 			frame++;
@@ -178,8 +182,9 @@ define([
             tickEvent.frame = frame;
             tickEvent.tpf = tpf;
 
-            this.pointerCursor.tick()
+            this.pointerCursor.tick();
             PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
+            GameAPI.tickGame(tpf, gameTime);
             evt.fire(evt.list().CLIENT_TICK, tickEvent);
             this.viewerMain.tickViewerClient(tpf);
             

@@ -18,6 +18,7 @@ define([
     ) {
 
         var renderers = {};
+        var requestedEffects = [];
         var activeEffects = [];
         var idleEffects = [];
         var endedEffects = [];
@@ -145,6 +146,8 @@ define([
 
             var effect = this.getEffect();
 
+            effect.setEffectId(id);
+
             effect.setEffectPosition(pos);
             
             if (size) {
@@ -165,7 +168,16 @@ define([
             }
             
             effect.setEffectVelocity(vel);
-            effect.setEffectData(this.particleEffectData.buildEffect(effect.effectData, 'THREE', id));
+
+            requestedEffects.push(effect);
+
+            return effect;
+        //    return this.activateEffect(effect);
+
+        };
+
+        ParticleSpawner.prototype.activateEffect = function(effect) {
+            effect.setEffectData(this.particleEffectData.buildEffect(effect.effectData, 'THREE', effect.getEffectId()));
 
             var renderer = this.getRenderersById(effect.effectData.effect.renderer_id);
 
@@ -181,7 +193,6 @@ define([
             }
 
             return this.duplicateRenderer(renderer[0], effect);
-
         };
 
 
@@ -215,8 +226,8 @@ define([
             }
 
             if (!effect.aliveParticles.length) {
-                console.log("Bad Effect returned!", effect);
-                return;
+            //    console.log("Bad Effect returned!", effect);
+            //    return;
             }
 
             effect.age = effect.lastTpf;
@@ -228,6 +239,12 @@ define([
         ParticleSpawner.prototype.updateSpawnedParticles = function(tpf) {
 
             systemTime += tpf;
+
+
+                while (requestedEffects.length) {
+                    this.activateEffect(requestedEffects.pop());
+                }
+
 
             for (var key in renderers) {
                 for (var i = 0; i < renderers[key].length; i++) {
@@ -304,6 +321,9 @@ define([
             var count = 0;
             activeRenderes = 0;
             totalRenderers = 0;
+
+
+
 
             for (var i = 0; i < activeEffects.length; i++) {
                 count += activeEffects[i].aliveParticles.length;

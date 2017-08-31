@@ -5,8 +5,8 @@
         "id":"default_level_population",
         "data":{
           "actors":[
-            {"options":{"dataKey":"actor_prop_platform_35x25"}, "count":30, "onGround":true},
-            {"options":{"dataKey":"actor_prop_oil_drum"},       "count":30, "onGround":true}
+            {"options":{"dataKey":"actor_prop_platform_35x25"}, "count":10, "onGround":true},
+            {"options":{"dataKey":"actor_prop_oil_drum"},       "count":50, "onGround":true}
           ]
         }
       }

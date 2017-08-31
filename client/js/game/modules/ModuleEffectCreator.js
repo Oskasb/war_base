@@ -109,7 +109,9 @@ define([
             }
 
             calcVec.setFromMatrixPosition( model.matrixWorld );
-            model.getWorldQuaternion(calcQuat);
+        //    model.getWorldQuaternion(calcQuat);
+            calcQuat.setFromRotationMatrix(model.matrixWorld);
+
 
             if (!calcVec.x) return;
             if (!piece.spatial.pos.data) return;
@@ -157,8 +159,7 @@ define([
             }
 
             calcVec.setFromMatrixPosition( model.matrixWorld );
-            model.getWorldQuaternion(calcQuat);
-
+            calcQuat.setFromRotationMatrix(model.matrixWorld);
 
 
             for (var i = 0; i < fx.length; i++) {
@@ -192,7 +193,7 @@ define([
 
 
             calcVec.setFromMatrixPosition( model.matrixWorld );
-            model.getWorldQuaternion(calcQuat);
+            calcQuat.setFromRotationMatrix(model.matrixWorld);
 
             if (!calcVec.x) return;
 

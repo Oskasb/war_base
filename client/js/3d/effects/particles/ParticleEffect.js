@@ -11,6 +11,7 @@ define(['3d/effects/particles/EffectSimulators',
         var calcVec = new THREE.Vector3();
 
         var ParticleEffect = function() {
+            this.id = null;
             this.lastTpf = 0.016;
             this.effectDuration = 0;
             this.effectData = {};
@@ -21,6 +22,14 @@ define(['3d/effects/particles/EffectSimulators',
             this.vel = new THREE.Vector3();
             this.quat = new THREE.Quaternion();
             this.deadParticles = [];
+        };
+
+        ParticleEffect.prototype.setEffectId = function(id) {
+            this.id = id;
+        };
+
+        ParticleEffect.prototype.getEffectId = function(id) {
+            return this.id;
         };
 
         ParticleEffect.prototype.resetParticleEffect = function() {

@@ -205,7 +205,7 @@ define([        'game/worker/physics/VehicleProcessor'
 
                 remaining = dt + remaining;
 
-                while (remaining >= 0) {
+                while (remaining > 0) {
                     asyncStep(world, dt);
                     //   doStep(world, fixedTimeStep, dt, maxSubSteps) ;
                     remaining -= MODEL.PhysicsStepTime*MODEL.PhysicsMaxSubSteps;
