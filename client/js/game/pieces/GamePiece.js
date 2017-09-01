@@ -230,9 +230,8 @@ define([
             for (var i = 0; i < this.pieceSlots.length;i++) {
                 this.pieceSlots[i].removePieceSlot();
             }
-            ThreeAPI.removeModel(this.rootObj3D);
+            ThreeAPI.disposeModel(this.rootObj3D);
         };
-
 
         return GamePiece
     });
