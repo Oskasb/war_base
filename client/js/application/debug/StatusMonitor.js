@@ -142,7 +142,7 @@ define([
             var timeRender = PipelineAPI.readCachedConfigKey('STATUS', 'TIME_ANIM_RENDER');
 
 
-            evt.fire(evt.list().MONITOR_STATUS, {TPF:Math.round(tpf*100)/100});
+            evt.fire(evt.list().MONITOR_STATUS, {TPF:Math.floor(tpf*100)/100});
 
             evt.fire(evt.list().MONITOR_STATUS, {IDLE:percentify(timeIdle*1000, tpf) + '%'});
 

@@ -110,7 +110,6 @@ define([
         };
 
         GameAPI.setActiveControlSys = function(ctrlSys) {
-            GameAPI.addGuiControl(ctrlSys);
             activeControl = ctrlSys;
         };
 

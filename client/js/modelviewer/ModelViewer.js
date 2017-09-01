@@ -179,17 +179,19 @@ define([
             } else {
        //         console.log("Big DT", tpf, exactTpf, aggDiff);
             }
-            tickEvent.frame = frame;
-            tickEvent.tpf = tpf;
 
             this.pointerCursor.tick();
-            PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
 
             GameAPI.tickControls(tpf, gameTime);
 
             setTimeout(function() {
+
+                tickEvent.frame = frame;
+                tickEvent.tpf = tpf;
+                PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
                 GameAPI.tickGame(tpf, gameTime);
                 evt.fire(evt.list().CLIENT_TICK, tickEvent);
+
             }, 0);
 
             this.viewerMain.tickViewerClient(tpf);

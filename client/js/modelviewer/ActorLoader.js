@@ -106,10 +106,8 @@ define([
                                 PipelineAPI.setCategoryKeyValue(dataCat, mod.moduleChannels[j].state.id, mod.moduleChannels[j].state.getValueRunded(100));
                             }
                         }
-
                     }
                 }
-                GameAPI.tickGame(evt.args(e).tpf, evt.args(e).time);
             };
 
             evt.on(evt.list().CLIENT_TICK, tick);
@@ -147,20 +145,6 @@ define([
 
 
 
-/*
-                    if (rootModels[id]) {
-
-                        while (rootModels[id].length) {
-                            var p = rootModels[id].pop();
-                            _this.monitorPieceModules(p.piece, false);
-                            p.setGamePiece(null);
-                            p.removeGameActor();
-                        }
-                    }
-*/
-
-                    ThreeAPI.addToScene(actor.piece.rootObj3D);
-
                     if (actor.config.controls) {
 
                         if (controledActor) {
@@ -169,7 +153,6 @@ define([
                         }
 
                         GameAPI.controlActor(actor);
-                        ThreeAPI.addToScene(actor.controls.rootObj3D);
                         controledActor = actor;
                     };
 
@@ -182,7 +165,6 @@ define([
             } else {
 
 
-
                 if (rootModels[id]) {
                     if (controledActor) {
 
@@ -192,11 +174,11 @@ define([
                     }
                     }
 
-                    return;
+
                     while (rootModels[id].length) {
                         var p = rootModels[id].pop();
                         _this.monitorPieceModules(p.piece, false);
-                        GameAPI.removeActor(p, onRemove);
+                    //    GameAPI.removeActor(p, onRemove);
                     }
                 }
             }

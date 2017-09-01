@@ -105,7 +105,6 @@ define([
             }.bind(this);
 
             new GuiControlSystem(dataKey, ctrlReady);
-
         };
 
 
@@ -121,9 +120,7 @@ define([
 
             };
 
-
             this.createGuiControl(actor.config.controls, controlReady);
-
         };
 
         GameCommander.prototype.disableActorControls = function(actor, activeControl) {
@@ -139,8 +136,6 @@ define([
 
             GameAPI.removePiece(activeControl.piece);
             GameAPI.removeGuiControl(activeControl);
-
-            actor.releaseActorControls();
         };
 
 
