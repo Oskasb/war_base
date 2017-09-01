@@ -175,6 +175,12 @@ define([
 
 
         GamePiece.prototype.setRendereable = function(bool) {
+            if (bool) {
+                ThreeAPI.showModel(this.rootObj3D);
+            } else {
+                ThreeAPI.hideModel(this.rootObj3D)
+            }
+
             this.render = bool;
         };
 

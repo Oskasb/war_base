@@ -25,7 +25,6 @@ define([
             this.dataKey = dataKey;
             this.piece = null;
             this.physicalPiece = null;
-            this.controls = null;
 
             this.controlStateMap = new ControlStateMap();
 
@@ -53,45 +52,13 @@ define([
             return this.body;
         };
 
-        GameActor.prototype.initiateActorControls = function (controlReady) {
-            var pieceReady = function(ctrlPiece) {
-                this.bindControlStateMap(this.config.state_map);
-                controlReady(ctrlPiece)
-            }.bind(this);
-
-            this.setControlPiece(new GamePiece(this.id, this.config.controls, pieceReady));
-
-            var camReaedy = function(cc) {
-                this.setCameraControl(cc);
-            }.bind(this);
-
-            new CameraControls(this.config.camera, camReaedy)
+        GameActor.prototype.addControlState = function (ctrlSys, controlStateId, targetStateId) {
+            this.controlStateMap.addControlState(ctrlSys.piece.getPieceStateByStateId(controlStateId), this.piece.getPieceStateByStateId(targetStateId))
         };
 
-        GameActor.prototype.releaseActorControls = function () {
-            if (this.controls) this.controls.removeGamePiece();
-            this.controls = null;
-        };
-
-        GameActor.prototype.setControlPiece = function (controlPiece) {
-            if (this.controls) this.controls.removeGamePiece();
-            this.controls = controlPiece;
-
-        };
-
-        GameActor.prototype.setCameraControl = function (camControl) {
-            if (this.cameraControls) this.cameraControls.removeCameraControls();
-            this.cameraControls = camControl;
-
-        };
-
-        GameActor.prototype.addControlState = function (controlStateId, targetStateId) {
-            this.controlStateMap.addControlState(this.controls.getPieceStateByStateId(controlStateId), this.piece.getPieceStateByStateId(targetStateId))
-        };
-
-        GameActor.prototype.bindControlStateMap = function (stateMap) {
+        GameActor.prototype.bindControlStateMap = function (ctrlSys, stateMap) {
             for (var i = 0; i < stateMap.length; i++) {
-                this.addControlState(stateMap[i].control, stateMap[i].target);
+                this.addControlState(ctrlSys, stateMap[i].control, stateMap[i].target);
             }
         };
 
@@ -116,21 +83,8 @@ define([
             }
         };
 
-        GameActor.prototype.updateActpr = function () {
-            if (this.controls) {
-                /*
-                if (!this.controls.rootObj3D) {
-                    console.log("No control root object", this);
-                    return;
-                }
-             */
-                this.controls.rootObj3D.position.copy(this.piece.rootObj3D.position);
-                this.controls.rootObj3D.quaternion.copy(this.piece.rootObj3D.quaternion); //.y = this.piece.rootObj3D.rotation.y;
-                // this.controls.rootObj3D.quaternion.normalize();
-                if (this.cameraControls) {
-                    this.cameraControls.sampleTargetState(this.controls, this.controls.pieceStates);
-                }
-            }
+        GameActor.prototype.updateActor = function () {
+
         };
 
         GameActor.prototype.forcePosition = function (posVec3) {

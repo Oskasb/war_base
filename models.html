@@ -57,6 +57,7 @@
         'modelviewer/ModuleLoader',
         'modelviewer/ParticleLoader',
         'modelviewer/ActorLoader',
+        'modelviewer/ControlLoader',
         'modelviewer/LevelLoader',
         'modelviewer/ViewerPointer'
     ], function(
@@ -71,6 +72,7 @@
         ModuleLoader,
         ParticleLoader,
         ActorLoader,
+        ControlLoader,
         LevelLoader,
         ViewerPointer
     ) {
@@ -85,6 +87,7 @@
             new ViewerPointer();
             new ParticleLoader();
             new PieceLoader();
+            new ControlLoader();
             new ActorLoader();
             new LevelLoader();
         };

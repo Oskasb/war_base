@@ -1,0 +1,20 @@
+[{
+  "CONTROL_DATA":{
+    "CONTROLS":[
+      {
+        "id":"gui_control_cursor",
+        "data":{
+          "piece":"cursor_control_piece",
+          "camera":"camera_default"
+        }
+      },
+      {
+        "id":"gui_control_vehicle",
+        "data":{
+          "piece":"piece_control_vehicle",
+          "camera":"vehicle_control_camera"
+        }
+      }
+    ]
+  }
+}]

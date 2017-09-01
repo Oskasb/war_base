@@ -184,11 +184,18 @@ define([
 
             this.pointerCursor.tick();
             PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
-            GameAPI.tickGame(tpf, gameTime);
-            evt.fire(evt.list().CLIENT_TICK, tickEvent);
+
+            GameAPI.tickControls(tpf, gameTime);
+
+            setTimeout(function() {
+                GameAPI.tickGame(tpf, gameTime);
+                evt.fire(evt.list().CLIENT_TICK, tickEvent);
+            }, 0);
+
             this.viewerMain.tickViewerClient(tpf);
             
             evt.fire(evt.list().CAMERA_TICK, {frame:frame, tpf:tpf});
+
             PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_GAME_TICK', performance.now() - start);
 
 

@@ -19,6 +19,14 @@
         }
       },
       {
+        "id":"channel_sample_hover_sctors",
+        "data":{
+          "targets":[
+            {"targetid":"target_hover_actors"}
+          ]
+        }
+      },
+      {
         "id":"channel_input_forward",
         "data":{
           "targets":[

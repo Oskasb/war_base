@@ -27,25 +27,25 @@
         }
       },
       {
-        "id":"camera_prop_view",
+        "id":"camera_default",
         "data":{
           "cameraFunction":"orbit_target_obj",
           "view_heading":{"slot_id":"piece_root"},
           "master_state":{"state_id":"fire_state"},
-          "min_elevation":10,
+          "min_elevation":-1000,
           "offsets":[
             {"property":"target", "axis":"y","value":4}
           ],
           "params":[
-            {"param":"maxDistance",   "value":15},
-            {"param":"minDistance",   "value":7},
+            {"param":"maxDistance",   "value":200},
+            {"param":"minDistance",   "value":1},
             {"param":"enableDamping", "value":true},
             {"param":"dampingFactor", "value":0.82},
             {"param":"autoRotate",    "value":false},
             {"param":"minAzimuthAngle", "value":-3.148},
             {"param":"maxAzimuthAngle", "value":3.148},
-            {"param":"minPolarAngle",   "value":0.448},
-            {"param":"maxPolarAngle",   "value":2.348}
+            {"param":"minPolarAngle",   "value":-3.0},
+            {"param":"maxPolarAngle",   "value":3.1}
           ],
           "lerp":0.02,
           "radial_lerp":0.08

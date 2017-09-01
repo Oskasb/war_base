@@ -124,8 +124,6 @@ define([
                 playerActor = actor;
                 GameAPI.addActor(actor);
                 GameAPI.controlActor(actor);
-                ThreeAPI.addToScene(actor.piece.rootObj3D);
-                ThreeAPI.addToScene(actor.controls.rootObj3D);
             };
 
 

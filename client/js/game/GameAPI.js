@@ -21,8 +21,11 @@ define([
         var configPublisher = ConfigPublisher;
 
         var pieces = [];
+        var controls = [];
         var actors = [];
         var levels = [];
+
+        var activeControl;
 
         var workerReady = function() {
             configPublisher.publishConfigs(gameWorker)
@@ -60,6 +63,9 @@ define([
             gameCommander.removeLevel(level)
         };
 
+        GameAPI.createControl = function(id, onRes) {
+            gameCommander.createGuiControl(id, onRes)
+        };
 
         GameAPI.controlActor = function(actor) {
             gameCommander.enableActorControls(actor)
@@ -76,7 +82,7 @@ define([
         };
 
         GameAPI.dropActorControl = function(actor) {
-            gameCommander.disableActorControls(actor)
+            gameCommander.disableActorControls(actor, activeControl)
         };
 
 
@@ -93,14 +99,42 @@ define([
             gameCommander.removeArrayEntry(pieces, piece);
         };
 
+        GameAPI.addGuiControl = function(ctrlSys) {
+            GameAPI.removeGuiControl(ctrlSys);
+            controls.push(ctrlSys)
+        };
+
+        GameAPI.removeGuiControl = function(ctrlSys) {
+            GameAPI.removePiece(ctrlSys.piece);
+            gameCommander.removeArrayEntry(controls, ctrlSys);
+        };
+
+        GameAPI.setActiveControlSys = function(ctrlSys) {
+            GameAPI.addGuiControl(ctrlSys);
+            activeControl = ctrlSys;
+        };
+
+        GameAPI.getActiveControlSys = function() {
+            return activeControl;
+        };
+
+        GameAPI.tickControls = function(tpf) {
+
+            for (var i = 0; i < controls.length; i++) {
+                controls[i].updateGuiControl((activeControl === controls[i]), tpf)
+            }
+        };
+
+
         GameAPI.tickGame = function(tpf, time) {
+
             for (var i = 0; i < pieces.length; i++) {
                 pieces[i].determineVisibility();
                 pieces[i].updateGamePiece(tpf, time)
             }
 
             for (i = 0; i < actors.length; i++) {
-                actors[i].updateActpr()
+                actors[i].updateActor()
             }
         };
 

@@ -45,7 +45,7 @@ define([
             this.config = config;
         };
 
-        CameraControl.prototype.sampleTargetState = function(controls, pieceStates) {
+        CameraControl.prototype.sampleTargetState = function(controls, pieceStates, tpf) {
 
             var targetObj3d = controls.rootObj3D;
             var masterValue = 0;

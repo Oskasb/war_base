@@ -33,8 +33,8 @@
             "size": [0.4, 0.2, 0.5]
           },
           "channels":[
-            {"channelid":"channel_sample_press",      "stateid":"state_control_active"},
-            {"channelid":"channel_scale_activate",     "stateid":"state_control_active"}
+            {"channelid":"channel_sample_press",        "stateid":"state_control_active"},
+            {"channelid":"channel_scale_activate",      "stateid":"state_control_active"}
           ],
           "attachment_points":[
             {
@@ -51,6 +51,33 @@
                 "pos":[0.0, 0.0, 0]
               }
             }
+          ]
+        }
+      },{
+        "id":"cursor_inner_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [5.0, 0.5,  5.0]
+          },
+          "model":"control_cursor_outer_model",
+          "channels":[
+            {"channelid":"animate_texture_cumulative",  "stateid":"state_control_active"},
+            {"channelid":"channel_sample_hover_sctors", "stateid":"state_hover_actors"}
+          ]
+        }
+      },{
+        "id":"cursor_outer_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [5.0, 0.5,  5.0]
+          },
+          "model":"control_cursor_inner_model",
+          "channels":[
+            {"channelid":"animate_texture_cumulative",  "stateid":"state_control_active"}
           ]
         }
       },{

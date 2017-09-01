@@ -36,6 +36,8 @@
       "game/actors/player_actor_data.json",
       "game/actors/prop_actor_data.json",
 
+      "game/controls/gui_control_data.json",
+
       "game/pieces/terrain_piece_data.json",
       "game/pieces/player_piece_data.json",
       "game/pieces/prop_piece_data.json",

@@ -52,6 +52,7 @@
         'modelviewer/ModelViewer',
         'modelviewer/EnvironmentLoader',
         'modelviewer/AppLoader',
+        'modelviewer/ControlLoader',
         'modelviewer/ViewerPointer'
     ], function(
         evt,
@@ -61,6 +62,7 @@
         ModelViewer,
         EnvironmentLoader,
         AppLoader,
+        ControlLoader,
         ViewerPointer
     ) {
 
@@ -70,6 +72,7 @@
         //    new EnvironmentLoader();
             new ViewerPointer();
             new AppLoader();
+        //    new ControlLoader();
         };
 
         evt.on(evt.list().PLAYER_READY, playerReady);

@@ -21,11 +21,33 @@ define([
             mouseState = data;
         };
 
+        function checkConditions(source, conditions) {
+            if (!conditions) return true;
+
+            for (var i = 0; i < conditions.length; i++) {
+                var condition = conditions[i];
+
+                var threshold_lower = condition.threshold_lower || Infinity;
+                var threshold_upper = condition.threshold_upper || Infinity;
+
+                var sample = source[condition.parameter];
+
+                if (threshold_lower > threshold_upper) {
+                    if (sample < threshold_lower && sample > threshold_upper) {
+                        return false;
+                    }
+                } else if (sample < threshold_lower || sample > threshold_upper) {
+                    return false;
+                }
+            }
+
+            return true;
+        };
+
         PipelineAPI.subscribeToCategoryKey('POINTER_STATE', 'line', fetchLine);
         PipelineAPI.subscribeToCategoryKey('POINTER_STATE', 'mouseState', fetchPointer);
 
         var ModuleCallbacks = function() {};
-
 
 
         ModuleCallbacks.apply_target_piece_position = function(module, target) {
@@ -34,6 +56,14 @@ define([
             //    module.visualModule.getParentObject3d()[target.config.parameter][target.config.axis] = target.state.getValue();
 
             }
+        };
+
+        ModuleCallbacks.target_hover_actors = function(module, target) {
+
+            var press = mouseState.action[0];
+            var config = target.config;
+            var state = target.state;
+
         };
 
         ModuleCallbacks.apply_transform_state = function(module, target) {
@@ -65,28 +95,7 @@ define([
         };
 
 
-        function checkConditions(source, conditions) {
-            if (!conditions) return true;
 
-            for (var i = 0; i < conditions.length; i++) {
-                var condition = conditions[i];
-
-                var threshold_lower = condition.threshold_lower || Infinity;
-                var threshold_upper = condition.threshold_upper || Infinity;
-
-                var sample = source[condition.parameter];
-
-                if (threshold_lower > threshold_upper) {
-                    if (sample < threshold_lower && sample > threshold_upper) {
-                        return false;
-                    }
-                } else if (sample < threshold_lower || sample > threshold_upper) {
-                    return false;
-                }
-            }
-
-            return true;
-        };
 
         ModuleCallbacks.read_input_vector = function(module, target) {
 

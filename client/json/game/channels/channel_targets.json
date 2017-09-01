@@ -8,12 +8,18 @@
         }
       },
       {
+        "id":"target_hover_actors",
+        "data":{
+          "callback":"call_pointer_hover_actors"
+        }
+      },
+      {
         "id":"target_read_press_0",
         "data":{
           "callback":"read_press_active",
           "factor":1,
-          "time":0.4,
-          "release_time":0.25
+          "time":0.25,
+          "release_time":0.15
         }
       },
       {

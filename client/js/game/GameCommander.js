@@ -1,11 +1,15 @@
 "use strict";
 
 define([
-    'game/GameActor'
+    'ThreeAPI',
+    'game/GameActor',
+        'game/controls/GuiControlSystem'
     ],
 
     function(
-        GameActor
+        ThreeAPI,
+        GameActor,
+        GuiControlSystem
     ) {
 
 
@@ -91,27 +95,51 @@ define([
             gameWorker.makeGameRequest('despawnLevel', level.id, onRes);
         };
 
-        GameCommander.prototype.enableActorControls = function(actor) {
-            var controlReady = function(controlPiece) {
-                gameWorker.registerPieceStates(controlPiece);
-                gameWorker.bindPieceControls(actor.piece, controlPiece, actor.controlStateMap);
-                GameAPI.addPiece(controlPiece);
-            };
+        GameCommander.prototype.createGuiControl = function(dataKey, onRes) {
 
-            actor.initiateActorControls(controlReady);
+            var ctrlReady = function(ctrlSys) {
+                GameAPI.addGuiControl(ctrlSys);
+                GameAPI.addPiece(ctrlSys.piece);
+                ThreeAPI.addToScene(ctrlSys.piece.rootObj3D);
+                onRes(ctrlSys)
+            }.bind(this);
+
+            new GuiControlSystem(dataKey, ctrlReady);
+
         };
 
-        GameCommander.prototype.disableActorControls = function(actor) {
+
+        GameCommander.prototype.enableActorControls = function(actor) {
+
+            var controlReady = function(ctrlSys) {
+
+                actor.bindControlStateMap(ctrlSys, actor.config.state_map);
+                gameWorker.registerPieceStates(ctrlSys.piece);
+                gameWorker.bindPieceControls(actor.piece, ctrlSys.piece, actor.controlStateMap);
+                GameAPI.setActiveControlSys(ctrlSys);
+                ctrlSys.setFocusPiece(actor.piece);
+
+            };
+
+
+            this.createGuiControl(actor.config.controls, controlReady);
+
+        };
+
+        GameCommander.prototype.disableActorControls = function(actor, activeControl) {
             if (!actor) {
                 console.log("Not actor to disable");
                 return;
             }
-            if (!actor.controls) {
+            if (!activeControl) {
                 return;
             }
 
-            gameWorker.clearPieceControls(actor.controls, actor.controlStateMap);
-            GameAPI.removePiece(actor.controls);
+            gameWorker.clearPieceControls(activeControl, actor.controlStateMap);
+
+            GameAPI.removePiece(activeControl.piece);
+            GameAPI.removeGuiControl(activeControl);
+
             actor.releaseActorControls();
         };
 
@@ -119,6 +147,7 @@ define([
         GameCommander.prototype.createGameActor = function(options, onData) {
             var actorReady = function(actor) {
                 gameWorker.registerPieceStates(actor.piece);
+                ThreeAPI.addToScene(actor.piece.rootObj3D);
                 onData(actor);
             };
 

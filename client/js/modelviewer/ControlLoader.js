@@ -6,6 +6,7 @@ define([
         'PipelineAPI',
         'PipelineObject',
         'ThreeAPI',
+        'GameAPI',
         'ui/dom/DomSelectList',
         'ui/dom/DomPanel',
         'ui/GameScreen',
@@ -18,6 +19,7 @@ define([
         PipelineAPI,
         PipelineObject,
         ThreeAPI,
+        GameAPI,
         DomSelectList,
         DomPanel,
         GameScreen,
@@ -88,7 +90,7 @@ define([
 
                     if (rootModels[key].length) {
 
-                        var piece = rootModels[key][0];
+                        var piece = rootModels[key][0].piece;
 
                         for (var i = 0; i < piece.pieceSlots.length;i++) {
 
@@ -101,7 +103,7 @@ define([
                             }
 
                         }
-                        piece.updateGamePiece(evt.args(e).tpf, new Date().getTime()*0.001);
+                    //    piece.updateGamePiece(evt.args(e).tpf, new Date().getTime()*0.001);
 
                     }
                 }
@@ -132,7 +134,7 @@ define([
                 if (rootModels[id].length) return;
 
 
-                var ready = function(piece) {
+                var ready = function(ctrlSys) {
 
                     if (rootModels[id]) {
 
@@ -144,14 +146,12 @@ define([
 
                     }
 
-                    ThreeAPI.addToScene(piece.rootObj3D);
-                    //    mod.monitorGameModule(true);
-                    rootModels[id].push(piece);
-                    _this.monitorPieceModules(piece, true);
+                    rootModels[id].push(ctrlSys);
+                    _this.monitorPieceModules(ctrlSys.piece, true);
 
                 };
 
-                new GamePiece('view_', id, ready);
+                GameAPI.createControl(id, ready);
 
             } else {
 
@@ -159,8 +159,8 @@ define([
 
                     while (rootModels[id].length) {
                         var p = rootModels[id].pop();
-                        _this.monitorPieceModules(p, false);
-                        p.removeGamePiece();
+                        _this.monitorPieceModules(p.piece, false);
+                        GameAPI.removeGuiControl(p);
                     }
                 }
             }
@@ -193,7 +193,7 @@ define([
             if (value) {
         //        console.log("Configs: ", PipelineAPI.getCachedConfigs());
 
-                var list = PipelineAPI.readCachedConfigKey('PIECE_DATA', 'PIECES');
+                var list = PipelineAPI.readCachedConfigKey('CONTROL_DATA', 'CONTROLS');
 
                 var dataList = {};
 
