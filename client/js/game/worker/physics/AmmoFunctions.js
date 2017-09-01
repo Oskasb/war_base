@@ -20,8 +20,11 @@ define([
 
         var Ammo;
 
+        var shapes = [];
+
         var AmmoFunctions = function(ammo) {
 
+            Ammo = ammo;
             MATHVec3 = new MATH.Vec3();
             threeVec = new THREE.Vector3();
             threeObj = new THREE.Object3D();
@@ -90,8 +93,8 @@ define([
         };
 
 
-        AmmoFunctions.prototype.createPhysicalWorld = function(ammo) {
-            Ammo = ammo;
+        AmmoFunctions.prototype.createPhysicalWorld = function() {
+            //   Ammo = ammo;
             collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
             dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
             broadphase = new Ammo.btDbvtBroadphase();
@@ -104,12 +107,27 @@ define([
         };
 
         AmmoFunctions.prototype.removeAmmoRigidBody = function(body, destroy) {
-            physicsWorld.removeRigidBody(body, destroy);
+            physicsWorld.removeRigidBody(body);
+            Ammo.destroy(body.getMotionState());
+            Ammo.destroy(body);
+            //
         };
 
-        AmmoFunctions.prototype.cleanupPhysicalWorld = function() {
+        AmmoFunctions.prototype.cleanupPhysicalWorld = function(cb) {
 
+            var shapeCount = shapes.length;
 
+            while (shapes.length) {
+                Ammo.destroy(shapes.pop())
+            }
+
+            Ammo.destroy(physicsWorld);
+            Ammo.destroy(solver);
+            Ammo.destroy(broadphase);
+            Ammo.destroy(dispatcher);
+            Ammo.destroy(collisionConfiguration);
+
+            cb(shapeCount)
         };
 
         var remaining = 0;
@@ -123,7 +141,6 @@ define([
 
         AmmoFunctions.prototype.updatePhysicalWorld = function(world, currentTime) {
 
-
             if(lastTime !== undefined){
                 var dt = (currentTime - lastTime);
 
@@ -131,14 +148,10 @@ define([
 
                 while (remaining >= 0) {
 
-                //    world.step(MODEL.PhysicsStepTime, dt, MODEL.PhysicsMaxSubSteps);
-
                     world.stepSimulation(MODEL.PhysicsStepTime , MODEL.PhysicsMaxSubSteps, MODEL.PhysicsStepTime);
-                    //   doStep(world, fixedTimeStep, dt, maxSubSteps) ;
 
                     remaining -= MODEL.PhysicsStepTime;
                 }
-
             }
             //   console.log("Sphere xyz position: "+ sphereBody.position.x +' _ '+ sphereBody.position.y+' _ '+ sphereBody.position.z);
             lastTime = currentTime;
@@ -167,15 +180,15 @@ define([
             // Copy the javascript height data array to the Ammo one.
             var p = 0;
             var p2 = 0;
-        //    for (var j = 0; j < terrainWidth; j++) {
-                for (var i = 0; i < data.length; i++) {
-                    // write 32-bit float data to memory
-                    Ammo.HEAPF32[ammoHeightData + p2 >> 2] = data[i];
-                    p++;
-                    // 4 bytes/float
-                    p2 += 4;
-                }
-        //    }
+            //    for (var j = 0; j < terrainWidth; j++) {
+            for (var i = 0; i < data.length; i++) {
+                // write 32-bit float data to memory
+                Ammo.HEAPF32[ammoHeightData + p2 >> 2] = data[i];
+                p++;
+                // 4 bytes/float
+                p2 += 4;
+            }
+            //    }
             // Creates the heightfield physics shape
             var heightFieldShape = new Ammo.btHeightfieldTerrainShape(
                 terrainWidth,
@@ -209,7 +222,7 @@ define([
             var scaleX = terrainWidthExtents / ( terrainWidth - 1 );
             var scaleZ = terrainDepthExtents / ( terrainDepth - 1 );
             heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX*2, 1, scaleZ*2));
-        //    heightFieldShape.setMargin(0.0);
+            //    heightFieldShape.setMargin(0.0);
             return heightFieldShape;
         }
 
@@ -224,9 +237,10 @@ define([
             var damping     =  0.9;
             var friction    =  0.9;
 
-        //    console.log("Ground Matrix: ", data.length)
+            //    console.log("Ground Matrix: ", data.length)
 
             var groundShape = createTerrainShape( data, totalSize, terrainMaxHeight, terrainMinHeight );
+            shapes.push(groundShape);
             var groundTransform = new Ammo.btTransform();
             groundTransform.setIdentity();
             // Shifts the terrain, since bullet re-centers it on its bounding box.
@@ -363,12 +377,11 @@ define([
 
             var mesh = modelPool[model_id][0];
 
-            console.log("Load mesh", mesh)
-
-
             if (mesh.shape) {
                 return mesh.shape;
             }
+
+
 
             var geometry = mesh.geometry;
 
@@ -378,12 +391,9 @@ define([
                 mesh.shape = createTriMeshFromBuffer(geometry.attributes.position.array);
             }
 
-
-
-            console.log("Load mesh", mesh.shape);
+            console.log("create mesh shape", mesh);
 
             return mesh.shape;
-
         }
 
         AmmoFunctions.prototype.createMeshBody = function(world, bodyParams, pos, quat) {
@@ -399,7 +409,7 @@ define([
 
             var shape = createMeshShape(bodyParams.model_id, bodyParams.convex);
 
-        //    heightOffset = args[2] / 2;
+            //    heightOffset = args[2] / 2;
 
 
             if (!mass) {
@@ -442,9 +452,11 @@ define([
             if (bodyParams.shape === 'Box') {
                 heightOffset = args[1];
                 shape = ammoBoxShape(args[0], args[2], args[1]);
-            //    shape = new CANNON[bodyParams.shape](new CANNON.Vec3(args[2],args[0],args[1]));
+                //    shape = new CANNON[bodyParams.shape](new CANNON.Vec3(args[2],args[0],args[1]));
 
             }
+
+            shapes.push(shape);
 
             if (!mass) {
                 heightOffset = 0;
@@ -460,7 +472,7 @@ define([
             body.setDamping(damping, damping);
 
             world.addRigidBody(body);
-        //    body.setActivationState(DISABLE_DEACTIVATION);
+            //    body.setActivationState(DISABLE_DEACTIVATION);
             return body;
 
         };

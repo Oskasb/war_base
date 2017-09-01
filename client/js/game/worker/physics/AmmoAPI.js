@@ -26,26 +26,27 @@ define(['worker/physics/AmmoFunctions'],
         };
 
         var AmmoAPI = function() {
-            ammoFunctions = new AmmoFunctions();
+
+            AMMO().then(function(ammo) {
+            ammoFunctions = new AmmoFunctions(ammo);
+            });
+
 
         };
 
         AmmoAPI.prototype.initPhysics = function(cb) {
-
-            AMMO().then(function(ammo) {
-                world = ammoFunctions.createPhysicalWorld(ammo);
-                cb()
-            });
-
+            world = ammoFunctions.createPhysicalWorld();
+        //    cb()
         };
 
-        AmmoAPI.prototype.cleanupPhysics = function() {
+        AmmoAPI.prototype.cleanupPhysics = function(cb) {
 
             while (bodies.length) {
                 this.excludeBody(bodies[0], true)
             }
 
-            world = ammoFunctions.cleanupPhysicalWorld(world)
+            world = null;
+            ammoFunctions.cleanupPhysicalWorld(cb);
         };
 
         AmmoAPI.prototype.buildPhysicalTerrain = function(data, size, posx, posz, min_height, max_height) {
@@ -63,6 +64,10 @@ define(['worker/physics/AmmoFunctions'],
         };
 
         AmmoAPI.prototype.includeBody = function(body) {
+            if (!body) {
+                console.log("Cant add !body", body);
+                return;
+            }
             if (bodies.indexOf(body) === -1) {
                 bodies.push(body);
             }
@@ -80,7 +85,7 @@ define(['worker/physics/AmmoFunctions'],
             }
 
             body.forceActivationState(STATE.DISABLE_SIMULATION);
-        //    ammoFunctions.removeAmmoRigidBody(body, destroy);
+            ammoFunctions.removeAmmoRigidBody(body, destroy);
         };
 
 

@@ -33,10 +33,11 @@ define([
             var physicsRdy = function() {
 
             };
-            physicsApi.initPhysics(physicsRdy);
         };
 
         SimulationState.prototype.addLevel = function(options, ready) {
+
+            physicsApi.initPhysics();
 
             var levelBuilt = function(level) {
                 levels.push(level);
@@ -95,23 +96,22 @@ define([
                 physicsApi.excludeBody(actor.body, true);
             }
 
+            actor.piece.removeGamePiece();
             actor.removeGameActor();
             cb(actorId);
         };
 
         SimulationState.prototype.removeLevel = function(levelId, cb) {
-
-            var terrainActorsGone = function(actorId) {
-                cb(levelId);
-            };
-
+            
             var level = this.getLevelById(levelId);
             levels.splice(levels.indexOf(level), 1);
 
-            while (level.terrainActors.length) {
-                this.removeActor(level.terrainActors.pop(), terrainActorsGone)
-            }
+            cb(levelId);
+        };
 
+
+        SimulationState.prototype.cleanupSimulationState = function(cb) {
+            physicsApi.cleanupPhysics(cb);
         };
 
         SimulationState.prototype.attachTerrainActorToLevel = function(levelId, actorId, cb) {

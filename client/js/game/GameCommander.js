@@ -68,8 +68,13 @@ define([
 
         GameCommander.prototype.removeLevel = function(level) {
 
+            var onReset = function(res) {
+                console.log("Reset level Simulation", res);
+            };
+
             var onRemove = function(l) {
                 console.log("Removed level Poplupation", l);
+                gameWorker.makeGameRequest('resetSimulation', true, onReset);
             };
 
             var removeLevelActors = function(lvl) {

@@ -193,7 +193,6 @@ define([
         };
 
         ThreeModelLoader.getModelPool = function() {
-            console.log(PipelineAPI.getCachedConfigs());
             return modelPool;
         };
 

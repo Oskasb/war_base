@@ -22,6 +22,13 @@ define([
             this.simulationState.addLevel(opts, ready);
         };
 
+        SimulationRequests.prototype.resetSimulation = function(bool) {
+            var ready = function(res) {
+                postMessage([bool, res]);
+            };
+            this.simulationState.cleanupSimulationState(ready);
+        };
+
         SimulationRequests.prototype.despawnLevel = function(idx, levelId) {
             var ready = function(res) {
                 postMessage([idx, res]);
@@ -44,6 +51,10 @@ define([
             };
             this.simulationState.removeActor(actorId, ready);
         };
+
+
+
+
 
         SimulationRequests.prototype.attachTerrainToLevel = function(idx, data) {
             var opts = JSON.parse(data);
