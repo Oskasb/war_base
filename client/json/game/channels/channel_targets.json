@@ -2,6 +2,12 @@
   "CHANNEL_TARGETS":{
     "TARGETS":[
       {
+        "id":"target_transform",
+        "data":{
+          "callback":"apply_transform_state"
+        }
+      },
+      {
         "id":"target_read_press_0",
         "data":{
           "callback":"read_press_active",

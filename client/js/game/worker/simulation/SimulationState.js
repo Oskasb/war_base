@@ -102,7 +102,7 @@ define([
         };
 
         SimulationState.prototype.removeLevel = function(levelId, cb) {
-            
+
             var level = this.getLevelById(levelId);
             levels.splice(levels.indexOf(level), 1);
 

@@ -18,6 +18,7 @@ define([],
             this.targetValue = value;
             this.lastUpdate = 0;
             this.stateProgress = 0;
+            this.progressDelta = 0;
 
             var state = [this.value, 0, 0];
 
@@ -96,23 +97,12 @@ define([],
 
             if (this.stateProgress < this.targetTime) {
                 var frac = MATH.calcFraction(0, this.targetTime, this.stateProgress);
-
-                if (this.radial) {
-                    var add = 0;
-                    if ((this.startValue + this.targetValue) > 2) {
-                        add = -1;
-                    }
-                    if ((this.startValue - this.targetValue) < -2) {
-                        add = 1;
-                    }
-                    this.setValue(MATH.interpolateFromTo(this.startValue+add, this.targetValue+add, frac));
-                } else {
-                    this.setValue(MATH.interpolateFromTo(this.startValue, this.targetValue, frac));
-                }
-
+                this.progressDelta = MATH.calcFraction(0, this.targetTime, tpf);
+                this.setValue(MATH.interpolateFromTo(this.startValue, this.targetValue, frac));
             } else {
                 this.setValue(this.targetValue);
-            };
+                this.progressDelta = 0;
+            }
         };
 
         PieceState.prototype.updateStateFrame = function (tpf, time) {

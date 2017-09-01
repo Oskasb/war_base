@@ -177,8 +177,8 @@ define([
             for (var i = 0; i < this.moduleChannels.length; i++) {
                 this.moduleChannels[i].updateChannelState(this);
             }
-            if (this.needsNormalize) {
-                this.visualModule.getParentObject3d().quaternion.normalize();
+            if (this.interpolateQuaternion) {
+                this.visualModule.slerpTowardsTargetQuat(this.interpolateQuaternion);
             }
         };
 

@@ -36,6 +36,10 @@ define([
             }
         };
 
+        ModuleCallbacks.apply_transform_state = function(module, target) {
+
+        };
+
         ModuleCallbacks.scale_uniform = function(module, target) {
             var config = target.config;
             var value = target.state.getValue();
@@ -119,18 +123,13 @@ define([
 
         };
 
-
         ModuleCallbacks.transform = function(module, target) {
             module.visualModule.getRootObject3d()[target.config.parameter][target.config.axis] = target.state.getValue();
         };
 
-
-
         ModuleCallbacks.quat_axis = function(module, target) {
-            target.state.isRadial(true)
-            module.visualModule.getRootObject3d().quaternion[target.config.axis] = target.state.getValue();
-            module.needsNormalize = true;
-
+            module.visualModule.targetQuaternion[target.config.axis] = target.state.targetValue;
+            module.interpolateQuaternion = target.state.progressDelta;
         };
 
         ModuleCallbacks.animate_texture = function(module, target) {

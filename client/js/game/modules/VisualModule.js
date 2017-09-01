@@ -14,6 +14,7 @@ define([
             this.module = module;
             this.hidden = false;
             this.rootObj = ThreeAPI.createRootObject();
+            this.targetQuaternion = new THREE.Quaternion();
             this.effectTargets = [];
             this.isVisible = false;
             this.model;
@@ -137,6 +138,10 @@ define([
                     this.hideVisualModule()
                 }
 
+        };
+
+        VisualModule.prototype.slerpTowardsTargetQuat = function(frac) {
+            this.getRootObject3d().quaternion.slerp(this.targetQuaternion, frac);
         };
 
         VisualModule.prototype.transformObj = function(obj3d, transform) {

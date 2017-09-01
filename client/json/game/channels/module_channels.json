@@ -59,6 +59,14 @@
         }
       },
       {
+        "id":"channel_transform",
+        "data":{
+          "targets":[
+            {"targetid":"target_transform"}
+          ]
+        }
+      },
+      {
         "id":"channel_pos_x",
         "data":{
           "targets":[

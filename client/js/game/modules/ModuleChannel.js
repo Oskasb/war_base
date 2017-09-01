@@ -19,6 +19,7 @@ define([
             this.id = channelData.channelid;
             this.stateid = channelData.stateid;
             this.init = channelData.init;
+            this.dimensions = channelData.dimensions || 1;
             this.state;
             this.targets = [];
             this.target = {};
