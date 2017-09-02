@@ -98,6 +98,11 @@ define([
             gameWorker.makeGameRequest('despawnLevel', level.id, onRes);
         };
 
+        GameCommander.prototype.removeGuiControl = function(ctrlSys) {
+            GameAPI.removePiece(ctrlSys.piece);
+            ThreeAPI.removeModel(ctrlSys.piece.rootObj3D);
+        };
+
         GameCommander.prototype.createGuiControl = function(dataKey, onRes) {
 
             var ctrlReady = function(ctrlSys) {

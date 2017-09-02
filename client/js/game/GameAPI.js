@@ -118,8 +118,8 @@ define([
         };
 
         GameAPI.removeGuiControl = function(ctrlSys) {
-            GameAPI.removePiece(ctrlSys.piece);
             gameCommander.removeArrayEntry(controls, ctrlSys);
+            gameCommander.removeGuiControl(ctrlSys);
         };
 
         GameAPI.setActiveControlSys = function(ctrlSys) {

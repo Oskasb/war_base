@@ -135,6 +135,7 @@ define([
             state.setValueAtTime(0, config.release_time);
             guiControlState.setActionTargetPiece(null);
             guiControlState.setActionTargetModule(null);
+            guiControlState.setPressStartTarget(null)
             return;
         }
 
@@ -148,9 +149,11 @@ define([
 
         if (!hoverActor) return;
 
-        if (hoverActor === GameAPI.getControlledActor()) {
-            state.setValueAtTime(1, config.time);
-            guiControlState.setActionTargetPiece(hoverActor.piece);
+        if (guiControlState.isPressStartTarget(hoverActor)) {
+            if (hoverActor === GameAPI.getControlledActor()) {
+                state.setValueAtTime(1, config.time);
+                guiControlState.setActionTargetPiece(hoverActor.piece);
+            }
         }
 
     };
@@ -158,6 +161,17 @@ define([
 
     GuiControlUtils.prototype.pointerActionOnActors = function(module, target, enable) {
         var press = mouseState.action[0];
+
+        if (press) {
+            guiControlState.addPressSampleFrame();
+        } else {
+            guiControlState.clearPressSampleFrames();
+
+            if (guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
+                guiControlState.releaseSelectedTargetActor();
+            }
+
+        }
 
         var state = target.state;
         var config = target.config;
@@ -172,9 +186,14 @@ define([
         };
 
         if (!press && state.targetValue) {
-            guiControlState.selectCurrentHoverActor()
-        }
 
+            if (guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
+                guiControlState.setActivatedSelectionTarget(guiControlState.getSelectedTargetActor())
+            }
+
+            guiControlState.selectCurrentHoverActor();
+            guiControlState.setPressStartTarget(null)
+        }
 
         var range = calcInteractionRange(press, state, config, enable);
 
@@ -185,8 +204,16 @@ define([
         if (hoverDistance < range) {
             state.setValueAtTime(1, config.time);
             enable(true);
+
+            if (guiControlState.getPressSampleFrames() < 2) {
+                if (!guiControlState.getPressStartTarget()) {
+                    guiControlState.setPressStartTarget(actor)
+                }
+            }
+
             guiControlState.setHoverTargetActor(actor);
         } else {
+
             state.setValueAtTime(0, config.release_time);
             enable(false);
             guiControlState.setHoverTargetActor(null);

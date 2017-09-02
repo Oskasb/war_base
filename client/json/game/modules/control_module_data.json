@@ -52,7 +52,7 @@
           "transform":{
             "rot":  [0,   0,    0],
             "pos":  [0,   1.6,   0],
-            "size": [0.4, 0.2, 0.5]
+            "size": [200, 50, 200]
           },
           "channels":[
             {"channelid":"channel_sample_selected",      "stateid":"state_control_active"},
@@ -140,7 +140,7 @@
           "transform":{
             "rot":  [0,   0,    0],
             "pos":  [0.0, 0.0, 0.0],
-            "size": [5.0, 0.5,  5.0]
+            "size": [5.0, 200,  5.0]
           },
           "model":"control_cursor_inner_model",
           "channels":[

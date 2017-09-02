@@ -91,6 +91,7 @@
             "transparent":true,
             "depthTest":false,
             "depthWrite":false,
+            "fog":false,
             "opacity":1
           },
           "textures":[{
@@ -102,7 +103,7 @@
           "shader":"MeshBasicMaterial",
           "color":{"r":0.2, "g":0.99, "b":0.98},
           "settings":{
-
+            "fog":false
           },
           "textures":[{
             "map":"./client/assets/images/textures/pointer_surface.png"

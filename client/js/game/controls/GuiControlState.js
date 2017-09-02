@@ -3,6 +3,8 @@
 
 define([], function() {
 
+
+
     var GuiControlState = function() {
         this.actionTargetActor = null;
         this.hoverTargetActor = null;
@@ -15,6 +17,48 @@ define([], function() {
 
         this.commandSourceModule = null;
 
+        this.pressStartTarget = null;
+
+        this.activatedSelectionTarget = null;
+
+        this.pressSampleFrames = 0;
+    };
+
+    GuiControlState.prototype.addPressSampleFrame = function() {
+        this.pressSampleFrames++;
+    };
+
+    GuiControlState.prototype.getPressSampleFrames = function() {
+        return this.pressSampleFrames;
+    };
+
+    GuiControlState.prototype.clearPressSampleFrames = function() {
+        this.pressSampleFrames = 0;
+    };
+
+
+
+    GuiControlState.prototype.setActivatedSelectionTarget = function(target) {
+        this.activatedSelectionTarget = target;
+    };
+
+
+    GuiControlState.prototype.getActivatedSelectionTarget = function() {
+        return this.activatedSelectionTarget;
+    };
+
+
+
+    GuiControlState.prototype.setPressStartTarget = function(target) {
+        this.pressStartTarget = target;
+    };
+
+    GuiControlState.prototype.getPressStartTarget = function() {
+        return this.pressStartTarget;
+    };
+
+    GuiControlState.prototype.isPressStartTarget = function(target) {
+        return (target === this.pressStartTarget);
     };
 
 
@@ -86,6 +130,9 @@ define([], function() {
         this.setActionTargetPiece(null)
     };
 
+    GuiControlState.prototype.releaseSelectedTargetActor = function() {
+        this.setSelectedTargetActor(null)
+    };
 
 
     GuiControlState.prototype.selectCurrentHoverActor = function() {
