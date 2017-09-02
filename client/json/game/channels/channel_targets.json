@@ -28,7 +28,7 @@
           "callback":"call_pointer_hover_actors",
           "range":0.025,
           "time":0.25,
-          "release_time":0.15
+          "release_time":0.35
         }
       },
       {
@@ -37,6 +37,16 @@
           "callback":"call_sample_selected_actor_size",
           "time":0.2,
           "factor":0.7
+        }
+      },
+      {
+        "id":"target_inherit_selected_actor_position",
+        "data":{
+          "callback":"call_inherit_selected_actor_states",
+          "inherit_states":[
+            "state_pos_x", "state_pos_z", "state_pos_y"
+          ],
+          "time":0.08
         }
       },
       {
@@ -53,6 +63,14 @@
         "id":"target_focus_hover_actor",
         "data":{
           "callback":"call_focus_hover_actor"
+        }
+      },
+      {
+        "id":"target_sample_selected_actor",
+        "data":{
+          "callback":"call_sample_selected_actor",
+          "time":0.25,
+          "release_time":0.15
         }
       },
       {
@@ -235,7 +253,7 @@
           "parameter":"rotation",
           "axis":"y",
           "cumulative":1,
-          "factor":0.06
+          "factor":0.04
         }
       },
       {

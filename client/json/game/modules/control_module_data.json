@@ -55,10 +55,9 @@
             "size": [0.4, 0.2, 0.5]
           },
           "channels":[
-            {"channelid":"channel_sample_press",         "stateid":"state_control_active"},
+            {"channelid":"channel_sample_selected",      "stateid":"state_control_active"},
             {"channelid":"channel_rotate_yaw_cumulative","stateid":"state_control_active"},
-            {"channelid":"channel_sample_hover_actors",  "stateid":"state_control_active"},
-            {"channelid":"channel_hover_actor_position", "stateid":"state_control_active"},
+            {"channelid":"channel_selected_actor_position", "stateid":"state_control_active"},
             {"channelid":"channel_sample_target_size",   "stateid":"state_bounding_radius"}
           ],
           "attachment_points":[
@@ -129,11 +128,10 @@
           },
           "model":"control_cursor_outer_model",
           "channels":[
-            {"channelid":"channel_sample_press",               "stateid":"state_control_active"},
+            {"channelid":"channel_hover_actor_position",       "stateid":"state_control_active"},
             {"channelid":"channel_rotate_yaw_cumulative",      "stateid":"state_control_active"},
             {"channelid":"animate_cursor_texture_cumulative",  "stateid":"state_control_active"},
-            {"channelid":"channel_sample_hover_actors",        "stateid":"state_control_active"},
-            {"channelid":"channel_hover_actor_position",       "stateid":"state_control_active"}
+            {"channelid":"channel_sample_hover_actors",        "stateid":"state_control_active"}
           ]
         }
       },{

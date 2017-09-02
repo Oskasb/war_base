@@ -36,8 +36,16 @@ define([
             guiControlUtils.inheritHoverActorStates(module, target, enable);
         };
 
+        ModuleCallbacks.call_inherit_selected_actor_states = function(module, target, enable) {
+            guiControlUtils.inheritSelectedActorStates(module, target, enable);
+        };
+
         ModuleCallbacks.call_focus_hover_actor = function(module, target, enable) {
             guiControlUtils.focusHoverActor(module, target, enable);
+        };
+
+        ModuleCallbacks.call_sample_selected_actor = function(module, target, enable) {
+            guiControlUtils.sampleSelectedActor(module, target, enable);
         };
 
         ModuleCallbacks.call_sample_selected_actor_size = function(module, target, enable) {

@@ -27,11 +27,11 @@ define([], function() {
     };
 
 
-    GuiControlState.prototype.setActionTargetActor = function(actor) {
+    GuiControlState.prototype.setSelectedTargetActor = function(actor) {
         this.actionTargetActor = actor;
     };
 
-    GuiControlState.prototype.getActionTargetActor = function() {
+    GuiControlState.prototype.getSelectedTargetActor = function() {
         return this.actionTargetActor;
     };
 
@@ -55,7 +55,6 @@ define([], function() {
     GuiControlState.prototype.getActionTargetPiece = function() {
         return this.actionTargetPiece;
     };
-
 
 
 
@@ -86,6 +85,14 @@ define([], function() {
     GuiControlState.prototype.releaseActionTargetPiece = function() {
         this.setActionTargetPiece(null)
     };
+
+
+
+    GuiControlState.prototype.selectCurrentHoverActor = function() {
+        this.setSelectedTargetActor(this.getHoverTargetActor());
+        this.setHoverTargetActor(null);
+    };
+
 
 
     return GuiControlState;

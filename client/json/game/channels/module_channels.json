@@ -19,6 +19,14 @@
         }
       },
       {
+        "id":"channel_sample_selected",
+        "data":{
+          "targets":[
+            {"targetid":"target_sample_selected_actor"}
+          ]
+        }
+      },
+      {
         "id":"channel_sample_hover_active",
         "data":{
           "targets":[
@@ -39,6 +47,14 @@
         "data":{
           "targets":[
             {"targetid":"target_hover_actors"}
+          ]
+        }
+      },
+      {
+        "id":"channel_selected_actor_position",
+        "data":{
+          "targets":[
+            {"targetid":"target_inherit_selected_actor_position"}
           ]
         }
       },

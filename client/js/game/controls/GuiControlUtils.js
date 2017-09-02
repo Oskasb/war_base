@@ -144,8 +144,14 @@ define([
 
     GuiControlUtils.prototype.pointerActionOnActors = function(module, target, enable) {
         var press = mouseState.action[0];
+
         var state = target.state;
         var config = target.config;
+
+        if (!press && state.targetValue) {
+            guiControlState.selectCurrentHoverActor()
+        }
+
 
         var range = calcInteractionRange(press, state, config, enable);
 
@@ -154,10 +160,17 @@ define([
         if (!actor) return;
 
         if (hoverDistance < range) {
+            state.setValueAtTime(1, config.time);
             enable(true);
             guiControlState.setHoverTargetActor(actor);
-            guiControlState.setCommandSourceModule(module);
+            guiControlState.setCommandSourceModule(module)
+        } else {
+            state.setValueAtTime(0, config.release_time);
+            enable(false);
+            guiControlState.setHoverTargetActor(null);
+            guiControlState.setCommandSourceModule(null);
         }
+
     };
 
 
@@ -177,6 +190,22 @@ define([
         }
     }
 
+    GuiControlUtils.prototype.inheritSelectedActorStates = function(module, target, enable) {
+        var state = target.state;
+
+    //    if (!enable()) return;
+
+        var selectedActor = guiControlState.getSelectedTargetActor();
+
+        if (!selectedActor) return;
+
+        var config = target.config;
+        var time = config.time;
+        var pointerPiece = enable();
+        var inheritState = config.inherit_states;
+
+        inheritActorStatesInTime(inheritState, pointerPiece, selectedActor, time);
+    };
 
     GuiControlUtils.prototype.inheritHoverActorStates = function(module, target, enable) {
         var state = target.state;
@@ -214,17 +243,34 @@ define([
         inheritActorStatesInTime(inheritState, pointerPiece, hoverActor, time);
     };
 
+    GuiControlUtils.prototype.sampleSelectedActor = function(module, target, enable) {
+        var state = target.state;
+        var config = target.config;
+        var time = config.time;
+        var factor = config.factor;
+
+        var selectedActor = guiControlState.getSelectedTargetActor();
+
+        if (!selectedActor) {
+            state.setValueAtTime(0, config.release_time);
+            return;
+        }
+
+        if (state.targetValue === 1) return;
+        state.setValueAtTime(1, time);
+
+    };
+
     GuiControlUtils.prototype.sampleSelectedActorSize = function(module, target, enable) {
         var state = target.state;
         var config = target.config;
         var time = config.time;
         var factor = config.factor;
-        if (!enable()) return;
 
-        var hoverActor = guiControlState.getHoverTargetActor();
+        var selectedActor = guiControlState.getSelectedTargetActor();
 
-        if (!hoverActor) return;
-        var size = hoverActor.piece.boundingSize;
+        if (!selectedActor) return;
+        var size = selectedActor.piece.boundingSize;
 
         if (state.targetValue === size*factor) return;
         state.setValueAtTime(size*factor, time);
