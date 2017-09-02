@@ -130,15 +130,29 @@ define([
         var state = target.state;
         var config = target.config;
 
-        var range = calcInteractionRange(press, state, config, enable);
-
-        var isInRange = screenSpaceActionInRange(module, range, state, config);
-
-        if (isInRange) {
-            enable(true);
-            guiControlState.setActionTargetPiece(enable());
-            guiControlState.setActionTargetModule(module);
+        if (!press) {
+            enable(false);
+            state.setValueAtTime(0, config.release_time);
+            guiControlState.setActionTargetPiece(null);
+            guiControlState.setActionTargetModule(null);
+            return;
         }
+
+        enable(true);
+
+        if (guiControlState.getActionTargetPiece() === GameAPI.getControlledActor().piece) {
+            return;
+        }
+
+        var hoverActor = guiControlState.getHoverTargetActor();
+
+        if (!hoverActor) return;
+
+        if (hoverActor === GameAPI.getControlledActor()) {
+            state.setValueAtTime(1, config.time);
+            guiControlState.setActionTargetPiece(hoverActor.piece);
+        }
+
     };
 
 
@@ -147,6 +161,15 @@ define([
 
         var state = target.state;
         var config = target.config;
+
+        if (guiControlState.getActionTargetPiece()) {
+            if (enable()) {
+                state.setValueAtTime(0, config.release_time);
+                enable(false);
+            }
+            guiControlState.setHoverTargetActor(null);
+            return;
+        };
 
         if (!press && state.targetValue) {
             guiControlState.selectCurrentHoverActor()
@@ -163,12 +186,10 @@ define([
             state.setValueAtTime(1, config.time);
             enable(true);
             guiControlState.setHoverTargetActor(actor);
-            guiControlState.setCommandSourceModule(module)
         } else {
             state.setValueAtTime(0, config.release_time);
             enable(false);
             guiControlState.setHoverTargetActor(null);
-            guiControlState.setCommandSourceModule(null);
         }
 
     };
@@ -278,17 +299,16 @@ define([
     };
 
     GuiControlUtils.prototype.scaleModuleUniform = function(module, target, enable) {
+
         var config = target.config;
         var value = target.state.getValue();
         var clamp_min = config.clamp_min || 0.00001;
         var clamp_max = config.clamp_max || 1;
         if (value < clamp_min && !module.visualModule.hidden) {
-            enable(false);
             module.visualModule.hide();
             return;
         } else if (module.visualModule.hidden) {
             module.visualModule.show();
-            enable(true)
         }
         var scale = MATH.clamp(value, clamp_min, clamp_max);
         module.visualModule.getRootObject3d().scale.setScalar(scale);
@@ -308,6 +328,13 @@ define([
     GuiControlUtils.prototype.readInputVector = function(module, target, enable) {
         var state = target.state;
         var config = target.config;
+
+        if (guiControlState.getActionTargetPiece() !== GameAPI.getControlledActor().piece) {
+            state.setValueAtTime(0, config.release_time);
+            state.setSampler(null);
+            enable(false);
+        }
+
         if (!enable()) {
             if (state.targetValue !== 0) {
                 state.setValueAtTime(0, config.release_time);

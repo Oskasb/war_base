@@ -26,6 +26,7 @@ define([
         var levels = [];
 
         var activeControl;
+        var controlledActor;
 
         var workerReady = function() {
             configPublisher.publishConfigs(gameWorker)
@@ -68,8 +69,15 @@ define([
         };
 
         GameAPI.controlActor = function(actor) {
+            controlledActor = actor;
             gameCommander.enableActorControls(actor)
         };
+
+        GameAPI.getControlledActor = function() {
+            return controlledActor;
+        };
+
+
 
         GameAPI.createActor = function(options, onRes) {
             gameCommander.createGameActor(options, onRes)
@@ -86,6 +94,7 @@ define([
         };
 
         GameAPI.dropActorControl = function(actor) {
+            controlledActor = null;
             gameCommander.disableActorControls(actor, activeControl)
         };
 

@@ -144,7 +144,7 @@
           },
           "model":"control_cursor_inner_model",
           "channels":[
-            {"channelid":"channel_rotate_yaw_cumulative",     "stateid":"state_control_active"}
+            {"channelid":"channel_rotate_yaw_cumulative", "stateid":"state_control_active"}
           ]
         }
       },{

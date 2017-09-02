@@ -17,7 +17,7 @@
         "id":"target_hover_active",
         "data":{
           "callback":"call_pointer_action_self",
-          "range":0.025,
+          "range":0.015,
           "time":0.25,
           "release_time":0.15
         }
@@ -26,7 +26,7 @@
         "id":"target_hover_actors",
         "data":{
           "callback":"call_pointer_hover_actors",
-          "range":0.025,
+          "range":0.015,
           "time":0.25,
           "release_time":0.35
         }
