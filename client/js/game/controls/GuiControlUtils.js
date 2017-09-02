@@ -168,8 +168,23 @@ define([
             guiControlState.clearPressSampleFrames();
 
             if (guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
+
                 guiControlState.releaseSelectedTargetActor();
+
+                if (guiControlState.getHoverTargetActor() === guiControlState.getPressStartTarget()) {
+                    guiControlState.setActivatedSelectionTarget(guiControlState.getPressStartTarget());
+                } else {
+                    if (guiControlState.getHoverTargetActor() === guiControlState.getActivatedSelectionTarget()) {
+                        guiControlState.setActivatedSelectionTarget(null);
+                    }
+
+                }
+
+            } else if (guiControlState.getPressStartTarget() === guiControlState.getActivatedSelectionTarget()) {
+                guiControlState.setActivatedSelectionTarget(null);
             }
+
+
 
         }
 
@@ -186,10 +201,6 @@ define([
         };
 
         if (!press && state.targetValue) {
-
-            if (guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
-                guiControlState.setActivatedSelectionTarget(guiControlState.getSelectedTargetActor())
-            }
 
             guiControlState.selectCurrentHoverActor();
             guiControlState.setPressStartTarget(null)
@@ -237,6 +248,24 @@ define([
             targetState.setValueAtTime(sourceState.getValue(), time);
         }
     }
+
+
+    GuiControlUtils.prototype.inheritActivatedActorStates = function(module, target, enable) {
+        var state = target.state;
+
+        //    if (!enable()) return;
+
+        var activatedActor = guiControlState.getActivatedSelectionTarget();
+
+        if (!activatedActor) return;
+
+        var config = target.config;
+        var time = config.time;
+        var pointerPiece = enable();
+        var inheritState = config.inherit_states;
+
+        inheritActorStatesInTime(inheritState, pointerPiece, activatedActor, time);
+    };
 
     GuiControlUtils.prototype.inheritSelectedActorStates = function(module, target, enable) {
         var state = target.state;
@@ -309,6 +338,23 @@ define([
 
     };
 
+    GuiControlUtils.prototype.sampleActivatedActor = function(module, target, enable) {
+        var state = target.state;
+        var config = target.config;
+        var time = config.time;
+
+        var activatedActor = guiControlState.getActivatedSelectionTarget();
+
+        if (!activatedActor) {
+            state.setValueAtTime(0, config.release_time);
+            return;
+        }
+
+        if (state.targetValue === 1) return;
+        state.setValueAtTime(1, time);
+
+    };
+
     GuiControlUtils.prototype.sampleSelectedActorSize = function(module, target, enable) {
         var state = target.state;
         var config = target.config;
@@ -322,8 +368,23 @@ define([
 
         if (state.targetValue === size*factor) return;
         state.setValueAtTime(size*factor, time);
-
     };
+
+    GuiControlUtils.prototype.sampleActiveActorSize = function(module, target, enable) {
+        var state = target.state;
+        var config = target.config;
+        var time = config.time;
+        var factor = config.factor;
+
+        var activatedActor = guiControlState.getActivatedSelectionTarget();
+
+        if (!activatedActor) return;
+        var size = activatedActor.piece.boundingSize;
+
+        if (state.targetValue === size*factor) return;
+        state.setValueAtTime(size*factor, time);
+    };
+
 
     GuiControlUtils.prototype.scaleModuleUniform = function(module, target, enable) {
 
@@ -341,6 +402,19 @@ define([
         module.visualModule.getRootObject3d().scale.setScalar(scale);
     };
 
+    GuiControlUtils.prototype.scaleModuleAxis = function(module, target, enable) {
+
+        var config = target.config;
+        var value = target.state.getValue() || 0.001;
+        var factor = config.factor;
+        var axis = config.axis || ['x', 'z'];
+        var offset = config.offset || 0;
+
+        for (var i = 0; i < axis.length; i++) {
+            module.visualModule.getRootObject3d().scale[axis[i]] = value*factor + offset;
+        }
+
+    };
 
     GuiControlUtils.prototype.readPressActive = function(module, target, enable) {
         var config = target.config;

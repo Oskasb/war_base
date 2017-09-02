@@ -12,6 +12,23 @@
         }
       },
       {
+        "id":"activated_control_piece",
+        "data":{
+          "root_slot":"root",
+          "slots":[
+            {"slot":"root",         "module":"control_root_module"   },
+            {"slot":"pointer_state",    "module":"control_pointer_module"},
+            {"slot":"control_selector", "module":"control_activator_module"},
+            {"slot":"control_highlight","module":"control_active_highlight_module"}
+          ],
+          "attachments":[
+            {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
+            {"slot":"pointer_state",   "ap":"ap_element",      "child":"control_selector"},
+            {"slot":"control_selector",   "ap":"ap_element_0",      "child":"control_highlight"}
+          ]
+        }
+      },
+      {
         "id":"selector_control_piece",
         "data":{
           "root_slot":"root",

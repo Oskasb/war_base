@@ -3,6 +3,28 @@
     "MODELS": {
       "THREE": [
         {
+          "id": "control_active_inner_model",
+          "material": "wave_control_opaque",
+          "url": "./client/assets/models/controls/active_inner",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "control_active_outer_model",
+          "material": "wave_control_additive",
+          "url": "./client/assets/models/controls/active_outer",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
           "id": "control_selector_inner_model",
           "material": "wave_control_opaque",
           "url": "./client/assets/models/controls/selector_inner",

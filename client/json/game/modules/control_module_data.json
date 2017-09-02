@@ -47,6 +47,66 @@
           ]
         }
       },{
+        "id":"control_activator_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   1.6,   0],
+            "size": [200, 50, 200]
+          },
+          "model":"control_active_inner_model",
+          "channels":[
+            {"channelid":"channel_sample_activation",        "stateid":"state_control_active"},
+            {"channelid":"channel_rotate_yaw_cumulative",    "stateid":"state_selection_activated"},
+            {"channelid":"channel_activated_actor_position", "stateid":"state_selection_activated"},
+            {"channelid":"channel_sample_activated_size",    "stateid":"state_bounding_radius"},
+            {"channelid":"channel_scale_xz",                 "stateid":"state_bounding_radius"}
+          ],
+          "attachment_points":[
+            {
+              "id":"ap_element_0",
+              "transform":{
+                "rot":[0,     0, 0],
+                "pos":[0.0, 0.0, 0.0]
+              }
+            },
+            {
+              "id":"ap_element_1",
+              "transform":{
+                "rot":[0,  1.57, 0],
+                "pos":[0.0, 0.0, 0.0]
+              }
+            },
+            {
+              "id":"ap_element_2",
+              "transform":{
+                "rot":[0, -3.148, 0],
+                "pos":[0.0,  0.0, 0]
+              }
+            },
+            {
+              "id":"ap_element_3",
+              "transform":{
+                "rot":[0, -1.57, 0],
+                "pos":[0.0,  0.0, 0]
+              }
+            }
+          ]
+        }
+      },{
+        "id":"control_active_highlight_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [5.0, 0.5,  5.0]
+          },
+          "model":"control_active_outer_model",
+          "channels":[
+            {"channelid":"animate_cursor_texture_cumulative", "stateid":"state_control_active"}
+          ]
+        }
+      },{
         "id":"control_selector_module",
         "data":{
           "transform":{
@@ -55,10 +115,11 @@
             "size": [200, 50, 200]
           },
           "channels":[
-            {"channelid":"channel_sample_selected",      "stateid":"state_control_active"},
-            {"channelid":"channel_rotate_yaw_cumulative","stateid":"state_control_active"},
+            {"channelid":"channel_sample_selected",         "stateid":"state_control_active"},
+            {"channelid":"channel_sample_activation",       "stateid":"state_control_active"},
+            {"channelid":"channel_rotate_yaw_cumulative",   "stateid":"state_control_active"},
             {"channelid":"channel_selected_actor_position", "stateid":"state_control_active"},
-            {"channelid":"channel_sample_target_size",   "stateid":"state_bounding_radius"}
+            {"channelid":"channel_sample_target_size",      "stateid":"state_bounding_radius"}
           ],
           "attachment_points":[
             {

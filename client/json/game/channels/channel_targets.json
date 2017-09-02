@@ -32,11 +32,28 @@
         }
       },
       {
+        "id":"target_sample_activated_actor_size",
+        "data":{
+          "callback":"call_sample_activated_actor_size",
+          "time":0.2,
+          "factor":0.7
+        }
+      },      {
         "id":"target_sample_actor_size",
         "data":{
           "callback":"call_sample_selected_actor_size",
           "time":0.2,
           "factor":0.7
+        }
+      },
+      {
+        "id":"target_inherit_activated_actor_position",
+        "data":{
+          "callback":"call_inherit_activated_actor_states",
+          "inherit_states":[
+            "state_pos_x", "state_pos_z", "state_pos_y"
+          ],
+          "time":0.08
         }
       },
       {
@@ -71,6 +88,14 @@
           "callback":"call_sample_selected_actor",
           "time":0.25,
           "release_time":0.15
+        }
+      },
+      {
+        "id":"target_sample_activated_actor",
+        "data":{
+          "callback":"call_sample_activated_actor",
+          "time":0.85,
+          "release_time":0.35
         }
       },
       {
@@ -231,11 +256,20 @@
         }
       },
       {
+        "id":"target_scale_axis_zx",
+        "data":{
+          "callback":"scale_axis",
+          "axis":["x", "z"],
+          "factor":0.8,
+          "offset":3
+        }
+      },
+      {
         "id":"target_scale_activate",
         "data":{
           "callback":"scale_uniform",
           "clamp_min":0.0001,
-          "clamp_max":1
+          "clamp_max":1000
         }
       },
       {

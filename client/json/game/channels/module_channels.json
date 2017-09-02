@@ -27,6 +27,14 @@
         }
       },
       {
+        "id":"channel_sample_activation",
+        "data":{
+          "targets":[
+            {"targetid":"target_sample_activated_actor"}
+          ]
+        }
+      },
+      {
         "id":"channel_sample_hover_active",
         "data":{
           "targets":[
@@ -35,6 +43,13 @@
         }
       },
       {
+        "id":"channel_sample_activated_size",
+        "data":{
+          "targets":[
+            {"targetid":"target_sample_activated_actor_size"}
+          ]
+        }
+      },      {
         "id":"channel_sample_target_size",
         "data":{
           "targets":[
@@ -47,6 +62,13 @@
         "data":{
           "targets":[
             {"targetid":"target_hover_actors"}
+          ]
+        }
+      },      {
+        "id":"channel_activated_actor_position",
+        "data":{
+          "targets":[
+            {"targetid":"target_inherit_activated_actor_position"}
           ]
         }
       },
@@ -111,6 +133,14 @@
         "data":{
           "targets":[
             {"targetid":"target_enable_controls"}
+          ]
+        }
+      },
+      {
+        "id":"channel_scale_xz",
+        "data":{
+          "targets":[
+            {"targetid":"target_scale_axis_zx"}
           ]
         }
       },

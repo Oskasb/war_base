@@ -136,10 +136,14 @@ define([
 
                     setEnvironment('evening', 300, 2.5);
 
+                    var activeRdy = function(ctrl) {
+                        active = ctrl;
+                        GameAPI.createActor({dataKey:"actor_sherman_tank"}, playerAdded);
+                    };
 
                     var selectorRdy = function(ctrl) {
                         selector = ctrl;
-                        GameAPI.createActor({dataKey:"actor_sherman_tank"}, playerAdded);
+                        GameAPI.createControl('gui_control_active', activeRdy);
                     };
 
                     var cursorReady = function(ctrl) {
@@ -163,6 +167,7 @@ define([
         var activeLevel;
 
         var selector;
+        var active;
         var cursor;
 
         AppLoader.prototype.toggleApp = function(src, value) {
@@ -193,6 +198,7 @@ define([
                 setEnvironment('fadeout', 1000, 0.1);
 
                 if (selector) GameAPI.removeGuiControl(selector);
+                if (active) GameAPI.removeGuiControl(active);
                 if (cursor) GameAPI.removeGuiControl(cursor);
 
                 if (playerActor) GameAPI.removeActor(playerActor, playerRemoved);
