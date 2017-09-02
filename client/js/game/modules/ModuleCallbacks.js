@@ -2,23 +2,19 @@
 
 
 define([
-        'ThreeAPI',
-        'PipelineAPI',
-    'game/controls/GuiControlState',
         'game/controls/GuiControlUtils'
-
     ],
     function(
-        ThreeAPI,
-        PipelineAPI,
-        GuiControlState,
         GuiControlUtils
     ) {
 
-        var guiControlState = new GuiControlState();
-        var guiControlUtils= new GuiControlUtils();
+        var guiControlUtils;
 
         var ModuleCallbacks = function() {};
+
+        ModuleCallbacks.initCallbacks = function(GameAPI) {
+            guiControlUtils = new GuiControlUtils(GameAPI);
+        };
 
         ModuleCallbacks.apply_target_piece_position = function(module, target) {
             if (mouseState.action[0]) {
@@ -30,6 +26,26 @@ define([
 
         ModuleCallbacks.call_pointer_action_self = function(module, target, enable) {
             guiControlUtils.pointerActionOnSelf(module, target, enable);
+        };
+
+        ModuleCallbacks.call_pointer_hover_actors = function(module, target, enable) {
+            guiControlUtils.pointerActionOnActors(module, target, enable);
+        };
+
+        ModuleCallbacks.call_inherit_hover_actor_states = function(module, target, enable) {
+            guiControlUtils.inheritHoverActorStates(module, target, enable);
+        };
+
+        ModuleCallbacks.call_focus_hover_actor = function(module, target, enable) {
+            guiControlUtils.focusHoverActor(module, target, enable);
+        };
+
+        ModuleCallbacks.call_sample_selected_actor_size = function(module, target, enable) {
+            guiControlUtils.sampleSelectedActorSize(module, target, enable);
+        };
+
+        ModuleCallbacks.call_enable_target_controls = function(module, target, enable) {
+
         };
 
         ModuleCallbacks.call_enable_target_controls = function(module, target, enable) {
@@ -56,7 +72,13 @@ define([
         };
 
         ModuleCallbacks.transform = function(module, target) {
-            module.visualModule.getRootObject3d()[target.config.parameter][target.config.axis] = target.state.getValue();
+            var parameter = target.config.parameter;
+            var axis = target.config.axis;
+            var value = target.state.getValue();
+            var currentValue = module.visualModule.getRootObject3d()[parameter][axis];
+            var factor = target.config.factor || 1;
+            var cumulative = target.config.cumulative || 0;
+            module.visualModule.getRootObject3d()[parameter][axis] = value*factor + currentValue*cumulative;
         };
 
         ModuleCallbacks.quat_axis = function(module, target) {

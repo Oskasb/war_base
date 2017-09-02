@@ -3,23 +3,88 @@
 
 define([], function() {
 
-
     var GuiControlState = function() {
+        this.actionTargetActor = null;
+        this.hoverTargetActor = null;
+
+        this.hoverTargetPiece = null;
+        this.actionTargetPiece = null;
+
+        this.hoverTargetModule = null;
+        this.actionTargetModule = null;
+
+        this.commandSourceModule = null;
 
     };
 
-    GuiControlState.prototype.setup3dScene = function(clientTickCallback, ready) {
-        ThreeController.setupThreeRenderer(clientTickCallback, ready);
+
+    GuiControlState.prototype.setHoverTargetActor = function(actor) {
+        this.hoverTargetActor = actor;
     };
 
-    GuiControlState.prototype.setupEffectPlayers = function(onReady) {
-        EffectsAPI.initEffects(onReady);
-        EffectListeners.setupListeners();
-        EffectListeners.setEffectCallbacks(ModuleEffectCreator)
+    GuiControlState.prototype.getHoverTargetActor = function() {
+        return this.hoverTargetActor;
     };
 
-    GuiControlState.prototype.tickEffectPlayers = function(tpf) {
-        EffectListeners.tickEffects(tpf)
+
+    GuiControlState.prototype.setActionTargetActor = function(actor) {
+        this.actionTargetActor = actor;
+    };
+
+    GuiControlState.prototype.getActionTargetActor = function() {
+        return this.actionTargetActor;
+    };
+
+
+
+
+    GuiControlState.prototype.setHoverTargetPiece = function(piece) {
+        this.hoverTargetPiece = piece;
+    };
+
+    GuiControlState.prototype.getHoverTargetPiece = function() {
+        return this.hoverTargetPiece;
+    };
+
+
+    GuiControlState.prototype.setActionTargetPiece = function(piece) {
+        this.actionTargetPiece = piece;
+    };
+
+
+    GuiControlState.prototype.getActionTargetPiece = function() {
+        return this.actionTargetPiece;
+    };
+
+
+
+
+    GuiControlState.prototype.setHoverTargetModule = function(module) {
+        this.hoverTargetModule = module;
+    };
+
+    GuiControlState.prototype.getHoverTargetModule = function() {
+        return this.hoverTargetModule;
+    };
+
+    GuiControlState.prototype.setActionTargetModule = function(module) {
+        this.actionTargetModule = module;
+    };
+
+    GuiControlState.prototype.getActionTargetModule = function() {
+        return this.actionTargetModule;
+    };
+
+    GuiControlState.prototype.setCommandSourceModule = function(module) {
+        this.commandSourceModule = module;
+    };
+
+    GuiControlState.prototype.getCommandActionModule = function() {
+        return this.commandSourceModule;
+    };
+
+    GuiControlState.prototype.releaseActionTargetPiece = function() {
+        this.setActionTargetPiece(null)
     };
 
 

@@ -3,24 +3,46 @@
     "MODELS": {
       "THREE": [
         {
-          "id": "control_cursor_inner_model",
-          "material": "wave_control_additive",
-          "url": "./client/assets/models/controls/cursor_outer",
+          "id": "control_selector_inner_model",
+          "material": "wave_control_opaque",
+          "url": "./client/assets/models/controls/selector_inner",
           "pool": 5,
           "transform": {
             "pos": [0, 0, 0],
-            "rot": [0, -1, 0],
+            "rot": [0, 0, 0],
             "scale": [1, 1, 1]
           }
         },
         {
-          "id": "control_cursor_outer_model",
+          "id": "control_selector_outer_model",
+          "material": "wave_control_additive",
+          "url": "./client/assets/models/controls/selector_outer",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "control_cursor_inner_model",
           "material": "wave_control_opaque",
           "url": "./client/assets/models/controls/cursor_inner",
           "pool": 5,
           "transform": {
             "pos": [0, 0, 0],
-            "rot": [0, -1, 0],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "control_cursor_outer_model",
+          "material": "wave_control_additive",
+          "url": "./client/assets/models/controls/cursor_outer",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, 0, 0],
             "scale": [1, 1, 1]
           }
         },

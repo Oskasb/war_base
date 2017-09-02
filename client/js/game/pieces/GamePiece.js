@@ -27,10 +27,13 @@ define([
             this.pieceStates = [];
             this.rootObj3D = ThreeAPI.createRootObject();
 
-            this.enable = false;
+            this.enable = true;
 
             var controlsEnable = function(bool) {
                 if (typeof(bool) !== 'boolean') {
+                    if (this.enable) {
+                        return this
+                    }
                     return this.enable
                 }
                 this.enable = bool;
@@ -200,6 +203,7 @@ define([
         };
 
         GamePiece.prototype.determineVisibility = function() {
+            if (!this.enable) return;
             var distance = ThreeAPI.distanceToCamera(this.rootObj3D.position);
 
             if (distance < this.boundingSize) {

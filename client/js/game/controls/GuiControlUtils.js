@@ -3,21 +3,24 @@
 
 define([
     'ThreeAPI',
-    'PipelineAPI'
+    'PipelineAPI',
+    'game/controls/GuiControlState'
 
 ], function(
     ThreeAPI,
-    PipelineAPI
-
+    PipelineAPI,
+    GuiControlState
 ) {
 
-
+    var GameAPI;
     var mouseState;
     var line;
+    var guiControlState;
+
+    var hoverDistance;
 
     var calcVec = new THREE.Vector3();
     var calcVec2 = new THREE.Vector3();
-
 
     function checkConditions(source, conditions) {
         if (!conditions) return true;
@@ -43,7 +46,71 @@ define([
     }
 
 
-    var GuiControlUtils = function() {
+    function calcInteractionRange(press, state, config, enable) {
+        if (!press) {
+            if (state.targetValue !== 0) {
+                state.setValueAtTime(0, config.release_time);
+                enable(false);
+                guiControlState.releaseActionTargetPiece();
+            }
+            return;
+        }
+
+        return config.range;
+    }
+
+
+    function screenSpaceActionInRange(module, range, state, config) {
+
+        if (state.targetValue === 1) {
+            return;
+        }
+
+        calcVec.setFromMatrixPosition(module.visualModule.rootObj.matrixWorld);
+
+        ThreeAPI.toScreenPosition(calcVec, calcVec2);
+
+        var distsq = ThreeAPI.getSpatialFunctions().getHoverDistanceToPos(calcVec2, mouseState);
+
+        if (distsq < range) {
+            state.setValueAtTime(1, config.time);
+            return true;
+        }
+    }
+
+
+    function getActorNearestPointer() {
+
+        hoverDistance = 999999;
+        var actors = GameAPI.getActors();
+        var distsq = 0;
+
+        var selectedActor;
+
+        for (var i = 0; i < actors.length; i++) {
+
+            var piece = actors[i].piece;
+
+            if (piece.render) {
+                calcVec.setFromMatrixPosition(actors[i].piece.rootObj3D.matrixWorld);
+                ThreeAPI.toScreenPosition(calcVec, calcVec2);
+                distsq = ThreeAPI.getSpatialFunctions().getHoverDistanceToPos(calcVec2, mouseState);
+                if (distsq < hoverDistance) {
+                    hoverDistance = distsq;
+                    selectedActor = actors[i];
+                }
+            }
+        }
+
+        return selectedActor
+    }
+
+
+    var GuiControlUtils = function(gameApi) {
+
+        GameAPI = gameApi;
+
+        guiControlState = new GuiControlState();
 
         var fetchLine = function(src, data) {
             line = data;
@@ -57,51 +124,130 @@ define([
         PipelineAPI.subscribeToCategoryKey('POINTER_STATE', 'mouseState', fetchPointer);
     };
 
+
     GuiControlUtils.prototype.pointerActionOnSelf = function(module, target, enable) {
         var press = mouseState.action[0];
         var state = target.state;
         var config = target.config;
 
-        if (!press) {
-            if (state.targetValue !== 0) {
-                state.setValueAtTime(0, config.release_time);
-                enable(false);
-            }
-            return;
-        }
+        var range = calcInteractionRange(press, state, config, enable);
 
-        if (state.targetValue === 1) {
-            return;
-        }
+        var isInRange = screenSpaceActionInRange(module, range, state, config);
 
-        var range = config.range;
-
-        calcVec.setFromMatrixPosition(module.visualModule.rootObj.matrixWorld);
-
-        ThreeAPI.toScreenPosition(calcVec, calcVec2);
-
-        var distsq = ThreeAPI.getSpatialFunctions().getHoverDistanceToPos(calcVec2, mouseState);
-
-        if (distsq < range) {
-            state.setValueAtTime(1, config.time);
+        if (isInRange) {
             enable(true);
+            guiControlState.setActionTargetPiece(enable());
+            guiControlState.setActionTargetModule(module);
         }
+    };
+
+
+    GuiControlUtils.prototype.pointerActionOnActors = function(module, target, enable) {
+        var press = mouseState.action[0];
+        var state = target.state;
+        var config = target.config;
+
+        var range = calcInteractionRange(press, state, config, enable);
+
+        var actor = getActorNearestPointer();
+
+        if (!actor) return;
+
+        if (hoverDistance < range) {
+            enable(true);
+            guiControlState.setHoverTargetActor(actor);
+            guiControlState.setCommandSourceModule(module);
+        }
+    };
+
+
+    function inheritActorStatesInTime(inheritStates, piece, actor, time) {
+
+        var targetState;
+        var sourceState;
+
+        for (var i = 0; i < inheritStates.length; i++) {
+            targetState = piece.getPieceStateByStateId(inheritStates[i]);
+            sourceState = actor.piece.getPieceStateByStateId(inheritStates[i]);
+            if (!sourceState) {
+                console.log("No source state:", targetState, actor.piece);
+                return;
+            }
+            targetState.setValueAtTime(sourceState.getValue(), time);
+        }
+    }
+
+
+    GuiControlUtils.prototype.inheritHoverActorStates = function(module, target, enable) {
+        var state = target.state;
+
+        if (!enable()) return;
+
+        var hoverActor = guiControlState.getHoverTargetActor();
+
+        if (!hoverActor) return;
+
+        var config = target.config;
+        var time = config.time;
+        var pointerPiece = enable();
+        var inheritState = config.inherit_states;
+
+        inheritActorStatesInTime(inheritState, pointerPiece, hoverActor, time);
+    };
+
+    GuiControlUtils.prototype.focusHoverActor = function(module, target, enable) {
+        var state = target.state;
+
+        if (!enable()) return;
+
+        var hoverActor = guiControlState.getHoverTargetActor();
+
+        if (!hoverActor) return;
+
+        if (!hoverActor.piece.render) return;
+
+        var config = target.config;
+        var time = config.time;
+        var pointerPiece = enable();
+        var inheritState = config.inherit_states;
+
+        inheritActorStatesInTime(inheritState, pointerPiece, hoverActor, time);
+    };
+
+    GuiControlUtils.prototype.sampleSelectedActorSize = function(module, target, enable) {
+        var state = target.state;
+        var config = target.config;
+        var time = config.time;
+        var factor = config.factor;
+        if (!enable()) return;
+
+        var hoverActor = guiControlState.getHoverTargetActor();
+
+        if (!hoverActor) return;
+        var size = hoverActor.piece.boundingSize;
+
+        if (state.targetValue === size*factor) return;
+        state.setValueAtTime(size*factor, time);
+
     };
 
     GuiControlUtils.prototype.scaleModuleUniform = function(module, target, enable) {
         var config = target.config;
         var value = target.state.getValue();
-        var clamp_min = config.clamp_min || 0.001;
+        var clamp_min = config.clamp_min || 0.00001;
         var clamp_max = config.clamp_max || 1;
         if (value < clamp_min && !module.visualModule.hidden) {
+            enable(false);
             module.visualModule.hide();
             return;
         } else if (module.visualModule.hidden) {
             module.visualModule.show();
+            enable(true)
         }
         var scale = MATH.clamp(value, clamp_min, clamp_max);
         module.visualModule.getRootObject3d().scale.setScalar(scale);
     };
+
 
     GuiControlUtils.prototype.readPressActive = function(module, target, enable) {
         var config = target.config;
@@ -111,6 +257,7 @@ define([
             target.state.setValueAtTime(press * target.config.factor, time);
         }
     };
+
 
     GuiControlUtils.prototype.readInputVector = function(module, target, enable) {
         var state = target.state;
@@ -151,6 +298,7 @@ define([
             }
         }
     };
+
 
     GuiControlUtils.prototype.tickEffectPlayers = function(module, target, enable) {
 

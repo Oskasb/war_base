@@ -25,7 +25,34 @@
       {
         "id":"target_hover_actors",
         "data":{
-          "callback":"call_pointer_hover_actors"
+          "callback":"call_pointer_hover_actors",
+          "range":0.025,
+          "time":0.25,
+          "release_time":0.15
+        }
+      },
+      {
+        "id":"target_sample_actor_size",
+        "data":{
+          "callback":"call_sample_selected_actor_size",
+          "time":0.2,
+          "factor":0.7
+        }
+      },
+      {
+        "id":"target_inherit_hover_actor_position",
+        "data":{
+          "callback":"call_inherit_hover_actor_states",
+          "inherit_states":[
+            "state_pos_x", "state_pos_z", "state_pos_y"
+          ],
+          "time":0.08
+        }
+      },
+      {
+        "id":"target_focus_hover_actor",
+        "data":{
+          "callback":"call_focus_hover_actor"
         }
       },
       {
@@ -138,6 +165,15 @@
         }
       },
       {
+        "id":"cursor_animate_texture_cumulative",
+        "data":{
+          "callback":"animate_texture",
+          "offsetxy":[0, 1],
+          "factor":-0.01,
+          "cumulative":1
+        }
+      },
+      {
         "id":"model_animate_texture_cumulative",
         "data":{
           "callback":"animate_texture",
@@ -180,7 +216,7 @@
         "id":"target_scale_activate",
         "data":{
           "callback":"scale_uniform",
-          "clamp_min":0.01,
+          "clamp_min":0.0001,
           "clamp_max":1
         }
       },
@@ -190,6 +226,16 @@
           "callback":"transform",
           "parameter":"rotation",
           "axis":"x"
+        }
+      },
+      {
+        "id":"target_rotate_yaw_cumulative",
+        "data":{
+          "callback":"transform",
+          "parameter":"rotation",
+          "axis":"y",
+          "cumulative":1,
+          "factor":0.06
         }
       },
       {

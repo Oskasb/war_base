@@ -11,9 +11,9 @@
           },
           "channels":[
 
-            {"channelid":"channel_pos_x",  "stateid": "pos_state_x"},
-            {"channelid":"channel_pos_y",  "stateid": "pos_state_y"},
-            {"channelid":"channel_pos_z",  "stateid": "pos_state_z"}
+            {"channelid":"channel_pos_x",  "stateid": "state_pos_x"},
+            {"channelid":"channel_pos_y",  "stateid": "state_pos_z"},
+            {"channelid":"channel_pos_z",  "stateid": "state_pos_y"}
           ],
 
           "attachment_points":[
@@ -43,14 +43,80 @@
                 "rot":[0,     0, 0],
                 "pos":[0.0, 0.0, 0.0]
               }
+            }
+          ]
+        }
+      },{
+        "id":"control_selector_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   1.6,   0],
+            "size": [0.4, 0.2, 0.5]
+          },
+          "channels":[
+            {"channelid":"channel_sample_press",         "stateid":"state_control_active"},
+            {"channelid":"channel_rotate_yaw_cumulative","stateid":"state_control_active"},
+            {"channelid":"channel_sample_hover_actors",  "stateid":"state_control_active"},
+            {"channelid":"channel_hover_actor_position", "stateid":"state_control_active"},
+            {"channelid":"channel_sample_target_size",   "stateid":"state_bounding_radius"}
+          ],
+          "attachment_points":[
+            {
+              "id":"ap_element_0",
+              "transform":{
+                "rot":[0,     0, 0],
+                "pos":[0.0, 0.0, 0.0]
+              }
+            },
+            {
+              "id":"ap_element_1",
+              "transform":{
+                "rot":[0,  1.57, 0],
+                "pos":[0.0, 0.0, 0.0]
+              }
             },
             {
               "id":"ap_element_2",
               "transform":{
-                "rot":[0,     0, 0],
-                "pos":[0.0, 0.0, 0]
+                "rot":[0, -3.148, 0],
+                "pos":[0.0,  0.0, 0]
+              }
+            },
+            {
+              "id":"ap_element_3",
+              "transform":{
+                "rot":[0, -1.57, 0],
+                "pos":[0.0,  0.0, 0]
               }
             }
+          ]
+        }
+      },{
+        "id":"selector_inner_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [5.0, 0.5,  5.0]
+          },
+          "model":"control_selector_inner_model",
+          "channels":[
+            {"channelid":"channel_pos_z",                     "stateid":"state_bounding_radius"}
+          ]
+        }
+      },{
+        "id":"selector_outer_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [5.0, 0.5,  5.0]
+          },
+          "model":"control_selector_outer_model",
+          "channels":[
+            {"channelid":"channel_pos_z",                     "stateid":"state_bounding_radius"},
+            {"channelid":"animate_cursor_texture_cumulative", "stateid":"state_control_active"}
           ]
         }
       },{
@@ -63,8 +129,11 @@
           },
           "model":"control_cursor_outer_model",
           "channels":[
-            {"channelid":"animate_texture_cumulative",  "stateid":"state_control_active"},
-            {"channelid":"channel_sample_hover_actors", "stateid":"state_control_active"}
+            {"channelid":"channel_sample_press",               "stateid":"state_control_active"},
+            {"channelid":"channel_rotate_yaw_cumulative",      "stateid":"state_control_active"},
+            {"channelid":"animate_cursor_texture_cumulative",  "stateid":"state_control_active"},
+            {"channelid":"channel_sample_hover_actors",        "stateid":"state_control_active"},
+            {"channelid":"channel_hover_actor_position",       "stateid":"state_control_active"}
           ]
         }
       },{
@@ -77,7 +146,7 @@
           },
           "model":"control_cursor_inner_model",
           "channels":[
-            {"channelid":"animate_texture_cumulative",  "stateid":"state_control_active"}
+            {"channelid":"channel_rotate_yaw_cumulative",     "stateid":"state_control_active"}
           ]
         }
       },{

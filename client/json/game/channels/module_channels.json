@@ -27,10 +27,34 @@
         }
       },
       {
+        "id":"channel_sample_target_size",
+        "data":{
+          "targets":[
+            {"targetid":"target_sample_actor_size"}
+          ]
+        }
+      },
+      {
         "id":"channel_sample_hover_actors",
         "data":{
           "targets":[
             {"targetid":"target_hover_actors"}
+          ]
+        }
+      },
+      {
+        "id":"channel_hover_actor_position",
+        "data":{
+          "targets":[
+            {"targetid":"target_inherit_hover_actor_position"}
+          ]
+        }
+      },
+      {
+        "id":"channel_focus_hover_actor",
+        "data":{
+          "targets":[
+            {"targetid":"target_focus_hover_actor"}
           ]
         }
       },
@@ -70,8 +94,7 @@
         "id":"channel_enable_controls",
         "data":{
           "targets":[
-            {"targetid":"target_enable_controls"},
-            {"targetid":"target_scale_activate"}
+            {"targetid":"target_enable_controls"}
           ]
         }
       },
@@ -156,6 +179,14 @@
         }
       },
       {
+        "id":"channel_rotate_yaw_cumulative",
+        "data":{
+          "targets":[
+            {"targetid":"target_rotate_yaw_cumulative"}
+          ]
+        }
+      },
+      {
         "id":"channel_yaw",
         "data":{
           "targets":[
@@ -164,6 +195,13 @@
         }
       },
       {
+        "id":"animate_cursor_texture_cumulative",
+        "data":{
+          "targets":[
+            {"targetid":"cursor_animate_texture_cumulative"}
+          ]
+        }
+      },      {
         "id":"animate_texture_cumulative",
         "data":{
           "targets":[

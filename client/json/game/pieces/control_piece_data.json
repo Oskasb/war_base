@@ -12,6 +12,39 @@
         }
       },
       {
+        "id":"selector_control_piece",
+        "data":{
+          "root_slot":"root",
+          "slots":[
+            {"slot":"root",         "module":"control_root_module"   },
+            {"slot":"pointer_state",    "module":"control_pointer_module"},
+            {"slot":"control_selector", "module":"control_selector_module"},
+            {"slot":"slot_0_cursor",    "module":"selector_inner_module"},
+            {"slot":"slot_0_highlight", "module":"selector_outer_module"},
+            {"slot":"slot_1_cursor",    "module":"selector_inner_module"},
+            {"slot":"slot_1_highlight", "module":"selector_outer_module"},
+            {"slot":"slot_2_cursor",    "module":"selector_inner_module"},
+            {"slot":"slot_2_highlight", "module":"selector_outer_module"},
+            {"slot":"slot_3_cursor",    "module":"selector_inner_module"},
+            {"slot":"slot_3_highlight", "module":"selector_outer_module"}
+          ],
+          "attachments":[
+            {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
+
+              {"slot":"pointer_state",   "ap":"ap_element",      "child":"control_selector"},
+
+                {"slot":"control_selector","ap":"ap_element_0",    "child":"slot_0_cursor"},
+                {"slot":"control_selector","ap":"ap_element_0",    "child":"slot_0_highlight"},
+                {"slot":"control_selector","ap":"ap_element_1",    "child":"slot_1_cursor"},
+                {"slot":"control_selector","ap":"ap_element_1",    "child":"slot_1_highlight"},
+                {"slot":"control_selector","ap":"ap_element_2",    "child":"slot_2_cursor"},
+                {"slot":"control_selector","ap":"ap_element_2",    "child":"slot_2_highlight"},
+                {"slot":"control_selector","ap":"ap_element_3",    "child":"slot_3_cursor"},
+                {"slot":"control_selector","ap":"ap_element_3",    "child":"slot_3_highlight"}
+          ]
+        }
+      },
+      {
         "id":"cursor_control_piece",
         "data":{
           "root_slot":"root",
@@ -24,7 +57,7 @@
           "attachments":[
             {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
             {"slot":"pointer_state","ap":"ap_element",      "child":"slot_cursor"},
-            {"slot":"pointer_state","ap":"ap_element_2",    "child":"slot_highlight"}
+            {"slot":"pointer_state","ap":"ap_element",      "child":"slot_highlight"}
           ]
         }
       },
@@ -50,7 +83,7 @@
           "attachments":[
             {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
               {"slot":"pointer_state","ap":"ap_element",      "child":"state_heading"},
-              {"slot":"pointer_state","ap":"ap_element_2",    "child":"state_reverse_root"},
+              {"slot":"pointer_state","ap":"ap_element",      "child":"state_reverse_root"},
 
                 {"slot":"state_heading",      "ap":"ap_yaw",          "child":"state_yaw"},
                 {"slot":"state_reverse_root", "ap":"ap_yaw_reverse",  "child":"state_yaw_reverse"},

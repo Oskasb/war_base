@@ -3,17 +3,19 @@
 define([
     'ThreeAPI',
     'game/GameActor',
-        'game/controls/GuiControlSystem'
+        'game/controls/GuiControlSystem',
+        'game/modules/ModuleCallbacks'
     ],
 
     function(
         ThreeAPI,
         GameActor,
-        GuiControlSystem
+        GuiControlSystem,
+        ModuleCallbacks
     ) {
 
 
-    var GameAPI;
+        var GameAPI;
         var gameWorker;
         var levelBuilder;
 
@@ -21,6 +23,7 @@ define([
             GameAPI = gameApi;
             gameWorker =  gWorker;
             levelBuilder =lvlBuilder;
+            ModuleCallbacks.initCallbacks(GameAPI);
         };
 
         GameCommander.prototype.getEntryById = function(array, id) {

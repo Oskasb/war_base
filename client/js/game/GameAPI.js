@@ -81,6 +81,10 @@ define([
             actors.push(actor)
         };
 
+        GameAPI.getActors = function() {
+            return actors;
+        };
+
         GameAPI.dropActorControl = function(actor) {
             gameCommander.disableActorControls(actor, activeControl)
         };
