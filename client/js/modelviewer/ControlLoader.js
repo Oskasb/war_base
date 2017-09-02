@@ -47,7 +47,7 @@ define([
                         id:"panel_button",
                         event:buttonEvent
                     },
-                    text:'CONTROLS'
+                    text:'CTRL'
                 }
             };
 
