@@ -32,14 +32,14 @@ define([
             this.remove = bool;
         };
 
-        ChannelTarget.prototype.sampleModuleState = function(module, state, tpf, time) {
+        ChannelTarget.prototype.sampleModuleState = function(module, state, enable) {
          //   if (isNaN(state.getValue())) state.setValue(0);
             this.state = state;
             if (typeof(ModuleCallbacks[this.config.callback]) !== 'function') {
                 console.log("Bad callback", this.config.callback, ModuleCallbacks);
                 return;
             }
-            ModuleCallbacks[this.config.callback](module, this, tpf)
+            ModuleCallbacks[this.config.callback](module, this, enable)
         };
 
         ChannelTarget.prototype.removeEffectTarget = function() {

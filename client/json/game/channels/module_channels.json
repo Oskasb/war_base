@@ -19,7 +19,15 @@
         }
       },
       {
-        "id":"channel_sample_hover_sctors",
+        "id":"channel_sample_hover_active",
+        "data":{
+          "targets":[
+            {"targetid":"target_hover_active"}
+          ]
+        }
+      },
+      {
+        "id":"channel_sample_hover_actors",
         "data":{
           "targets":[
             {"targetid":"target_hover_actors"}
@@ -55,6 +63,15 @@
         "data":{
           "targets":[
             {"targetid":"target_sample_input_steering_reverse"}
+          ]
+        }
+      },
+      {
+        "id":"channel_enable_controls",
+        "data":{
+          "targets":[
+            {"targetid":"target_enable_controls"},
+            {"targetid":"target_scale_activate"}
           ]
         }
       },

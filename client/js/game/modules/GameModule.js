@@ -172,13 +172,13 @@ define([
 
 
 
-        GameModule.prototype.sampleModuleFrame = function (render, tpf) {
+        GameModule.prototype.sampleModuleFrame = function (render, enable) {
             this.visualModule.setVisibility(render);
             for (var i = 0; i < this.moduleChannels.length; i++) {
-                this.moduleChannels[i].updateChannelState(this);
+                this.moduleChannels[i].updateChannelState(this, enable);
             }
             if (this.interpolateQuaternion) {
-                this.visualModule.slerpTowardsTargetQuat(this.interpolateQuaternion);
+                this.visualModule.slerpTowardsTargetQuat(this.interpolateQuaternion)
             }
         };
 

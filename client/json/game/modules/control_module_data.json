@@ -10,6 +10,7 @@
             "size": [0.3,0.1,0.3]
           },
           "channels":[
+
             {"channelid":"channel_pos_x",  "stateid": "pos_state_x"},
             {"channelid":"channel_pos_y",  "stateid": "pos_state_y"},
             {"channelid":"channel_pos_z",  "stateid": "pos_state_z"}
@@ -33,7 +34,6 @@
             "size": [0.4, 0.2, 0.5]
           },
           "channels":[
-            {"channelid":"channel_sample_press",        "stateid":"state_control_active"},
             {"channelid":"channel_scale_activate",      "stateid":"state_control_active"}
           ],
           "attachment_points":[
@@ -64,7 +64,7 @@
           "model":"control_cursor_outer_model",
           "channels":[
             {"channelid":"animate_texture_cumulative",  "stateid":"state_control_active"},
-            {"channelid":"channel_sample_hover_sctors", "stateid":"state_hover_actors"}
+            {"channelid":"channel_sample_hover_actors", "stateid":"state_control_active"}
           ]
         }
       },{
@@ -88,7 +88,9 @@
             "pos":  [0,   0.0, -0],
             "size": [0.5, 0.2,0.5]
           },
-
+          "channels":[
+            {"channelid":"channel_sample_hover_active", "stateid":"state_control_active"}
+          ],
           "attachment_points":[
             {
               "id":"ap_yaw",
@@ -191,8 +193,8 @@
           ],
           "channels":[
             {"channelid":"animate_texture_cumulative",  "stateid":"state_reverse"},
-            {"channelid":"channel_input_reverse",      "stateid":"state_reverse"},
-            {"channelid":"channel_pos_z",              "stateid":"state_reverse"}
+            {"channelid":"channel_input_reverse",       "stateid":"state_reverse"},
+            {"channelid":"channel_pos_z",               "stateid":"state_reverse"}
 
           ]
         }

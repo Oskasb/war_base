@@ -13,6 +13,9 @@ define([
         var mouseState;
         var line;
 
+        var calcVec = new THREE.Vector3();
+        var calcVec2 = new THREE.Vector3();
+
         var fetchLine = function(src, data) {
             line = data;
         };
@@ -58,11 +61,42 @@ define([
             }
         };
 
-        ModuleCallbacks.target_hover_actors = function(module, target) {
+        ModuleCallbacks.call_pointer_action_self = function(module, target, enable) {
 
             var press = mouseState.action[0];
-            var config = target.config;
             var state = target.state;
+            var config = target.config;
+
+            if (!press) {
+                if (state.targetValue !== 0) {
+                    state.setValueAtTime(0, config.release_time);
+                    enable(false);
+                }
+                return;
+            }
+
+            if (state.targetValue === 1) {
+                return;
+            }
+
+
+            var range = config.range;
+
+            calcVec.setFromMatrixPosition(module.visualModule.rootObj.matrixWorld);
+
+            ThreeAPI.toScreenPosition(calcVec, calcVec2);
+
+            var distsq = ThreeAPI.getSpatialFunctions().getHoverDistanceToPos(calcVec2, mouseState);
+
+            if (distsq < range) {
+                state.setValueAtTime(1, config.time);
+                enable(true);
+            }
+
+        };
+
+        ModuleCallbacks.call_enable_target_controls = function(module, target, enable) {
+
 
         };
 
@@ -95,13 +129,17 @@ define([
         };
 
 
-
-
-        ModuleCallbacks.read_input_vector = function(module, target) {
+        ModuleCallbacks.read_input_vector = function(module, target, enable) {
+            var state = target.state;
+            var config = target.config;
+            if (!enable()) {
+                if (state.targetValue !== 0) {
+                    state.setValueAtTime(0, config.release_time);
+                }
+                return;
+            }
 
             var press = mouseState.action[0];
-            var config = target.config;
-            var state = target.state;
 
             if (!press) {
                 state.setValueAtTime(0, config.release_time);

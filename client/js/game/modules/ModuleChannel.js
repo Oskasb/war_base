@@ -52,10 +52,10 @@ define([
         };
 
 
-        ModuleChannel.prototype.updateChannelState = function (module) {
+        ModuleChannel.prototype.updateChannelState = function (module, enable) {
             if (this.state) {
                 for (var i = 0; i < this.targets.length; i++) {
-                    this.targets[i].sampleModuleState(module, this.state);
+                    this.targets[i].sampleModuleState(module, this.state, enable);
                 }
             }
         };

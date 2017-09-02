@@ -27,6 +27,17 @@ define([
             this.pieceStates = [];
             this.rootObj3D = ThreeAPI.createRootObject();
 
+            this.enable = false;
+
+            var controlsEnable = function(bool) {
+                if (typeof(bool) !== 'boolean') {
+                    return this.enable
+                }
+                this.enable = bool;
+            }.bind(this);
+
+            this.enabler = controlsEnable;
+
             var applyPieceData = function() {
                 this.applyPieceData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
@@ -220,8 +231,9 @@ define([
                 this.pieceStates[i].updateStateFrame(tpf, time)
             }
 
+
             for (i = 0; i < this.pieceSlots.length;i++) {
-                this.pieceSlots[i].updatePieceSlot(this.render);
+                this.pieceSlots[i].updatePieceSlot(this.render, this.enabler);
             }
 
             for (i = 0; i < this.pieceSlots.length;i++) {

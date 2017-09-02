@@ -7,7 +7,8 @@ define([
         '3d/three/ThreeTextureMaker',
         '3d/three/ThreeMaterialMaker',
         '3d/three/ThreeFeedbackFunctions',
-        '3d/three/ThreeEnvironment'
+        '3d/three/ThreeEnvironment',
+        '3d/three/ThreeSpatialFunctions'
 
 ],
     function(
@@ -17,7 +18,8 @@ define([
         ThreeTextureMaker,
         ThreeMaterialMaker,
         ThreeFeedbackFunctions,
-        ThreeEnvironment
+        ThreeEnvironment,
+        ThreeSpatialFunctions
         
     ) {
 
@@ -27,6 +29,8 @@ define([
         var camera;
         var scene;
 
+        var spatialFunctions;
+
         var effectCallbacks;
 
         var ThreeAPI = function() {
@@ -35,6 +39,7 @@ define([
 
         ThreeAPI.initThreeLoaders = function(TAPI) {
             shaderBuilder = new ThreeShaderBuilder();
+            spatialFunctions = new ThreeSpatialFunctions();
             ThreeModelLoader.loadData();
             ThreeModelLoader.loadTerrainData(TAPI);
             ThreeTextureMaker.loadTextures();
@@ -64,6 +69,10 @@ define([
 
         ThreeAPI.getEffectCallbacks = function() {
             return effectCallbacks;
+        };
+
+        ThreeAPI.getSpatialFunctions = function() {
+            return spatialFunctions;
         };
 
         ThreeAPI.readEnvironmentUniform = function(worldProperty, key) {
