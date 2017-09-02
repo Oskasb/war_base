@@ -126,8 +126,8 @@ define([
     //        console.log("Setup Simulation");
 
             var clientTick = function(tpf) {
-                _this.tick(tpf)
-                sceneController.tickEffectPlayers(tpf);
+                _this.tick(tpf, sceneController)
+
             };
 
             var systems = 0;
@@ -151,7 +151,7 @@ define([
         var start;
         var gameTime = 0;
 
-        ModelViewer.prototype.tick = function(tpf) {
+        ModelViewer.prototype.tick = function(tpf, sceneController) {
 
             gameTime += tpf;
             start = performance.now();
@@ -184,12 +184,16 @@ define([
 
             GameAPI.tickControls(tpf, gameTime);
 
+
             setTimeout(function() {
 
                 tickEvent.frame = frame;
                 tickEvent.tpf = tpf;
-                PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
+
                 GameAPI.tickGame(tpf, gameTime);
+
+                sceneController.tickEffectPlayers(tpf);
+                PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
                 evt.fire(evt.list().CLIENT_TICK, tickEvent);
 
             }, 0);
