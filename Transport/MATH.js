@@ -276,7 +276,7 @@ if(typeof(MATH) == "undefined"){
 	};
 	
 	MATH.vectorXZToAngleAxisY = function(vec) {
-		return Math.atan2(vec.x, vec.x) + Math.PI;;
+		return Math.atan2(vec.x, vec.x);
 	};
 
 	MATH.vectorXYToAngleAxisZ = function(vec) {

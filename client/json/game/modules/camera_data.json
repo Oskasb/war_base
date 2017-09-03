@@ -4,12 +4,36 @@
       {
         "id":"vehicle_control_camera",
         "data":{
+          "cameraFunction":"above_target_obj",
+          "master_state":{"state_id":"state_control_active"},
+          "min_elevation":40,
+          "offsets":[
+            {"property":"target", "axis":"y","value":1}
+          ],
+          "params":[
+            {"param":"maxDistance",   "value":55},
+            {"param":"minDistance",   "value":35},
+            {"param":"enableDamping", "value":true},
+            {"param":"dampingFactor", "value":0.82},
+            {"param":"autoRotate",    "value":false},
+            {"param":"minAzimuthAngle", "value":0.048},
+            {"param":"maxAzimuthAngle", "value":0.048},
+            {"param":"minPolarAngle",   "value":0.748},
+            {"param":"maxPolarAngle",   "value":0.948}
+          ],
+          "lerp":0.15,
+          "radial_lerp":0.08
+        }
+      },
+      {
+        "id":"vehicle_look_camera",
+        "data":{
           "cameraFunction":"orbit_target_obj",
           "view_heading":{"slot_id":"state_forward"},
           "master_state":{"state_id":"state_control_active"},
-          "min_elevation":10,
+          "min_elevation":8,
           "offsets":[
-            {"property":"target", "axis":"y","value":4}
+            {"property":"target", "axis":"y","value":3}
           ],
           "params":[
             {"param":"maxDistance",   "value":15},

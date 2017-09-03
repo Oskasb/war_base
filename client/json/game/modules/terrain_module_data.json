@@ -10,14 +10,14 @@
             "three_terrain":"plain_ground",
             "vegetation_system":"basic_grassland",
             "terrain_size":1000,
-            "terrain_segments":127,
+            "terrain_segments":255,
             "invert_hill":false,
             "terrain_edge_size":175,
             "edge_easing":"clampSin",
-            "max_height":50,
+            "max_height":25,
             "min_height":0,
-            "frequency":2,
-            "steps":4
+            "frequency":7,
+            "steps":5
           },
           "terrain":"plain_ground",
           "channels":[

@@ -50,6 +50,8 @@ define([
             var targetObj3d = controls.rootObj3D;
             var masterValue = 0;
 
+            var rotY = 0;
+
             if (!targetObj3d) return;
 
             if (this.config.master_state) {
@@ -57,7 +59,6 @@ define([
                 if (!state) return;
                 masterValue = state.getValue();
             };
-
 
 
             if (this.config.view_heading) {
@@ -72,15 +73,15 @@ define([
                     calcVec.set(0, 0, Math.PI*2);
                     calcVec.applyQuaternion(calcQuat);
 
-                    var rotY = Math.atan2(calcVec.x, calcVec.z) // + Math.PI;
+                    rotY = Math.atan2(calcVec.x, calcVec.z) // + Math.PI;
                 }
             };
         //    masterValue = 1;
 
         //    rotY = Math.sin(new Date().getTime()* 0.001) * Math.PI;
 
-            targetPos.setFromMatrixPosition(targetObj3d.matrixWorld);
-            // targetObj3d.getWorldPosition(targetPos);
+            //    targetPos.setFromMatrixPosition(targetObj3d.matrixWorld);
+        targetObj3d.getWorldPosition(targetPos);
 
         //    if (isNaN(targetPos.y)) targetPos.copy(controls.rootObj3D.position);
 

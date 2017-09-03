@@ -1,129 +1,123 @@
 "use strict";
 
 
-define([], function() {
+define(['PipelineAPI'], function(
+    PipelineAPI
+) {
 
-
-
-    var GuiControlState = function() {
-        this.actionTargetActor = null;
-        this.hoverTargetActor = null;
-
-        this.hoverTargetPiece = null;
-        this.actionTargetPiece = null;
-
-        this.hoverTargetModule = null;
-        this.actionTargetModule = null;
-
-        this.commandSourceModule = null;
-
-        this.pressStartTarget = null;
-
-        this.activatedSelectionTarget = null;
-
-        this.pressSampleFrames = 0;
+    var state = {
+        actionTargetActor : null,
+        hoverTargetActor : null,
+        hoverTargetPiece : null,
+        actionTargetPiece : null,
+        hoverTargetModule : null,
+        actionTargetModule : null,
+        commandSourceModule : null,
+        pressStartTarget : null,
+        activatedSelectionTarget: null,
+        pressSampleFrames : 0
     };
 
+    var GuiControlState = function() {
+        PipelineAPI.setCategoryKeyValue('CONTROL_DATA', 'CONTROL_STATE', state);
+    };
+
+
     GuiControlState.prototype.addPressSampleFrame = function() {
-        this.pressSampleFrames++;
+        state.pressSampleFrames++;
     };
 
     GuiControlState.prototype.getPressSampleFrames = function() {
-        return this.pressSampleFrames;
+        return state.pressSampleFrames;
     };
 
     GuiControlState.prototype.clearPressSampleFrames = function() {
-        this.pressSampleFrames = 0;
+        state.pressSampleFrames = 0;
     };
 
 
-
     GuiControlState.prototype.setActivatedSelectionTarget = function(target) {
-        this.activatedSelectionTarget = target;
+        state.activatedSelectionTarget = target;
     };
 
 
     GuiControlState.prototype.getActivatedSelectionTarget = function() {
-        return this.activatedSelectionTarget;
+        return state.activatedSelectionTarget;
     };
-
 
 
     GuiControlState.prototype.setPressStartTarget = function(target) {
-        this.pressStartTarget = target;
+        state.pressStartTarget = target;
     };
 
     GuiControlState.prototype.getPressStartTarget = function() {
-        return this.pressStartTarget;
+        return state.pressStartTarget;
     };
 
     GuiControlState.prototype.isPressStartTarget = function(target) {
-        return (target === this.pressStartTarget);
+        return (target === state.pressStartTarget);
     };
 
 
     GuiControlState.prototype.setHoverTargetActor = function(actor) {
-        this.hoverTargetActor = actor;
+        state.hoverTargetActor = actor;
     };
 
     GuiControlState.prototype.getHoverTargetActor = function() {
-        return this.hoverTargetActor;
+        return state.hoverTargetActor;
     };
 
 
     GuiControlState.prototype.setSelectedTargetActor = function(actor) {
-        this.actionTargetActor = actor;
+        state.actionTargetActor = actor;
     };
 
     GuiControlState.prototype.getSelectedTargetActor = function() {
-        return this.actionTargetActor;
+        return state.actionTargetActor;
     };
-
-
 
 
     GuiControlState.prototype.setHoverTargetPiece = function(piece) {
-        this.hoverTargetPiece = piece;
+        state.hoverTargetPiece = piece;
     };
 
     GuiControlState.prototype.getHoverTargetPiece = function() {
-        return this.hoverTargetPiece;
+        return state.hoverTargetPiece;
     };
 
 
     GuiControlState.prototype.setActionTargetPiece = function(piece) {
-        this.actionTargetPiece = piece;
+        state.actionTargetPiece = piece;
     };
 
 
     GuiControlState.prototype.getActionTargetPiece = function() {
-        return this.actionTargetPiece;
+        return state.actionTargetPiece;
     };
-
 
 
     GuiControlState.prototype.setHoverTargetModule = function(module) {
-        this.hoverTargetModule = module;
+        state.hoverTargetModule = module;
     };
 
     GuiControlState.prototype.getHoverTargetModule = function() {
-        return this.hoverTargetModule;
+        return state.hoverTargetModule;
     };
 
     GuiControlState.prototype.setActionTargetModule = function(module) {
-        this.actionTargetModule = module;
+        state.actionTargetModule = module;
     };
 
     GuiControlState.prototype.getActionTargetModule = function() {
-        return this.actionTargetModule;
+        return state.actionTargetModule;
     };
 
     GuiControlState.prototype.setCommandSourceModule = function(module) {
-        this.commandSourceModule = module;
+        state.commandSourceModule = module;
     };
 
     GuiControlState.prototype.getCommandActionModule = function() {
-        return this.commandSourceModule;
+        return state.commandSourceModule;
     };
 
     GuiControlState.prototype.releaseActionTargetPiece = function() {
@@ -134,13 +128,10 @@ define([], function() {
         this.setSelectedTargetActor(null)
     };
 
-
     GuiControlState.prototype.selectCurrentHoverActor = function() {
         this.setSelectedTargetActor(this.getHoverTargetActor());
         this.setHoverTargetActor(null);
     };
-
-
 
     return GuiControlState;
 

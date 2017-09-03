@@ -21,8 +21,14 @@ define([
 
     var calcVec = new THREE.Vector3();
     var calcVec2 = new THREE.Vector3();
+    var calcEuler = new THREE.Euler();
+    var calcEuler2 = new THREE.Euler();
+
 
     function checkConditions(source, conditions) {
+
+        var sample;
+
         if (!conditions) return true;
 
         for (var i = 0; i < conditions.length; i++) {
@@ -31,7 +37,7 @@ define([
             var threshold_lower = condition.threshold_lower || Infinity;
             var threshold_upper = condition.threshold_upper || Infinity;
 
-            var sample = source[condition.parameter];
+                sample = source[condition.parameter] ;
 
             if (threshold_lower > threshold_upper) {
                 if (sample < threshold_lower && sample > threshold_upper) {
@@ -497,16 +503,44 @@ define([
         }
     };
 
+    var testLine = {};
 
     GuiControlUtils.prototype.readInputVector = function(module, target, enable) {
         var state = target.state;
         var config = target.config;
 
-        if (guiControlState.getActionTargetPiece() !== GameAPI.getControlledActor().piece) {
+
+        testLine.zrot = line.zrot * config.factor || 1;
+        testLine.w = line.w * config.factor || 1;
+
+
+        var compensateRotation = config.compensateRotation || 0;
+
+        var controlledActor = GameAPI.getControlledActor();
+
+        if (guiControlState.getActionTargetPiece() !== controlledActor.piece) {
             state.setValueAtTime(0, config.release_time);
             state.setSampler(null);
             enable(false);
         }
+
+    //    if (compensateRotation) {
+
+        calcEuler.setFromQuaternion(controlledActor.piece.rootObj3D.quaternion);
+        calcEuler2.setFromQuaternion(ThreeAPI.getCamera().quaternion);
+
+
+        var angBase = calcEuler.y // * Math.PI
+        var camAng = calcEuler2.y // * Math.PI;
+
+        var baseRotation = angBase *Math.PI - Math.PI * 0.5;// 0 // (camAng - angBase) * Math.PI //   MATH.subAngles(camAng, -angBase, camAng) * Math.PI - Math.PI*0.5;
+
+        testLine.zrot = MATH.addAngles(testLine.zrot, baseRotation*compensateRotation);
+
+        if (Math.random() < 0.01) {
+            console.log(baseRotation, angBase, camAng, line.zrot);
+        }
+    //    }
 
         if (!enable()) {
             if (state.targetValue !== 0) {
@@ -529,9 +563,9 @@ define([
             }
         }
 
-        var sample = line[config.parameter]  * config.factor || 1;
+        var sample = testLine[config.parameter];
 
-        if (checkConditions(line, config.conditions)) {
+        if (checkConditions(testLine, config.conditions)) {
             var clamp_min = config.clamp_min || -Infinity;
             var clamp_max = config.clamp_max || Infinity;
             var value = MATH.clamp(sample, clamp_min, clamp_max);
