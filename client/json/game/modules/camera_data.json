@@ -8,20 +8,20 @@
           "master_state":{"state_id":"state_control_active"},
           "min_elevation":20,
           "offsets":[
-            {"property":"target", "axis":"y","value":1}
+            {"property":"target", "axis":"y","value":-1}
           ],
           "params":[
             {"param":"maxDistance",   "value":46},
-            {"param":"minDistance",   "value":28},
+            {"param":"minDistance",   "value":42},
             {"param":"enableDamping", "value":true},
             {"param":"dampingFactor", "value":2.82},
             {"param":"autoRotate",    "value":false},
             {"param":"minAzimuthAngle", "value":0.548},
             {"param":"maxAzimuthAngle", "value":0.548},
-            {"param":"minPolarAngle",   "value":0.748},
-            {"param":"maxPolarAngle",   "value":0.948}
+            {"param":"minPolarAngle",   "value":0.688},
+            {"param":"maxPolarAngle",   "value":0.728}
           ],
-          "lerp":0.15,
+          "lerp":0.25,
           "radial_lerp":0.08
         }
       },

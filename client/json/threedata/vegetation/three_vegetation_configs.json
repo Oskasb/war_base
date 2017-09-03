@@ -6,24 +6,24 @@
 
         {
           "name":"small",
-          "vegetationSectorSize":74,
+          "vegetationSectorSize":48,
           "rowsNColumns":3,
-          "spawnFrames":27,
-          "plantCount":12
+          "spawnFrames":3,
+          "plantCount":18
         },
         {
           "name":"medium",
-          "vegetationSectorSize":77,
+          "vegetationSectorSize":47,
           "rowsNColumns":3,
-          "spawnFrames":36,
-          "plantCount":12
+          "spawnFrames":3,
+          "plantCount":18
         },
         {
           "name":"big",
-          "vegetationSectorSize":79,
+          "vegetationSectorSize":49,
           "rowsNColumns":3,
-          "spawnFrames":30,
-          "plantCount":12
+          "spawnFrames":3,
+          "plantCount":18
         }
       ],
       "SYSTEMS":[
@@ -33,8 +33,8 @@
             {
               "vegetation_effects":[
                 {"id":"standing_grass_veg", "slope":{"min":0,    "max":0.02} , "elevation":{"min":1,    "max":50}},
-                {"id":"red_flower_veg",     "slope":{"min":0,    "max":0.05} , "elevation":{"min":1,    "max":50}},
-                {"id":"white_flower_veg",   "slope":{"min":0.03, "max":0.12} , "elevation":{"min":1,    "max":50}}
+                {"id":"red_flower_veg",     "slope":{"min":0,    "max":0.06} , "elevation":{"min":1,    "max":50}},
+                {"id":"white_flower_veg",   "slope":{"min":0.01, "max":0.14} , "elevation":{"min":1,    "max":50}}
               ]
             },
             {

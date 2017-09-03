@@ -185,7 +185,7 @@ define([
 
                 targetRpm = Math.clamp(targetRpm + clutch * revUpFrameLimit, minRpm, driveTrain.rpm_max) ;
             } else {
-                targetRpm = Math.clamp((targetRpm - clutch * revUpFrameLimit*2), minRpm, maxRpm) ;
+                targetRpm = Math.clamp((targetRpm - clutch * revUpFrameLimit*0.5), minRpm * 0.1, maxRpm*0.1) ;
             }
 
             if (targetRpm > dynamic.rpm.state * driveTrain.rpm_max) {
@@ -236,13 +236,13 @@ define([
 
             var brakeState = MATH.clamp(-wheelBrake, 0, 1);
 
-            if (-wheelBrake > 0.01) {
+            if (-wheelBrake > 0.05) {
                 this.brakeCommand = 1;
             }
 
             dynamic.brake.state = brakeState;
             dynamic.brakeCommand.state = this.brakeCommand;
-            this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.3, 0, 1);
+            this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.5, 0, 1);
         };
 
         AmmoVehicleProcessor.prototype.determineForwardState = function(speedInputState) {

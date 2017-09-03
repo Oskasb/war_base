@@ -23,7 +23,7 @@ define([
 
         var maxGroundContactDistance = 0.5;
 
-        var maxActiveGroundPrints = 1000;
+        var maxActiveGroundPrints = 2000;
 
         var maxGeometryEffetcs = 1000;
 
