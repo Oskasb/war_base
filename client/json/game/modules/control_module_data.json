@@ -54,10 +54,8 @@
             "pos":  [0,   1.6,   0],
             "size": [200, 50, 200]
           },
-          "model":"control_active_inner_model",
           "channels":[
             {"channelid":"channel_sample_activation",        "stateid":"state_control_active"},
-            {"channelid":"channel_rotate_yaw_cumulative",    "stateid":"state_selection_activated"},
             {"channelid":"channel_activated_actor_position", "stateid":"state_selection_activated"},
             {"channelid":"channel_sample_activated_size",    "stateid":"state_bounding_radius"},
             {"channelid":"channel_scale_xz",                 "stateid":"state_bounding_radius"}
@@ -94,14 +92,14 @@
           ]
         }
       },{
-        "id":"control_active_highlight_module",
+        "id":"control_selected_highlight_module",
         "data":{
           "transform":{
             "rot":  [0,   0,    0],
-            "pos":  [0.0, 0.0, 0.0],
+            "pos":  [0.0,-2.0, 0.0],
             "size": [5.0, 0.5,  5.0]
           },
-          "model":"control_active_outer_model",
+          "model":"control_selector_outer_model",
           "channels":[
             {"channelid":"animate_cursor_texture_cumulative", "stateid":"state_control_active"}
           ]
@@ -114,12 +112,13 @@
             "pos":  [0,   1.6,   0],
             "size": [200, 50, 200]
           },
+          "model":"control_selector_inner_model",
           "channels":[
             {"channelid":"channel_sample_selected",         "stateid":"state_control_active"},
-            {"channelid":"channel_sample_activation",       "stateid":"state_control_active"},
             {"channelid":"channel_rotate_yaw_cumulative",   "stateid":"state_control_active"},
             {"channelid":"channel_selected_actor_position", "stateid":"state_control_active"},
-            {"channelid":"channel_sample_target_size",      "stateid":"state_bounding_radius"}
+            {"channelid":"channel_sample_target_size",      "stateid":"state_bounding_radius"},
+            {"channelid":"channel_scale_xz",                "stateid":"state_bounding_radius"}
           ],
           "attachment_points":[
             {
@@ -153,29 +152,72 @@
           ]
         }
       },{
-        "id":"selector_inner_module",
+        "id":"activator_inner_module_1",
         "data":{
           "transform":{
             "rot":  [0,   0,    0],
             "pos":  [0.0, 0.0, 0.0],
             "size": [5.0, 0.5,  5.0]
           },
-          "model":"control_selector_inner_model",
+          "model":"control_active_inner_model_1",
           "channels":[
-            {"channelid":"channel_pos_z",                     "stateid":"state_bounding_radius"}
+            {"channelid":"channel_animate_sinwave_scale",   "stateid":"state_control_active"}
+          ],
+          "attachment_points":[
+            {
+              "id":"ap_element",
+              "transform":{
+                "rot":[0,     0, 0],
+                "pos":[0.0, 0.0, 0.0]
+              }
+            }
           ]
         }
       },{
-        "id":"selector_outer_module",
+        "id":"activator_outer_module_1",
         "data":{
           "transform":{
             "rot":  [0,   0,    0],
             "pos":  [0.0, 0.0, 0.0],
             "size": [5.0, 0.5,  5.0]
           },
-          "model":"control_selector_outer_model",
+          "model":"control_active_outer_model_1",
           "channels":[
-            {"channelid":"channel_pos_z",                     "stateid":"state_bounding_radius"},
+            {"channelid":"animate_cursor_texture_cumulative", "stateid":"state_control_active"}
+          ]
+        }
+      },{
+        "id":"activator_inner_module_2",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [5.0, 0.5,  5.0]
+          },
+          "model":"control_active_inner_model_2",
+          "channels":[
+            {"channelid":"channel_animate_sinwave_scale_inverse",   "stateid":"state_control_active"}
+          ],
+          "attachment_points":[
+            {
+              "id":"ap_element",
+              "transform":{
+                "rot":[0,     0, 0],
+                "pos":[0.0, 0.0, 0.0]
+              }
+            }
+          ]
+        }
+      },{
+        "id":"activator_outer_module_2",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0.0, 0.0, 0.0],
+            "size": [5.0, 0.5,  5.0]
+          },
+          "model":"control_active_outer_model_",
+          "channels":[
             {"channelid":"animate_cursor_texture_cumulative", "stateid":"state_control_active"}
           ]
         }

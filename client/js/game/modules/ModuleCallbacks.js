@@ -86,6 +86,10 @@ define([
 
         };
 
+        ModuleCallbacks.animate_transform = function(module, target, enable) {
+            guiControlUtils.animateModuleParameterAxis(module, target, enable);
+        };
+
         ModuleCallbacks.read_press_active = function(module, target, enable) {
             guiControlUtils.readPressActive(module, target, enable);
         };
@@ -109,6 +113,8 @@ define([
             module.visualModule.targetQuaternion[target.config.axis] = target.state.targetValue;
             module.interpolateQuaternion = target.state.progressDelta;
         };
+
+
 
         ModuleCallbacks.animate_texture = function(module, target) {
             module.visualModule.addEffectTarget(target);

@@ -59,6 +59,10 @@ define([
             shaderBuilder.loadShaderData(glContext);
         };
 
+        ThreeAPI.getTimeElapsed = function() {
+            return ThreeSetup.getTotalRenderTime();
+        };
+
         ThreeAPI.getContext = function() {
             return glContext;
         };

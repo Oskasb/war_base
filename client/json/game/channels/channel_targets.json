@@ -27,15 +27,15 @@
         "data":{
           "callback":"call_pointer_hover_actors",
           "range":0.015,
-          "time":0.25,
-          "release_time":0.35
+          "time":0.1,
+          "release_time":0.55
         }
       },
       {
         "id":"target_sample_activated_actor_size",
         "data":{
           "callback":"call_sample_activated_actor_size",
-          "time":0.2,
+          "time":0.1,
           "factor":0.7
         }
       },      {
@@ -94,8 +94,8 @@
         "id":"target_sample_activated_actor",
         "data":{
           "callback":"call_sample_activated_actor",
-          "time":0.85,
-          "release_time":0.35
+          "time":0.1,
+          "release_time":0.45
         }
       },
       {
@@ -281,13 +281,52 @@
         }
       },
       {
+        "id":"target_animate_scale_sin_time",
+        "data":{
+          "callback":"animate_transform",
+          "parameter":"scale",
+          "axis":["x", "z"],
+          "functionKey":"sinwave",
+          "cumulative":0,
+          "speed":7,
+          "amplitude":0.04,
+          "offset":1.01
+        }
+      },
+      {
+        "id":"target_animate_scale_sin_time_inverse",
+        "data":{
+          "callback":"animate_transform",
+          "parameter":"scale",
+          "axis":["x", "z"],
+          "functionKey":"sinwave",
+          "cumulative":0,
+          "speed":7,
+          "amplitude":-0.08,
+          "offset":1.04
+        }
+      },
+      {
+        "id":"target_animate_scale_cos_time",
+        "data":{
+          "callback":"animate_transform",
+          "parameter":"scale",
+          "axis":["x", "z"],
+          "functionKey":"coswave",
+          "cumulative":0,
+          "speed":5,
+          "amplitude":0.06,
+          "offset":1
+        }
+      },
+      {
         "id":"target_rotate_yaw_cumulative",
         "data":{
           "callback":"transform",
           "parameter":"rotation",
           "axis":"y",
           "cumulative":1,
-          "factor":0.04
+          "factor":0.024
         }
       },
       {

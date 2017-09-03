@@ -27,6 +27,20 @@ if(typeof(MATH) == "undefined"){
 
 	MATH.TWO_PI = 2.0 * Math.PI;
 
+	function sinWave(time, speed, amplitude) {
+		return Math.sin(time * speed) * amplitude;
+	}
+
+    function cosWave(time, speed, amplitude) {
+        return Math.cos(time * speed) * amplitude;
+    }
+
+    MATH.animationFunctions = {
+        sinwave:  sinWave,
+        coswave:  cosWave
+    };
+
+
 	MATH.curves = {
 		"constantOne":  [[0, 1], [1, 1]],
 		"zeroToOne":    [[0, 0], [1, 1]],

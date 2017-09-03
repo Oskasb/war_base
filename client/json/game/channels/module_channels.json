@@ -225,6 +225,30 @@
         }
       },
       {
+        "id":"channel_animate_coswave_scale",
+        "data":{
+          "targets":[
+            {"targetid":"target_animate_scale_cos_time"}
+          ]
+        }
+      },
+      {
+        "id":"channel_animate_sinwave_scale",
+        "data":{
+          "targets":[
+            {"targetid":"target_animate_scale_sin_time"}
+          ]
+        }
+      },
+      {
+        "id":"channel_animate_sinwave_scale_inverse",
+        "data":{
+          "targets":[
+            {"targetid":"target_animate_scale_sin_time_inverse"}
+          ]
+        }
+      },
+      {
         "id":"channel_rotate_yaw_cumulative",
         "data":{
           "targets":[

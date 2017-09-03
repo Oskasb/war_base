@@ -25,15 +25,11 @@ define(['../../ui/GameScreen',
 
     var postrenderEvt = {};
 
-    var renderTime;
-
     function animate(time) {
 
-    };
-
+    }
 
     ThreeSetup.callPrerender = function(time) {
-        time = time || renderTime;
         idle = (performance.now() / 1000) - renderEnd;
         PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_ANIM_IDLE', idle);
         tpf = (time - lastTime)*0.001;
@@ -61,11 +57,9 @@ define(['../../ui/GameScreen',
     };
 
 
-    ThreeSetup.animate = function(time) {
-
-        animate();
+    ThreeSetup.getTotalRenderTime = function() {
+        return renderEnd;
     };
-
 
     ThreeSetup.initThreeRenderer = function(pxRatio, antialias, containerElement, clientTickCallback, store) {
         prerenderCallbacks.push(clientTickCallback);

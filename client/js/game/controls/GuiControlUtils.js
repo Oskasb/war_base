@@ -163,9 +163,57 @@ define([
         var press = mouseState.action[0];
 
         if (press) {
+
+            if (guiControlState.getPressSampleFrames() == 0) {
+                enable(true);
+            }
+
             guiControlState.addPressSampleFrame();
+
+            var startTarget = guiControlState.getPressStartTarget();
+
+            if (startTarget) {
+                
+            }
+
+            if (startTarget && guiControlState.getPressStartTarget() === guiControlState.getActivatedSelectionTarget()) {
+
+                if (guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
+                    guiControlState.setActivatedSelectionTarget(null);
+                    guiControlState.releaseSelectedTargetActor();
+                }
+
+
+                guiControlState.addPressSampleFrame();
+                guiControlState.setHoverTargetActor(null);
+                guiControlState.setPressStartTarget(null);
+                guiControlState.setActivatedSelectionTarget(null);
+
+
+                enable(false);
+            }
+
+            if (startTarget && guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
+
+                //  if (guiControlState.getPressStartTarget() === guiControlState.getActivatedSelectionTarget()) {
+                guiControlState.setActivatedSelectionTarget(guiControlState.getPressStartTarget());
+                guiControlState.releaseSelectedTargetActor();
+                //  }
+
+                guiControlState.addPressSampleFrame();
+                guiControlState.setHoverTargetActor(null);
+                guiControlState.setPressStartTarget(null);
+//                guiControlState.setActivatedSelectionTarget(null);
+
+                enable(false);
+            }
+
+
         } else {
+
             guiControlState.clearPressSampleFrames();
+
+            if (!enable()) return;
 
             if (guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
 
@@ -177,19 +225,21 @@ define([
                     if (guiControlState.getHoverTargetActor() === guiControlState.getActivatedSelectionTarget()) {
                         guiControlState.setActivatedSelectionTarget(null);
                     }
-
                 }
-
-            } else if (guiControlState.getPressStartTarget() === guiControlState.getActivatedSelectionTarget()) {
-                guiControlState.setActivatedSelectionTarget(null);
             }
-
-
 
         }
 
+
         var state = target.state;
         var config = target.config;
+
+        if (!enable()) {
+            state.setValueAtTime(0, config.release_time);
+            enable(false);
+            guiControlState.setHoverTargetActor(null);
+            return;
+        }
 
         if (guiControlState.getActionTargetPiece()) {
             if (enable()) {
@@ -412,6 +462,29 @@ define([
 
         for (var i = 0; i < axis.length; i++) {
             module.visualModule.getRootObject3d().scale[axis[i]] = value*factor + offset;
+        }
+
+    };
+
+    GuiControlUtils.prototype.animateModuleParameterAxis = function(module, target, enable) {
+
+        var config = target.config;
+        var time = ThreeAPI.getTimeElapsed();
+
+        var value = target.state.getValue() || 1;
+        var amplitude = config.amplitude || 1;
+        var speed = config.speed || 1;
+        var parameter = config.parameter || 'scale';
+        var axis = config.axis || ['x', 'z'];
+        var offset = config.offset || 0;
+        var functionKey = config.functionKey || 'sinwave';
+
+        var func = MATH.animationFunctions[functionKey];
+
+        var resut = func(time, speed, amplitude * value) + offset;
+
+        for (var i = 0; i < axis.length; i++) {
+            module.visualModule.getRootObject3d()[parameter][axis[i]] = resut;
         }
 
     };

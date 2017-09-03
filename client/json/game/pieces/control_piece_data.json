@@ -17,14 +17,20 @@
           "root_slot":"root",
           "slots":[
             {"slot":"root",         "module":"control_root_module"   },
-            {"slot":"pointer_state",    "module":"control_pointer_module"},
-            {"slot":"control_selector", "module":"control_activator_module"},
-            {"slot":"control_highlight","module":"control_active_highlight_module"}
+              {"slot":"pointer_state",    "module":"control_pointer_module"},
+                {"slot":"control_selector", "module":"control_activator_module"},
+                  {"slot":"slot_0_cursor",    "module":"activator_inner_module_1"},
+                  {"slot":"slot_0_highlight", "module":"activator_outer_module_1"},
+                  {"slot":"slot_2_cursor",    "module":"activator_inner_module_2"},
+                  {"slot":"slot_2_highlight", "module":"activator_outer_module_2"}
           ],
           "attachments":[
             {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
-            {"slot":"pointer_state",   "ap":"ap_element",      "child":"control_selector"},
-            {"slot":"control_selector",   "ap":"ap_element_0",      "child":"control_highlight"}
+              {"slot":"pointer_state",   "ap":"ap_element",      "child":"control_selector"},
+                {"slot":"control_selector","ap":"ap_element_0",    "child":"slot_0_cursor"},
+                  {"slot":"slot_0_cursor",    "ap":"ap_element",    "child":"slot_0_highlight"},
+                {"slot":"control_selector","ap":"ap_element_2",    "child":"slot_2_cursor"},
+                  {"slot":"slot_2_cursor",    "ap":"ap_element",    "child":"slot_2_highlight"}
           ]
         }
       },
@@ -36,28 +42,15 @@
             {"slot":"root",         "module":"control_root_module"   },
             {"slot":"pointer_state",    "module":"control_pointer_module"},
             {"slot":"control_selector", "module":"control_selector_module"},
-            {"slot":"slot_0_cursor",    "module":"selector_inner_module"},
-            {"slot":"slot_0_highlight", "module":"selector_outer_module"},
-            {"slot":"slot_1_cursor",    "module":"selector_inner_module"},
-            {"slot":"slot_1_highlight", "module":"selector_outer_module"},
-            {"slot":"slot_2_cursor",    "module":"selector_inner_module"},
-            {"slot":"slot_2_highlight", "module":"selector_outer_module"},
-            {"slot":"slot_3_cursor",    "module":"selector_inner_module"},
-            {"slot":"slot_3_highlight", "module":"selector_outer_module"}
+            {"slot":"control_highlight","module":"control_selected_highlight_module"}
+
           ],
           "attachments":[
             {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
 
               {"slot":"pointer_state",   "ap":"ap_element",      "child":"control_selector"},
+                {"slot":"control_selector",   "ap":"ap_element_0",      "child":"control_highlight"}
 
-                {"slot":"control_selector","ap":"ap_element_0",    "child":"slot_0_cursor"},
-                {"slot":"control_selector","ap":"ap_element_0",    "child":"slot_0_highlight"},
-                {"slot":"control_selector","ap":"ap_element_1",    "child":"slot_1_cursor"},
-                {"slot":"control_selector","ap":"ap_element_1",    "child":"slot_1_highlight"},
-                {"slot":"control_selector","ap":"ap_element_2",    "child":"slot_2_cursor"},
-                {"slot":"control_selector","ap":"ap_element_2",    "child":"slot_2_highlight"},
-                {"slot":"control_selector","ap":"ap_element_3",    "child":"slot_3_cursor"},
-                {"slot":"control_selector","ap":"ap_element_3",    "child":"slot_3_highlight"}
           ]
         }
       },
