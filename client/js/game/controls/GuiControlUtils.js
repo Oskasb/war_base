@@ -162,6 +162,8 @@ define([
     GuiControlUtils.prototype.pointerActionOnActors = function(module, target, enable) {
         var press = mouseState.action[0];
 
+        var startTarget = guiControlState.getPressStartTarget();
+
         if (press) {
 
             if (guiControlState.getPressSampleFrames() == 0) {
@@ -170,44 +172,36 @@ define([
 
             guiControlState.addPressSampleFrame();
 
-            var startTarget = guiControlState.getPressStartTarget();
-
             if (startTarget) {
-                
-            }
+                if (startTarget === guiControlState.getActivatedSelectionTarget()) {
 
-            if (startTarget && guiControlState.getPressStartTarget() === guiControlState.getActivatedSelectionTarget()) {
+                    if (guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
+                        guiControlState.setActivatedSelectionTarget(null);
+                        guiControlState.releaseSelectedTargetActor();
+                    }
 
-                if (guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
+                    guiControlState.addPressSampleFrame();
+                    guiControlState.setHoverTargetActor(null);
+                    guiControlState.setPressStartTarget(null);
                     guiControlState.setActivatedSelectionTarget(null);
-                    guiControlState.releaseSelectedTargetActor();
+
+                    enable(false);
                 }
 
-
-                guiControlState.addPressSampleFrame();
-                guiControlState.setHoverTargetActor(null);
-                guiControlState.setPressStartTarget(null);
-                guiControlState.setActivatedSelectionTarget(null);
+                if (startTarget === guiControlState.getSelectedTargetActor()) {
 
 
-                enable(false);
+                    //    guiControlState.setActivatedSelectionTarget(guiControlState.getPressStartTarget());
+                    //    guiControlState.releaseSelectedTargetActor();
+
+                    guiControlState.addPressSampleFrame();
+                    guiControlState.setHoverTargetActor(null);
+                    //    guiControlState.setPressStartTarget(null);
+
+
+                    //    enable(false);
+                }
             }
-
-            if (startTarget && guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
-
-                //  if (guiControlState.getPressStartTarget() === guiControlState.getActivatedSelectionTarget()) {
-                guiControlState.setActivatedSelectionTarget(guiControlState.getPressStartTarget());
-                guiControlState.releaseSelectedTargetActor();
-                //  }
-
-                guiControlState.addPressSampleFrame();
-                guiControlState.setHoverTargetActor(null);
-                guiControlState.setPressStartTarget(null);
-//                guiControlState.setActivatedSelectionTarget(null);
-
-                enable(false);
-            }
-
 
         } else {
 
@@ -215,17 +209,24 @@ define([
 
             if (!enable()) return;
 
-            if (guiControlState.getPressStartTarget() === guiControlState.getSelectedTargetActor()) {
+            if (startTarget === guiControlState.getSelectedTargetActor()) {
 
                 guiControlState.releaseSelectedTargetActor();
 
-                if (guiControlState.getHoverTargetActor() === guiControlState.getPressStartTarget()) {
-                    guiControlState.setActivatedSelectionTarget(guiControlState.getPressStartTarget());
+                if (guiControlState.getHoverTargetActor() === startTarget) {
+
+                    guiControlState.setActivatedSelectionTarget(startTarget);
+                    guiControlState.releaseSelectedTargetActor();
+
                 } else {
+
                     if (guiControlState.getHoverTargetActor() === guiControlState.getActivatedSelectionTarget()) {
                         guiControlState.setActivatedSelectionTarget(null);
                     }
+
                 }
+                guiControlState.setPressStartTarget(null);
+                enable(false);
             }
 
         }
@@ -236,9 +237,7 @@ define([
 
         if (!enable()) {
             state.setValueAtTime(0, config.release_time);
-            enable(false);
             guiControlState.setHoverTargetActor(null);
-            return;
         }
 
         if (guiControlState.getActionTargetPiece()) {
