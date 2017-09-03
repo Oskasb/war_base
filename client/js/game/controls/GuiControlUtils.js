@@ -544,16 +544,17 @@ define([
         if (compensateRotation) {
 
             var controlledPiece = GameAPI.getControlledActor().piece;
-
             calcVec.set(0, 0, 1);
-
-
             controlledPiece.rootObj3D.getWorldDirection(calcVec);
-
             var pieceRot = Math.atan2(calcVec.z, calcVec.x) - Math.PI*0.5;
-
             testline.zrot = MATH.addAngles(pieceRot, testline.zrot, pieceRot);
 
+
+            calcVec.set(0, 0, -1);
+
+            ThreeAPI.getCamera().getWorldDirection(calcVec);
+            var camRot = -Math.atan2(calcVec.z, calcVec.x) - Math.PI*0.5;
+            testline.zrot = MATH.addAngles(testline.zrot, camRot);
 
         }
 

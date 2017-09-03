@@ -6,18 +6,18 @@
         "data":{
           "cameraFunction":"above_target_obj",
           "master_state":{"state_id":"state_control_active"},
-          "min_elevation":40,
+          "min_elevation":20,
           "offsets":[
             {"property":"target", "axis":"y","value":1}
           ],
           "params":[
-            {"param":"maxDistance",   "value":55},
-            {"param":"minDistance",   "value":35},
+            {"param":"maxDistance",   "value":46},
+            {"param":"minDistance",   "value":28},
             {"param":"enableDamping", "value":true},
-            {"param":"dampingFactor", "value":0.82},
+            {"param":"dampingFactor", "value":2.82},
             {"param":"autoRotate",    "value":false},
-            {"param":"minAzimuthAngle", "value":0.048},
-            {"param":"maxAzimuthAngle", "value":0.048},
+            {"param":"minAzimuthAngle", "value":0.548},
+            {"param":"maxAzimuthAngle", "value":0.548},
             {"param":"minPolarAngle",   "value":0.748},
             {"param":"maxPolarAngle",   "value":0.948}
           ],
