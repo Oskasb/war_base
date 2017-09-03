@@ -117,14 +117,14 @@
             "threshold_lower":30
           },{
             "parameter":"zrot",
-            "threshold_upper":3.85,
-            "threshold_lower":-3.85
+            "threshold_upper":2.44,
+            "threshold_lower":-2.44
           }],
           "compensateRotation":1,
           "parameter":"zrot",
           "factor":1,
-          "clamp_max":3.25,
-          "clamp_min":-3.25,
+          "clamp_max":2.45,
+          "clamp_min":-2.45,
           "time":0.1,
           "release_time":0.15
         }
@@ -139,14 +139,14 @@
             "threshold_lower":3000
           },{
             "parameter":"zrot",
-            "threshold_upper":-3.85,
-            "threshold_lower":3.85
+            "threshold_upper":-2.15,
+            "threshold_lower":2.15
           }],
           "compensateRotation":1,
           "parameter":"zrot",
           "factor":1,
-          "clamp_max":-1.15,
-          "clamp_min":1.15,
+          "clamp_max":-2.15,
+          "clamp_min":2.15,
           "time":4,
           "release_time":0.2
         }
@@ -161,8 +161,8 @@
             "threshold_lower":30
           },{
             "parameter":"zrot",
-            "threshold_upper":3.14,
-            "threshold_lower":-3.14
+            "threshold_upper":2.14,
+            "threshold_lower":-2.14
           }],
           "compensateRotation":1,
           "parameter":"w",
@@ -180,11 +180,11 @@
           "conditions":[{
             "parameter":"w",
             "threshold_upper":9999,
-            "threshold_lower":3000
+            "threshold_lower":30
           },{
             "parameter":"zrot",
-            "threshold_upper":-3.85,
-            "threshold_lower": 3.85
+            "threshold_upper":-2.15,
+            "threshold_lower": 2.15
           }],
           "compensateRotation":1,
           "parameter":"w",

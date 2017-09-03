@@ -23,12 +23,10 @@ define([
     var calcVec2 = new THREE.Vector3();
     var calcEuler = new THREE.Euler();
     var calcEuler2 = new THREE.Euler();
+    var calcObj = new THREE.Object3D();
 
 
     function checkConditions(source, conditions) {
-
-        var sample;
-
         if (!conditions) return true;
 
         for (var i = 0; i < conditions.length; i++) {
@@ -37,7 +35,7 @@ define([
             var threshold_lower = condition.threshold_lower || Infinity;
             var threshold_upper = condition.threshold_upper || Infinity;
 
-                sample = source[condition.parameter] ;
+            var sample = source[condition.parameter];
 
             if (threshold_lower > threshold_upper) {
                 if (sample < threshold_lower && sample > threshold_upper) {
@@ -503,44 +501,23 @@ define([
         }
     };
 
-    var testLine = {};
+
+    var testline = {};
 
     GuiControlUtils.prototype.readInputVector = function(module, target, enable) {
         var state = target.state;
         var config = target.config;
 
-
-        testLine.zrot = line.zrot * config.factor || 1;
-        testLine.w = line.w * config.factor || 1;
-
-
         var compensateRotation = config.compensateRotation || 0;
 
-        var controlledActor = GameAPI.getControlledActor();
+        testline.zrot = line.zrot;
+        testline.w = line.w;
 
-        if (guiControlState.getActionTargetPiece() !== controlledActor.piece) {
+        if (guiControlState.getActionTargetPiece() !== GameAPI.getControlledActor().piece) {
             state.setValueAtTime(0, config.release_time);
             state.setSampler(null);
             enable(false);
         }
-
-    //    if (compensateRotation) {
-
-        calcEuler.setFromQuaternion(controlledActor.piece.rootObj3D.quaternion);
-        calcEuler2.setFromQuaternion(ThreeAPI.getCamera().quaternion);
-
-
-        var angBase = calcEuler.y // * Math.PI
-        var camAng = calcEuler2.y // * Math.PI;
-
-        var baseRotation = angBase *Math.PI - Math.PI * 0.5;// 0 // (camAng - angBase) * Math.PI //   MATH.subAngles(camAng, -angBase, camAng) * Math.PI - Math.PI*0.5;
-
-        testLine.zrot = MATH.addAngles(testLine.zrot, baseRotation*compensateRotation);
-
-        if (Math.random() < 0.01) {
-            console.log(baseRotation, angBase, camAng, line.zrot);
-        }
-    //    }
 
         if (!enable()) {
             if (state.targetValue !== 0) {
@@ -563,9 +540,27 @@ define([
             }
         }
 
-        var sample = testLine[config.parameter];
 
-        if (checkConditions(testLine, config.conditions)) {
+        if (compensateRotation) {
+
+            var controlledPiece = GameAPI.getControlledActor().piece;
+
+            calcVec.set(0, 0, 1);
+
+
+            controlledPiece.rootObj3D.getWorldDirection(calcVec);
+
+            var pieceRot = Math.atan2(calcVec.z, calcVec.x) - Math.PI*0.5;
+
+            testline.zrot = MATH.addAngles(pieceRot, testline.zrot, pieceRot);
+
+
+        }
+
+
+        var sample = testline[config.parameter]  * config.factor || 1;
+
+        if (checkConditions(testline, config.conditions)) {
             var clamp_min = config.clamp_min || -Infinity;
             var clamp_max = config.clamp_max || Infinity;
             var value = MATH.clamp(sample, clamp_min, clamp_max);

@@ -267,7 +267,7 @@ if(typeof(MATH) == "undefined"){
 	};
 
 	MATH.addAngles = function(a, b) {
-		return Math.atan2(Math.sin(MATH.nearestAngle(a+b)), Math.cos(MATH.nearestAngle(a+b)));
+		return Math.atan2(Math.sin(a+b), Math.cos(a+b));
 	};
 	
 	MATH.radialToVector = function(angle, distance, store) {
