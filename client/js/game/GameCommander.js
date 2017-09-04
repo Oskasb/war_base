@@ -124,6 +124,7 @@ define([
                 gameWorker.registerPieceStates(ctrlSys.piece);
                 gameWorker.bindPieceControls(actor.piece, ctrlSys.piece, actor.controlStateMap);
                 GameAPI.setActiveControlSys(ctrlSys);
+                GameAPI.setActiveCameraControl(ctrlSys.getCameraControl());
                 ctrlSys.setFocusPiece(actor.piece);
 
             };
@@ -145,7 +146,6 @@ define([
             GameAPI.removePiece(activeControl.piece);
             GameAPI.removeGuiControl(activeControl);
         };
-
 
         GameCommander.prototype.createGameActor = function(options, onData) {
             var actorReady = function(actor) {

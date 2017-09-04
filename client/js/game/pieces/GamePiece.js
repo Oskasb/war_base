@@ -178,6 +178,14 @@ define([
             }
         };
 
+        GamePiece.prototype.getPos = function() {
+            return this.rootObj3D.position;
+        };
+
+        GamePiece.prototype.getQuat = function () {
+            return this.rootObj3D.quaternion;
+        };
+
         GamePiece.prototype.getPieceStateByStateId = function (id) {
             for (var i = 0; i < this.pieceStates.length;i++) {
 

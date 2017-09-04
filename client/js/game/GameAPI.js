@@ -25,6 +25,7 @@ define([
         var actors = [];
         var levels = [];
 
+        var activeCameraControl;
         var activeControl;
         var controlledActor;
 
@@ -73,10 +74,13 @@ define([
             gameCommander.enableActorControls(actor)
         };
 
+        GameAPI.setActiveCameraControl = function(camCtrl) {
+            activeCameraControl = camCtrl;
+        };
+
         GameAPI.getControlledActor = function() {
             return controlledActor;
         };
-
 
 
         GameAPI.createActor = function(options, onRes) {
@@ -133,10 +137,14 @@ define([
         GameAPI.tickControls = function(tpf) {
 
             for (var i = 0; i < controls.length; i++) {
-                controls[i].updateGuiControl((activeControl === controls[i]), tpf)
+                controls[i].updateGuiControl(tpf)
             }
-        };
 
+            if (activeCameraControl && activeControl) {
+                activeCameraControl.updateCameraCopntrol(activeControl, controlledActor, tpf);
+            }
+
+        };
 
         GameAPI.tickGame = function(tpf, time) {
 
@@ -148,6 +156,7 @@ define([
             for (i = 0; i < actors.length; i++) {
                 actors[i].updateActor()
             }
+
         };
 
         return GameAPI;

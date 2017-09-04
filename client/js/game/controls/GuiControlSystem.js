@@ -42,12 +42,11 @@ define([
 
             var camReaedy = function(cc) {
                 this.setCameraControl(cc);
+                ready(this)
             }.bind(this);
 
-            new CameraControls(this.config.camera, camReaedy);
-
             var pieceReady = function() {
-                    ready(this)
+                new CameraControls(this.config.camera, camReaedy);
             }.bind(this);
 
             this.setGamePiece(new GamePiece(this.id, config.piece, pieceReady));
@@ -59,8 +58,12 @@ define([
         };
 
         GuiControlSystem.prototype.setCameraControl = function (camControl) {
-            if (this.cameraControls) this.cameraControls.removeCameraControls();
-            this.cameraControls = camControl;
+            if (this.cameraControl) this.cameraControl.removeCameraControls();
+            this.cameraControl = camControl;
+        };
+
+        GuiControlSystem.prototype.getCameraControl = function () {
+            return this.cameraControl;
         };
 
         GuiControlSystem.prototype.setTargetPiece = function (piece) {
@@ -71,17 +74,15 @@ define([
             this.focusPiece = piece;
         };
 
-        GuiControlSystem.prototype.updateGuiControl = function (active, tpf) {
+        GuiControlSystem.prototype.setControlPieceRootTransform = function(position, quaternion) {
+            this.piece.getPos().copy(position);
+            this.piece.getQuat().copy(quaternion);
+        };
 
+        GuiControlSystem.prototype.updateGuiControl = function (tpf) {
             if (this.focusPiece) {
-                this.piece.rootObj3D.position.copy(this.focusPiece.rootObj3D.position);
-                this.piece.rootObj3D.quaternion.copy(this.focusPiece.rootObj3D.quaternion);
+                this.setControlPieceRootTransform(this.focusPiece.getPos(), this.focusPiece.getQuat())
             }
-
-            if (active) {
-                this.cameraControls.sampleTargetState(this.piece, this.piece.pieceStates, tpf);
-            }
-
         };
 
         GuiControlSystem.prototype.removeGuiControl = function () {
