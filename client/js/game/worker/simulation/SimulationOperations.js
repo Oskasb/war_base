@@ -122,6 +122,22 @@ define([
             }
         };
 
+        SimulationOperations.prototype.getHeightAtPos = function(pos, levels, normalStore) {
+
+            calcVec.copy(pos);
+            calcVec.x += 1000;
+            calcVec.z += 1000;
+
+            var level = this.getLevelForPosition(calcVec , levels);
+
+            if (!level) return pos.y;
+
+            var terrainIndex  = this.checkPosIsWithinLevelTerrain(calcVec, level);
+
+            return this.terrainHeightAtPos(level.terrains[terrainIndex], pos, level.terrainActors[terrainIndex].piece.rootObj3D, normalStore);
+
+        };
+
         SimulationOperations.prototype.checkActorIntegrity = function(actor, levels) {
 
             if (actor.physicalPiece) {

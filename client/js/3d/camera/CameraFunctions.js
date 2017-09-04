@@ -282,12 +282,6 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
 
     CameraFunctions.prototype.above_target_obj = function(targetVec3, config, masterValue, rotY) {
 
-        orbitControls.enableKeys = false;
-        orbitControls.enablePan = false;
-        orbitControls.enableRotate = false;
-        orbitControls.enableZoom = false;
-
-
         var lastRotY = orbitControls.getAzimuthalAngle();
 
         for (var i = 0; i < config.offsets.length; i++) {
@@ -302,14 +296,7 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
             orbitControls[config.params[i].param] = config.params[i].value;
         }
 
-/*
-        if (masterValue) {
-            var ang = MATH.radialLerp(lastRotY, rotY, config.radial_lerp || 0.02);
 
-            orbitControls.minAzimuthAngle = ang;
-            orbitControls.maxAzimuthAngle = ang;
-        }
-*/
         orbitControls.update();
         this.calcVec2.copy(orbitControls.object.position);
 
@@ -325,11 +312,6 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
     };
 
     CameraFunctions.prototype.orbit_target_obj = function(targetVec3, config, masterValue, rotY) {
-
-        orbitControls.enableKeys = false;
-        orbitControls.enablePan = true;
-        orbitControls.enableRotate = true;
-        orbitControls.enableZoom = true;
 
         var lastRotY = orbitControls.getAzimuthalAngle();
 

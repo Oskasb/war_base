@@ -20,6 +20,8 @@ define(['game/worker/DataProtocol'],
 
             this.callbacks = [new Call(workerReady)];
 
+            this.executors = {};
+
             this.pieceProtocolMap = {};
             this.worker = new Worker('./client/js/game/worker/MainGameWorker.js');
             this.worker.onmessage = function(msg) {
@@ -28,12 +30,21 @@ define(['game/worker/DataProtocol'],
 
         };
 
+        GameWorker.prototype.setExecutor = function(functionName, callback) {
+            this.executors[functionName] = callback;
+        };
+
         GameWorker.prototype.handleMessage = function(msg) {
         //    console.log("Hande Game Worker Message", msg);
 
             if (this.pieceProtocolMap[msg.data[0]]) {
              //   console.log("Piece protocol message: ", msg);
                 this.pieceProtocolMap[msg.data[0]].recieveMessage(msg.data);
+                return;
+            }
+
+            if (this.executors[msg.data[0]]) {
+                this.executors[msg.data[0]](msg.data);
                 return;
             }
 

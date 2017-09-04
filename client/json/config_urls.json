@@ -43,6 +43,7 @@
       "game/pieces/prop_piece_data.json",
       "game/pieces/control_piece_data.json",
 
+      "game/physics/grid_data.json",
       "game/physics/terrain_physics_data.json",
       "game/physics/vehicle_physics_data.json",
       "game/physics/prop_physics_data.json",

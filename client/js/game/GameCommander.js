@@ -26,6 +26,19 @@ define([
             gameWorker =  gWorker;
             levelBuilder =lvlBuilder;
             ModuleCallbacks.initCallbacks(GameAPI);
+
+            var executeDeployActor = function(message) {
+                console.log("Deploy Actor command", message);
+            }.bind(this);
+
+            var executeRemoveActor = function(message) {
+                console.log("Remove Actor command", message);
+            }.bind(this);
+
+            gameWorker.setExecutor('executeDeployActor', executeDeployActor)
+            gameWorker.setExecutor('executeRemoveActor', executeRemoveActor)
+
+
         };
 
         GameCommander.prototype.getEntryById = function(array, id) {
@@ -130,21 +143,27 @@ define([
         GameCommander.prototype.enableActorControls = function(actor) {
 
 
-            var controlReady = function(ctrlSys) {
+            var onRes = function() {
 
-                var camReady = function(camSys) {
-                    actor.bindControlStateMap(ctrlSys, actor.config.state_map);
-                    gameWorker.registerPieceStates(ctrlSys.piece);
-                    gameWorker.bindPieceControls(actor.piece, ctrlSys.piece, actor.controlStateMap);
-                    GameAPI.setActiveControlSys(ctrlSys);
-                    GameAPI.setActiveCameraControl(camSys);
-                    ctrlSys.setFocusPiece(actor.piece);
+                var controlReady = function(ctrlSys) {
+
+                    var camReady = function(camSys) {
+                        actor.bindControlStateMap(ctrlSys, actor.config.state_map);
+                        gameWorker.registerPieceStates(ctrlSys.piece);
+                        gameWorker.bindPieceControls(actor.piece, ctrlSys.piece, actor.controlStateMap);
+                        GameAPI.setActiveControlSys(ctrlSys);
+                        GameAPI.setActiveCameraControl(camSys);
+                        ctrlSys.setFocusPiece(actor.piece);
+                    };
+
+                    GameAPI.createCameraControls(ctrlSys.config.camera, camReady);
                 };
 
-                GameAPI.createCameraControls(ctrlSys.config.camera, camReady);
-            };
+                this.createGuiControl(actor.config.controls, controlReady);
+            }.bind(this);
 
-            this.createGuiControl(actor.config.controls, controlReady);
+            gameWorker.makeGameRequest('setControledActor', {actorId:actor.id}, onRes);
+
         };
 
         GameCommander.prototype.disableActorControls = function(actor, activeControl) {

@@ -1,0 +1,55 @@
+[
+  {
+    "PHYSICS_DATA": {
+      "GRID_MASTER":[
+
+        {
+          "name":"small",
+          "visible_range":50,
+          "sector_size":25,
+          "rows_n_columns":3,
+          "spawn_frames":3,
+          "actor_count":2
+        },
+        {
+          "name":"medium",
+          "visible_range":80,
+          "sector_size":45,
+          "rows_n_columns":3,
+          "spawn_frames":3,
+          "actor_count":2
+        },
+        {
+          "name":"big",
+          "visible_range":120,
+          "sector_size":65,
+          "rows_n_columns":3,
+          "spawn_frames":3,
+          "actor_count":2
+        }
+      ],
+      "GRID_SYSTEMS":[
+        {
+          "id":"basic_grassland",
+          "data":[
+            {
+              "patch_content":[
+                {"id":"actor_prop_oil_drum", "slope":{"min":0.01, "max":0.14} , "elevation":{"min":1,    "max":50}}
+              ]
+            },
+            {
+              "patch_content":[
+                {"id":"actor_prop_oil_drum", "slope":{"min":0.01, "max":0.04} , "elevation":{"min":1,    "max":50}}
+              ]
+            },
+            {
+              "patch_content":[
+                {"id":"actor_prop_oil_drum", "slope":{"min":0,    "max":0.02} , "elevation":{"min":1,    "max":50}}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

@@ -3,16 +3,18 @@
 define([
         'PipelineAPI',
         'worker/simulation/SimulationRequests',
+        'worker/grid/ActivationGrid',
         'worker/simulation/SimulationState'
     ],
     function(
         PipelineAPI,
         SimulationRequests,
+        ActivationGrid,
         SimulationState
     ) {
 
         var GameSimulation = function(Ammo, protocolSystem) {
-
+            this.activationGrid = null;
             this.simulationState = new SimulationState(Ammo, protocolSystem);
             this.simulationRequests = new SimulationRequests(this.simulationState);
         };
@@ -30,19 +32,36 @@ define([
             this.simulationState.updateState(tpf);
         };
 
+
+        var gameLoop;
         GameSimulation.prototype.runGameLoop = function(tpf) {
 
             console.log("Run Worker Game Loop", tpf);
 
-            clearInterval(this.gameLoop);
+            var activationGrid;
 
-            var frameTime = tpf;
+            var gridReady = function() {
 
-            var update = function() {
-                this.updateSimulation(frameTime)
+                activationGrid.createActivationGrid(this.simulationState);
+
+                var frameTime = tpf;
+
+                var update = function() {
+                    var controlledActor = this.simulationState.getControlledActor();
+                    if (controlledActor) {
+                        activationGrid.updateActivationGrid(controlledActor.piece.getPos());
+                    }
+
+                    this.updateSimulation(frameTime)
+                }.bind(this);
+
+                gameLoop = setInterval(update, tpf*1000);
             }.bind(this);
 
-            this.gameLoop = setInterval(update, tpf*1000);
+            activationGrid = new ActivationGrid(gridReady);
+
+            clearInterval(gameLoop);
+
         };
 
         GameSimulation.prototype.stopGameLoop = function() {

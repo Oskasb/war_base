@@ -36,11 +36,21 @@ define([
             this.simulationState.removeLevel(levelId, ready);
         };
 
+        SimulationRequests.prototype.setControledActor = function(idx, options) {
+            var opts = JSON.parse(options);
+
+            var ready = function(res) {
+                postMessage([idx, JSON.stringify(res)]);
+            };
+
+            this.simulationState.setControlledActorId(opts.actorId, ready);
+        };
+
         SimulationRequests.prototype.createActor = function(idx, options) {
             var opts = JSON.parse(options);
 
             var ready = function(res) {
-                postMessage([ idx, JSON.stringify(res)]);
+                postMessage([idx, JSON.stringify(res)]);
             };
             this.simulationState.spawnActor(opts, ready);
         };
@@ -53,9 +63,6 @@ define([
         };
 
 
-
-
-
         SimulationRequests.prototype.attachTerrainToLevel = function(idx, data) {
             var opts = JSON.parse(data);
             var ready = function(res) {
@@ -63,6 +70,7 @@ define([
             };
             this.simulationState.attachTerrainActorToLevel(opts.levelId, opts.actorId, ready);
         };
+
 
         SimulationRequests.prototype.createTerrain = function(idx, options) {
             console.log("opts:", options);

@@ -89,7 +89,7 @@ define([
             this.posY = calcVec.y;
 
 
-            if (this.posY != outside) {
+            if (this.posY !== outside) {
                 this.parentObject3d.position.copy(calcVec);
             }
 

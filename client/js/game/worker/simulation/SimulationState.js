@@ -24,7 +24,7 @@ define([
 
         var SimulationState = function(Ammo, protocolSystem) {
             this.protocolSystem = protocolSystem;
-
+            this.controlledActorId = null;
 
             physicsApi = new AmmoAPI(Ammo);
             this.terrainFunctions = new TerrainFunctions(physicsApi);
@@ -48,24 +48,61 @@ define([
             this.simulationOperations.buildLevel(options, levelBuilt);
         //
 
+        };
 
+        SimulationState.prototype.includeActor = function(actor) {
+            physicsApi.setupPhysicalActor(actor);
+            if (actor.body) {
+                physicsApi.includeBody(actor.body);
+            }
+            actors.push(actor);
+        };
 
+        SimulationState.prototype.generateActor = function(actorId, pos, normal, onOk) {
+
+            var actorBuilt = function(actor) {
+
+                var res = {dataKey:actor.dataKey, actorId:actor.id}
+
+                actor.piece.getPos().copy(pos);
+                actor.piece.rootObj3D.lookAt(normal);
+                this.includeActor(actor);
+                onOk(res);
+
+                postMessage(['executeDeployActor', res]);
+
+            }.bind(this);
+
+            this.simulationOperations.buildActor({dataKey:actorId}, actorBuilt);
+
+        };
+
+        SimulationState.prototype.getGridSystemIdAtPos = function(pos) {
+            return "basic_grassland";
+        };
+
+        SimulationState.prototype.despawnActor = function(actorId) {
+            postMessage(['executeRemoveActor', actorId]);
         };
 
         SimulationState.prototype.spawnActor = function(options, ready) {
 
             var actorBuilt = function(actor) {
                 this.simulationOperations.getRandomPointOnTerrain(actor.piece.rootObj3D.position, levels);
-                physicsApi.setupPhysicalActor(actor);
-                if (actor.body) {
-                    physicsApi.includeBody(actor.body);
-                }
-                actors.push(actor);
+                this.includeActor(actor);
                 ready({dataKey:actor.dataKey, actorId:actor.id});
             }.bind(this);
 
             this.simulationOperations.buildActor(options, actorBuilt);
+        };
 
+        SimulationState.prototype.setControlledActorId = function(actorId, onOk) {
+            this.controlledActorId = actorId;
+            onOk(actorId);
+        };
+
+        SimulationState.prototype.getControlledActor = function() {
+            return this.getActorById(this.controlledActorId)
         };
 
         SimulationState.prototype.getActorById = function(actorId) {
@@ -74,7 +111,7 @@ define([
                     return actors[i];
                 }
             }
-            console.log("No actor by id:", actorId, actors);
+        //    console.log("No actor by id:", actorId, actors);
         };
 
         SimulationState.prototype.getLevelById = function(leveId) {
@@ -89,6 +126,10 @@ define([
         SimulationState.prototype.removeActor = function(actorId, cb) {
             var actor = this.getActorById(actorId);
 
+            if (actorId === this.controlledActorId) {
+                this.controlledActorId = null;
+            }
+
             actors.splice(actors.indexOf(actor), 1);
 
             this.protocolSystem.removeProtocol(actor);
@@ -101,6 +142,8 @@ define([
             cb(actorId);
         };
 
+
+
         SimulationState.prototype.removeLevel = function(levelId, cb) {
 
             var level = this.getLevelById(levelId);
@@ -109,6 +152,9 @@ define([
             cb(levelId);
         };
 
+        SimulationState.prototype.getTerrainHeightAtPos = function(posVec3, tempVec3) {
+            return this.simulationOperations.getHeightAtPos(posVec3, levels, tempVec3);
+        };
 
         SimulationState.prototype.cleanupSimulationState = function(cb) {
             physicsApi.cleanupPhysics(cb);
