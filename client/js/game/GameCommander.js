@@ -27,12 +27,21 @@ define([
             levelBuilder =lvlBuilder;
             ModuleCallbacks.initCallbacks(GameAPI);
 
+
+            var executorOkResponse = function(res) {
+                console.log("executorOkResponse:", res);
+            };
+
             var executeDeployActor = function(message) {
+
                 console.log("Deploy Actor command", message);
+
+                this.buildGameActor(message[1].actorId, message[1].dataKey, executorOkResponse)
             }.bind(this);
 
             var executeRemoveActor = function(message) {
                 console.log("Remove Actor command", message);
+                this.clearGameActor(message[1], executorOkResponse)
             }.bind(this);
 
             gameWorker.setExecutor('executeDeployActor', executeDeployActor)
@@ -65,9 +74,12 @@ define([
             };
 
 
-            var levelReady = function(level) {
+            var levelReady = function(level, actor) {
+
                 levels.push(level);
+                GameAPI.addActor(actor);
                 levelBuilder.populateLevel(level, levelPopulated);
+
             };
 
             var levelActorReady = function(level, actor) {
@@ -181,40 +193,52 @@ define([
             GameAPI.removeGuiControl(activeControl);
         };
 
-        GameCommander.prototype.createGameActor = function(options, onData) {
+        GameCommander.prototype.buildGameActor = function(actorId, dataKey, onData) {
             var actorReady = function(actor) {
+                GameAPI.addActor(actor);
                 gameWorker.registerPieceStates(actor.piece);
                 ThreeAPI.addToScene(actor.piece.rootObj3D);
                 onData(actor);
             };
 
+            new GameActor(actorId, dataKey, actorReady);
+        };
+
+        GameCommander.prototype.createGameActor = function(options, onData) {
+
+
             var onRes = function(response) {
                 var res = JSON.parse(response);
-                new GameActor(res.actorId, res.dataKey, actorReady);
-            };
+                this.buildGameActor(res.actorId, res.dataKey, onData);
+            }.bind(this);
             gameWorker.makeGameRequest('createActor', options, onRes);
         };
 
-        GameCommander.prototype.removeGameActor = function(actors, actor, onOk) {
+
+        GameCommander.prototype.clearGameActor = function(actorId, onOk) {
+            var actors = GameAPI.getActors();
+
+            var actr = GameAPI.getActorById(actorId);
+            GameAPI.dropActorControl(actr);
+            gameWorker.clearPieceControls(actr.piece, actr.controlStateMap);
+
+            GameAPI.removePiece(actr.piece);
+
+            if (actors.indexOf(actr) !== -1) {
+                actors.splice(actors.indexOf(actr), 1);
+            } else {
+                console.log("No actor to remove by id:", msg);
+            }
+
+            actr.removeGameActor();
+            onOk(actorId)
+        };
+
+        GameCommander.prototype.removeGameActor = function(actor, onOk) {
 
             var onRes = function(msg) {
-
-                var actr = GameAPI.getActorById(msg);
-                GameAPI.dropActorControl(actr);
-                gameWorker.clearPieceControls(actr.piece, actr.controlStateMap);
-
-                GameAPI.removePiece(actr.piece);
-
-                if (actors.indexOf(actr) !== -1) {
-                    actors.splice(actors.indexOf(actr), 1);
-                } else {
-                    console.log("No actor to remove by id:", msg);
-                }
-
-                actr.removeGameActor();
-                onOk(msg);
-
-            };
+                this.clearGameActor(msg, onOk);
+            }.bind(this);
 
             gameWorker.makeGameRequest('despawnActor', actor.id, onRes);
         };

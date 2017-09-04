@@ -34,6 +34,7 @@ define([
 
 
         var gameLoop;
+
         GameSimulation.prototype.runGameLoop = function(tpf) {
 
             console.log("Run Worker Game Loop", tpf);

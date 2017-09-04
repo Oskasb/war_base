@@ -122,7 +122,6 @@ define([
 
             var playerAdded = function(actor) {
                 playerActor = actor;
-                GameAPI.addActor(actor);
                 GameAPI.controlActor(actor);
             };
 

@@ -108,7 +108,7 @@ define([
 
 
         GameAPI.removeActor = function(actor, onRes) {
-            gameCommander.removeGameActor(actors, actor, onRes)
+            gameCommander.removeGameActor(actor, onRes)
         };
 
         GameAPI.addPiece = function(piece) {

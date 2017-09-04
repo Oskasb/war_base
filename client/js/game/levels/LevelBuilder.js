@@ -39,16 +39,17 @@ define([
         LevelBuilder.prototype.createLevelTerrainActor = function(level, actor, buffers, onOk) {
 
             var delayedOk = function(call, l) {
-                setTimeout(function() {
-                    call(l)
-                }, 500)
+            //    setTimeout(function() {
+                    EffectsAPI.enableTerrainVegetation();
+                    call(l, actor);
+
+            //    }, 5)
             };
 
             var createIt = function(mod, actor, buffers) {
                 var model = ThreeAPI.loadGround(mod.config.options, buffers, ThreeAPI.createRootObject());
                 mod.setModel(model);
                 level.addLevelTerrainActor(actor);
-                EffectsAPI.enableTerrainVegetation();
                 delayedOk(onOk, level);
             };
 
@@ -57,15 +58,13 @@ define([
                 for (var i = 0; i < piece.pieceSlots.length; i++) {
                     var mod = piece.pieceSlots[i].module;
 
-                //    mod.visualModule.addModuleDebugBox();
+                    mod.visualModule.addModuleDebugBox();
 
                     if (mod.config.terrain) {
                         createIt(mod, actor, buffers);
                     }
                 }
 
-            GameAPI.addActor(actor);
-            ThreeAPI.addToScene(actor.piece.rootObj3D);
 
         };
 

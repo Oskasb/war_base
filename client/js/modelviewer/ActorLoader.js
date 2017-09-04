@@ -141,9 +141,6 @@ define([
 
                 var ready = function(actor) {
 
-                    GameAPI.addActor(actor);
-
-
 
                     if (actor.config.controls) {
 

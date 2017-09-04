@@ -510,10 +510,17 @@ define([
 
         var compensateRotation = config.compensateRotation || 0;
 
+        var controlledActor = GameAPI.getControlledActor();
+
+        if (!controlledActor) {
+            console.log("Cant get line with no controlled actor")
+            return;
+        }
+
         testline.zrot = line.zrot;
         testline.w = line.w;
 
-        if (guiControlState.getActionTargetPiece() !== GameAPI.getControlledActor().piece) {
+        if (guiControlState.getActionTargetPiece() !== controlledActor.piece) {
             state.setValueAtTime(0, config.release_time);
             state.setSampler(null);
             enable(false);
@@ -543,7 +550,7 @@ define([
 
         if (compensateRotation) {
 
-            var controlledPiece = GameAPI.getControlledActor().piece;
+            var controlledPiece = controlledActor.piece;
             calcVec.set(0, 0, 1);
             controlledPiece.rootObj3D.getWorldDirection(calcVec);
             var pieceRot = Math.atan2(calcVec.z, calcVec.x) - Math.PI*0.5;
