@@ -6,8 +6,7 @@ define([
         'Events',
         'PipelineObject',
         'game/pieces/GamePiece',
-        'game/controls/ControlStateMap',
-        'game/controls/CameraControls'
+        'game/controls/ControlStateMap'
     ],
     function(
         evt,
@@ -26,7 +25,7 @@ define([
             this.id = dataKey+'_'+count;
             this.dataKey = dataKey;
             this.piece = null;
-            this.targetPiece = null;
+            this.focusPiece = null;
 
             this.controlStateMap = new ControlStateMap();
 
@@ -40,13 +39,8 @@ define([
         GuiControlSystem.prototype.applyData = function (config, ready) {
             this.config = config;
 
-            var camReaedy = function(cc) {
-                this.setCameraControl(cc);
-                ready(this)
-            }.bind(this);
-
             var pieceReady = function() {
-                new CameraControls(this.config.camera, camReaedy);
+                ready(this)
             }.bind(this);
 
             this.setGamePiece(new GamePiece(this.id, config.piece, pieceReady));
@@ -57,18 +51,6 @@ define([
             this.piece = piece;
         };
 
-        GuiControlSystem.prototype.setCameraControl = function (camControl) {
-            if (this.cameraControl) this.cameraControl.removeCameraControls();
-            this.cameraControl = camControl;
-        };
-
-        GuiControlSystem.prototype.getCameraControl = function () {
-            return this.cameraControl;
-        };
-
-        GuiControlSystem.prototype.setTargetPiece = function (piece) {
-            this.targetPiece = piece;
-        };
 
         GuiControlSystem.prototype.setFocusPiece = function (piece) {
             this.focusPiece = piece;

@@ -40,7 +40,9 @@ define([
 
         DomSelectList.prototype.addListButton = function(panel, category, key, stateData, buttonFunc) {
 
-            var buttonEvent = {category:category, key:key, type:ENUMS.Type.toggle};
+            this.buttonEvent = {category:category, key:key, type:ENUMS.Type.toggle};
+
+            var buttonEvent = this.buttonEvent;
 
             var containerConf = {
                 id:key+"_container",

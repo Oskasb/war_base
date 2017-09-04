@@ -4,14 +4,16 @@ define([
     'ThreeAPI',
     'game/GameActor',
         'game/controls/GuiControlSystem',
-        'game/modules/ModuleCallbacks'
+        'game/modules/ModuleCallbacks',
+        'game/controls/CameraControls'
     ],
 
     function(
         ThreeAPI,
         GameActor,
         GuiControlSystem,
-        ModuleCallbacks
+        ModuleCallbacks,
+        CameraControls
     ) {
 
 
@@ -116,17 +118,30 @@ define([
         };
 
 
+        GameCommander.prototype.createCameraControlSystem = function(dataKey, onRes) {
+
+            var camReady = function(camSys) {
+                onRes(camSys)
+            }.bind(this);
+
+            new CameraControls(dataKey, camReady);
+        };
+
         GameCommander.prototype.enableActorControls = function(actor) {
+
 
             var controlReady = function(ctrlSys) {
 
-                actor.bindControlStateMap(ctrlSys, actor.config.state_map);
-                gameWorker.registerPieceStates(ctrlSys.piece);
-                gameWorker.bindPieceControls(actor.piece, ctrlSys.piece, actor.controlStateMap);
-                GameAPI.setActiveControlSys(ctrlSys);
-                GameAPI.setActiveCameraControl(ctrlSys.getCameraControl());
-                ctrlSys.setFocusPiece(actor.piece);
+                var camReady = function(camSys) {
+                    actor.bindControlStateMap(ctrlSys, actor.config.state_map);
+                    gameWorker.registerPieceStates(ctrlSys.piece);
+                    gameWorker.bindPieceControls(actor.piece, ctrlSys.piece, actor.controlStateMap);
+                    GameAPI.setActiveControlSys(ctrlSys);
+                    GameAPI.setActiveCameraControl(camSys);
+                    ctrlSys.setFocusPiece(actor.piece);
+                };
 
+                GameAPI.createCameraControls(ctrlSys.config.camera, camReady);
             };
 
             this.createGuiControl(actor.config.controls, controlReady);

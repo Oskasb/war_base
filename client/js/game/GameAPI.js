@@ -69,6 +69,10 @@ define([
             gameCommander.createGuiControl(id, onRes)
         };
 
+        GameAPI.createCameraControls = function(id, onRes) {
+            gameCommander.createCameraControlSystem(id, onRes)
+        };
+
         GameAPI.controlActor = function(actor) {
             controlledActor = actor;
             gameCommander.enableActorControls(actor)

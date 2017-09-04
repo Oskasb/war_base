@@ -57,6 +57,7 @@
         'modelviewer/ParticleLoader',
         'modelviewer/ActorLoader',
         'modelviewer/LevelLoader',
+        'modelviewer/CameraLoader',
         'modelviewer/ViewerPointer'
     ], function(
         evt,
@@ -72,6 +73,7 @@
         ParticleLoader,
         ActorLoader,
         LevelLoader,
+        CameraLoader,
         ViewerPointer
     ) {
 
@@ -81,6 +83,7 @@
             new EnvironmentLoader();
             new ViewerPointer();
             new ControlLoader();
+            new CameraLoader(),
             new LevelLoader();
             new ActorLoader();
         };

@@ -47,7 +47,7 @@ define([
                         id:"panel_button",
                         event:buttonEvent
                     },
-                    text:'CTRL'
+                    text:'CAMERA'
                 }
             };
 
@@ -79,37 +79,6 @@ define([
 
             addButton();
 
-            var t = 0;
-
-            var tick = function(e) {
-
-                t += evt.args(e).tpf;
-
-                for (var key in rootModels) {
-
-
-                    if (rootModels[key].length) {
-
-                        var piece = rootModels[key][0].piece;
-
-                        for (var i = 0; i < piece.pieceSlots.length;i++) {
-
-                            var mod = piece.pieceSlots[i].module;
-
-                            var dataCat = "MODULE_DEBUG_"+mod.id;
-
-                            for (var j = 0; j < mod.moduleChannels.length; j++) {
-                                PipelineAPI.setCategoryKeyValue(dataCat, mod.moduleChannels[j].state.id, mod.moduleChannels[j].state.getValueRunded(100));
-                            }
-
-                        }
-                    //    piece.updateGamePiece(evt.args(e).tpf, new Date().getTime()*0.001);
-
-                    }
-                }
-            };
-
-            evt.on(evt.list().CLIENT_TICK, tick);
         };
 
 
@@ -122,7 +91,6 @@ define([
 
             if (!loadedModules[id]) {
                 loadedModules[id] = [];
-
                 rootModels[id] = []
             }
 
@@ -131,27 +99,12 @@ define([
             if (value === true) {
                 console.log("Load Model: ", id, value);
 
-                if (rootModels[id].length) return;
+                var ready = function(camSys) {
 
-
-                var ready = function(ctrlSys) {
-
-                    if (rootModels[id]) {
-
-                        while (rootModels[id].length) {
-                            var p = rootModels[id].pop();
-                            _this.monitorPieceModules(p, false);
-                            p.removeGamePiece();
-                        }
-
-                    }
-
-                    rootModels[id].push(ctrlSys);
-                    _this.monitorPieceModules(ctrlSys.piece, true);
-
+                    GameAPI.setActiveCameraControl(camSys)
                 };
 
-                GameAPI.createControl(id, ready);
+                GameAPI.createCameraControls(id, ready);
 
             } else {
 
@@ -203,13 +156,9 @@ define([
 
                 panels[src] = new DomSelectList(category, dataList, stateData, buttonFunc);
 
-
-
             } else if (panels[src]) {
-
                 panels[src].removeSelectList();
                 delete panels[src];
-
             }
 
             setTimeout(function() {

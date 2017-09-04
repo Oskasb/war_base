@@ -8,8 +8,8 @@
           "rigid_body":{
             "drive_train":{
               "rpm_min":300,
-              "rpm_max":1800,
-              "gears":[2200, 800, 300, 150, 55, 28],
+              "rpm_max":900,
+              "gears":[2200, 1600, 900, 650, 450, 220],
               "enginePower": 5000,
               "brake"      : 4000
             },
