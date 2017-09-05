@@ -58,20 +58,25 @@ define([
             actors.push(actor);
         };
 
+        var buildIt = function(actor, pos, normal, cb, simState) {
+            var res = {dataKey:actor.dataKey, actorId:actor.id};
+
+            actor.piece.getPos().copy(pos);
+            actor.piece.rootObj3D.lookAt(normal);
+            simState.includeActor(actor);
+            cb(res);
+
+            postMessage(['executeDeployActor', res]);
+        };
+
         SimulationState.prototype.generateActor = function(actorId, pos, normal, onOk) {
 
+            var respond = onOk;
+            var _this = this;
+
             var actorBuilt = function(actor) {
-
-                var res = {dataKey:actor.dataKey, actorId:actor.id}
-
-                actor.piece.getPos().copy(pos);
-                actor.piece.rootObj3D.lookAt(normal);
-                this.includeActor(actor);
-                onOk(res);
-
-                postMessage(['executeDeployActor', res]);
-
-            }.bind(this);
+                buildIt(actor, pos, normal, respond, _this)
+            };
 
             this.simulationOperations.buildActor({dataKey:actorId}, actorBuilt);
 
@@ -82,7 +87,12 @@ define([
         };
 
         SimulationState.prototype.despawnActor = function(actorId) {
-            postMessage(['executeRemoveActor', actorId]);
+
+            var onOk = function(aId) {
+                postMessage(['executeRemoveActor', aId]);
+            };
+
+            this.removeActor(actorId, onOk);
         };
 
         SimulationState.prototype.spawnActor = function(options, ready) {

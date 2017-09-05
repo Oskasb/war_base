@@ -141,7 +141,6 @@ define([
 
                 var ready = function(actor) {
 
-
                     if (actor.config.controls) {
 
                         if (controledActor) {

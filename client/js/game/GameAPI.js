@@ -94,7 +94,10 @@ define([
 
         GameAPI.addActor = function(actor) {
             this.addPiece(actor.piece);
-            actors.push(actor)
+            if (actors.indexOf(actor === -1)) {
+                actors.push(actor)
+            }
+
         };
 
         GameAPI.getActors = function() {

@@ -29,22 +29,18 @@ define([
 
 
             var executorOkResponse = function(res) {
-                console.log("executorOkResponse:", res);
+            //    console.log("executorOkResponse:", res);
             };
 
             var executeDeployActor = function(message) {
-
-                console.log("Deploy Actor command", message);
-
                 this.buildGameActor(message[1].actorId, message[1].dataKey, executorOkResponse)
             }.bind(this);
 
             var executeRemoveActor = function(message) {
-                console.log("Remove Actor command", message);
                 this.clearGameActor(message[1], executorOkResponse)
             }.bind(this);
 
-            gameWorker.setExecutor('executeDeployActor', executeDeployActor)
+            gameWorker.setExecutor('executeDeployActor', executeDeployActor);
             gameWorker.setExecutor('executeRemoveActor', executeRemoveActor)
 
 
@@ -74,10 +70,9 @@ define([
             };
 
 
-            var levelReady = function(level, actor) {
+            var levelReady = function(level) {
 
                 levels.push(level);
-                GameAPI.addActor(actor);
                 levelBuilder.populateLevel(level, levelPopulated);
 
             };
@@ -219,7 +214,11 @@ define([
             var actors = GameAPI.getActors();
 
             var actr = GameAPI.getActorById(actorId);
-            GameAPI.dropActorControl(actr);
+
+            if (actr === GameAPI.getControlledActor()) {
+                GameAPI.dropActorControl(actr);
+            }
+
             gameWorker.clearPieceControls(actr.piece, actr.controlStateMap);
 
             GameAPI.removePiece(actr.piece);

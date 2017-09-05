@@ -85,7 +85,7 @@ define(['worker/physics/AmmoFunctions'],
             }
 
             body.forceActivationState(STATE.DISABLE_SIMULATION);
-            ammoFunctions.removeAmmoRigidBody(body, destroy);
+        //    ammoFunctions.removeAmmoRigidBody(body, destroy);
         };
 
 

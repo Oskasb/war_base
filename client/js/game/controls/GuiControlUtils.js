@@ -134,6 +134,9 @@ define([
         var state = target.state;
         var config = target.config;
 
+        var controledActor = GameAPI.getControlledActor();
+        if (!controledActor) return;
+
         if (!press) {
             enable(false);
             state.setValueAtTime(0, config.release_time);

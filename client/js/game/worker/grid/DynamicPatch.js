@@ -40,6 +40,7 @@ define([
             this.indexX = 'none';
             this.indexZ = 'none';
 
+            this.requestedEntries = 0;
             this.spawnedEntries = [];
 
         };
@@ -174,10 +175,14 @@ define([
             }
 
             var onOk = function(res) {
+        //        this.requestedEntries--;
                 this.spawnedEntries.push(res.actorId);
             }.bind(this);
 
-            this.simulationState.generateActor(entryId, pos, tempVec2, onOk);
+            tempVec.copy(pos)
+        //    this.requestedEntries++;
+            this.simulationState.generateActor(entryId, tempVec, tempVec2, onOk);
+
 
         };
 
@@ -199,7 +204,7 @@ define([
 
             for (var i = 0; i < sectorPool.length; i++) {
                 if (sectorPool[i].indexX === this.indexX && sectorPool[i].indexZ === this.indexZ) {
-                    if (this.spawnedEntries.length < this.conf().actor_count) {
+                    if (this.requestedEntries + this.spawnedEntries.length < this.conf().actor_count) {
                         this.doPopulate(this.getFramePlantCount());
                     }
                     return                     
