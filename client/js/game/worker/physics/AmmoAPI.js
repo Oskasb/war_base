@@ -75,7 +75,14 @@ define(['worker/physics/AmmoFunctions'],
             world.addRigidBody(body);
         };
 
-        AmmoAPI.prototype.excludeBody = function(body, destroy) {
+        AmmoAPI.prototype.disableActorPhysics = function(actor) {
+            var body = actor.getPhysicsBody()
+            var dataKey = actor.physicalPiece.dataKey;
+            this.excludeBody(body, dataKey);
+        };
+
+
+        AmmoAPI.prototype.excludeBody = function(body, dataKey) {
             var bi = bodies.indexOf(body);
             bodies.splice(bi, 1);
 
@@ -84,8 +91,8 @@ define(['worker/physics/AmmoFunctions'],
                 return;
             }
 
-            body.forceActivationState(STATE.DISABLE_SIMULATION);
-        //    ammoFunctions.removeAmmoRigidBody(body, destroy);
+
+            ammoFunctions.removeAmmoRigidBody(body, dataKey);
         };
 
 

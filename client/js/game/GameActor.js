@@ -48,7 +48,7 @@ define([
             this.body = body;
         };
 
-        GameActor.prototype.getPhysicsBody = function (body) {
+        GameActor.prototype.getPhysicsBody = function () {
             return this.body;
         };
 

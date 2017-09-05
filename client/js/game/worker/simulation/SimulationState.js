@@ -144,7 +144,7 @@ define([
 
             this.protocolSystem.removeProtocol(actor);
             if (actor.body) {
-                physicsApi.excludeBody(actor.body, true);
+                physicsApi.disableActorPhysics(actor);
             }
 
             actor.piece.removeGamePiece();

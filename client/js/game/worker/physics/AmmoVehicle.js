@@ -1,4 +1,4 @@
-
+3
 "use strict";
 
 define(['game/worker/physics/AmmoVehicleProcessor'
@@ -92,9 +92,6 @@ define(['game/worker/physics/AmmoVehicleProcessor'
             body.setRestitution(restitution);
             body.setFriction(friction);
             body.setDamping(damping, damping);
-
-            physicsWorld.addRigidBody(body);
-
 
             var tuning = new Ammo.btVehicleTuning();
 

@@ -3,11 +3,13 @@
 
 define([
         'worker/physics/AmmoVehicle',
-        'three/ThreeModelLoader'
+        'three/ThreeModelLoader',
+    'worker/physics/BodyPool'
     ],
     function(
         AmmoVehicle,
-        ThreeModelLoader
+        ThreeModelLoader,
+        BodyPool
     ) {
 
         var threeVec;
@@ -17,14 +19,30 @@ define([
         var threeObj2;
 
         var MATHVec3;
+        var TRANSFORM_AUX;
+        var VECTOR_AUX;
 
         var Ammo;
 
+
+        var STATE = {
+            ACTIVE : 1,
+            ISLAND_SLEEPING : 2,
+            WANTS_DEACTIVATION : 3,
+            DISABLE_DEACTIVATION : 4,
+            DISABLE_SIMULATION : 5
+        };
+
         var shapes = [];
+        var bodyPools = {};
 
         var AmmoFunctions = function(ammo) {
 
             Ammo = ammo;
+
+            TRANSFORM_AUX = new Ammo.btTransform();
+            VECTOR_AUX = new Ammo.btVector3()
+
             MATHVec3 = new MATH.Vec3();
             threeVec = new THREE.Vector3();
             threeObj = new THREE.Object3D();
@@ -106,11 +124,18 @@ define([
             return physicsWorld;
         };
 
-        AmmoFunctions.prototype.removeAmmoRigidBody = function(body, destroy) {
-            physicsWorld.removeRigidBody(body);
-            Ammo.destroy(body.getMotionState());
-            Ammo.destroy(body);
-            //
+        AmmoFunctions.prototype.removeAmmoRigidBody = function(body, dataKey) {
+
+            body.forceActivationState(STATE.DISABLE_SIMULATION);
+
+            if (dataKey) {
+
+                if (bodyPools[dataKey]) {
+            //        bodyPools[dataKey].returnToPool(body);
+                }
+
+            }
+
         };
 
         AmmoFunctions.prototype.cleanupPhysicalWorld = function(cb) {
@@ -127,14 +152,20 @@ define([
             Ammo.destroy(dispatcher);
             Ammo.destroy(collisionConfiguration);
 
+            for (var key in bodyPools) {
+                bodyPools[key].wipePool();
+            }
+
+            bodyPools = {};
+
             cb(shapeCount)
         };
 
         var remaining = 0;
         var MODEL = {};
 
-        MODEL.PhysicsStepTime = 0.01;
-        MODEL.PhysicsMaxSubSteps = 1;
+        MODEL.PhysicsStepTime = 0.04;
+        MODEL.PhysicsMaxSubSteps = 2;
         MODEL.SpatialTolerance = 1;
         MODEL.AngularVelocityTolerance = 1;
         MODEL.TemporalTolerance = 1;
@@ -209,22 +240,6 @@ define([
             return heightFieldShape;
         }
 
-        function createTerrainMeshShape(buffer, sideSize, terrainMaxHeight, terrainMinHeight) {
-
-            var terrainWidthExtents = sideSize;
-            var terrainDepthExtents = sideSize;
-            var terrainWidth = Math.sqrt(buffer.length / 3);
-            var terrainDepth = terrainWidth;
-
-            // Creates the heightfield physics shape
-            var heightFieldShape = createTriMeshFromBuffer(buffer);
-            // Set horizontal scale
-            var scaleX = terrainWidthExtents / ( terrainWidth - 1 );
-            var scaleZ = terrainDepthExtents / ( terrainDepth - 1 );
-            heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX*2, 1, scaleZ*2));
-            //    heightFieldShape.setMargin(0.0);
-            return heightFieldShape;
-        }
 
         AmmoFunctions.prototype.createPhysicalTerrain = function(world, data, totalSize, posx, posz, minHeight, maxHeight) {
 
@@ -233,9 +248,9 @@ define([
 
             var heightDiff = maxHeight-minHeight;
 
-            var restitution =  0.2;
-            var damping     =  0.9;
-            var friction    =  0.9;
+            var restitution =  0.0;
+            var damping     =  2.9;
+            var friction    =  0.6;
 
             //    console.log("Ground Matrix: ", data.length)
 
@@ -259,9 +274,95 @@ define([
             return groundBody;
         };
 
+        var reset = function(body, params) {
+            applyBodyParams(body, params)
+        };
+
+
+        var resetMass = function(body, conf) {
+            setTimeout(function() {
+                reset(body, conf);
+            }, 500)
+        };
+
+        function setBodyTransform(conf, body, position, quataternion) {
+
+
+
+            var ms = body.getMotionState();
+
+            ms.getWorldTransform(TRANSFORM_AUX);
+
+        //    body.clearForces();
+
+            TRANSFORM_AUX.setIdentity();
+
+            TRANSFORM_AUX.getOrigin().setX(position.x);
+            TRANSFORM_AUX.getOrigin().setY(position.y);
+            TRANSFORM_AUX.getOrigin().setZ(position.z);
+
+
+            TRANSFORM_AUX.getRotation().setX(quataternion.x);
+            TRANSFORM_AUX.getRotation().setY(quataternion.y);
+            TRANSFORM_AUX.getRotation().setZ(quataternion.z);
+            TRANSFORM_AUX.getRotation().setW(quataternion.w);
+
+            body.setWorldTransform(TRANSFORM_AUX);
+
+            ms.setWorldTransform(TRANSFORM_AUX);
+
+
+            VECTOR_AUX.setX(0);
+            VECTOR_AUX.setY(0);
+            VECTOR_AUX.setZ(0);
+
+            body.getLinearVelocity().setX(0);
+            body.getLinearVelocity().setY(0);
+            body.getLinearVelocity().setZ(0);
+
+            body.getAngularVelocity().setX(0);
+            body.getAngularVelocity().setY(0);
+            body.getAngularVelocity().setZ(0);
+
+            /*
+
+            body.setLinearVelocity(VECTOR_AUX);
+
+
+            body.setAngularVelocity(VECTOR_AUX);
+            */
+
+        //    body.setMassProps(conf.mass, VECTOR_AUX);
+            body.setDamping(conf.mass, VECTOR_AUX);
+
+            body.setRestitution(0);
+            body.setFriction(9);
+            body.setDamping(9, 9);
+
+            resetMass(body, conf)
+
+        };
+
+
+
+        function fetchPoolBody(dataKey) {
+            if (!bodyPools[dataKey]) {
+                return;
+            } else {
+                return bodyPools[dataKey].getFromPool();
+            }
+        }
+
+
 
         AmmoFunctions.prototype.addPhysicalActor = function(world, actor) {
             var conf = actor.physicalPiece.config;
+
+            var rigid_body = conf.rigid_body;
+
+            var args = rigid_body.args;
+
+            var dataKey = actor.physicalPiece.dataKey;
             var shapeKey = conf.shape;
 
             var position = actor.piece.rootObj3D.position;
@@ -269,12 +370,30 @@ define([
 
             var rigidBody;
 
-            if (shapeKey === "mesh") {
-                rigidBody = this.createMeshBody(world, conf.rigid_body, position, quaternion);
+            if (shapeKey === "terrain") {
+                return;
             }
 
             if (shapeKey === "primitive") {
-                rigidBody = this.createPrimitiveBody(world, conf.rigid_body, position, quaternion);
+
+                var createFunc = function(physicsShape) {
+                    return createPrimitiveBody(world, physicsShape, rigid_body);
+                };
+
+                rigidBody = fetchPoolBody(dataKey);
+                if (!rigidBody) {
+
+                    var shape = createPrimitiveShape(rigid_body);
+
+                    bodyPools[dataKey] = new BodyPool(shape, createFunc);
+                    rigidBody = fetchPoolBody(dataKey);
+                } else {
+                    rigidBody.forceActivationState(STATE.ACTIVE);
+                }
+
+                position.y += args[2] / 2;
+
+                setBodyTransform(rigid_body, rigidBody, position, quaternion);
             }
 
             if (shapeKey === "vehicle") {
@@ -285,33 +404,34 @@ define([
                 actor.piece.vehicle = ammoVehicle.vehicle;
             }
 
+
+            if (shapeKey === "mesh") {
+                rigidBody = createMeshBody(world, conf.rigid_body, position, quaternion);
+            }
+
             actor.setPhysicsBody(rigidBody);
+
+            world.addRigidBody(rigidBody);
 
             return actor;
 
         };
 
 
-        function createBody(geometry, pos, quat, mass, friction) {
+        function createBody(geometry, mass) {
 
             if(!mass) mass = 0;
 
-
             var transform = new Ammo.btTransform();
             transform.setIdentity();
-            transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z));
-            transform.setRotation(new Ammo.btQuaternion(quat.x, quat.y, quat.z, quat.w));
             var motionState = new Ammo.btDefaultMotionState(transform);
-
             var localInertia = new Ammo.btVector3(0, 0, 0);
             geometry.calculateLocalInertia(mass, localInertia);
 
             var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, geometry, localInertia);
             var body = new Ammo.btRigidBody(rbInfo);
 
-
             return body;
-
         }
 
         function ammoBoxShape(w, h, l) {
@@ -381,8 +501,6 @@ define([
                 return mesh.shape;
             }
 
-
-
             var geometry = mesh.geometry;
 
             if (convex) {
@@ -396,10 +514,8 @@ define([
             return mesh.shape;
         }
 
-        AmmoFunctions.prototype.createMeshBody = function(world, bodyParams, pos, quat) {
+        var createMeshBody = function(world, bodyParams, position, quaternion) {
             var args = bodyParams.args;
-
-            threeVec.copy(pos);
 
             var heightOffset = 0;
 
@@ -420,58 +536,71 @@ define([
 
             shape.setMargin(0.05);
 
-            var body = createBody(shape, threeVec, quat, mass, friction);
+            if(!mass) mass = 0;
 
-            world.addRigidBody(body);
-            //    body.setActivationState(DISABLE_DEACTIVATION);
+            var transform = new Ammo.btTransform();
+            transform.setIdentity();
+
+            transform.getOrigin().setX(position.x);
+            transform.getOrigin().setY(position.y);
+            transform.getOrigin().setZ(position.z);
+
+            transform.getRotation().setX(quaternion.x);
+            transform.getRotation().setY(quaternion.y);
+            transform.getRotation().setZ(quaternion.z);
+            transform.getRotation().setW(quaternion.w);
+
+            var motionState = new Ammo.btDefaultMotionState(transform);
+            var localInertia = new Ammo.btVector3(0, 0, 0);
+
+            var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia);
+            var body = new Ammo.btRigidBody(rbInfo);
+
+
+        //    var body = createBody(shape, mass);
+                        //    body.setActivationState(DISABLE_DEACTIVATION);
             return body;
 
         };
 
-        AmmoFunctions.prototype.createPrimitiveBody = function(world, bodyParams, pos, quat) {
+        var createPrimitiveShape = function(bodyParams) {
             var args = bodyParams.args;
 
-            threeVec.copy(pos);
-
             var shape;
-            var heightOffset;
-
-            var mass = bodyParams.mass || 0;
-            var restitution = bodyParams.restitution || 0.5;
-            var damping = bodyParams.damping || 0.5;
-            var friction = bodyParams.friction || 2.9;
-
 
             if (bodyParams.shape === 'Cylinder') {
-                heightOffset = args[2] / 2;
-
                 shape = ammoCylinderShape(args[0], args[1], args[2]);
 
             }
 
             if (bodyParams.shape === 'Box') {
-                heightOffset = args[1];
                 shape = ammoBoxShape(args[0], args[2], args[1]);
                 //    shape = new CANNON[bodyParams.shape](new CANNON.Vec3(args[2],args[0],args[1]));
-
             }
 
             shapes.push(shape);
+            return shape;
 
-            if (!mass) {
-                heightOffset = 0;
-            }
-
-            threeVec.y += heightOffset;
-
-            var body = createBody(shape, threeVec, quat, mass, friction);
+        };
 
 
+        var applyBodyParams = function(body, bodyParams) {
+            var restitution = bodyParams.restitution || 0.5;
+            var damping = bodyParams.damping || 0.5;
+            var friction = bodyParams.friction || 2.9;
             body.setRestitution(restitution);
             body.setFriction(friction);
             body.setDamping(damping, damping);
+        };
 
-            world.addRigidBody(body);
+        var createPrimitiveBody = function(world, shape, bodyParams) {
+            var mass = bodyParams.mass || 0;
+            var body = createBody(shape, mass);
+
+            applyBodyParams(body, bodyParams);
+
+
+
             //    body.setActivationState(DISABLE_DEACTIVATION);
             return body;
 

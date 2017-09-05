@@ -15,9 +15,6 @@ define([
         var VECTOR_AUX;
 
         var PhysicalPiece = function(hostId, dataKey, ready) {
-
-
-
             this.id = hostId+'_physical';
             this.dataKey = dataKey;
 

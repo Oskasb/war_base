@@ -44,7 +44,7 @@ define([], function() {
 
     ProtocolSystem.prototype.updateActorSendProtocol = function(actor, tpf) {
 
-        var targetTime = 0.1; // tpf * 2;
+        var targetTime =  tpf * 1.5;
 
         var prot = this.protocols[actor.piece.pieceId];
 
