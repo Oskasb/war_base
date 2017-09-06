@@ -44,7 +44,7 @@ define([], function() {
 
     ProtocolSystem.prototype.updateActorSendProtocol = function(actor, tpf) {
 
-        var targetTime =  tpf * 1.5;
+        var targetTime =  tpf * 2;
 
         var prot = this.protocols[actor.piece.pieceId];
 
@@ -61,7 +61,15 @@ define([], function() {
                 if (prot[j] === targetKey) {
                     var targetChannel = prot.indexOf(targetKey);
                 //    actor.piece.pieceStates[i].value = Math.sin(new Date().getTime() * 1000)*100;
-                    if (prot[targetChannel+1] !== actor.piece.pieceStates[i].getValue()) {
+                    var diff = Math.abs(prot[targetChannel+1] - actor.piece.pieceStates[i].getValue());
+                    if (diff) {
+
+                        if (diff < 10) {
+                            targetTime =  tpf * 2;
+                        } else {
+                            targetTime = 0;
+                        }
+
                         prot[targetChannel+1] = actor.piece.pieceStates[i].getValue();
                         msg.push(targetChannel);
                         msg.push(prot[targetChannel+1]);

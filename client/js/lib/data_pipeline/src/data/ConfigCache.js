@@ -154,12 +154,12 @@ define([
                 } else {
                     var currentIndex;
                     for (var j = 0; j < cache.length; j++) {
-                        if (cache[j].id == add[i].id) {
+                        if (cache[j].id === add[i].id) {
                             currentIndex = j;
                         }
                     }
 
-                    if (currentIndex == -1) {
+                    if (currentIndex === -1) {
                         cache.push(add[i]);
                     } else {
                         cache[currentIndex] = add[i];
@@ -227,7 +227,7 @@ define([
 
         ConfigCache.getConfigKey = function(category, key) {
             var data = ConfigCache.getCategory(category)[key];
-            if(typeof(data) == 'undefined') return key;
+            if(typeof(data) === 'undefined') return key;
             return data;
         };
 
@@ -315,7 +315,7 @@ define([
         };
 
         ConfigCache.notifyUrlReadRequest = function(url) {
-            if (requestedUrls.indexOf(url) == -1) {
+            if (requestedUrls.indexOf(url) === -1) {
                 requestedUrls.push(url);
                 remainingUrls.push(url);
                 ConfigCache.notifyLoadStateChange();
@@ -324,11 +324,11 @@ define([
         };
 
         ConfigCache.notifyUrlReceived = function(url) {
-            if (remainingUrls.indexOf(url) != -1) {
+            if (remainingUrls.indexOf(url) !== -1) {
                 remainingUrls.splice(remainingUrls.indexOf(url), 1);
             }
 
-            if (loadedUrls.indexOf(url) == -1) {
+            if (loadedUrls.indexOf(url) === -1) {
                 loadedUrls.push(url);
 
             }

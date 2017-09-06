@@ -82,6 +82,11 @@ define([
             TRANSFORM_AUX.getOrigin().setY(posVec3.y);
             TRANSFORM_AUX.getOrigin().setZ(posVec3.z);
 
+            TRANSFORM_AUX.getRotation().setX(0);
+            TRANSFORM_AUX.getRotation().setY(0);
+            TRANSFORM_AUX.getRotation().setZ(0);
+            TRANSFORM_AUX.getRotation().setW(1);
+
             body.setWorldTransform(TRANSFORM_AUX);
 
             body.getLinearVelocity(VECTOR_AUX);
@@ -89,6 +94,9 @@ define([
             VECTOR_AUX.setY(0);
             VECTOR_AUX.setZ(0);
             body.setLinearVelocity(VECTOR_AUX);
+            body.getAngularVelocity().setX(0);
+            body.getAngularVelocity().setY(0);
+            body.getAngularVelocity().setZ(0);
 
         };
 

@@ -11,31 +11,42 @@ define([
             this.data = {};
             this.configs = {};
 
-            if (defaultValue != undefined) {
+            if (defaultValue !== undefined) {
                 this.setData(defaultValue);
             }
             this.subscribe(onDataCallback);
+
         };
 
 
         PipelineObject.prototype.subscribe = function(onDataCallback) {
 
+
+
+
             var dataCallback = function(src, data) {
-                if (data == src && data) {
-                    console.log("No data at source", this.category, src, data)
-                } else {
+
+                    var callDelayed = function() {
+                        onDataCallback(src, data);
+                    };
+
                     this.data = data;
-                    if (typeof(onDataCallback) == 'function') {
-                        setTimeout(function() {
-                            onDataCallback(src, data);
-                        },0)
+                    if (typeof(onDataCallback) === 'function') {
+                        // setTimeout(callDelayed ,0);
+                        callDelayed()
                     }
-                }
+
             }.bind(this);
 
             this.dataCallback = dataCallback;
+            var cat = this.category;
+            var key = this.key;
 
-            PipelineAPI.subscribeToCategoryKey(this.category, this.key, dataCallback);
+            setTimeout(function() {
+                PipelineAPI.subscribeToCategoryKey(cat, key, dataCallback);
+            },0);
+
+
         };
         
         PipelineObject.prototype.buildConfig = function(dataName) {
