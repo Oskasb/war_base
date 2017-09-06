@@ -247,7 +247,7 @@ define([
 
             dynamic.brake.state = brakeState;
             dynamic.brakeCommand.state = this.brakeCommand;
-            this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.5, 0, 1);
+            this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.2, 0, 1);
         };
 
         AmmoVehicleProcessor.prototype.determineForwardState = function(speedInputState) {
