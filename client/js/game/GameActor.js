@@ -32,7 +32,7 @@ define([
                 this.applyActorData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
 
-            this.pipeObj = new PipelineObject('PIECE_DATA', 'ACTORS', applyData);
+            this.pipeObj = new PipelineObject('PIECE_DATA', 'ACTORS', applyData, dataKey);
         };
 
         GameActor.prototype.setGamePiece = function (piece) {

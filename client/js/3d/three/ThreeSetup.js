@@ -15,6 +15,8 @@ define(['../../ui/GameScreen',
 
     var addedObjects = 0;
 
+    var initTime;
+
     var prerenderCallbacks = [];
     var tpf, lastTime, idle, renderStart, renderEnd;
     var lookAt = new THREE.Vector3();
@@ -29,14 +31,23 @@ define(['../../ui/GameScreen',
 
     }
 
+    var avgTfp = 0;
+
     ThreeSetup.callPrerender = function(time) {
+        time = performance.now()  - initTime;
+
         idle = (performance.now() / 1000) - renderEnd;
+
         PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_ANIM_IDLE', idle);
+
+
         tpf = (time - lastTime)*0.001;
         lastTime = time;
 
+        avgTfp = tpf*0.3 + avgTfp*0.7;
+
         for (var i = 0; i < prerenderCallbacks.length; i++) {
-            prerenderCallbacks[i](tpf);
+            prerenderCallbacks[i](avgTfp);
         }
 
         ThreeSetup.callRender(scene, camera);
@@ -62,6 +73,7 @@ define(['../../ui/GameScreen',
     };
 
     ThreeSetup.initThreeRenderer = function(pxRatio, antialias, containerElement, clientTickCallback, store) {
+        initTime = performance.now();
         prerenderCallbacks.push(clientTickCallback);
 
         ThreeSetup.addPrerenderCallback(ThreeSetup.updateCameraMatrix);

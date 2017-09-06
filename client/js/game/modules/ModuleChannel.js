@@ -31,7 +31,7 @@ define([
                 ready(this);
             }.bind(this);
 
-            this.pipeObj = new PipelineObject('MODULE_CHANNELS', 'CHANNELS', applyChannelData);
+            this.pipeObj = new PipelineObject('MODULE_CHANNELS', 'CHANNELS', applyChannelData, this.id);
         };
 
         ModuleChannel.prototype.applyChannelData = function (config) {

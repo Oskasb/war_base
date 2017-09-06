@@ -30,7 +30,7 @@ define([
                 ready(this);
             }.bind(this);
 
-            this.pipeObj = new PipelineObject('CAMERA_DATA', 'CONTROLS', applyData);
+            this.pipeObj = new PipelineObject('CAMERA_DATA', 'CONTROLS', applyData, dataKey);
 
             var camFuncs = function(src, data) {
                 cameraFunctions = data;

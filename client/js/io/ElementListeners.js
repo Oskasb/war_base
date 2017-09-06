@@ -90,7 +90,7 @@ define([
 		ElementListeners.prototype.setupTouchListener = function() {
 			this.actionListener.setupElementTouchListener(GameScreen.getElement());
 			GameScreen.getElement().addEventListener('touchstart', function(e) {
-				e.preventDefault();
+			//	e.preventDefault();
 				x = (e.touches[0].clientX);
 				y = (e.touches[0].clientY);
 				dx = 0;
@@ -98,7 +98,7 @@ define([
 			});
 
 			GameScreen.getElement().addEventListener('touchmove', function(e) {
-				e.preventDefault();
+			//	e.preventDefault();
 				x = (e.touches[0].clientX);
 				y = (e.touches[0].clientY);
 				dx = 2 * ((x) - GameScreen.getWidth() / 2) / GameScreen.getWidth();
@@ -107,7 +107,7 @@ define([
 
 
 			GameScreen.getElement().addEventListener('touchend', function(e) {
-				e.preventDefault();
+			//	e.preventDefault();
 				dx = 0;
 				dy = 0;
 			});

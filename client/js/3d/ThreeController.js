@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 
 
 define([
@@ -61,13 +61,13 @@ define([
 
     var monkeypatchCustomEngine = function() {
 
-        document.getElementById(divId).style.left = '122em';
-        document.getElementById(divId).style.right = '122em';
-        document.getElementById(divId).style.top = '0em';
-        document.getElementById(divId).style.bottom = '0em';
-        document.getElementById(divId).style.width = 'auto';
-        document.getElementById(divId).style.height = 'auto';
-        document.getElementById(divId).style.position = 'fixed';
+    //    document.getElementById(divId).style.left = '122em';
+    //    document.getElementById(divId).style.right = '122em';
+    //    document.getElementById(divId).style.top = '0em';
+    //    document.getElementById(divId).style.bottom = '0em';
+    //    document.getElementById(divId).style.width = 'auto';
+    //    document.getElementById(divId).style.height = 'auto';
+    //    document.getElementById(divId).style.position = 'fixed';
 
         var width = window.innerWidth;
         var height = window.innerHeight;
@@ -80,20 +80,22 @@ define([
             height = window.innerHeight;
 
             if (width > height) {
+            /*
                 document.getElementById(divId).style.left = '122em';
                 document.getElementById(divId).style.right = '122em';
                 document.getElementById(divId).style.top = '0em';
                 document.getElementById(divId).style.bottom = '0em';
-
+*/
                 GameScreen.setLandscape(true);
                 landscape = true;
                 evt.fire(evt.list().SCREEN_CONFIG, {landscape:true})
             } else {
+             /*
                 document.getElementById(divId).style.left = '0em';
                 document.getElementById(divId).style.right = '0em';
                 document.getElementById(divId).style.top = '122em';
                 document.getElementById(divId).style.bottom = '122em';
-
+*/
                 GameScreen.setLandscape(false);
                 landscape = false;
                 evt.fire(evt.list().SCREEN_CONFIG, {landscape:false})

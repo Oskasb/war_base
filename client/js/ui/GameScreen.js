@@ -41,7 +41,7 @@ define([
         var registerAppContainer = function(elem) {
 
             element = elem;
-            element.oncontextmenu = function() { return false; };
+        //    element.oncontextmenu = function() { return false; };
             gameScreen = element;
             gameScreen.style.pointerEvents = 'auto';
 

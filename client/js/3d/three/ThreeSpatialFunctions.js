@@ -14,9 +14,11 @@ define([
     var hoverCoords = new THREE.Vector3(0, 0, 0);
     var distsq
 
+    var sizeFactor = 0.5 // 0.84;
+
     var fitView = function(vec3) {
-        vec3.x *= 0.84 * GameScreen.getAspect();
-        vec3.v *= -0.84
+        vec3.x *= sizeFactor * GameScreen.getAspect();
+        vec3.v *= -sizeFactor;
         vec3.z = 0;
     };
 

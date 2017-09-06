@@ -1,4 +1,4 @@
-
+3
 "use strict";
 
 
@@ -31,9 +31,12 @@ define([
         var quat = new THREE.Quaternion();
         var vehicleQuat = new THREE.Quaternion();
         var vec3 = new THREE.Vector3();
+        var calcVec = new THREE.Vector3();
         var calcEuler = new THREE.Euler();
 
         var TRANSFORM_AUX;
+
+        var VECTOR_AUX;
 
         var propertyMap = {
             deltaRotation:{key:'transform', funcName:'getRotation', delta:true },
@@ -113,7 +116,9 @@ define([
 
             if (!TRANSFORM_AUX) {
                 TRANSFORM_AUX = new Ammo.btTransform();
+                VECTOR_AUX = new Ammo.btVector3()
             }
+
 
 
             this.wheelInfos = [];
@@ -369,6 +374,91 @@ define([
 
         };
 
+
+        AmmoVehicleProcessor.prototype.constrainRotation = function(body, threeObj) {
+            var safeAngle = 0.45;
+            var criticalAngle = 0.55;
+            var slugX = 1;
+            var slugZ = 1;
+
+            var critical = false;
+
+            vec3.set(0,1,0);
+
+            vec3.applyQuaternion(threeObj.quaternion);
+
+
+
+            if (Math.abs(vec3.x) > safeAngle) {
+                slugX = 0.15;
+
+                if (Math.abs(vec3.x) > criticalAngle) {
+                    critical = true;
+                 //   vec3.x = MATH.clamp(vec3.x, -criticalAngle*0.8, criticalAngle*0.8)
+                //    threeObj.rotateX(vec3.x)
+                }
+            }
+
+            if (Math.abs(vec3.z) > safeAngle) {
+                console.log("Dampen Z")
+                slugZ = 0.15;
+                if (Math.abs(vec3.z) > criticalAngle) {
+                    critical = true;
+                //    vec3.z = MATH.clamp(vec3.z, -criticalAngle*0.8, criticalAngle*0.8)
+                //    threeObj.rotateZ(vec3.z)
+                }
+            }
+
+            if (critical) {
+                var y= threeObj.rotation.y;
+                threeObj.rotation.x = 0;
+                threeObj.rotation.z = 0;
+                calcVec.set(0,0,1);
+                calcVec.applyQuaternion(threeObj.quaternion);
+                threeObj.quaternion.x = 0;
+                threeObj.quaternion.y = y;
+                threeObj.quaternion.z = 0;
+                threeObj.quaternion.w = 1;
+            //    threeObj.rotation.y = calcVec.y*Math.PI;
+                threeObj.quaternion.normalize();
+            //    calcVec.applyQuaternion(threeObj.quaternion);
+            //    threeObj.quaternion.setFromVectors(vec3, calcVec);
+
+
+            //    threeObj.lookAt(calcVec);
+            //    threeObj.updateMatrixWorld(true);
+
+                var ms = body.getMotionState();
+                ms.getWorldTransform(TRANSFORM_AUX);
+
+                TRANSFORM_AUX.setIdentity();
+
+                TRANSFORM_AUX.getOrigin().setX(threeObj.position.x);
+                TRANSFORM_AUX.getOrigin().setY(threeObj.position.y);
+                TRANSFORM_AUX.getOrigin().setZ(threeObj.position.z);
+
+                 TRANSFORM_AUX.getRotation().setX(0);
+                 TRANSFORM_AUX.getRotation().setY(y);
+                 TRANSFORM_AUX.getRotation().setZ(0);
+                 TRANSFORM_AUX.getRotation().setW(1);
+                 TRANSFORM_AUX.getRotation().normalize();
+                 ms.setWorldTransform(TRANSFORM_AUX);
+            //    body.setWorldTransform(TRANSFORM_AUX);
+                body.getAngularVelocity().setX(0);
+                body.getAngularVelocity().setY(0);
+                body.getAngularVelocity().setZ(0);
+            }
+
+            VECTOR_AUX.setX(slugX);
+            VECTOR_AUX.setY(1);
+            VECTOR_AUX.setZ(slugZ);
+
+
+            body.setAngularFactor(VECTOR_AUX);
+
+        };
+
+
         AmmoVehicleProcessor.prototype.sampleState = function (body, piece, config) {
 
             var controlMap = config.control_map;
@@ -381,6 +471,7 @@ define([
 
             if (feedbackMap) {
                 this.sampleVehicle(target, piece, feedbackMap);
+                this.constrainRotation(body, piece.rootObj3D);
             }
 
         };

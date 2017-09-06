@@ -33,7 +33,7 @@ define([
                 this.applyData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
 
-            this.pipeObj = new PipelineObject('CONTROL_DATA', 'CONTROLS', applyData);
+            this.pipeObj = new PipelineObject('CONTROL_DATA', 'CONTROLS', applyData, dataKey);
         };
 
         GuiControlSystem.prototype.applyData = function (config, ready) {

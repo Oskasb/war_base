@@ -35,7 +35,7 @@ define([
                 this.applyModuleData(this.pipeObj.buildConfig()[id], ready);
             }.bind(this);
 
-            this.pipeObj = new PipelineObject('MODULE_DATA', 'MODULES', applyModuleData);
+            this.pipeObj = new PipelineObject('MODULE_DATA', 'MODULES', applyModuleData, id);
         };
 
         GameModule.prototype.getTransform = function () {

@@ -22,7 +22,7 @@ define([
                 this.applyData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
 
-            this.pipeObj = new PipelineObject('PHYSICS_DATA', 'PHYSICAL', applyData);
+            this.pipeObj = new PipelineObject('PHYSICS_DATA', 'PHYSICAL', applyData, dataKey);
 
         };
 

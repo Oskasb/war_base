@@ -448,14 +448,19 @@ define([
         var value = target.state.getValue();
         var clamp_min = config.clamp_min || 0.00001;
         var clamp_max = config.clamp_max || 1;
-        if (value < clamp_min && !module.visualModule.hidden) {
+        if (value <= clamp_min) {
+            if (!module.visualModule.hidden) {
+                module.visualModule.getRootObject3d().scale.setScalar(clamp_min);
+            }
             module.visualModule.hide();
-            return;
-        } else if (module.visualModule.hidden) {
-            module.visualModule.show();
+            module.visualModule.setVisibility(false);
+        } else if (value > clamp_min) {
+                module.visualModule.show();
+                module.visualModule.setVisibility(true);
+                var scale = MATH.clamp(value, clamp_min, clamp_max);
+                module.visualModule.getRootObject3d().scale.setScalar(scale);
         }
-        var scale = MATH.clamp(value, clamp_min, clamp_max);
-        module.visualModule.getRootObject3d().scale.setScalar(scale);
+
     };
 
     GuiControlUtils.prototype.scaleModuleAxis = function(module, target, enable) {

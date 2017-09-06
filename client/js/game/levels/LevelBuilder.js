@@ -49,7 +49,7 @@ define([
                 var model = ThreeAPI.loadGround(mod.config.options, buffers, ThreeAPI.createRootObject());
                 mod.setModel(model);
 
-                mod.visualModule.show();
+                mod.visualModule.showVisualModule(true);
 
                 level.addLevelTerrainActor(actor);
                 EffectsAPI.enableTerrainVegetation();

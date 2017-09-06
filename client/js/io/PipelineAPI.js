@@ -33,13 +33,7 @@ define([
 			return ConfigCache.getConfigKey(category, key)
 		};
 
-        PipelineAPI.readKeyAsBuiltConfig = function(category, key) {
-            return ConfigCache.getBuiltCategoryKeyConfig(category, key)
-        };
-
-
-
-        PipelineAPI.subscribeToCategoryUpdate = function(category, onDataCallback) {
+		PipelineAPI.subscribeToCategoryUpdate = function(category, onDataCallback) {
 			return ConfigCache.registerCategoryUpdatedCallback(category, onDataCallback)
 		};
 

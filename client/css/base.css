@@ -20,9 +20,6 @@ span {
     right:0em;
 }
 
-canvas {
-
-}
 
 div.point {
     position: absolute;
@@ -65,16 +62,16 @@ div.canvas_window {
 
 div.canvas_window_landscape {
     top: 0em;
-    left: 122em;
-    right: 122em;
+    left: 0em;
+    right: 0em;
     bottom: 0em;
     position: absolute;
 }
 
 div.canvas_window_portrait {
-    top: 122em;
+    top: 0em;
     left: 0em;
     right: 0em;
-    bottom: 122em;
+    bottom: 0em;
     position: absolute;
 }

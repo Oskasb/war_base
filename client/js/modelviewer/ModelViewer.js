@@ -182,6 +182,7 @@ define([
 
             this.pointerCursor.tick();
 
+            GameAPI.tickGame(tpf, gameTime);
             GameAPI.tickControls(tpf, gameTime);
 
 
@@ -190,7 +191,7 @@ define([
                 tickEvent.frame = frame;
                 tickEvent.tpf = tpf;
 
-                GameAPI.tickGame(tpf, gameTime);
+
 
                 sceneController.tickEffectPlayers(tpf);
                 PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);

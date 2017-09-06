@@ -21,7 +21,7 @@ define([
                 ready(this);
             }.bind(this);
 
-            this.pipeObj = new PipelineObject('CHANNEL_TARGETS', 'TARGETS', applyData);
+            this.pipeObj = new PipelineObject('CHANNEL_TARGETS', 'TARGETS', applyData, this.id);
         };
 
         ChannelTarget.prototype.applyTargetData = function(config) {

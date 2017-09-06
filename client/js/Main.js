@@ -20,7 +20,7 @@ require([
         new SystemDetector();
         new ButtonEventDispatcher();
         new ControlStateDispatcher();
-        GameScreen.registerAppContainer(document.getElementById('canvas_window'));
+        GameScreen.registerAppContainer(document.body);
     };
 
     setTimeout(function() {

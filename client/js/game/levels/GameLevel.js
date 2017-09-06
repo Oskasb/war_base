@@ -28,7 +28,7 @@ define([
                 this.applyData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
 
-            this.pipeObj = new PipelineObject('LEVEL_DATA', 'LEVELS', applyData);
+            this.pipeObj = new PipelineObject('LEVEL_DATA', 'LEVELS', applyData, dataKey);
         };
 
         GameLevel.prototype.applyData = function (config, ready) {

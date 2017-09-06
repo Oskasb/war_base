@@ -10,13 +10,13 @@ define([
     ) {
 
 
-        var PieceSLot = function(id) {
+        var PieceSlot = function(id) {
             this.id = id;
             this.module;
             this.isRootSlot = false;
         };
 
-        PieceSLot.prototype.setSlotModuleId = function(moduleId, ready) {
+        PieceSlot.prototype.setSlotModuleId = function(moduleId, ready) {
             var moduleReady = function(module) {
                 this.setSlotModule(module)
                 ready(this);
@@ -24,18 +24,18 @@ define([
             new GameModule(moduleId, moduleReady);
         };
 
-        PieceSLot.prototype.setSlotModule = function (module) {
+        PieceSlot.prototype.setSlotModule = function (module) {
             if (this.module && this.module !== module) {
                 this.module.removeClientModule();
             }
             this.module = module;
         };
 
-        PieceSLot.prototype.getModuleChannels = function () {
+        PieceSlot.prototype.getModuleChannels = function () {
             return this.module.moduleChannels;
         };
 
-        PieceSLot.prototype.getAttachmentPointById = function (apId) {
+        PieceSlot.prototype.getAttachmentPointById = function (apId) {
 
             var ap = this.module.getAttachmentPointById(apId);
             if (!ap) {
@@ -46,31 +46,31 @@ define([
 
         };
 
-        PieceSLot.prototype.getVisualObj3d = function () {
+        PieceSlot.prototype.getVisualObj3d = function () {
             return this.module.visualModule.getRootObject3d();
         };
 
-        PieceSLot.prototype.setObject3dToPieceRoot = function (obj3d) {
+        PieceSlot.prototype.setObject3dToPieceRoot = function (obj3d) {
             this.attachToObject3d(obj3d);
             this.module.setAsRootSlot(obj3d);
             this.isRootSlot = true;
         };
 
-        PieceSLot.prototype.attachToObject3d = function (obj3d) {
+        PieceSlot.prototype.attachToObject3d = function (obj3d) {
             this.module.attachModuleToParent(obj3d);
         };
 
-        PieceSLot.prototype.updatePieceSlot = function (render, enable) {
+        PieceSlot.prototype.updatePieceSlot = function (render, enable) {
             this.module.sampleModuleFrame(render, enable);
         };
 
-        PieceSLot.prototype.updatePieceVisuals = function (tpf) {
+        PieceSlot.prototype.updatePieceVisuals = function (tpf) {
             this.module.updateVisualState(tpf);
         };
 
-        PieceSLot.prototype.removePieceSlot = function () {
+        PieceSlot.prototype.removePieceSlot = function () {
             this.module.removeClientModule();
         };
 
-        return PieceSLot
+        return PieceSlot
     });

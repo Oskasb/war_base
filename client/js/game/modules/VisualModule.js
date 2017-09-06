@@ -60,16 +60,14 @@ define([
 
         };
 
+
+
         VisualModule.prototype.hide = function() {
             this.hidden = true;
-            this.rootObj.remove(this.model);
         };
 
         VisualModule.prototype.show = function() {
             this.hidden = false;
-            if (this.model) {
-                this.rootObj.add(this.model);
-            }
         };
 
         VisualModule.prototype.attachModel = function(model) {
@@ -91,6 +89,8 @@ define([
             this.rootObj.add(this.model);
         };
 
+
+
         VisualModule.prototype.showVisualModule = function() {
     //        console.log("show")
             cbs = ThreeAPI.getEffectCallbacks();
@@ -104,6 +104,10 @@ define([
             }
         };
 
+
+
+
+
         VisualModule.prototype.hideVisualModule = function() {
     //        console.log("hide");
             if (this.model) {
@@ -114,10 +118,13 @@ define([
 
         VisualModule.prototype.setVisibility = function(bool) {
 
+            if (this.hidden) {
+                bool = this.hidden;
+            }
+
             if (this.isVisible === bool) {
                 return;
             }
-
 
             this.isVisible = bool;
 
@@ -234,7 +241,6 @@ define([
 
             if (this.model) {
              //   this.rootObj.remove(this.model);
-                if (this.hidden) this.show();
                 ThreeAPI.removeModel(this.model);
             }
             this.removeModuleDebugBox();

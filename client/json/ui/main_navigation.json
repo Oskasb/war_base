@@ -4,7 +4,7 @@
       {
         "id":"rightRoot",
         "data":{
-          "style":["main_top_right", "coloring_panel_main"]
+          "style":["main_top_right", "coloring_transparent"]
         }
 
       }, {
@@ -34,7 +34,7 @@
       {
         "id":"leftRoot",
         "data":{
-          "style":["main_top_left", "coloring_panel_main"]
+          "style":["main_top_left", "coloring_transparent"]
         }
       }
     ],

@@ -25,7 +25,12 @@ define([
             brakeCommand:{state:0}
         };
 
+        var TRANSFORM_AUX;
+        var VECTOR_AUX;
+
         var VehicleProcessor = function(driveTrain, dynamic) {
+            TRANSFORM_AUX = new Ammo.btTransform();
+            VECTOR_AUX = new Ammo.btVector3()
 
             this.driveTrain = driveTrain || drive_train;
             this.dynamic = dynamic || dyn;
@@ -212,6 +217,52 @@ define([
 
         };
 
+        VehicleProcessor.prototype.constrainRotation = function(body, threeObj) {
+            var safeAngle = 0.1;
+            var criticalAngle = 0.2;
+            var slugX = 1;
+            var slugZ = 1;
+
+            if (Math.abs(threeObj.rotation.x) > safeAngle) {
+                slugX = 0.20;
+
+                if (Math.abs(threeObj.rotation.x) > criticalAngle) {
+                    slugX = 0.02;
+                }
+
+            }
+
+
+            if (Math.abs(threeObj.rotation.z) > safeAngle) {
+                console.log("Dampen Z")
+                slugZ = 0.15;
+                if (Math.abs(threeObj.rotation.z) > criticalAngle) {
+                    slugZ = 0.02;
+                }
+            }
+
+            if (threeObj.rotation.z < 0) {
+                var ms = body.getMotionState();
+
+                ms.getWorldTransform(TRANSFORM_AUX);
+                TRANSFORM_AUX.getRotation().setX(0);
+                TRANSFORM_AUX.getRotation().setY(0);
+                TRANSFORM_AUX.getRotation().setZ(0);
+                TRANSFORM_AUX.getRotation().setW(1);
+                body.setWorldTransform(TRANSFORM_AUX);
+
+            }
+
+
+                VECTOR_AUX.setX(slugX);
+                VECTOR_AUX.setY(1);
+                VECTOR_AUX.setZ(slugZ);
+
+
+            body.setAngularFactor(VECTOR_AUX);
+
+        };
+
         VehicleProcessor.prototype.sampleState = function (body, piece, config) {
 
             var controlMap = config.control_map;
@@ -224,6 +275,7 @@ define([
 
             if (feedbackMap) {
                 this.sampleVehicle(body[config.shape], piece, feedbackMap);
+                this.constrainRotation(body, piece.rootObj3D);
             }
 
         };

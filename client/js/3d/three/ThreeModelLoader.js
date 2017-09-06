@@ -275,10 +275,10 @@ define([
                             model.material = data;
                             rootObject.add(model);
                         };
-                        attachMaterial(null, PipelineAPI.readCachedConfigKey('THREE_MATERIAL', modelList[modelId].material))
+                    //    attachMaterial(null, PipelineAPI.readCachedConfigKey('THREE_MATERIAL', modelList[modelId].material))
 
 
-                        // new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial);
+                        new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial, modelList[modelId].material);
 
                     } else {
 
@@ -356,7 +356,7 @@ define([
 
         //    applyModel(id, PipelineAPI.readCachedConfigKey('THREE_MODEL', id));
 
-            var pipeObj = new PipelineObject('THREE_MODEL', id, applyModel, null, true);
+            var pipeObj = new PipelineObject('THREE_MODEL', id, applyModel, id, true);
 
         };
 
