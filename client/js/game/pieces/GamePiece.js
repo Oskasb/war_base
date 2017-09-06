@@ -5,6 +5,7 @@
 define([
         'Events',
         'PipelineObject',
+        'PipelineAPI',
         'ThreeAPI',
         'game/pieces/PieceSlot',
         'game/pieces/PieceState'
@@ -12,6 +13,7 @@ define([
     function(
         evt,
         PipelineObject,
+        PipelineAPI,
         ThreeAPI,
         PieceSlot,
         PieceState
@@ -41,13 +43,17 @@ define([
 
             this.enabler = controlsEnable;
 
+        //    this.pipeObj = new PipelineObject('PIECE_DATA', 'PIECES', null, null, true);
+
             var applyPieceData = function() {
                 this.applyPieceData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
 
-            this.pipeObj = new PipelineObject('PIECE_DATA', 'PIECES', applyPieceData);
-        };
+            this.pipeObj = new PipelineObject('PIECE_DATA', 'PIECES', applyPieceData, null, false);
 
+            // this.pipeObj.subscribe(applyPieceData, false);
+
+        };
 
 
         GamePiece.prototype.initGamePiece = function() {

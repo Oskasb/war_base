@@ -324,6 +324,9 @@ define([
             body.getAngularVelocity().setY(0);
             body.getAngularVelocity().setZ(0);
 
+            applyBodyParams(body, conf);
+            return;
+
             /*
 
             body.setLinearVelocity(VECTOR_AUX);
@@ -333,7 +336,7 @@ define([
             */
 
         //    body.setMassProps(conf.mass, VECTOR_AUX);
-            body.setDamping(conf.mass, VECTOR_AUX);
+        //    body.setDamping(conf.mass, VECTOR_AUX);
 
             body.setRestitution(0);
             body.setFriction(9);

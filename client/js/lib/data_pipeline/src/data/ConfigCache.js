@@ -14,6 +14,9 @@ define([
         var readyCallbacks = [];
 
         var categories = {};
+
+        var dataConfigs = {};
+
         var images = {};
         var imageSubs = {};
         var masterReset = function() {};
@@ -190,6 +193,7 @@ define([
             }
 		}
 
+
         ConfigCache.dataCombineToKey = function(key, url, data) {
             if (!configs[key]) {
                 ConfigCache.addCategory(key);
@@ -217,7 +221,12 @@ define([
             ConfigCache.fireCategoryCallbacks(key);
         };
 
-
+        ConfigCache.getBuiltCategoryKeyConfig = function(category, key) {
+            var data = dataConfigs[category];
+            if (!data) return "No data "+category;
+            if (!data[key]) return "No entry for key "+key+" in category "+category;
+            return data[key];
+        };
 
         ConfigCache.getCategory = function(category) {
             var data = configs[category];

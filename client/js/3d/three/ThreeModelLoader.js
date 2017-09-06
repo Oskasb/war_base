@@ -275,7 +275,10 @@ define([
                             model.material = data;
                             rootObject.add(model);
                         };
-                        new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial);
+                        attachMaterial(null, PipelineAPI.readCachedConfigKey('THREE_MATERIAL', modelList[modelId].material))
+
+
+                        // new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial);
 
                     } else {
 
@@ -351,7 +354,9 @@ define([
 
             };
 
-            var pipeObj = new PipelineObject('THREE_MODEL', id, applyModel);
+        //    applyModel(id, PipelineAPI.readCachedConfigKey('THREE_MODEL', id));
+
+            var pipeObj = new PipelineObject('THREE_MODEL', id, applyModel, null, true);
 
         };
 
@@ -362,14 +367,21 @@ define([
                 console.log("Bad object", id);
             }
 
-            if ( object.userData.poolId) {
+            if (object.userData.poolId) {
                 cb(object, id);
+                return;
             }
 
-            if (typeof(object.traverse) != 'function') {
+            if (typeof(object) === 'undefined') {
+                console.log("Bad object", id);
+                return;
+            }
+
+            if (typeof(object.traverse) !== 'function') {
                 console.log("No Traverse function", object);
                 return;
             }
+
 
             object.traverse( function ( child ) {
                 //    object.remove(child);
@@ -401,7 +413,7 @@ define([
                 }
 
                 if (!mesh.pipeObj) {
-                    console.log("No pipe on mesh", mesh)
+                //    console.log("No pipe on mesh", mesh)
                 } else {
                     mesh.pipeObj.removePipelineObject();
                 }

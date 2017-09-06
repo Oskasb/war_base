@@ -5,7 +5,7 @@ define([
         PipelineAPI
     ) {
 
-        var PipelineObject = function(category, key, onDataCallback, defaultValue) {
+        var PipelineObject = function(category, key, onDataCallback, defaultValue, immediateMode) {
             this.category = category;
             this.key = key;
             this.data = {};
@@ -14,17 +14,20 @@ define([
             if (defaultValue !== undefined) {
                 this.setData(defaultValue);
             }
-            this.subscribe(onDataCallback);
-
+            if (typeof(onDataCallback) === 'function') {
+                this.subscribe(onDataCallback, immediateMode);
+            }
         };
 
 
-        PipelineObject.prototype.subscribe = function(onDataCallback) {
-
-
-
+        PipelineObject.prototype.subscribe = function(onDataCallback, immediateMode) {
 
             var dataCallback = function(src, data) {
+
+                if (!data)  {
+                    console.log("No data", src, this)
+                    return;
+                }
 
                     var callDelayed = function() {
                         onDataCallback(src, data);
@@ -42,11 +45,13 @@ define([
             var cat = this.category;
             var key = this.key;
 
-            setTimeout(function() {
+            if (immediateMode) {
                 PipelineAPI.subscribeToCategoryKey(cat, key, dataCallback);
-            },0);
-
-
+            } else {
+                setTimeout(function() {
+                    PipelineAPI.subscribeToCategoryKey(cat, key, dataCallback);
+                },0);
+            }
         };
         
         PipelineObject.prototype.buildConfig = function(dataName) {
