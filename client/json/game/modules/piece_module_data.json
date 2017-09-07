@@ -131,6 +131,22 @@
             {"channelid":"channel_pitch", "stateid":"gun_pitch"}
           ]
         }
+      },      {
+        "id":"swivel_gun_module",
+        "data":{
+          "transform":{
+            "rot":  [0,     0,   0],
+            "pos":  [0,   0.5,-0.5],
+            "size": [0.2, 0.2, 2.0]
+          },
+          "model":"swivel_gun",
+          "channels":[
+            {"channelid":"channel_quat_x",  "stateid": "quat_state_x"},
+            {"channelid":"channel_quat_y",  "stateid": "quat_state_y"},
+            {"channelid":"channel_quat_z",  "stateid": "quat_state_z"},
+            {"channelid":"channel_quat_w",  "stateid": "quat_state_w"}
+          ]
+        }
       },
       {
         "id":"sherman_turret_module",
@@ -151,6 +167,12 @@
               "transform":{
                 "rot":[0,   0,     0],
                 "pos":[0.0,0.45,-0.85]
+              }
+            },
+            {"id":"ap_gun_swivel",
+              "transform":{
+                "rot":[  0,    0,  0],
+                "pos":[0.7,  0.85,-0.3]
               }
             },
             {"id":"ap_hatch",

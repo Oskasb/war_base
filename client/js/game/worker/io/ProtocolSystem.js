@@ -30,23 +30,23 @@ define([], function() {
     };
 
     ProtocolSystem.prototype.removeProtocol = function(actor) {
-        if (!this.protocols[actor.piece.pieceId]) {
+        if (!this.protocols[actor.id]) {
             console.log("No protocol to remove for actor", actor);
             return;
         }
 
-        if (this.targetMap[actor.piece.pieceId]) {
-            delete this.targetMap[actor.piece.pieceId];
+        if (this.targetMap[actor.id]) {
+            delete this.targetMap[actor.id];
         }
 
-        delete this.protocols[actor.piece.pieceId];
+        delete this.protocols[actor.id];
     };
 
     ProtocolSystem.prototype.updateActorSendProtocol = function(actor, tpf) {
 
         var targetTime =  tpf * 2;
 
-        var prot = this.protocols[actor.piece.pieceId];
+        var prot = this.protocols[actor.id];
 
         if (!prot) {
             return;
@@ -95,7 +95,7 @@ define([], function() {
     };
 
     ProtocolSystem.prototype.applyProtocolToActorState = function(actor, tpf) {
-        var prot = this.protocols[actor.piece.pieceId];
+        var prot = this.protocols[actor.id];
 
         if (!prot) {
             return;

@@ -30,9 +30,6 @@ define([],
             }
         };
 
-        DataProtocol.prototype.getStateProtocolIndex = function(stateKey) {
-
-        };
 
         DataProtocol.prototype.setStateValue = function(stateIndex, value, time) {
             if (!this.stateKeyMap[stateIndex]) {

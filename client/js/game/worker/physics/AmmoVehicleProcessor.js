@@ -247,7 +247,7 @@ define([
 
             dynamic.brake.state = brakeState;
             dynamic.brakeCommand.state = this.brakeCommand;
-            this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.2, 0, 1);
+            this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.4, 0, 1);
         };
 
         AmmoVehicleProcessor.prototype.determineForwardState = function(speedInputState) {
@@ -376,8 +376,8 @@ define([
 
 
         AmmoVehicleProcessor.prototype.constrainRotation = function(body, threeObj) {
-            var safeAngle = 0.45;
-            var criticalAngle = 0.55;
+            var safeAngle = 0.32;
+            var criticalAngle = 0.44;
             var slugX = 1;
             var slugZ = 1;
 
@@ -390,22 +390,17 @@ define([
 
 
             if (Math.abs(vec3.x) > safeAngle) {
-                slugX = 0.15;
+                slugX = 0.35;
 
                 if (Math.abs(vec3.x) > criticalAngle) {
                     critical = true;
-                 //   vec3.x = MATH.clamp(vec3.x, -criticalAngle*0.8, criticalAngle*0.8)
-                //    threeObj.rotateX(vec3.x)
                 }
             }
 
             if (Math.abs(vec3.z) > safeAngle) {
-                console.log("Dampen Z")
-                slugZ = 0.15;
+                slugZ = 0.35;
                 if (Math.abs(vec3.z) > criticalAngle) {
                     critical = true;
-                //    vec3.z = MATH.clamp(vec3.z, -criticalAngle*0.8, criticalAngle*0.8)
-                //    threeObj.rotateZ(vec3.z)
                 }
             }
 

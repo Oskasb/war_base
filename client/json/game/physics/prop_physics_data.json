@@ -8,10 +8,10 @@
           "rigid_body":{
             "shape":"Cylinder",
             "args":[2.5, 2.5, 3.95],
-            "friction":0.9,
-            "restitution":0.2,
-            "damping":0.7,
-            "mass":5000
+            "friction":1.3,
+            "restitution":0.5,
+            "damping":0.5,
+            "mass":15000
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},

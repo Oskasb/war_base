@@ -9,9 +9,9 @@
             "drive_train":{
               "rpm_min":300,
               "rpm_max":800,
-              "gears":[2800, 1600, 900, 650, 450, 220],
+              "gears":[2200, 1600, 1100, 850, 650, 220],
               "enginePower": 5000,
-              "brake"      : 99000
+              "brake"      : 15000
             },
 
             "mass"      : 55000,
@@ -20,7 +20,7 @@
             "height"    : 1.4,
             "clearance" : 0.0,
 
-            "friction":0.3,
+            "friction":0.2,
             "restitution":0.6,
             "damping":0.37,
 
@@ -59,11 +59,11 @@
               "suspensionLength":1.0,
               "suspensionTravelCm":95,
               "suspensionCompression":1,
-              "dampingCompression":0.1,
-              "dampingRelaxation":1.1,
+              "dampingCompression":0.2,
+              "dampingRelaxation":1.2,
               "suspensionDamping": 0.2,
-              "rollInfluence":0.6,
-              "frictionSlip":1.3
+              "rollInfluence":0.4,
+              "frictionSlip":1.2
             }
           },
           "control_map":[
