@@ -19,7 +19,12 @@ define([
         PhysicalPiece
     ) {
 
+    var count = 0;
+
         var GameActor = function(actorId, dataKey, ready) {
+
+            count++;
+            this.entryId = 'A_'+count;
 
             this.id = actorId;
             this.dataKey = dataKey;
@@ -73,8 +78,8 @@ define([
                 }
             }.bind(this);
 
-            this.setGamePiece(new GamePiece(this.id, config.piece, pieceReady));
-            this.setPhysicalPiece(new PhysicalPiece(this.id, config.physics, pieceReady))
+            this.setGamePiece(new GamePiece(this.entryId, config.piece, pieceReady));
+            this.setPhysicalPiece(new PhysicalPiece(this.entryId, config.physics, pieceReady))
         };
 
         GameActor.prototype.samplePhysicsState = function () {

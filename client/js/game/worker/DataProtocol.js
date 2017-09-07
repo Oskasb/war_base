@@ -59,8 +59,8 @@ define([],
         };
 
         // Use to bind player inputs to worker side state controls on another protocol
-        DataProtocol.prototype.mapTargetChannels = function(target, controlStateMap) {
-            this.protocol[1] = target.pieceId;
+        DataProtocol.prototype.mapTargetChannels = function(actor, controlStateMap) {
+            this.protocol[1] = actor.id;
 
             var channelMatrix = [];
 

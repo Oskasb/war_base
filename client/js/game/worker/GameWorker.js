@@ -80,20 +80,20 @@ define(['game/worker/DataProtocol'],
 
         };
 
-        GameWorker.prototype.registerPieceStates = function(piece) {
-            this.pieceProtocolMap[piece.pieceId] = new DataProtocol(piece.pieceId, piece.pieceStates, this.worker);
+        GameWorker.prototype.registerActorPieceStates = function(actor) {
+            this.pieceProtocolMap[actor.id] = new DataProtocol(actor.id, actor.piece.pieceStates, this.worker);
         };
 
-        GameWorker.prototype.unregisterPieceStates = function(piece) {
-            delete this.pieceProtocolMap[piece.pieceId];
+        GameWorker.prototype.unregisterPieceStates = function(actor) {
+            delete this.pieceProtocolMap[actor.id];
         };
 
-        GameWorker.prototype.bindPieceControls = function(piece, controlPiece, controlStateMap) {
+        GameWorker.prototype.bindActorControls = function(actor, ctrlSys) {
+            var controlStateMap = actor.controlStateMap;
+            this.registerActorPieceStates(actor);
+            this.registerActorPieceStates(ctrlSys);
 
-            this.registerPieceStates(piece);
-            this.registerPieceStates(controlPiece);
-
-            var dataProtocol = this.pieceProtocolMap[controlPiece.pieceId];
+            var dataProtocol = this.pieceProtocolMap[ctrlSys.id];
 
             for (var key in controlStateMap.controlStates) {
 
@@ -103,12 +103,12 @@ define(['game/worker/DataProtocol'],
                     controlStateMap.addStateIdCallback(key, callback);
             }
 
-            dataProtocol.mapTargetChannels(piece, controlStateMap);
+            dataProtocol.mapTargetChannels(actor, controlStateMap);
         };
 
-        GameWorker.prototype.clearPieceControls = function(piece, controlStateMap) {
+        GameWorker.prototype.clearActorControls = function(actor, controlStateMap) {
             controlStateMap.clearControlState();
-            this.unregisterPieceStates(piece);
+            this.unregisterPieceStates(actor);
         };
 
         GameWorker.prototype.storeConfig = function(confId, key, data) {

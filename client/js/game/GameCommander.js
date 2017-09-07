@@ -2,7 +2,7 @@
 
 define([
     'ThreeAPI',
-    'game/GameActor',
+    'game/ActorBuilder',
         'game/controls/GuiControlSystem',
         'game/modules/ModuleCallbacks',
         'game/controls/CameraControls'
@@ -10,7 +10,7 @@ define([
 
     function(
         ThreeAPI,
-        GameActor,
+        ActorBuilder,
         GuiControlSystem,
         ModuleCallbacks,
         CameraControls
@@ -20,11 +20,13 @@ define([
         var GameAPI;
         var gameWorker;
         var levelBuilder;
+        var actorBuilder;
 
         var GameCommander = function(gameApi, gWorker, lvlBuilder) {
             GameAPI = gameApi;
             gameWorker =  gWorker;
             levelBuilder =lvlBuilder;
+            actorBuilder = new ActorBuilder();
             ModuleCallbacks.initCallbacks(GameAPI);
 
 
@@ -156,8 +158,8 @@ define([
 
                     var camReady = function(camSys) {
                         actor.bindControlStateMap(ctrlSys, actor.config.state_map);
-                        gameWorker.registerPieceStates(ctrlSys.piece);
-                        gameWorker.bindPieceControls(actor.piece, ctrlSys.piece, actor.controlStateMap);
+                        gameWorker.registerActorPieceStates(ctrlSys);
+                        gameWorker.bindActorControls(actor, ctrlSys);
                         GameAPI.setActiveControlSys(ctrlSys);
                         GameAPI.setActiveCameraControl(camSys);
                         ctrlSys.setFocusPiece(actor.piece);
@@ -182,25 +184,33 @@ define([
                 return;
             }
 
-            gameWorker.clearPieceControls(activeControl, actor.controlStateMap);
+            gameWorker.clearActorControls(activeControl, actor.controlStateMap);
 
             GameAPI.removePiece(activeControl.piece);
             GameAPI.removeGuiControl(activeControl);
         };
 
         GameCommander.prototype.buildGameActor = function(actorId, dataKey, onData) {
-            var actorReady = function(actor) {
-                GameAPI.addActor(actor);
-                gameWorker.registerPieceStates(actor.piece);
-                ThreeAPI.addToScene(actor.piece.rootObj3D);
-                onData(actor);
+
+            var createIt = function(dkey, id, cb) {
+
+                var actorReady = function(actor) {
+                    actor.id = id;
+                    gameWorker.registerActorPieceStates(actor);
+                    GameAPI.addActor(actor);
+                    ThreeAPI.addToScene(actor.piece.rootObj3D);
+                    cb(actor);
+                };
+
+                actorBuilder.getActor(dkey, actorReady);
+
             };
 
-            new GameActor(actorId, dataKey, actorReady);
+            createIt(dataKey, actorId, onData);
+
         };
 
         GameCommander.prototype.createGameActor = function(options, onData) {
-
 
             var onRes = function(response) {
                 var res = JSON.parse(response);
@@ -219,7 +229,7 @@ define([
                 GameAPI.dropActorControl(actr);
             }
 
-            gameWorker.clearPieceControls(actr.piece, actr.controlStateMap);
+            gameWorker.clearActorControls(actr.piece, actr.controlStateMap);
 
             GameAPI.removePiece(actr.piece);
 
@@ -229,7 +239,7 @@ define([
                 console.log("No actor to remove by id:", msg);
             }
 
-            actr.removeGameActor();
+            actorBuilder.removeActor(actr);
             onOk(actorId)
         };
 
