@@ -243,7 +243,7 @@ define([
         };
 
 
-        GamePiece.prototype.updateGamePiece = function(tpf, time) {
+        GamePiece.prototype.updateGamePiece = function(tpf, time, simulate) {
 
             for (var i = 0; i < this.pieceStates.length; i++) {
                 this.pieceStates[i].updateStateFrame(tpf, time)
@@ -251,7 +251,7 @@ define([
 
 
             for (i = 0; i < this.pieceSlots.length;i++) {
-                this.pieceSlots[i].updatePieceSlot(this.render, this.enabler);
+                this.pieceSlots[i].updatePieceSlot(this.render, this.enabler, tpf, simulate);
             }
 
             for (i = 0; i < this.pieceSlots.length;i++) {

@@ -7,7 +7,8 @@ define([
         'PipelineObject',
         'game/modules/VisualModule',
         'game/modules/ModuleChannel',
-        'game/modules/AttachmentPoint'
+        'game/modules/AttachmentPoint',
+        'game/modules/WeaponModule'
     
     ],
     function(
@@ -15,7 +16,8 @@ define([
         PipelineObject,
         VisualModule,
         ModuleChannel,
-        AttachmentPoint
+        AttachmentPoint,
+        WeaponModule
     ) {
 
         var GameModule = function(id, ready) {
@@ -24,6 +26,8 @@ define([
 
             this.attachmentPoints = [];
             this.moduleChannels = [];
+
+            this.weapons = [];
 
             this.transform = {
                 rot:  [0, 0, 0],
@@ -41,6 +45,11 @@ define([
         GameModule.prototype.getTransform = function () {
             return this.transform;
         };
+
+        GameModule.prototype.getObjec3D = function () {
+            return this.visualModule.getRootObject3d();
+        };
+
 
         GameModule.prototype.setModel = function (model) {
             this.visualModule.attachModel(model);
@@ -68,7 +77,17 @@ define([
 
             this.visualModule.setModuleData(this.config);
 
+            if (this.config.weapons) {
 
+                var weaponReady = function(weapon) {
+                    this.weapons.push(weapon)
+                }.bind(this);
+
+                for (var i = 0; i < this.config.weapons.length; i++) {
+                    new WeaponModule(this.config.weapons[i], weaponReady)
+                }
+
+            }
 
             if (config[ENUMS.ModuleParams.attachment_points]) {
                 this.applyAttachmentPoints(config[ENUMS.ModuleParams.attachment_points]);
@@ -172,7 +191,7 @@ define([
 
 
 
-        GameModule.prototype.sampleModuleFrame = function (render, enable) {
+        GameModule.prototype.sampleModuleFrame = function (render, enable, tpf, simState) {
             this.visualModule.setVisibility(render);
             for (var i = 0; i < this.moduleChannels.length; i++) {
                 this.moduleChannels[i].updateChannelState(this, enable);
@@ -180,6 +199,14 @@ define([
             if (this.interpolateQuaternion) {
                 this.visualModule.slerpTowardsTargetQuat(this.interpolateQuaternion)
             }
+
+            if (simState) {
+                for (i = 0; i < this.weapons.length; i++) {
+                    this.weapons[i].updateWeaponState(simState, this, tpf)
+                }
+            }
+
+
         };
 
         GameModule.prototype.updateVisualState = function (tpf) {

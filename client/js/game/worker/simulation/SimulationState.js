@@ -3,7 +3,7 @@
 define([
         'PipelineAPI',
         'worker/simulation/SimulationOperations',
-        'worker/physics/CannonAPI',
+        'ThreeAPI',
         'worker/physics/AmmoAPI',
         'worker/terrain/TerrainFunctions'
 
@@ -11,7 +11,7 @@ define([
     function(
         PipelineAPI,
         SimulationOperations,
-        CannonAPI,
+        ThreeAPI,
         AmmoAPI,
         TerrainFunctions
     ) {
@@ -30,14 +30,14 @@ define([
             this.terrainFunctions = new TerrainFunctions(physicsApi);
             this.simulationOperations = new SimulationOperations(this.terrainFunctions);
 
-            var physicsRdy = function() {
-
-            };
+            ThreeAPI.initThreeScene();
         };
 
         SimulationState.prototype.addLevel = function(options, ready) {
 
             physicsApi.initPhysics();
+
+            ThreeAPI.initThreeScene();
 
             var levelBuilt = function(level) {
                 levels.push(level);
@@ -52,6 +52,9 @@ define([
 
         SimulationState.prototype.includeActor = function(actor) {
             physicsApi.setupPhysicalActor(actor);
+
+            ThreeAPI.addToScene(actor.piece.rootObj3D);
+
             if (actor.body) {
                 physicsApi.includeBody(actor.body);
             }
@@ -115,6 +118,10 @@ define([
             return this.getActorById(this.controlledActorId)
         };
 
+        SimulationState.prototype.getActors = function() {
+            return actors;
+        };
+
         SimulationState.prototype.getActorById = function(actorId) {
             for (var i = 0; i < actors.length; i++) {
                 if (actors[i].id == actorId) {
@@ -149,6 +156,8 @@ define([
 
             actor.piece.removeGamePiece();
             actor.removeGameActor();
+            ThreeAPI.removeFromScene(actor.piece.rootObj3D);
+
             cb(actorId);
         };
 
@@ -206,9 +215,10 @@ define([
         };
 
 
+
         SimulationState.prototype.updateActorFrame = function(actor, tpf) {
             this.protocolSystem.applyProtocolToActorState(actor, tpf);
-            actor.piece.updateGamePiece(tpf, time);
+            actor.piece.updateGamePiece(tpf, time, this);
             actor.samplePhysicsState();
             this.protocolSystem.updateActorSendProtocol(actor, tpf);
         };
@@ -216,11 +226,15 @@ define([
 
         SimulationState.prototype.updateState = function(tpf) {
 
+            ThreeAPI.getScene().updateMatrixWorld();
+
             if (levels.length) {
                 time += tpf;
                 physicsApi.updatePhysicsSimulation(time);
 
             for (var i = 0; i < actors.length; i++) {
+
+                actors[i].piece.rootObj3D.updateMatrixWorld();
 
                 this.updateActorFrame(actors[i], tpf);
 

@@ -1,0 +1,30 @@
+[{
+  "WEAPON_DATA":{
+    "WEAPONS":[
+      {
+        "id":"weapon_swivel_gun",
+        "data":{
+          "weapon":{
+            "name":"Swivel Gun",
+            "options":{
+              "velocity":15,
+              "cooldown":1.0
+            }
+          },
+          "control_map":[
+            {"control":"target_current_selection",  "stateid":"state_selected_target", "factor": 1}
+          ],
+          "feedback_map":[
+            {"param":"dynamic",     "key":"fire",        "property":"state", "stateid":"state_fire_weapon",  "factor":1}
+          ],
+          "state_map":[
+            {"param":"quaternion","axis":"x",   "stateid": "quat_swivel_x"},
+            {"param":"quaternion","axis":"y",   "stateid": "quat_swivel_y"},
+            {"param":"quaternion","axis":"z",   "stateid": "quat_swivel_z"},
+            {"param":"quaternion","axis":"w",   "stateid": "quat_swivel_w"}
+          ]
+        }
+      }
+    ]
+  }
+}]

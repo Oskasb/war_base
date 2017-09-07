@@ -9,18 +9,19 @@ define([
     ) {
 
         var effectCallbacks = {};
-        
+
+        var scene;
+
         var ThreeAPI = function() {
 
         };
 
         ThreeAPI.initThreeLoaders = function(TAPI) {
 
-            
         };
 
-        ThreeAPI.initThreeScene = function(containerElement, clientTickCallback, pxRatio, antialias) {
-
+        ThreeAPI.initThreeScene = function() {
+            scene = new THREE.Scene();
         };
 
         ThreeAPI.getContext = function() {
@@ -150,7 +151,11 @@ define([
         };
 
         ThreeAPI.addToScene = function(threeObject) {
-            // ThreeSetup.addToScene(threeObject);
+            scene.add(threeObject);
+        };
+
+        ThreeAPI.removeFromScene = function(threeObject) {
+            scene.remove(threeObject);
         };
 
         ThreeAPI.createRootObject = function() {

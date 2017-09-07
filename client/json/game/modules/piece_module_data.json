@@ -140,11 +140,13 @@
             "size": [0.2, 0.2, 2.0]
           },
           "model":"swivel_gun",
+          "weapons":["weapon_swivel_gun"],
           "channels":[
-            {"channelid":"channel_quat_x",  "stateid": "quat_state_x"},
-            {"channelid":"channel_quat_y",  "stateid": "quat_state_y"},
-            {"channelid":"channel_quat_z",  "stateid": "quat_state_z"},
-            {"channelid":"channel_quat_w",  "stateid": "quat_state_w"}
+            {"channelid":"fire_channel",    "stateid": "command_swivel_trigger"},
+            {"channelid":"channel_quat_x",  "stateid": "quat_swivel_x"},
+            {"channelid":"channel_quat_y",  "stateid": "quat_swivel_y"},
+            {"channelid":"channel_quat_z",  "stateid": "quat_swivel_z"},
+            {"channelid":"channel_quat_w",  "stateid": "quat_swivel_w"}
           ]
         }
       },

@@ -54,7 +54,7 @@
       "game/modules/camera_data.json",
       "game/modules/control_module_data.json",
 
-
+      "game/weapons/piece_weapon_data.json",
 
       "game/channels/module_channels.json",
       "game/channels/vehicle_channels.json",
