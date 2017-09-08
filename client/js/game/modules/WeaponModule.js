@@ -12,10 +12,13 @@ define([
     var tempVec = new THREE.Vector3();
     var tempVec2 = new THREE.Vector3();
     var tempObj3D = new THREE.Object3D();
-    var outOfRange = 999;
+    var outOfRange;
 
         var WeaponModule = function(dataKey, ready) {
             this.dataKey = dataKey;
+
+            this.selectedTarget = null;
+            this.targetFocusTime = 0;
 
             var applyChannelData = function() {
                 this.applyData(this.pipeObj.buildConfig()[this.dataKey]);
@@ -30,15 +33,22 @@ define([
             this.stateMap = config.state_map;
         };
 
+        WeaponModule.prototype.setSelectedTarget = function (config) {
+            this.targetFocusTime = 0;
+        };
 
 
         WeaponModule.prototype.selectNearbyHostileActor = function(simulationState, module, tpf) {
+
+            this.targetFocusTime += tpf;
 
             module.getObjec3D().updateMatrixWorld();
 
         //    module.getObjec3D().getWorldPosition(tempObj3D.position);
 
             tempObj3D.position.setFromMatrixPosition( module.getObjec3D().matrixWorld );
+
+            outOfRange = this.config.range || 30;
 
             var nearestDistance = outOfRange;
             var distance = nearestDistance;
@@ -51,9 +61,14 @@ define([
                 if (actors[i].config.alignment === 'hostile') {
                     distance = Math.sqrt(actors[i].piece.getPos().distanceToSquared(tempObj3D.position));
                     if (distance < nearestDistance) {
+                        nearestDistance = distance;
                         selectedTarget = actors[i];
                     }
                 }
+            }
+
+            if (this.selectedTarget !== selectedTarget) {
+                this.setSelectedTarget(selectedTarget);
             }
 
             return selectedTarget;
@@ -61,25 +76,10 @@ define([
 
         WeaponModule.prototype.aimAtTargetActor = function(targetActor, module) {
 
-            module.getObjec3D().getWorldQuaternion(tempObj3D.quaternion);
+            tempVec2.copy(targetActor.piece.getPos());
 
-        //    tempVec.set(0, 0, 1);
-
-        //    tempVec.applyQuaternion(tempObj3D.quaternion);
-
-            tempVec2.subVectors(targetActor.piece.getPos() , tempObj3D.position);
-
-        //    tempObj3D.lookAt(tempVec2);
-
-            tempObj3D.worldToLocal( tempVec2 );
+            module.getObjec3D().parent.worldToLocal( tempVec2 );
             module.getObjec3D().lookAt( tempVec2 );
-
-            //tempVec2.set(0, 0, 1);
-            //tempVec2.applyQuaternion(tempObj3D.quaternion);
-
-        //    module.getObjec3D().rotation.x = MATH.subAngles(tempObj3D.rotation.x ,  module.getObjec3D().rotation.x );
-        //    module.getObjec3D().rotation.y = MATH.subAngles(tempObj3D.rotation.y ,  module.getObjec3D().rotation.y);
-
         };
 
         WeaponModule.prototype.sampleState = function(targetActor, module) {

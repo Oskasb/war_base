@@ -7,8 +7,10 @@
           "weapon":{
             "name":"Swivel Gun",
             "options":{
+              "range":40,
               "velocity":15,
-              "cooldown":1.0
+              "cooldown":1.0,
+              "focus_time":0.5,
             }
           },
           "control_map":[
