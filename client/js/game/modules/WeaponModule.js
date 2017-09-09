@@ -9,11 +9,13 @@ define([
         PipelineObject
     ) {
 
+    var aimVec = new THREE.Vector3();
     var tempVec = new THREE.Vector3();
     var tempVec2 = new THREE.Vector3();
     var tempObj3D = new THREE.Object3D();
     var outOfRange;
 
+        var nearestDistance;
 
         var dynamic = {
             fromX:           {state:0},
@@ -88,7 +90,7 @@ define([
 
 
 
-        WeaponModule.prototype.applyData = function (module, config) {
+        WeaponModule.prototype.applyData = function (config) {
             this.config = config;
             this.stateMap = config.state_map;
             this.feedbackMap = config.feedback_map;
@@ -109,6 +111,7 @@ define([
             vec3.setFromMatrixPosition( muzzleModule.getObjec3D().matrixWorld );
         };
 
+
         WeaponModule.prototype.selectNearbyHostileActor = function(simulationState, module, tpf) {
 
             this.targetFocusTime += tpf;
@@ -121,7 +124,7 @@ define([
 
             outOfRange = this.weaponOptions.range;
 
-            var nearestDistance = outOfRange;
+            nearestDistance = outOfRange;
             var distance = nearestDistance;
 
             var actors = simulationState.getActors();
@@ -147,29 +150,43 @@ define([
 
         WeaponModule.prototype.aimAtTargetActor = function(targetActor, module) {
 
-            tempVec2.copy(targetActor.piece.getPos());
+            aimVec.copy(targetActor.piece.getPos());
 
-            module.getObjec3D().parent.worldToLocal( tempVec2 );
-            module.getObjec3D().lookAt( tempVec2 );
+                tempVec2.set(Math.random()-0.5,Math.random()-0.5,Math.random()-0.5);
+                tempVec2.normalize();
+                tempVec2.multiplyScalar(Math.random() * this.weaponOptions.bullet_spread * (2 + nearestDistance * 0.1) * (0.8 + nearestDistance*0.2));
+
+            aimVec.x += tempVec2.x;
+            aimVec.y += tempVec2.y;
+            aimVec.z += tempVec2.z;
+
+            module.getObjec3D().parent.worldToLocal( aimVec );
+            module.getObjec3D().lookAt( aimVec );
         };
 
 
         WeaponModule.prototype.generateActiveBullet = function() {
 
             var fromVec = tempObj3D.position;
-            var toVec = this.selectedTarget.piece.getPos();
+
+
+            aimVec.copy(this.selectedTarget.piece.getPos());
+            aimVec.x += tempVec2.x;
+            aimVec.y += tempVec2.y;
+            aimVec.z += tempVec2.z;
+
 
             this.dynamic.fromX.state = fromVec.x;
             this.dynamic.fromY.state = fromVec.y;
             this.dynamic.fromZ.state = fromVec.z;
 
-            this.dynamic.toX.state = toVec.x;
-            this.dynamic.toY.state = toVec.y;
-            this.dynamic.toZ.state = toVec.z;
+            this.dynamic.toX.state = aimVec.x;
+            this.dynamic.toY.state = aimVec.y;
+            this.dynamic.toZ.state = aimVec.z;
 
-            var distance = Math.sqrt(fromVec.distanceToSquared(toVec));
+        //    var distance = Math.sqrt(fromVec.distanceToSquared(aimVec));
 
-            this.dynamic.travelTime.state = distance / this.weaponOptions.velocity;
+            this.dynamic.travelTime.state = nearestDistance / this.weaponOptions.velocity;
             this.dynamic.activateCommand.state = 1;
         };
 
