@@ -376,15 +376,11 @@ define([
 
             var state = target.state;
 
-            if (state.targetValue === 1) {
-
-            //    console.log("Fire")
+            if (state.buffer[0] === 1) {
 
                 for (var i = 0; i < weapons.length; i++) {
-                    weapons[i].applyWeaponTrigger(state.targetValue, module, callFireWeapon);
+                    weapons[i].applyWeaponTrigger(state, module, callFireWeapon);
                 }
-
-            //    state.targetValue = 0;
 
             }
 

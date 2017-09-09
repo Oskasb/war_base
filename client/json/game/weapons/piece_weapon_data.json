@@ -9,9 +9,10 @@
             "options":{
               "range":35,
               "velocity":80,
-              "cooldown":0.1,
-              "focus_time":0.5,
-              "particle_effect_id":"machine_gun_trail_effect"
+              "cooldown":0.15,
+              "focus_time":0.3,
+              "particle_effect_id":"machine_gun_trail_effect",
+              "muzzle_attachment_point_id":"ap_muzzle"
             }
           },
           "control_map":[
