@@ -178,7 +178,7 @@
             "size": [0,   0,    0]
           },
           "channels":[
-
+            {"channelid":"fire_channel", "stateid": "command_bullet_activate" }
           ]
         }
       },

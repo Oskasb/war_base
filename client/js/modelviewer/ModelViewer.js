@@ -130,6 +130,11 @@ define([
 
             };
 
+            var postrenderTick = function(tpf) {
+                _this.tickPostrender(tpf, sceneController)
+
+            };
+
             var systems = 0;
 
             var sysReady = function() {
@@ -140,7 +145,7 @@ define([
 
             };
 
-            sceneController.setup3dScene(clientTick, sysReady);
+            sceneController.setup3dScene(clientTick, postrenderTick, sysReady);
             sceneController.setupEffectPlayers(sysReady);
 
         //    evt.once(evt.list().PLAYER_READY, sysReady);
@@ -150,6 +155,14 @@ define([
 
         var start;
         var gameTime = 0;
+
+        ModelViewer.prototype.tickPostrender = function(tpf) {
+            GameAPI.tickPlayerPiece(tpf, gameTime);
+            PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
+            evt.fire(evt.list().CLIENT_TICK, tickEvent);
+        };
+
+        var tickTimeout;
 
         ModelViewer.prototype.tick = function(tpf, sceneController) {
 
@@ -182,22 +195,23 @@ define([
 
             this.pointerCursor.tick();
 
-            GameAPI.tickGame(tpf, gameTime);
+
             GameAPI.tickControls(tpf, gameTime);
 
 
-            setTimeout(function() {
+            clearTimeout(tickTimeout);
+            tickTimeout = setTimeout(function() {
 
                 tickEvent.frame = frame;
                 tickEvent.tpf = tpf;
 
-
+                GameAPI.tickGame(tpf, gameTime);
 
                 sceneController.tickEffectPlayers(tpf);
-                PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
-                evt.fire(evt.list().CLIENT_TICK, tickEvent);
 
             }, 0);
+
+
 
             this.viewerMain.tickViewerClient(tpf);
             

@@ -74,6 +74,7 @@ define([
         };
 
         GameAPI.controlActor = function(actor) {
+            GameAPI.removePiece(actor.piece);
             controlledActor = actor;
             gameCommander.enableActorControls(actor)
         };
@@ -107,6 +108,7 @@ define([
         GameAPI.dropActorControl = function(actor) {
             controlledActor = null;
             gameCommander.disableActorControls(actor, activeControl)
+            GameAPI.addPiece(actor.piece);
         };
 
 
@@ -153,16 +155,21 @@ define([
 
         };
 
+        GameAPI.tickPlayerPiece = function(tpf, time) {
+            if (controlledActor) {
+                controlledActor.piece.updateGamePiece(tpf, time);
+                controlledActor.piece.setRendereable(true);
+            }
+        };
+
         GameAPI.tickGame = function(tpf, time) {
 
             for (var i = 0; i < pieces.length; i++) {
-                pieces[i].determineVisibility();
-                pieces[i].updateGamePiece(tpf, time)
+
+                    pieces[i].determineVisibility();
+                    pieces[i].updateGamePiece(tpf, time)
             }
 
-            for (i = 0; i < actors.length; i++) {
-                actors[i].updateActor()
-            }
 
         };
 

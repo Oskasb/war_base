@@ -48,9 +48,9 @@ define([
             
         };
 
-        ThreeAPI.initThreeScene = function(containerElement, clientTickCallback, pxRatio, antialias) {
+        ThreeAPI.initThreeScene = function(containerElement, clientTickCallback, postrenderTick, pxRatio, antialias) {
             var store = {}; 
-            store = ThreeSetup.initThreeRenderer(pxRatio, antialias, containerElement, clientTickCallback, store);
+            store = ThreeSetup.initThreeRenderer(pxRatio, antialias, containerElement, clientTickCallback, postrenderTick, store);
             ThreeEnvironment.initEnvironment(store);
             glContext = store.renderer.context;
             scene = store.scene;

@@ -71,6 +71,13 @@ define([
 
         WeaponModule.prototype.applyWeaponTrigger = function(state, module, callFireWeapon) {
             if (this.dynamic.activateCommand.state) {
+
+                this.getMuzzlePosition(module, tempVec);
+
+                this.dynamic.fromX.state = tempVec.x;
+                this.dynamic.fromY.state = tempVec.y;
+                this.dynamic.fromZ.state = tempVec.z;
+
                 callFireWeapon(this.dynamic, module, this.weaponOptions);
                 state.buffer[0] = 0;
                 this.dynamic.activateCommand.state = 0;
@@ -105,6 +112,7 @@ define([
         };
 
         WeaponModule.prototype.getMuzzlePosition = function (module, vec3) {
+            module.getObjec3D().updateMatrixWorld();
             var ap = module.getAttachmentPointById(this.weaponOptions.muzzle_attachment_point_id);
             var muzzleModule = ap.getAttachedModule();
 
@@ -115,8 +123,6 @@ define([
         WeaponModule.prototype.selectNearbyHostileActor = function(simulationState, module, tpf) {
 
             this.targetFocusTime += tpf;
-
-            module.getObjec3D().updateMatrixWorld();
 
         //    module.getObjec3D().getWorldPosition(tempObj3D.position);
 

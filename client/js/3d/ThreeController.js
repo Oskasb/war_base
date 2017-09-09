@@ -24,7 +24,7 @@ define([
         new ThreeCamera();
     };
 
-    ThreeController.setupThreeRenderer = function(clientTickCallback, ready) {
+    ThreeController.setupThreeRenderer = function(clientTickCallback, postrenderTick, ready) {
 
 
         console.log("Setup Three Renderer");
@@ -33,7 +33,7 @@ define([
         var antialias = PipelineAPI.readCachedConfigKey('SETUP', 'ANTIALIAS');;
         pxRatio =  PipelineAPI.readCachedConfigKey('SETUP', 'PX_SCALE');
 
-        ThreeAPI.initThreeScene(GameScreen.getElement(), clientTickCallback, pxRatio, antialias);
+        ThreeAPI.initThreeScene(GameScreen.getElement(), clientTickCallback, postrenderTick, pxRatio, antialias);
 
         PipelineAPI.setCategoryKeyValue('GAME_DATA', 'CAMERA', ThreeAPI.getCamera());
 
