@@ -22,6 +22,9 @@ define([
         var activeEffects = [];
         var idleEffects = [];
         var endedEffects = [];
+
+        var temporaryEffects = [];
+
         var fxAdds = 0;
         var systemTime = 0;
 
@@ -38,7 +41,7 @@ define([
             finished ++;
 
     //        console.log("ParticleSpawner load: r/s", started, finished);
-            if (started == finished) {
+            if (started === finished) {
                 ready();
             }
         };
@@ -142,7 +145,7 @@ define([
 
         };
 
-        ParticleSpawner.prototype.buildEffect = function(id, pos, vel, size, quat) {
+        ParticleSpawner.prototype.buildEffect = function(id, pos, vel, size, quat, duration) {
 
             var effect = this.getEffect();
 
@@ -166,7 +169,11 @@ define([
                 effect.quat.z = 0;
                 effect.quat.w = 1;
             }
-            
+
+            if (duration) {
+                effect.setEffectDuration(duration);
+            }
+
             effect.setEffectVelocity(vel);
 
             requestedEffects.push(effect);
@@ -201,7 +208,7 @@ define([
 
             var effect = this.buildEffect(id, pos, vel);
 
-            if (typeof(effect) == 'undefined') {
+            if (typeof(effect) === 'undefined') {
                 console.log("Undefined effect created...", id, pos, vel);
                 return;
             }
@@ -213,15 +220,26 @@ define([
             effect.updateEffectPositionSimulator(pos, tpf);
         };
 
-        
+
+        ParticleSpawner.prototype.spawnTemporaryPassiveEffect = function(id, pos, vel, size, quat, duration) {
+
+            var effect = this.buildEffect(id, pos, vel, size, quat, duration);
+
+            effect.setEffectTemporary(systemTime, systemTime+duration);
+
+            temporaryEffects.push(effect);
+
+            return effect;
+        };
+
         ParticleSpawner.prototype.spawnPassiveEffect = function(id, pos, vel, size, quat) {
             return this.buildEffect(id, pos, vel, size, quat);
         };
 
         ParticleSpawner.prototype.recoverPassiveEffect = function(effect) {
 
-            if (typeof(effect) == 'undefined') {
-                console.log("Undefined effect returned...")
+            if (typeof(effect) === 'undefined') {
+                console.log("Undefined effect returned...");
                 return;
             }
 
@@ -230,7 +248,9 @@ define([
             //    return;
             }
 
-            effect.age = effect.lastTpf;
+            effect.age = effect.effectDuration + effect.lastTpf;
+
+            effect.setEffectDuration(0);
 
             activeEffects.push(effect);
         };
@@ -260,9 +280,9 @@ define([
             }
 
 
-            for (var i = 0; i < activeEffects.length; i++) {
+            for (i = 0; i < activeEffects.length; i++) {
 
-                if (typeof(activeEffects[i]) == 'undefined') {
+                if (typeof(activeEffects[i]) === 'undefined') {
                     console.log("Bad Effect pool handling,", activeEffects);
                     activeEffects.splice(activeEffects.indexOf(dead), 1)[0];
                     return;
@@ -270,18 +290,23 @@ define([
 
             }
 
+            for (i = 0; i < temporaryEffects.length; i++) {
+                if (temporaryEffects[i].temporary.endTime < systemTime) {
+                    this.recoverPassiveEffect(temporaryEffects.splice(i, 1)[0]);
+                    i--
+                }
+            }
 
-            for (var i = 0; i < activeEffects.length; i++) {
+            for (i = 0; i < activeEffects.length; i++) {
 
 
-                if (activeEffects[i].aliveParticles.length != 0) {
+                if (activeEffects[i].aliveParticles.length !== 0) {
                     activeEffects[i].updateEffect(tpf, systemTime);
                 } else {
                     // list for removal here...
                     endedEffects.push(activeEffects[i]);
                 }
             }
-
 
         };
 
@@ -316,6 +341,7 @@ define([
             return activeEffects.length;
         };
 
+
         ParticleSpawner.prototype.getActiveParticlesCount = function() {
 
             var count = 0;
@@ -323,15 +349,13 @@ define([
             totalRenderers = 0;
 
 
-
-
             for (var i = 0; i < activeEffects.length; i++) {
                 count += activeEffects[i].aliveParticles.length;
-            };
+            }
             
             
             for (var key in renderers) {
-                for (var i = 0; i < renderers[key].length; i++) {
+                for (i = 0; i < renderers[key].length; i++) {
                     var activeParticles = renderers[key][i].poolSize - renderers[key][i].particles.length;
                     if (activeParticles) {
                         if (!renderers[key][i].isRendering) {

@@ -2,18 +2,26 @@
 
 
 define([
-        'game/controls/GuiControlUtils'
+        'game/controls/GuiControlUtils',
+        'game/controls/WeaponControlUtils'
     ],
     function(
-        GuiControlUtils
+        GuiControlUtils,
+        WeaponControlUtils
     ) {
 
         var guiControlUtils;
 
+        var weaponControlUtils;
+
+        var GameAPI;
+
         var ModuleCallbacks = function() {};
 
-        ModuleCallbacks.initCallbacks = function(GameAPI) {
+        ModuleCallbacks.initCallbacks = function(gameApi) {
+            GameAPI = gameApi;
             guiControlUtils = new GuiControlUtils(GameAPI);
+            weaponControlUtils = WeaponControlUtils;
         };
 
         ModuleCallbacks.apply_target_piece_position = function(module, target) {
@@ -99,6 +107,32 @@ define([
             guiControlUtils.readInputVector(module, target, enable);
         };
 
+
+        ModuleCallbacks.call_weapon_trigger_active = function(module, target, enable) {
+
+            if (!weaponControlUtils) {
+                return;
+            }
+
+        //    weaponControlUtils.callWeaponTriggerActive(module, target, enable);
+        };
+
+        var applyWeaponState = function(weapon, state) {
+            weapon.setupDynamicState(state.id, state.buffer[0]);
+        };
+
+        ModuleCallbacks.call_weapon_bullet_setup = function(module, target, enable) {
+            var weapons = module.weapons;
+            var state = target.state;
+            for (var i = 0; i < weapons.length; i++) {
+                applyWeaponState(weapons[i], state)
+            }
+        };
+
+        ModuleCallbacks.call_weapon_bullet_activate = function(module, target, enable) {
+
+        };
+
         ModuleCallbacks.transform = function(module, target) {
             var parameter = target.config.parameter;
             var axis = target.config.axis;
@@ -124,6 +158,10 @@ define([
             module.visualModule.addEffectTarget(target);
         };
 
+
+        ModuleCallbacks.module_weapon_emit_bullet_effect = function(module, target) {
+            module.visualModule.addEffectTarget(target);
+        };
 
         ModuleCallbacks.module_ground_print_effect = function(module, target) {
             module.visualModule.addEffectTarget(target);

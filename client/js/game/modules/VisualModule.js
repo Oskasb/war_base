@@ -246,6 +246,12 @@ define([
             this.removeModuleDebugBox();
         };
 
+
+        VisualModule.prototype.getEffectCallbacks = function() {
+            cbs = ThreeAPI.getEffectCallbacks();
+            return cbs;
+        };
+
         VisualModule.prototype.processVisualEffect = function(target, tpf) {
             cbs[target.config.callback](this, target, tpf);
         };

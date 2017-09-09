@@ -131,25 +131,57 @@
             {"channelid":"channel_pitch", "stateid":"gun_pitch"}
           ]
         }
-      },      {
+      },
+      {
         "id":"swivel_gun_module",
         "data":{
           "transform":{
-            "rot":  [0,     0,   0],
-            "pos":  [0,   0.5,-0.5],
-            "size": [0.2, 0.2, 2.0]
+            "rot":  [0,     0,    0],
+            "pos":  [0,   0.42, 0.5],
+            "size": [0.3, 0.3,  2.0]
           },
           "model":"swivel_gun",
           "weapons":["weapon_swivel_gun"],
           "channels":[
-            {"channelid":"fire_channel",    "stateid": "command_swivel_trigger"},
+            {"channelid":"channel_trigger", "stateid": "command_swivel_trigger"},
             {"channelid":"channel_quat_x",  "stateid": "quat_swivel_x"},
             {"channelid":"channel_quat_y",  "stateid": "quat_swivel_y"},
             {"channelid":"channel_quat_z",  "stateid": "quat_swivel_z"},
-            {"channelid":"channel_quat_w",  "stateid": "quat_swivel_w"}
+            {"channelid":"channel_quat_w",  "stateid": "quat_swivel_w"},
+
+            {"channelid":"channel_bullet_activate", "stateid": "command_bullet_activate" },
+            {"channelid":"channel_setup_bullet",    "stateid": "bullet_travel_time"      },
+            {"channelid":"channel_setup_bullet",    "stateid": "bullet_from_x"           },
+            {"channelid":"channel_setup_bullet",    "stateid": "bullet_from_y"           },
+            {"channelid":"channel_setup_bullet",    "stateid": "bullet_from_z"           },
+            {"channelid":"channel_setup_bullet",    "stateid": "bullet_to_x"             },
+            {"channelid":"channel_setup_bullet",    "stateid": "bullet_to_y"             },
+            {"channelid":"channel_setup_bullet",    "stateid": "bullet_to_z"             }
+          ],
+          "attachment_points":[
+            {"id":"ap_muzzle",
+              "transform":{
+              "rot":[  0,    0,    0],
+              "pos":[0.0,  0.40, 1.4]
+            }
+          }
           ]
         }
       },
+      {
+        "id":"module_muzzle",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   0,    0],
+            "size": [0,   0,    0]
+          },
+          "channels":[
+
+          ]
+        }
+      },
+
       {
         "id":"sherman_turret_module",
         "data":{

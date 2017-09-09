@@ -144,7 +144,7 @@ define([
 
         VegetationSector.prototype.checkVisibility = function(activePatches, patchPool) {
 
-            var visible = ThreeAPI.checkVolumeObjectVisible( this.posX, this.posY , this.posZ , this.size());
+            var visible = ThreeAPI.checkVolumeObjectVisible( this.posX, this.posY , this.posZ , this.size() * 1.6);
 
             if (visible && !this.isVisible) {
                 this.enableVegetationSector(activePatches, patchPool);

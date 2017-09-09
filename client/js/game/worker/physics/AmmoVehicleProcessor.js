@@ -376,8 +376,8 @@ define([
 
 
         AmmoVehicleProcessor.prototype.constrainRotation = function(body, threeObj) {
-            var safeAngle = 0.25;
-            var criticalAngle = 0.40;
+            var safeAngle = 0.35;
+            var criticalAngle = 0.45;
             var slugX = 1;
             var slugZ = 1;
 
@@ -390,7 +390,7 @@ define([
 
 
             if (Math.abs(vec3.x) > safeAngle) {
-                slugX = 0.35;
+                slugX = 0.5;
 
                 if (Math.abs(vec3.x) > criticalAngle) {
                     critical = true;
@@ -398,7 +398,7 @@ define([
             }
 
             if (Math.abs(vec3.z) > safeAngle) {
-                slugZ = 0.35;
+                slugZ = 0.5;
                 if (Math.abs(vec3.z) > criticalAngle) {
                     critical = true;
                 }

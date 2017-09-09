@@ -11,6 +11,7 @@ define([
 
         var AttachmentPoint = function(apData) {
             this.id = apData.id;
+            this.module = null;
             this.object3D = ThreeAPI.createRootObject();
             this.updateData(apData)
         };
@@ -50,9 +51,19 @@ define([
             ThreeAPI.addChildToObject3D(childObj3d, this.object3D)
         };
 
+        AttachmentPoint.prototype.setAttachedModule = function (module) {
+            this.module = module;
+        };
+
+        AttachmentPoint.prototype.getAttachedModule = function () {
+            return this.module;
+        };
+
         AttachmentPoint.prototype.attachToParent = function (parentObj3d) {
             ThreeAPI.addChildToObject3D(this.object3D, parentObj3d)
         };
+
+
 
         AttachmentPoint.prototype.detatchAttachmentPoint = function () {
             this.visualiseAttachmentPoint(false);

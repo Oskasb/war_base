@@ -7,17 +7,26 @@
           "weapon":{
             "name":"Swivel Gun",
             "options":{
-              "range":40,
-              "velocity":15,
-              "cooldown":1.0,
+              "range":35,
+              "velocity":80,
+              "cooldown":0.1,
               "focus_time":0.5,
+              "particle_effect_id":"machine_gun_trail_effect"
             }
           },
           "control_map":[
             {"control":"target_current_selection",  "stateid":"state_selected_target", "factor": 1}
           ],
           "feedback_map":[
-            {"param":"dynamic",     "key":"fire",        "property":"state", "stateid":"state_fire_weapon",  "factor":1}
+            {"param":"dynamic",     "key":"triggerCommand",  "property":"state", "stateid":"command_swivel_trigger",  "factor":1},
+            {"param":"dynamic",     "key":"activateCommand", "property":"state", "stateid":"command_bullet_activate", "factor":1},
+            {"param":"dynamic",     "key":"travelTime",      "property":"state", "stateid":"bullet_travel_time",      "factor":1},
+            {"param":"dynamic",     "key":"fromX",           "property":"state", "stateid":"bullet_from_x",           "factor":1},
+            {"param":"dynamic",     "key":"fromY",           "property":"state", "stateid":"bullet_from_y",           "factor":1},
+            {"param":"dynamic",     "key":"fromZ",           "property":"state", "stateid":"bullet_from_z",           "factor":1},
+            {"param":"dynamic",     "key":"toX",             "property":"state", "stateid":"bullet_to_x",             "factor":1},
+            {"param":"dynamic",     "key":"toY",             "property":"state", "stateid":"bullet_to_y",             "factor":1},
+            {"param":"dynamic",     "key":"toZ",             "property":"state", "stateid":"bullet_to_z",             "factor":1}
           ],
           "state_map":[
             {"param":"quaternion","axis":"x",   "stateid": "quat_swivel_x"},

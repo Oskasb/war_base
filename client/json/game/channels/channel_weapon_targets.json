@@ -1,0 +1,24 @@
+[{
+  "CHANNEL_TARGETS":{
+    "TARGETS":[
+      {
+        "id":"target_weapon_trigger_active",
+        "data":{
+          "callback":"call_weapon_trigger_active"
+        }
+      },
+      {
+        "id":"target_weapon_setup_bullet",
+        "data":{
+          "callback":"call_weapon_bullet_setup"
+        }
+      },
+      {
+        "id":"target_weapon_bullet_activate",
+        "data":{
+          "callback":"module_weapon_emit_bullet_effect"
+        }
+      }
+    ]
+  }
+}]

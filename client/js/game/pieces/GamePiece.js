@@ -95,6 +95,7 @@ define([
 
         GamePiece.prototype.setSlotAttachment = function(parentSlotId, apId, childSlotId) {
             var ap = this.getSlotById(parentSlotId).getAttachmentPointById(apId);
+            ap.setAttachedModule(this.getSlotById(childSlotId).module);
             this.getSlotById(childSlotId).attachToObject3d(ap.object3D);
         };
 

@@ -763,6 +763,28 @@
         },
 
         {
+          "id":"machine_gun_trail_effect_particle",
+          "sprite_key":"ATLAS",
+          "sprite_id":"explosion",
+          "config":{
+            "gravity":-2.81,
+            "drag":0.0001,
+            "spinDrag":1,
+            "lifeTime":{"min":10,"max":10},
+            "colorCurve":"randomYellow",
+            "alphaCurve":"nearWhite",
+            "diffusionCurve":"nearWhite",
+            "scaleCurve":"nearWhite",
+            "size":{"value":0.05,     "min":-0.001, "max":0.001},
+            "spin":{"value":0.00001, "min":-0.000005, "max":0.000005},
+            "velocityDiffusion":0.00001,
+            "accelerationDiffusion":0.00001,
+            "colorDiffusion":0.15,
+            "velocityFactor":1
+          }
+        },
+
+        {
           "id":"cannon_trail_effect_particle",
           "sprite_key":"ATLAS",
           "sprite_id":"explosion",

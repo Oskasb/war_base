@@ -13,6 +13,7 @@ define(['3d/effects/particles/EffectSimulators',
         var ParticleEffect = function() {
             this.id = null;
             this.lastTpf = 0.016;
+
             this.effectDuration = 0;
             this.effectData = {};
             this.renderer = null;
@@ -22,6 +23,16 @@ define(['3d/effects/particles/EffectSimulators',
             this.vel = new THREE.Vector3();
             this.quat = new THREE.Quaternion();
             this.deadParticles = [];
+
+            this.temporary = {
+                startTime:0,
+                endTime:0
+            };
+        };
+
+        ParticleEffect.prototype.setEffectTemporary = function(start, end) {
+            this.temporary.startTime = start;
+            this.temporary.endTime = end;
         };
 
         ParticleEffect.prototype.setEffectId = function(id) {
@@ -38,6 +49,10 @@ define(['3d/effects/particles/EffectSimulators',
 
         ParticleEffect.prototype.setEffectData = function(effectData) {
             this.effectData = effectData;
+        };
+
+        ParticleEffect.prototype.setEffectDuration = function(duration) {
+            this.effectDuration = duration;
         };
 
         ParticleEffect.prototype.setEffectPosition = function(pos) {
@@ -156,19 +171,6 @@ define(['3d/effects/particles/EffectSimulators',
             }
         };
 
-        ParticleEffect.prototype.updateGpuParticle = function(particle, tpf) {
-            return;
-            for (var i = 0; i <  this.simulators[i].length; i++) {
-                //    if (this.simulators[i].process == "age" || this.simulators[i].process == "lifeTime" ) {
-                EffectSimulators[this.simulators[i].process](
-                    particle,
-                    tpf,
-                    this.simulators[i].source,
-                    this.simulators[i].target
-                );
-                //    }
-            }
-        };
 
         ParticleEffect.prototype.updateEffectAge = function(tpf) {
             this.age += tpf;

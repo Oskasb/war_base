@@ -50,7 +50,11 @@ define([
         EffectsAPI.updateEffectPosition = function(effect, pos, state, tpf) {
             particleSpawner.updateActiveParticleEffect(effect, pos, state, tpf);
         };
-        
+
+        EffectsAPI.requestTemporaryPassiveEffect = function(id, pos, vel, size, quat, duration) {
+            return particleSpawner.spawnTemporaryPassiveEffect(id, pos, vel, size, quat, duration);
+        };
+
         EffectsAPI.requestPassiveEffect = function(id, pos, vel, size, quat) {
             return particleSpawner.spawnPassiveEffect(id, pos, vel, size, quat);
         };

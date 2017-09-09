@@ -58,7 +58,9 @@
 
       "game/channels/module_channels.json",
       "game/channels/vehicle_channels.json",
+      "game/channels/weapon_channels.json",
       "game/channels/channel_targets.json",
+      "game/channels/channel_weapon_targets.json",
 
       "threedata/models/three_materials.json",
       "threedata/models/three_models.json",

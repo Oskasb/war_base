@@ -80,11 +80,11 @@ define([
             if (this.config.weapons) {
 
                 var weaponReady = function(weapon) {
-                    this.weapons.push(weapon)
+                    this.weapons[weapon.weaponIndex] = weapon
                 }.bind(this);
 
                 for (var i = 0; i < this.config.weapons.length; i++) {
-                    new WeaponModule(this.config.weapons[i], weaponReady)
+                    new WeaponModule(this.config.weapons[i], weaponReady, i)
                 }
 
             }
@@ -153,6 +153,18 @@ define([
             for (var i = 0; i < this.moduleChannels.length;i++) {
                 if (this.moduleChannels[i].state.id === id) {
                     return this.moduleChannels[i].state;
+                }
+            }
+
+            var state;
+            for (i = 0; i < this.attachmentPoints.length;i++) {
+
+                var module = this.attachmentPoints[i].getAttachedModule();
+                if (module) {
+                    state = module.getPieceStateById(id);
+                    if (state) {
+                        return state;
+                    }
                 }
             }
         };

@@ -21,6 +21,8 @@ define([
         var threeObj = new THREE.Object3D();
         var zeroVec = new THREE.Vector3();
 
+        var calcObj = new THREE.Object3D();
+
         var maxGroundContactDistance = 0.5;
 
         var maxActiveGroundPrints = 2000;
@@ -332,6 +334,63 @@ define([
             }
         };
 
+        var callFireWeapon = function(dynamic, module, weaponOptions) {
+
+            var fxCallbacks = module.visualModule.getEffectCallbacks();
+
+
+            var duration = dynamic.travelTime.state;
+
+            calcVec.set(dynamic.fromX.state, dynamic.fromY.state, dynamic.fromZ.state);
+            calcVec2.set(dynamic.toX.state, dynamic.toY.state, dynamic.toZ.state);
+
+            calcVec2.subVectors(calcVec2, calcVec);
+
+            calcVec2.normalize();
+
+            calcObj.lookAt(calcVec2);
+
+            calcVec2.multiplyScalar(weaponOptions.velocity);
+
+            var fxId = weaponOptions.particle_effect_id;
+
+            fxCallbacks.createPassiveTemporalEffect(
+                fxId,
+                calcVec,
+                calcVec2,
+                0,
+                calcObj.quaternion,
+                duration
+            );
+
+        //    console.log("Call Fire Weapon", [dynamic, weaponOptions]);
+
+        };
+
+
+        ModuleEffectCreator.module_weapon_emit_bullet_effect = function(visualModule, target, tpf) {
+
+            var module = visualModule.module;
+
+            var weapons = module.weapons;
+
+            var state = target.state;
+
+            if (state.targetValue === 1) {
+
+            //    console.log("Fire")
+
+                for (var i = 0; i < weapons.length; i++) {
+                    weapons[i].applyWeaponTrigger(state.targetValue, module, callFireWeapon);
+                }
+
+            //    state.targetValue = 0;
+
+            }
+
+        };
+
+
         ModuleEffectCreator.module_static_state_effect = function(visualModule, target, tpf) {
 
             if (target.effectArray.length) {
@@ -373,6 +432,11 @@ define([
                 store.push(fx);
             }
         };
+
+        ModuleEffectCreator.createPassiveTemporalEffect = function(fxId, pos, vel, size, quat, duration) {
+            EffectsAPI.requestTemporaryPassiveEffect(fxId, pos, vel, size, quat, duration);
+        };
+
 
         ModuleEffectCreator.removeModuleStaticEffect = function(fxArray) {
 
