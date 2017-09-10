@@ -261,7 +261,7 @@ define([
             var stepTime = tpf / steps;
 
 
-            var hit = this.simulationOperations.castPhysicsRay(this, physicsApi, attack, tpf);
+        //    var hit = this.simulationOperations.castPhysicsRay(this, physicsApi, attack, tpf);
 
             if (hit) {
                 return;
