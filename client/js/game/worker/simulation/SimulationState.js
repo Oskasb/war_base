@@ -79,19 +79,55 @@ define([
         var buildIt = function(actor, px, py, pz, nx, ny, nz, cb, simState) {
             var res = {dataKey:actor.dataKey, actorId:actor.id};
 
-            actor.piece.getPos().set(px, py, pz);
+            var elevation = 0;
+            var normalFactor = 1;
+
+            if (actor.physicalPiece) {
+                var groungInf = actor.physicalPiece.config.ground_influemce;
+                if (groungInf) {
+                    elevation = groungInf.elevation || 0;
+                    normalFactor = groungInf.normal_factor || 1;
+                }
+            }
+
+            actor.piece.getPos().set(px, py+elevation, pz);
 
             actor.piece.rootObj3D.quaternion.set(0, 0, 0, 1);
 
         //    calcVec.set(nx, ny, nz);
 
         //    actor.piece.rootObj3D.quaternion.setFromAxisAngle(calcVec, 1);
-            actor.piece.rootObj3D.rotateX(calcVec.x);
-            actor.piece.rootObj3D.rotateZ(calcVec.z);
+            actor.piece.rootObj3D.rotateX(calcVec.x * normalFactor);
+            actor.piece.rootObj3D.rotateZ(calcVec.z * normalFactor);
             simState.includeActor(actor);
             cb(res);
 
             postMessage(['executeDeployActor', res]);
+        };
+
+        var attachCompanions = function(actor, px, py, pz, nx, ny, nz, respond, _this, companion_actors, index) {
+            var companionActors = companion_actors;
+
+            if (companionActors) {
+
+                var i = index;
+                if (i === companionActors.length) {
+                    return;
+                }
+
+                var companionBuilt = function(companionActor) {
+
+                    var offset = companionActors[i].offset;
+
+                    i++;
+
+                    attachCompanions(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, respond, _this, companionActor.config.companion_actors, i);
+                    buildIt(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, respond, _this);
+
+                };
+
+                _this.simulationOperations.buildActor({dataKey:companionActors[i].dataKey}, companionBuilt);
+            }
         };
 
         SimulationState.prototype.generateActor = function(actorId, pos, normal, onOk) {
@@ -106,7 +142,9 @@ define([
             var respond = onOk;
             var _this = this;
 
+
             var actorBuilt = function(actor) {
+                attachCompanions(actor, px, py, pz, nx, ny, nz, respond, _this, actor.config.companion_actors, 0);
                 buildIt(actor, px, py, pz, nx, ny, nz, respond, _this)
             };
 

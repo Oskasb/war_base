@@ -28,6 +28,8 @@ define([
         SimulationOperations.prototype.buildActor = function(options, ready) {
             count++
             new GameActor('actor_'+count, options.dataKey, ready);
+
+
         };
 
         SimulationOperations.prototype.getActorTerrainOptions = function(actor) {

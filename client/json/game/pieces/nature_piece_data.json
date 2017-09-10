@@ -1,0 +1,30 @@
+[{
+  "PIECE_DATA":{
+    "PIECES":[
+      {
+        "id":"piece_tree_2_stump",
+        "data":{
+          "root_slot":"piece_root",
+          "slots":[
+            {"slot":"piece_root",         "module":"module_tree_2_stump"}
+          ],
+          "attachments":[
+
+          ]
+        }
+      },
+      {
+        "id":"piece_tree_2_trunk",
+        "data":{
+          "root_slot":"piece_root",
+          "slots":[
+            {"slot":"piece_root",         "module":"module_tree_2_trunk"}
+          ],
+          "attachments":[
+
+          ]
+        }
+      }
+    ]
+  }
+}]

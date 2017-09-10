@@ -501,7 +501,7 @@ define([
         }
 
         function ammoBoxShape(w, h, l) {
-            return new Ammo.btBoxShape(new Ammo.btVector3(w * 0.5, l * 0.5, h * 0.5));
+            return new Ammo.btBoxShape(new Ammo.btVector3(w * 0.5, h * 0.5, l * 0.5));
         }
 
         function ammoCylinderShape(w, h, l) {
@@ -640,7 +640,7 @@ define([
             }
 
             if (bodyParams.shape === 'Box') {
-                shape = ammoBoxShape(args[0], args[2], args[1]);
+                shape = ammoBoxShape(args[0], args[1], args[2]);
                 //    shape = new CANNON[bodyParams.shape](new CANNON.Vec3(args[2],args[0],args[1]));
             }
 
@@ -651,12 +651,38 @@ define([
 
 
         var applyBodyParams = function(body, bodyParams) {
+
             var restitution = bodyParams.restitution || 0.5;
             var damping = bodyParams.damping || 0.5;
             var friction = bodyParams.friction || 2.9;
             body.setRestitution(restitution);
             body.setFriction(friction);
             body.setDamping(damping, damping);
+
+            if (bodyParams.angular_factor) {
+                var af = bodyParams.angular_factor;
+
+                var angFac = new Ammo.btVector3();
+
+                angFac.setX(af[0]);
+                angFac.setY(af[1]);
+                angFac.setZ(af[2]);
+
+                body.setAngularFactor(angFac);
+            }
+
+            if (bodyParams.linear_factor) {
+                var lf = bodyParams.linear_factor;
+
+                var linFac = new Ammo.btVector3();
+
+                linFac.setX(lf[0]);
+                linFac.setY(lf[1]);
+                linFac.setZ(lf[2]);
+
+                body.setLinearFactor(linFac);
+            }
+
             //    body.forceActivationState(STATE.WANTS_DEACTIVATION);
         };
 
@@ -666,7 +692,7 @@ define([
 
             applyBodyParams(body, bodyParams);
 
-            body.setActivationState(STATE.WANTS_DEACTIVATION);
+        //    body.setActivationState(STATE.WANTS_DEACTIVATION);
             return body;
 
         };

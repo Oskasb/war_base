@@ -17,7 +17,7 @@
           "sector_size":65,
           "rows_n_columns":3,
           "spawn_frames":1,
-          "actor_count":1
+          "actor_count":2
         }
       ],
       "GRID_SYSTEMS":[
@@ -31,7 +31,8 @@
             },
             {
               "patch_content":[
-                {"id":"actor_prop_box_crate", "probability":0.3 , "slope":{"min":-0.01, "max":0.12} , "elevation":{"min":-1,    "max":50}}
+                {"id":"actor_prop_box_crate", "probability":0.3 , "slope":{"min":-0.01, "max":0.12} , "elevation":{"min":-1,    "max":50}},
+                {"id":"actor_tree_2_stump", "probability":0.4 , "slope":{"min":-0.01, "max":0.12} , "elevation":{"min":3,    "max":50}}
               ]
             }
           ]
