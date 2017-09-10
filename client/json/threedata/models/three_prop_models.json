@@ -3,6 +3,18 @@
     "MODELS": {
       "THREE": [
         {
+          "id": "box_crate",
+          "material": "main_atlas",
+          "format":"obj",
+          "url": "./client/assets/models/shapes/crate",
+          "pool": 2,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, -1, 0],
+            "scale": [6, 6, 6]
+          }
+        },
+        {
           "id": "oil_drum",
           "material": "main_atlas",
           "format":"obj",

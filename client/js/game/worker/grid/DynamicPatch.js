@@ -135,12 +135,17 @@ define([
             var totalWeight = 0;
 
             for (var i = 0; i < actors.length; i++) {
-                if (checkSlope(normal, actors[i].slope.min, actors[i].slope.max) && checkElevation(pos, actors[i].elevation.min, actors[i].elevation.max)) {
-                    this.actorWeights[i] = 1;
-                    totalWeight++
-                } else {
-                    this.actorWeights[i] = 0;
+
+                var probability = actors[i].probability || 1;
+                this.actorWeights[i] = 0;
+
+                if (Math.random() < probability) {
+                    if (checkSlope(normal, actors[i].slope.min, actors[i].slope.max) && checkElevation(pos, actors[i].elevation.min, actors[i].elevation.max)) {
+                        this.actorWeights[i] = 1;
+                        totalWeight++
+                    }
                 }
+
             }
 
             if (!totalWeight) return null;
