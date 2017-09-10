@@ -683,6 +683,7 @@ define([
                 body.setLinearFactor(linFac);
             }
 
+
             //    body.forceActivationState(STATE.WANTS_DEACTIVATION);
         };
 
@@ -692,7 +693,11 @@ define([
 
             applyBodyParams(body, bodyParams);
 
-        //    body.setActivationState(STATE.WANTS_DEACTIVATION);
+            if (bodyParams.state) {
+                body.forceActivationState(STATE[bodyParams.state]);
+            }
+
+        //
             return body;
 
         };

@@ -121,9 +121,8 @@ define([
 
                     i++;
 
-                    attachCompanions(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, respond, _this, companionActor.config.companion_actors, i);
                     buildIt(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, respond, _this);
-
+                    attachCompanions(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, respond, _this, companionActor.config.companion_actors, i);
                 };
 
                 _this.simulationOperations.buildActor({dataKey:companionActors[i].dataKey}, companionBuilt);
@@ -144,7 +143,13 @@ define([
 
 
             var actorBuilt = function(actor) {
-                attachCompanions(actor, px, py, pz, nx, ny, nz, respond, _this, actor.config.companion_actors, 0);
+                var comps =  actor.config.companion_actors;
+                if (comps) {
+                    for (var i = 0; i < comps.length; i++) {
+                        attachCompanions(actor, px, py, pz, nx, ny, nz, respond, _this, actor.config.companion_actors, i);
+                    }
+                }
+
                 buildIt(actor, px, py, pz, nx, ny, nz, respond, _this)
             };
 

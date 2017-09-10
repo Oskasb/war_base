@@ -36,6 +36,7 @@
       "game/actors/player_actor_data.json",
       "game/actors/prop_actor_data.json",
       "game/actors/nature_actor_data.json",
+      "game/actors/actor_compounds_data.json",
 
       "game/controls/gui_control_data.json",
 

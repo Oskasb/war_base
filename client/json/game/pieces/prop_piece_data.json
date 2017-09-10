@@ -8,9 +8,7 @@
           "slots":[
             {"slot":"piece_root",         "module":"module_root_box_crate"}
           ],
-          "attachments":[
-
-          ]
+          "attachments":[]
         }
       },
 
@@ -21,9 +19,27 @@
           "slots":[
             {"slot":"piece_root",         "module":"module_root_oil_drum"}
           ],
-          "attachments":[
-
-          ]
+          "attachments":[]
+        }
+      },
+      {
+        "id":"piece_giant_skateramp",
+        "data":{
+          "root_slot":"piece_root",
+          "slots":[
+            {"slot":"piece_root",         "module":"module_giant_skateramp"}
+          ],
+          "attachments":[]
+        }
+      },
+      {
+        "id":"piece_platform_10x6",
+        "data":{
+          "root_slot":"piece_root",
+          "slots":[
+            {"slot":"piece_root",         "module":"module_platform_10x6"}
+          ],
+          "attachments":[]
         }
       },
       {
@@ -33,9 +49,7 @@
           "slots":[
             {"slot":"piece_root",         "module":"module_platform_35x25"}
           ],
-          "attachments":[
-
-          ]
+          "attachments":[]
         }
       }
     ]
