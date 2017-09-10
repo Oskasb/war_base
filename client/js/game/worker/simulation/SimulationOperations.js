@@ -13,6 +13,9 @@ define([
         var count = 0;
         var calcVec = new THREE.Vector3();
 
+        var hitPosStore = new THREE.Vector3();
+        var hitNormalStore = new THREE.Vector3();
+
         var SimulationOperations = function(terrainFunctions) {
             this.terrainFunctions = terrainFunctions;
         };
@@ -196,6 +199,54 @@ define([
             this.getRandomPointOnTerrain(pos, levels);
             pos.y += 10;
             actor.forcePosition(pos);
+        };
+
+        SimulationOperations.prototype.getActorByBodyPointer = function(actors, ptr) {
+            for (var i = 0; i < actors.length; i++) {
+                var body = actors[i].getPhysicsBody();
+                if (body) {
+                    if (body.a === ptr) {
+                        return actors[i];
+                    }
+                }
+            }
+            console.log("No actor using body with pointer: ", ptr);
+        };
+
+
+        SimulationOperations.prototype.checkActorProximity = function(simulationState, actors, attack) {
+        //    for (var i = 0; i < actors.length; i++) {
+            var target = simulationState.getActorById(attack.targetId);
+            if (!target) return;
+                var pos = target.piece.getPos();
+                calcVec.subVectors(attack.pos, pos);
+
+                if (Math.sqrt(calcVec.lengthSq()) < Math.sqrt(attack.frameVelocity.lengthSq()) * 2 + 2) {
+                //    if (attack.frameVelocity.dot(pos) > 0) {
+
+                        hitNormalStore.copy(attack.vel);
+                        hitNormalStore.multiplyScalar(-1);
+                        simulationState.registerAttackHit(target, attack, attack.pos, hitNormalStore);
+                        return target;
+                //    }
+                }
+         //   }
+        };
+
+
+        SimulationOperations.prototype.castPhysicsRay = function(simulationState, physicsApi, attack, tpf) {
+
+            calcVec.copy(attack.vel);
+            calcVec.multiplyScalar(tpf);
+
+            var bodyPointer = physicsApi.raycastPhysicsWorld(attack.pos, calcVec, hitPosStore, hitNormalStore);
+
+            if (bodyPointer) {
+
+                var targetActor = this.getActorByBodyPointer(simulationState.getActors() , bodyPointer);
+                simulationState.registerAttackHit(targetActor, attack, hitPosStore, hitNormalStore);
+                return bodyPointer;
+            }
         };
 
         return SimulationOperations;

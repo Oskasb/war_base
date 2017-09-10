@@ -122,7 +122,7 @@ define([
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
                     ModuleEffectCreator.setupModuleTransform(piece, calcVec, transform, calcQuat, 1, calcVec2, calcVec3);
 
-                    ModuleEffectCreator.createActiveEffect(fx[i].particle_effects[j].id, calcVec2, calcVec3)
+                    ModuleEffectCreator.createPassiveTemporalEffect(fx[i].particle_effects[j].id, calcVec2, calcVec3)
                 }
             }
         };
@@ -145,7 +145,7 @@ define([
 
             for (var i = 0; i < fx.length; i++) {
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
-                    ModuleEffectCreator.createActiveEffect(fx[i].particle_effects[j].id, calcVec, calcVec2);
+                    ModuleEffectCreator.createPassiveTemporalEffect(fx[i].particle_effects[j].id, calcVec, calcVec2);
                 }
             }
         };
@@ -183,7 +183,7 @@ define([
                         calcVec2.y += 0.1;
                     }
 
-                    ModuleEffectCreator.createActiveEffect(fx[i].particle_effects[j].id, calcVec2, calcVec3)
+                    ModuleEffectCreator.createPassiveTemporalEffect(fx[i].particle_effects[j].id, calcVec2, calcVec3)
                 }
             }
         };
@@ -295,6 +295,31 @@ define([
 
         };
 
+        ModuleEffectCreator.createTemporaryPassiveEffect = function(effectId, position, normal) {
+
+
+            var fx = PipelineAPI.readCachedConfigKey('MODULE_EFFECTS', effectId);
+
+            calcVec3.set(0, 0, 0);
+
+            for (var i = 0; i < fx.length; i++) {
+
+                if (!fx[i].particle_effects) {
+                    console.log("Bad FX: ", fx)
+                    return;
+                }
+
+                for (var j = 0; j < fx[i].particle_effects.length; j++) {
+
+
+                    //      ModuleEffectCreator.createActiveEffect(fx[i].particle_effects[j].id, position, normal, null, null);
+
+                 ModuleEffectCreator.createPassiveTemporalEffect(fx[i].particle_effects[j].id, position, normal, null, null);
+                }
+            }
+
+        };
+
         ModuleEffectCreator.animate_texture = function(visualModule, target) {
             var config = target.config;
             var value = target.state.getValue();
@@ -339,7 +364,7 @@ define([
             var fxCallbacks = module.visualModule.getEffectCallbacks();
 
 
-            var duration = dynamic.travelTime.state;
+            var duration = dynamic.travelTime.state - 0.05;
 
             calcVec.set(dynamic.fromX.state, dynamic.fromY.state, dynamic.fromZ.state);
             calcVec2.set(dynamic.toX.state, dynamic.toY.state, dynamic.toZ.state);

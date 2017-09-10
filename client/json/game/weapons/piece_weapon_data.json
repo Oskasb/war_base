@@ -8,12 +8,15 @@
             "name":"Swivel Gun",
             "options":{
               "range":35,
-              "velocity":80,
-              "cooldown":0.05,
+              "velocity":60,
+              "cooldown":0.15,
               "focus_time":0.3,
               "particle_effect_id":"machine_gun_trail_effect",
+              "on_hit_module_effect_id":"module_effect_bullet_hit",
+              "on_hit_damage":80,
               "muzzle_attachment_point_id":"ap_muzzle",
-              "bullet_spread":0.25
+              "bullet_spread":0.15,
+              "gravity_factor":0.50
             }
           },
           "control_map":[

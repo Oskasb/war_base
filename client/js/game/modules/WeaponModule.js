@@ -3,12 +3,18 @@
 
 
 define([
-        'PipelineObject'
+        'PipelineObject',
+        'game/SimulatedAttack',
+        'application/ExpandingPool'
+
     ],
     function(
-        PipelineObject
+        PipelineObject,
+        SimulatedAttack,
+        ExpandingPool
     ) {
 
+    var velVec = new THREE.Vector3();
     var aimVec = new THREE.Vector3();
     var tempVec = new THREE.Vector3();
     var tempVec2 = new THREE.Vector3();
@@ -28,6 +34,14 @@ define([
             triggerCommand:  {state:0},
             activateCommand: {state:0}
         };
+
+        var createAttack = function(key, callback) {
+            callback(new SimulatedAttack(key, attackPool));
+        };
+
+        var attackPool = new ExpandingPool('weapon_attack', createAttack);
+
+
 
         var WeaponModule = function(dataKey, ready, index) {
 
@@ -85,16 +99,11 @@ define([
 
         };
 
-        WeaponModule.prototype.activateWeaponFrame = function (value) {
-            this.fireFrame = value;
-        };
-
         WeaponModule.prototype.setupDynamicState = function (stateId, value) {
             var stateKay = this.getStateKeyForStateId(stateId);
             this.dynamic[stateKay].state = value;
 
         };
-
 
 
         WeaponModule.prototype.applyData = function (config) {
@@ -171,7 +180,19 @@ define([
         };
 
 
-        WeaponModule.prototype.generateActiveBullet = function() {
+
+        WeaponModule.prototype.setupAttack = function(pos, vel, duration, weaponOptions, targetId, callback) {
+
+            var getAttack = function(attack) {
+                attack.initiateAttack(pos, vel, duration, weaponOptions, targetId);
+                callback(attack);
+            };
+
+            attackPool.getFromExpandingPool(getAttack);
+        };
+
+
+        WeaponModule.prototype.generateActiveBullet = function(module, simulationState) {
 
             var fromVec = tempObj3D.position;
 
@@ -194,18 +215,25 @@ define([
 
             this.dynamic.travelTime.state = nearestDistance / this.weaponOptions.velocity;
             this.dynamic.activateCommand.state = 1;
+
+            velVec.subVectors(aimVec, fromVec);
+
+            velVec.normalize();
+            velVec.multiplyScalar(this.weaponOptions.velocity);
+
+            var onReady = function(attack) {
+                simulationState.registerActiveAttack(attack);
+            };
+
+            this.setupAttack(fromVec, velVec, this.dynamic.travelTime.state, this.weaponOptions, this.selectedTarget.id, onReady)
+
         };
 
-        WeaponModule.prototype.clearDynamicState = function() {
-            for (var key in this.dynamic) {
-                this.dynamic[key].state = 0;
-            }
-        };
 
-        WeaponModule.prototype.determineBulletActivate = function(module) {
+        WeaponModule.prototype.determineBulletActivate = function(module, simulationState) {
 
             if (this.cooldownCountdown <= 0) {
-                this.generateActiveBullet();
+                this.generateActiveBullet(module, simulationState);
                 this.cooldownCountdown = this.weaponOptions.cooldown;
                 this.activationFrame = 1;
             } else {
@@ -220,11 +248,11 @@ define([
 
         };
 
-        WeaponModule.prototype.determineTriggerState = function(module) {
+        WeaponModule.prototype.determineTriggerState = function(module, simulationState) {
 
             if (this.targetFocusTime > this.weaponOptions.focus_time) {
                 this.dynamic.triggerCommand.state = 1;
-                this.determineBulletActivate(module)
+                this.determineBulletActivate(module, simulationState)
             } else {
                 this.dynamic.triggerCommand.state = 0;
             }
@@ -268,6 +296,8 @@ define([
             }
         };
 
+
+
         WeaponModule.prototype.updateWeaponState = function(simulationState, module, tpf) {
             if (!this.config) return;
 
@@ -275,12 +305,12 @@ define([
             if (target) {
 
                 this.aimAtTargetActor(target, module);
-                this.determineTriggerState(module);
+                this.determineTriggerState(module, simulationState);
 
 
             } else {
                 module.getObjec3D().rotation.x = 0;
-                module.getObjec3D().rotation.y = 0;
+                module.getObjec3D().rotation.y = 3.141;
                 module.getObjec3D().rotation.z = 0;
             }
 

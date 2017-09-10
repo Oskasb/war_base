@@ -19,6 +19,14 @@
         }
       },
       {
+        "id":"channel_muzzle_fire_effect",
+        "data":{
+          "targets":[
+            {"targetid":"target_muzzle_fire_effect"}
+          ]
+        }
+      },
+      {
         "id":"channel_bullet_activate",
         "data":{
           "targets":[

@@ -27,7 +27,8 @@ require.config({
 		worker:'client/js/game/worker',
         three:'client/js/3d/three',
         "3d":'client/js/3d',
-        game:'client/js/game'
+        game:'client/js/game',
+        application:'client/js/application'
 	}
 });
 

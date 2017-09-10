@@ -31,12 +31,14 @@ define(['worker/physics/AmmoFunctions'],
             ammoFunctions = new AmmoFunctions(ammo);
             });
 
-
         };
 
-        AmmoAPI.prototype.initPhysics = function(cb) {
+        AmmoAPI.prototype.initPhysics = function() {
             world = ammoFunctions.createPhysicalWorld();
-        //    cb()
+        };
+
+        AmmoAPI.prototype.getYGravity = function() {
+            return ammoFunctions.getYGravity();
         };
 
         AmmoAPI.prototype.cleanupPhysics = function(cb) {
@@ -76,7 +78,7 @@ define(['worker/physics/AmmoFunctions'],
         };
 
         AmmoAPI.prototype.disableActorPhysics = function(actor) {
-            var body = actor.getPhysicsBody()
+            var body = actor.getPhysicsBody();
             var dataKey = actor.physicalPiece.dataKey;
             this.excludeBody(body, dataKey);
         };
@@ -87,10 +89,9 @@ define(['worker/physics/AmmoFunctions'],
             bodies.splice(bi, 1);
 
             if (!body) {
-                console.log("No body", bi, body)
+                console.log("No body", bi, body);
                 return;
             }
-
 
             ammoFunctions.removeAmmoRigidBody(body, dataKey);
         };
@@ -100,6 +101,13 @@ define(['worker/physics/AmmoFunctions'],
             ammoFunctions.updatePhysicalWorld(world, currentTime)
         };
 
+
+        AmmoAPI.prototype.raycastPhysicsWorld = function(position, direction, hitPositionStore, hitNormalStore) {
+            var hit = ammoFunctions.physicsRayRange(world, position, direction, hitPositionStore, hitNormalStore);
+            if (hit) {
+                return hit.ptr;
+            }
+        };
 
         AmmoAPI.prototype.fetchPhysicsStatus = function() {
             if (Math.random() < 0.01) {

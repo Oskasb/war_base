@@ -18,6 +18,7 @@ define([
 
         var actors = [];
         var levels = [];
+        var attacks = [];
         var time = 0;
 
         var physicsApi;
@@ -44,11 +45,23 @@ define([
                 ready({dataKey:level.dataKey, levelId:level.id, config:level.config});
             }.bind(this);
 
-        //
+            //
             this.simulationOperations.buildLevel(options, levelBuilt);
-        //
+            //
 
         };
+
+
+        SimulationState.prototype.registerActiveAttack = function(attack) {
+            attacks.push(attack);
+        };
+
+        SimulationState.prototype.removeActiveAttack = function(attack) {
+            attack.returnToPool();
+            attacks.splice(attacks.indexOf(attack), 1);
+
+        };
+
 
         SimulationState.prototype.includeActor = function(actor) {
             physicsApi.setupPhysicalActor(actor);
@@ -128,7 +141,7 @@ define([
                     return actors[i];
                 }
             }
-        //    console.log("No actor by id:", actorId, actors);
+            //    console.log("No actor by id:", actorId, actors);
         };
 
         SimulationState.prototype.getLevelById = function(leveId) {
@@ -206,14 +219,57 @@ define([
             physicsApi.includeBody(terrainBody);
             actor.setPhysicsBody(terrainBody);
 
-        //    time += 0.04;
-        //    physicsApi.updatePhysicsSimulation(time);
+            //    time += 0.04;
+            //    physicsApi.updatePhysicsSimulation(time);
 
-        //    this.updateActorFrame(actor, 0.02);
+            //    this.updateActorFrame(actor, 0.02);
 
             cb([JSON.stringify({actorId:actorId, levelId:levelId}), buffers]);
         };
 
+
+        SimulationState.prototype.registerAttackHit = function(targetActor, attack, pos, normal) {
+            this.removeActiveAttack(attack);
+            if (!targetActor) {
+                console.log("No target actor for hit");
+                targetActor = {};
+                targetActor.id = 'unknown'
+                //return;
+            }
+            postMessage(['executeAttackHit', [targetActor.id, pos.x, pos.y, pos.z, normal.x, normal.y, normal.z, attack.weaponOptions.on_hit_damage, attack.weaponOptions.on_hit_module_effect_id]]);
+        };
+
+        SimulationState.prototype.updateAttackFrame = function(attack, tpf) {
+
+            var steps = 20;
+            var stepTime = tpf / steps;
+
+
+            var hit = this.simulationOperations.castPhysicsRay(this, physicsApi, attack, tpf);
+
+            if (hit) {
+                return;
+            }
+
+            for (var i = 0; i < steps; i++) {
+                if (attack.duration + stepTime + tpf < 0) {
+                    this.removeActiveAttack(attack);
+                    return;
+                } else {
+                    attack.applyFrame(stepTime);
+
+                     var hit = this.simulationOperations.checkActorProximity(this, this.getActors(), attack);
+
+                     if (hit) {
+                         i = steps;
+                         return;
+                     }
+
+                    attack.advanceFrame(stepTime, physicsApi.getYGravity());
+                }
+            }
+
+        };
 
 
         SimulationState.prototype.updateActorFrame = function(actor, tpf) {
@@ -232,19 +288,24 @@ define([
                 time += tpf;
                 physicsApi.updatePhysicsSimulation(time);
 
-            for (var i = 0; i < actors.length; i++) {
 
-                actors[i].piece.rootObj3D.updateMatrixWorld();
+                for (var i = 0; i < attacks.length; i++) {
+                    this.updateAttackFrame(attacks[i], tpf);
+                }
 
-                this.updateActorFrame(actors[i], tpf);
+                for ( i = 0; i < actors.length; i++) {
 
-                var integrity = this.simulationOperations.checkActorIntegrity(actors[i], levels);
+                    actors[i].piece.rootObj3D.updateMatrixWorld();
 
-                if (!integrity) {
-            //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
+                    this.updateActorFrame(actors[i], tpf);
+
+                    var integrity = this.simulationOperations.checkActorIntegrity(actors[i], levels);
+
+                    if (!integrity) {
+                        //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
+                    }
                 }
             }
-        }
 
             var status = physicsApi.fetchPhysicsStatus();
         };

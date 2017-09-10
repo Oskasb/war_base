@@ -14,6 +14,13 @@
         }
       },
       {
+        "id":"target_muzzle_fire_effect",
+        "data":{
+          "callback":"module_emit_effect",
+          "module_effect":"module_machine_gun_muzzle_flash_fx"
+        }
+      },
+      {
         "id":"target_weapon_bullet_activate",
         "data":{
           "callback":"module_weapon_emit_bullet_effect"

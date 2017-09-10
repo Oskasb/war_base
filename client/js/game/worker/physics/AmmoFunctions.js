@@ -22,6 +22,10 @@ define([
         var TRANSFORM_AUX;
         var VECTOR_AUX;
 
+        var rayCallback;
+        var rayFromVec;
+        var rayToVec;
+
         var Ammo;
 
 
@@ -39,6 +43,13 @@ define([
         var AmmoFunctions = function(ammo) {
 
             Ammo = ammo;
+
+
+            rayFromVec = new Ammo.btVector3();
+            rayToVec = new Ammo.btVector3();
+
+            rayCallback = new Ammo.ClosestRayResultCallback(rayFromVec, rayToVec);
+
 
             TRANSFORM_AUX = new Ammo.btTransform();
             VECTOR_AUX = new Ammo.btVector3()
@@ -110,6 +121,11 @@ define([
             maxSubSteps:3
         };
 
+        var gravity = -9.81;
+
+        AmmoFunctions.prototype.getYGravity = function() {
+            return gravity;
+        }
 
         AmmoFunctions.prototype.createPhysicalWorld = function() {
             //   Ammo = ammo;
@@ -118,7 +134,7 @@ define([
             broadphase = new Ammo.btDbvtBroadphase();
             solver = new Ammo.btSequentialImpulseConstraintSolver();
             physicsWorld = new Ammo.btDiscreteDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration );
-            physicsWorld.setGravity( new Ammo.btVector3( 0, -9.82, 0 ) );
+            physicsWorld.setGravity( new Ammo.btVector3( 0, gravity, 0 ) );
 
 
             return physicsWorld;
@@ -137,6 +153,53 @@ define([
             }
 
         };
+
+        var hit = {
+            fraction:0,
+            normal:null,
+            ptr:null
+        };
+
+
+
+        AmmoFunctions.prototype.physicsRayRange = function(world, pos, dir, posRes, normalRes) {
+
+            rayFromVec.setX(pos.x);
+            rayFromVec.setY(pos.y);
+            rayFromVec.setZ(pos.z);
+
+            rayToVec.setX(dir.x);
+            rayToVec.setY(dir.y);
+            rayToVec.setZ(dir.z);
+
+            rayCallback.get_m_rayFromWorld().setValue(pos.x, pos.y, pos.z);
+            rayCallback.get_m_rayToWorld().setValue(dir.x, dir.y, dir.z);
+            rayCallback.set_m_collisionObject(null);
+
+            rayCallback.get_m_hitNormalWorld().setX(0);
+            rayCallback.get_m_hitNormalWorld().setY(0);
+            rayCallback.get_m_hitNormalWorld().setZ(0);
+            rayCallback.get_m_hitPointWorld().setX(0);
+            rayCallback.get_m_hitPointWorld().setY(0);
+            rayCallback.get_m_hitPointWorld().setZ(0);
+
+            world.rayTest(rayFromVec, rayToVec, rayCallback);
+
+            if(rayCallback.hasHit()){
+
+                var hitNormal = rayCallback.get_m_hitNormalWorld();
+                normalRes.set(hitNormal.x(), hitNormal.y(), hitNormal.z());
+                var hitPoint = rayCallback.get_m_hitPointWorld();
+                posRes.set(hitPoint.x(), hitPoint.y(), hitPoint.z());
+
+                hit.ptr = rayCallback.get_m_collisionObject().a;
+
+            //    console.log(hitPoint, hit.ptr);
+                return hit;
+            }
+
+        };
+
 
         AmmoFunctions.prototype.cleanupPhysicalWorld = function(cb) {
 
@@ -594,6 +657,7 @@ define([
             body.setRestitution(restitution);
             body.setFriction(friction);
             body.setDamping(damping, damping);
+            body.forceActivationState(STATE.DISABLE_DEACTIVATION);
         };
 
         var createPrimitiveBody = function(world, shape, bodyParams) {

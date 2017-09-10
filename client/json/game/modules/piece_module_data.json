@@ -178,7 +178,8 @@
             "size": [0,   0,    0]
           },
           "channels":[
-            {"channelid":"fire_channel", "stateid": "command_bullet_activate" }
+            {"channelid":"fire_channel", "stateid": "command_bullet_activate" },
+            {"channelid":"channel_muzzle_fire_effect", "stateid": "command_bullet_activate" }
           ]
         }
       },

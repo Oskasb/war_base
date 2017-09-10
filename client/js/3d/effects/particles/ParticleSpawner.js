@@ -119,6 +119,14 @@ define([
             effect.attachSimulators();
             effect.applyRenderer(renderer, systemTime);
 
+            if (effect.temporary.startTime) {
+
+                if (effect.temporary.startTime === effect.temporary.endTime) {
+                    effect.temporary.endTime += effect.effectDuration;
+                }
+            }
+
+
             if (!effect.aliveParticles.length) {
                 return
             }
@@ -186,6 +194,8 @@ define([
         ParticleSpawner.prototype.activateEffect = function(effect) {
             effect.setEffectData(this.particleEffectData.buildEffect(effect.effectData, 'THREE', effect.getEffectId()));
 
+
+
             var renderer = this.getRenderersById(effect.effectData.effect.renderer_id);
 
             if (!renderer) {
@@ -224,6 +234,10 @@ define([
         ParticleSpawner.prototype.spawnTemporaryPassiveEffect = function(id, pos, vel, size, quat, duration) {
 
             var effect = this.buildEffect(id, pos, vel, size, quat, duration);
+
+            if (!duration) {
+                duration = 0;
+            }
 
             effect.setEffectTemporary(systemTime, systemTime+duration);
 

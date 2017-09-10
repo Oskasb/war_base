@@ -5,7 +5,8 @@ define([
     'game/ActorBuilder',
         'game/controls/GuiControlSystem',
         'game/modules/ModuleCallbacks',
-        'game/controls/CameraControls'
+        'game/controls/CameraControls',
+        'game/combat/CombatFeedbackFunctions'
     ],
 
     function(
@@ -13,7 +14,8 @@ define([
         ActorBuilder,
         GuiControlSystem,
         ModuleCallbacks,
-        CameraControls
+        CameraControls,
+        CombatFeedbackFunctions
     ) {
 
 
@@ -21,12 +23,15 @@ define([
         var gameWorker;
         var levelBuilder;
         var actorBuilder;
+        var combatFeedbackFunctions;
 
         var GameCommander = function(gameApi, gWorker, lvlBuilder) {
             GameAPI = gameApi;
             gameWorker =  gWorker;
             levelBuilder =lvlBuilder;
             actorBuilder = new ActorBuilder();
+            combatFeedbackFunctions = new CombatFeedbackFunctions();
+
             ModuleCallbacks.initCallbacks(GameAPI);
 
 
@@ -42,8 +47,13 @@ define([
                 this.clearGameActor(message[1], executorOkResponse)
             }.bind(this);
 
+            var executeAttackHit = function(message) {
+                this.executeAttackHit(message[1], executorOkResponse)
+            }.bind(this);
+
             gameWorker.setExecutor('executeDeployActor', executeDeployActor);
-            gameWorker.setExecutor('executeRemoveActor', executeRemoveActor)
+            gameWorker.setExecutor('executeRemoveActor', executeRemoveActor);
+            gameWorker.setExecutor('executeAttackHit',  executeAttackHit)
 
 
         };
@@ -251,6 +261,25 @@ define([
 
             gameWorker.makeGameRequest('despawnActor', actor.id, onRes);
         };
+
+        var posVec = new THREE.Vector3();
+        var normalVec = new THREE.Vector3();
+
+        GameCommander.prototype.executeAttackHit = function(message) {
+            var actor = GameAPI.getActorById(message[0]);
+
+            posVec.x = message[1];
+            posVec.y = message[2];
+            posVec.z = message[3];
+
+            normalVec.x = message[4];
+            normalVec.y = message[5];
+            normalVec.z = message[6];
+
+            combatFeedbackFunctions.registerAttackHit(actor, posVec, normalVec, message[7], message[8]);
+
+        };
+
 
         return GameCommander;
     });

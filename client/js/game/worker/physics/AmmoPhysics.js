@@ -241,6 +241,10 @@ define([
 
         var rayCallback = new Ammo.ClosestRayResultCallback(rayFromVec, rayToVec);
 
+        var hit = {
+            fraction:0, normal:null, rbPtr:null
+        }
+
         AmmoPhysics.prototype.physicsRayRange = function(pos, dir) {
 
             rayFromVec.setX(pos[0]);
@@ -264,11 +268,15 @@ define([
             var hit = false;
             if(fraction < 1){
 
-                hit={fraction:fraction, normal:rayCallback.get_m_hitNormalWorld(), rbPtr:rayCallback.get_m_collisionObject().ptr}
+                hit.fraction = fraction;
+                hit.normal=rayCallback.get_m_hitNormalWorld();
+                hit.ptr = rayCallback.get_m_collisionObject().ptr
+
                 //    console.log("Ray hit:",hit, rayCallback.get_m_collisionObject(), rayCallback.get_m_collisionFilterGroup());
+                return hit;
             }
-            return hit;
-        }
+
+        };
 
 
         AmmoPhysics.prototype.groundContact = function(pos, radius) {
