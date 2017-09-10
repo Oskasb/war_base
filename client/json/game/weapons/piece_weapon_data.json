@@ -9,14 +9,14 @@
             "options":{
               "range":35,
               "velocity":60,
-              "cooldown":0.15,
+              "cooldown":0.08,
               "focus_time":0.3,
               "particle_effect_id":"machine_gun_trail_effect",
               "on_hit_module_effect_id":"module_effect_bullet_hit",
               "on_hit_damage":80,
               "muzzle_attachment_point_id":"ap_muzzle",
               "bullet_spread":0.15,
-              "gravity_factor":0.50
+              "gravity_factor":1.00
             }
           },
           "control_map":[

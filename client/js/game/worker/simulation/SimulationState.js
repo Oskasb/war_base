@@ -23,6 +23,8 @@ define([
 
         var physicsApi;
 
+        var calcVec = new THREE.Vector3();
+
         var SimulationState = function(Ammo, protocolSystem) {
             this.protocolSystem = protocolSystem;
             this.controlledActorId = null;
@@ -74,11 +76,18 @@ define([
             actors.push(actor);
         };
 
-        var buildIt = function(actor, pos, normal, cb, simState) {
+        var buildIt = function(actor, px, py, pz, nx, ny, nz, cb, simState) {
             var res = {dataKey:actor.dataKey, actorId:actor.id};
 
-            actor.piece.getPos().copy(pos);
-            actor.piece.rootObj3D.lookAt(normal);
+            actor.piece.getPos().set(px, py, pz);
+
+            actor.piece.rootObj3D.quaternion.set(0, 0, 0, 1);
+
+        //    calcVec.set(nx, ny, nz);
+
+        //    actor.piece.rootObj3D.quaternion.setFromAxisAngle(calcVec, 1);
+            actor.piece.rootObj3D.rotateX(calcVec.x);
+            actor.piece.rootObj3D.rotateZ(calcVec.z);
             simState.includeActor(actor);
             cb(res);
 
@@ -87,11 +96,18 @@ define([
 
         SimulationState.prototype.generateActor = function(actorId, pos, normal, onOk) {
 
+            var px = pos.x;
+            var py = pos.y;
+            var pz = pos.z;
+            var nx = normal.x;
+            var ny = normal.y;
+            var nz = normal.z;
+
             var respond = onOk;
             var _this = this;
 
             var actorBuilt = function(actor) {
-                buildIt(actor, pos, normal, respond, _this)
+                buildIt(actor, px, py, pz, nx, ny, nz, respond, _this)
             };
 
             this.simulationOperations.buildActor({dataKey:actorId}, actorBuilt);

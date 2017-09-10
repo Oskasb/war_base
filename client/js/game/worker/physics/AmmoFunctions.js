@@ -227,7 +227,7 @@ define([
         var remaining = 0;
         var MODEL = {};
 
-        MODEL.PhysicsStepTime = 0.06;
+        MODEL.PhysicsStepTime = 0.04;
         MODEL.PhysicsMaxSubSteps = 1;
         MODEL.SpatialTolerance = 1;
         MODEL.AngularVelocityTolerance = 1;
@@ -657,7 +657,7 @@ define([
             body.setRestitution(restitution);
             body.setFriction(friction);
             body.setDamping(damping, damping);
-            body.forceActivationState(STATE.WANTS_DEACTIVATION);
+            //    body.forceActivationState(STATE.WANTS_DEACTIVATION);
         };
 
         var createPrimitiveBody = function(world, shape, bodyParams) {
@@ -666,7 +666,7 @@ define([
 
             applyBodyParams(body, bodyParams);
 
-        //    body.setActivationState(STATE.WANTS_DEACTIVATION);
+            body.setActivationState(STATE.WANTS_DEACTIVATION);
             return body;
 
         };

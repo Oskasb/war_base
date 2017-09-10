@@ -179,7 +179,7 @@ define([
                 this.spawnedEntries.push(res.actorId);
             }.bind(this);
 
-            tempVec.copy(pos)
+            tempVec.copy(pos);
         //    this.requestedEntries++;
             this.simulationState.generateActor(entryId, tempVec, tempVec2, onOk);
 
