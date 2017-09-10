@@ -96,7 +96,6 @@ define([
         VegetationSystem.prototype.updateSectorPositions = function() {
             for (var i = 0; i < this.sectorPool.length; i++) {
                 this.sectorPool[i].positionSectorAroundCenter(this.lastX - this.indexOffset, this.lastZ - this.indexOffset);
-                this.sectorPool[i].checkVisibility(this.activePatches, this.patchPool);
             }
         };
 

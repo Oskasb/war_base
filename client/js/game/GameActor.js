@@ -31,6 +31,11 @@ define([
             this.piece = null;
             this.physicalPiece = null;
 
+            this.spatial = {
+                vel:new THREE.Vector3(),
+                pos:new THREE.Vector3()
+            };
+
             this.controlStateMap = new ControlStateMap();
 
             var applyData = function() {

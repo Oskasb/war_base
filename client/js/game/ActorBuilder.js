@@ -32,6 +32,7 @@ define([
         };
 
         ActorBuilder.prototype.removeActor = function(actor) {
+            actor.piece.setRendereable(false);
             expandingPools[actor.dataKey].returnToExpandingPool(actor);
         };
 

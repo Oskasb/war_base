@@ -37,7 +37,6 @@ define([
             this.indexOffset = 0;
 
             this.sectorPool = [];
-            this.patchGrid = [];
 
             this.activePatches = [];
             this.patchPool = new PatchPool(this);
@@ -57,16 +56,14 @@ define([
 
         ActivationGridSystem.prototype.generateActivationGrid = function(simulationState) {
 
-            this.indexOffset = Math.floor(this.conf().rows_n_columns*0.5);
+            this.indexOffset = Math.floor(this.conf().rows_n_columns/ 2);
             
             for (var i = 0; i < this.conf().rows_n_columns * this.conf().rows_n_columns; i++) {
                 this.patchPool.generatePatch(this);
             }
 
             for (var i = 0; i < this.conf().rows_n_columns; i++) {
-                this.patchGrid[i] = [];
                 for (var j = 0; j < this.conf().rows_n_columns; j++) {
-                    this.patchGrid[i][j] = null;
                     var patch = new GridSector(simulationState, this.systemIndex, this.indexOffset, i, j, this.config, this.conf().visible_range);
                     this.sectorPool.push(patch);
                 }
@@ -78,7 +75,6 @@ define([
         ActivationGridSystem.prototype.updateSectorPositions = function(posVec3) {
             for (var i = 0; i < this.sectorPool.length; i++) {
                 this.sectorPool[i].positionSectorAroundCenter(this.lastX - this.indexOffset, this.lastZ - this.indexOffset);
-                this.sectorPool[i].checkVisibility(this.activePatches, this.patchPool, posVec3);
             }
         };
 
@@ -88,7 +84,7 @@ define([
             var posX = Math.floor(tempVec2.x / this.conf().sector_size);
             var posZ = Math.floor(tempVec2.z / this.conf().sector_size);
             
-            if (this.lastX != posX || this.lastZ != posZ) {
+            if (this.lastX !== posX || this.lastZ !== posZ) {
                 this.lastX = posX;
                 this.lastZ = posZ;
                 this.updateSectorPositions(posVec3);

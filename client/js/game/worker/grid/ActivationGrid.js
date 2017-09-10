@@ -21,6 +21,7 @@ define([
                 for (var i = 0; i < data.length; i++) {
                     gridSysData[data[i].id] = data[i].data;
                 }
+                console.log("Grid Ready");
                 ready()
             };
 
@@ -40,6 +41,7 @@ define([
         ActivationGrid.prototype.createActivationGrid = function(simulationState) {
             this.gridSystems = [];
             for (var i = 0; i < gridMasterData.length; i++) {
+                console.log("Add Grid System", gridMasterData[i]);
                 this.gridSystems.push(new ActivationGridSystem(i, gridSysData, gridMasterData, simulationState));
             }
         };

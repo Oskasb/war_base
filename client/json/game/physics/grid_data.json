@@ -6,16 +6,8 @@
         {
           "name":"small",
           "visible_range":150,
-          "sector_size":40,
-          "rows_n_columns":5,
-          "spawn_frames":1,
-          "actor_count":1
-        },
-        {
-          "name":"big",
-          "visible_range":180,
-          "sector_size":43,
-          "rows_n_columns":5,
+          "sector_size":8,
+          "rows_n_columns":3,
           "spawn_frames":1,
           "actor_count":1
         }
@@ -26,12 +18,7 @@
           "data":[
             {
               "patch_content":[
-                {"id":"actor_prop_oil_drum", "slope":{"min":0, "max":0.14} , "elevation":{"min":-1,    "max":50}}
-              ]
-            },
-            {
-              "patch_content":[
-                {"id":"actor_prop_oil_drum", "slope":{"min":0,    "max":0.02} , "elevation":{"min":-1,    "max":50}}
+                {"id":"actor_prop_oil_drum", "slope":{"min":-0.01, "max":0.14} , "elevation":{"min":-1,    "max":50}}
               ]
             }
           ]

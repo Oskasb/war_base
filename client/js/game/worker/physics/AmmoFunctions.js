@@ -657,7 +657,7 @@ define([
             body.setRestitution(restitution);
             body.setFriction(friction);
             body.setDamping(damping, damping);
-            body.forceActivationState(STATE.DISABLE_DEACTIVATION);
+            body.forceActivationState(STATE.WANTS_DEACTIVATION);
         };
 
         var createPrimitiveBody = function(world, shape, bodyParams) {
@@ -666,9 +666,7 @@ define([
 
             applyBodyParams(body, bodyParams);
 
-
-
-            //    body.setActivationState(DISABLE_DEACTIVATION);
+        //    body.setActivationState(STATE.WANTS_DEACTIVATION);
             return body;
 
         };
