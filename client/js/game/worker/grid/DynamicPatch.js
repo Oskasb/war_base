@@ -73,25 +73,26 @@ define([
 
         };
 
-        DynamicPatch.prototype.despawnPatchCount = function(count) {
-
-            for (var i = 0; i < count; i++) {
-                if (this.spawnedEntries.length) {
+        DynamicPatch.prototype.despawnPatch = function() {
+                while (this.spawnedEntries.length) {
                     this.simulationState.despawnActor(this.spawnedEntries.pop());
-                } else {
-                    return;
                 }
-            }
         };
 
         DynamicPatch.prototype.getFramePlantCount = function() {
-            return (this.conf().actor_count - this.skipCount) / this.conf().spawn_frames;
+
+            var targetCount = this.conf().actor_count - this.skipCount;
+            if (this.spawnedEntries.length > targetCount) {
+                targetCount = this.spawnedEntries.length;
+            }
+
+            return targetCount / this.conf().spawn_frames;
         };
 
         DynamicPatch.prototype.disablePatch = function(activePatches, patchPool) {
 
             if (this.spawnedEntries.length) {
-                this.despawnPatchCount(this.getFramePlantCount())
+                this.despawnPatch()
             } else {
                 this.skipCount = 0;
                 var patch = activePatches.splice(activePatches.indexOf(this), 1)[0];
@@ -184,9 +185,12 @@ define([
                 this.spawnedEntries.push(res.actorId);
             }.bind(this);
 
+            var facing = (Math.random()-0.5)*2;
+
             tempVec.copy(pos);
         //    this.requestedEntries++;
-            this.simulationState.generateActor(entryId, tempVec, tempVec2, onOk);
+            this.simulationState.
+            generateActor(entryId, tempVec, tempVec3, facing, onOk);
 
 
         };
@@ -225,9 +229,7 @@ define([
         };
 
         DynamicPatch.prototype.clearPatch = function() {
-            while (this.spawnedEntries.length) {
-                this.simulationState.despawnActor(this.spawnedEntries.pop());
-            }
+            this.despawnPatch();
         };
 
         return DynamicPatch;

@@ -20,6 +20,7 @@ define([
 
         var MATHVec3;
         var TRANSFORM_AUX;
+        var QUAT_AUX;
         var VECTOR_AUX;
 
         var rayCallback;
@@ -61,7 +62,9 @@ define([
 
 
             TRANSFORM_AUX = new Ammo.btTransform();
-            VECTOR_AUX = new Ammo.btVector3()
+            VECTOR_AUX = new Ammo.btVector3();
+
+            QUAT_AUX = new Ammo.btQuaternion();
 
             MATHVec3 = new MATH.Vec3();
             threeVec = new THREE.Vector3();
@@ -376,7 +379,7 @@ define([
             }, 500)
         };
 
-        function setBodyTransform(conf, body, position, quataternion) {
+        function setBodyTransform(conf, body, position, quaternion) {
 
 
 
@@ -392,15 +395,21 @@ define([
             TRANSFORM_AUX.getOrigin().setY(position.y);
             TRANSFORM_AUX.getOrigin().setZ(position.z);
 
-
-            TRANSFORM_AUX.getRotation().setX(quataternion.x);
-            TRANSFORM_AUX.getRotation().setY(quataternion.y);
-            TRANSFORM_AUX.getRotation().setZ(quataternion.z);
-            TRANSFORM_AUX.getRotation().setW(quataternion.w);
-
             body.setWorldTransform(TRANSFORM_AUX);
 
             ms.setWorldTransform(TRANSFORM_AUX);
+
+            body.getWorldTransform(TRANSFORM_AUX);
+
+            QUAT_AUX.setX(quaternion.x);
+            QUAT_AUX.setY(quaternion.y);
+            QUAT_AUX.setZ(quaternion.z);
+            QUAT_AUX.setW(quaternion.w);
+
+            TRANSFORM_AUX.setRotation(QUAT_AUX);
+
+            body.setWorldTransform(TRANSFORM_AUX);
+            body.getMotionState().setWorldTransform(TRANSFORM_AUX);
 
 
             VECTOR_AUX.setX(0);
@@ -639,17 +648,23 @@ define([
             transform.getOrigin().setY(position.y);
             transform.getOrigin().setZ(position.z);
 
-            transform.getRotation().setX(quaternion.x);
-            transform.getRotation().setY(quaternion.y);
-            transform.getRotation().setZ(quaternion.z);
-            transform.getRotation().setW(quaternion.w);
-
             var motionState = new Ammo.btDefaultMotionState(transform);
             var localInertia = new Ammo.btVector3(0, 0, 0);
 
             var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia);
             var body = new Ammo.btRigidBody(rbInfo);
 
+            body.getWorldTransform(transform);
+
+            QUAT_AUX.setX(quaternion.x);
+            QUAT_AUX.setY(quaternion.y);
+            QUAT_AUX.setZ(quaternion.z);
+            QUAT_AUX.setW(quaternion.w);
+
+            transform.setRotation(QUAT_AUX);
+
+            body.setWorldTransform(transform);
+            body.getMotionState().setWorldTransform(transform);
 
         //    var body = createBody(shape, mass);
                         //    body.setActivationState(DISABLE_DEACTIVATION);
@@ -719,7 +734,7 @@ define([
             var mass = bodyParams.mass || 0;
             var body = createBody(shape, mass);
 
-            applyBodyParams(body, bodyParams);
+            //    applyBodyParams(body, bodyParams);
 
             if (bodyParams.state) {
                 body.forceActivationState(STATE[bodyParams.state]);

@@ -60,7 +60,7 @@
             "restitution":0.01,
             "mass":0
           },
-          "ground_influemce":{
+          "ground_influence":{
             "elevation":2.0,
             "normal_factor":0
           },
@@ -86,7 +86,7 @@
             "restitution":0.01,
             "mass":0
           },
-          "ground_influemce":{
+          "ground_influence":{
             "elevation":2.0,
             "normal_factor":0
           },

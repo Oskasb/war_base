@@ -24,6 +24,7 @@ define([
         var physicsApi;
 
         var calcVec = new THREE.Vector3();
+        var calcObj = new THREE.Object3D();
 
         var SimulationState = function(Ammo, protocolSystem) {
             this.protocolSystem = protocolSystem;
@@ -76,17 +77,17 @@ define([
             actors.push(actor);
         };
 
-        var buildIt = function(actor, px, py, pz, nx, ny, nz, cb, simState) {
+        var buildIt = function(actor, px, py, pz, nx, ny, nz, rotY, cb, simState) {
             var res = {dataKey:actor.dataKey, actorId:actor.id};
 
             var elevation = 0;
-            var normalFactor = 1;
+            var normalFactor = 3.14;
 
             if (actor.physicalPiece) {
-                var groungInf = actor.physicalPiece.config.ground_influemce;
+                var groungInf = actor.physicalPiece.config.ground_influence;
                 if (groungInf) {
-                    elevation = groungInf.elevation || 0;
-                    normalFactor = groungInf.normal_factor || 1;
+                    elevation = groungInf.elevation;
+                    normalFactor *= groungInf.normal_factor;
                 }
             }
 
@@ -94,18 +95,19 @@ define([
 
             actor.piece.rootObj3D.quaternion.set(0, 0, 0, 1);
 
-        //    calcVec.set(nx, ny, nz);
+            calcVec.set(nx, ny, nz);
 
-        //    actor.piece.rootObj3D.quaternion.setFromAxisAngle(calcVec, 1);
-            actor.piece.rootObj3D.rotateX(calcVec.x * normalFactor);
-            actor.piece.rootObj3D.rotateZ(calcVec.z * normalFactor);
+            actor.piece.rootObj3D.rotateX(calcVec.z * normalFactor);
+            actor.piece.rootObj3D.rotateZ(-calcVec.x * normalFactor);
+
+
             simState.includeActor(actor);
             cb(res);
 
             postMessage(['executeDeployActor', res]);
         };
 
-        var attachCompanions = function(actor, px, py, pz, nx, ny, nz, respond, _this, companion_actors, index) {
+        var attachCompanions = function(actor, px, py, pz, nx, ny, nz, rotY, respond, _this, companion_actors, index) {
             var companionActors = companion_actors;
 
             if (companionActors) {
@@ -121,15 +123,15 @@ define([
 
                     i++;
 
-                    buildIt(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, respond, _this);
-                    attachCompanions(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, respond, _this, companionActor.config.companion_actors, i);
+                    buildIt(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, rotY, respond, _this);
+                    attachCompanions(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, rotY, respond, _this, companionActor.config.companion_actors, i);
                 };
 
                 _this.simulationOperations.buildActor({dataKey:companionActors[i].dataKey}, companionBuilt);
             }
         };
 
-        SimulationState.prototype.generateActor = function(actorId, pos, normal, onOk) {
+        SimulationState.prototype.generateActor = function(actorId, pos, normal, facing, onOk) {
 
             var px = pos.x;
             var py = pos.y;
@@ -137,6 +139,8 @@ define([
             var nx = normal.x;
             var ny = normal.y;
             var nz = normal.z;
+
+            var rotY = facing || 0;
 
             var respond = onOk;
             var _this = this;
@@ -146,11 +150,11 @@ define([
                 var comps =  actor.config.companion_actors;
                 if (comps) {
                     for (var i = 0; i < comps.length; i++) {
-                        attachCompanions(actor, px, py, pz, nx, ny, nz, respond, _this, actor.config.companion_actors, i);
+                        attachCompanions(actor, px, py, pz, nx, ny, nz, rotY, respond, _this, actor.config.companion_actors, i);
                     }
                 }
 
-                buildIt(actor, px, py, pz, nx, ny, nz, respond, _this)
+                buildIt(actor, px, py, pz, nx, ny, nz, rotY, respond, _this)
             };
 
             this.simulationOperations.buildActor({dataKey:actorId}, actorBuilt);

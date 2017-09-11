@@ -78,7 +78,14 @@ define(['worker/physics/AmmoFunctions'],
         };
 
         AmmoAPI.prototype.disableActorPhysics = function(actor) {
+            console.log("disableActorPhysics body", actor);
             var body = actor.getPhysicsBody();
+
+            if (!body) {
+                console.log("No body", actor, body);
+                return;
+            }
+
             var dataKey = actor.physicalPiece.dataKey;
             this.excludeBody(body, dataKey);
         };
