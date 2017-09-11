@@ -83,6 +83,7 @@ define([
                 var terrainActor = level.terrainActors[i];
                 EffectsAPI.disableTerrainVegetation();
                 ThreeAPI.removeTerrainByPosition(terrainActor.piece.rootObj3D.position);
+            //    terrainActor.piece.removeGamePiece();
                 GameAPI.removeActor(terrainActor, onRemove);
             }
         };

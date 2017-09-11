@@ -490,7 +490,11 @@ define([
                 console.log("No terrain found at position", pos);
                 return;
             }
+            terrain.model.children[0].geometry.dispose();
+            setup.removeModelFromScene(terrain.model);
+            setup.removeModelFromScene(terrain.model.children[0]);
             ThreeTerrain.removeTerrainFromIndex(terrain);
+
         };
 
 
