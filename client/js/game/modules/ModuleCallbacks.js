@@ -72,9 +72,24 @@ define([
             guiControlUtils.sampleActiveActorSize(module, target, enable);
         };
 
-        ModuleCallbacks.call_enable_target_controls = function(module, target, enable) {
 
+        ModuleCallbacks.call_selection_activated = function(module, target, enable) {
+            var piece = enable();
+            if (target.state.getValue() === 1) {
+                if (piece) {
+                    if (GameAPI.getActiveCameraControl().getActivatedSelection() !== piece) {
+                        GameAPI.getActiveCameraControl().setActivatedSelection(piece)
+                    }
+                }
+            } else {
+                if (GameAPI.getActiveCameraControl()) {
+                    if (GameAPI.getActiveCameraControl().getActivatedSelection()) {
+                        GameAPI.getActiveCameraControl().setActivatedSelection(null)
+                    }
+                }
+            }
         };
+
 
         ModuleCallbacks.call_enable_target_controls = function(module, target, enable) {
 

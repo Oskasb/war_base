@@ -99,6 +99,14 @@
         }
       },
       {
+        "id":"target_selection_activated",
+        "data":{
+          "callback":"call_selection_activated",
+          "time":0.1,
+          "release_time":0.45
+        }
+      },
+      {
         "id":"target_read_press_0",
         "data":{
           "callback":"read_press_active",

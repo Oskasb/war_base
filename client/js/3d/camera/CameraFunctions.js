@@ -290,17 +290,17 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
 
         this.calcVec.copy(orbitControls.target);
 
-        this.calcVec2.subVectors(targetVec3 , this.frameTPos );
+    //    this.calcVec2.subVectors(targetVec3 , this.frameTPos );
 
-        this.targetVel.multiplyScalar(4);
-        this.targetVel.lerpVectors(this.calcVec2, this.targetVel,  0.15);
+    //    this.targetVel.multiplyScalar(4);
+    //    this.targetVel.lerpVectors(this.calcVec2, this.targetVel,  0.15);
 
 
-        this.calcVec.addVectors( this.calcVec, this.targetVel);
+    //    this.calcVec.addVectors( this.calcVec, this.targetVel);
 
         orbitControls.target.lerpVectors(this.calcVec, targetVec3 , config.lerp || 0.02);
 
-        orbitControls.target.addVectors( orbitControls.target, this.targetVel);
+    //    orbitControls.target.addVectors( orbitControls.target, this.targetVel);
 
         for (i = 0; i < config.params.length; i++) {
             orbitControls[config.params[i].param] = config.params[i].value;
@@ -312,7 +312,7 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
 
         this.calcVec2.copy(orbitControls.object.position);
 
-        this.frameTPos.copy(targetVec3);
+    //    this.frameTPos.copy(targetVec3);
 
         ThreeAPI.setYbyTerrainHeightAt(this.calcVec2);
 

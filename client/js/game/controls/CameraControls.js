@@ -15,9 +15,12 @@ define([
 
         var cameraFunctions;
 
+        var frameVel = new THREE.Vector3();
+        var lastTargetPos = new THREE.Vector3();
         var targetPos = new THREE.Vector3();
+        var activeTargetPos = new THREE.Vector3();
         var calcQuat = new THREE.Quaternion();
-        var calcEuler = new THREE.Euler();
+        var cameraHandle = new THREE.Object3D();
         var calcVec = new THREE.Vector3();
 
 
@@ -45,6 +48,18 @@ define([
             this.config = config;
         };
 
+        CameraControl.prototype.setActivatedSelection = function(piece) {
+            this.activatedSelection = piece;
+        };
+
+        CameraControl.prototype.getActivatedSelection = function() {
+            return this.activatedSelection;
+        };
+
+        var diff = 0;
+
+        var lookAheadRange = 0;
+
         CameraControl.prototype.sampleTargetState = function(activeControlSystem, controlledActor, tpf) {
 
             var controlPiece = activeControlSystem.piece;
@@ -59,7 +74,7 @@ define([
             if (this.config.master_state) {
                 var state = controlPiece.getPieceStateByStateId(this.config.master_state.state_id);
                 if (!state) return;
-                masterValue = state.getValue();
+            //    masterValue = state.getValue();
             };
 
 
@@ -85,9 +100,71 @@ define([
             //   targetPos.setFromMatrixPosition(targetObj3d.matrixWorld);
             targetObj3d.getWorldPosition(targetPos);
 
+            cameraHandle.position.copy(targetPos);
+
+            frameVel.subVectors(targetPos, activeTargetPos);
+
         //    if (isNaN(targetPos.y)) targetPos.copy(controls.rootObj3D.position);
 
-            cameraFunctions[this.config.cameraFunction](targetPos, this.config, masterValue, rotY, tpf)
+            if (this.activatedSelection) {
+                var piece = this.activatedSelection;
+
+                piece.rootObj3D.getWorldPosition(calcVec);
+
+                activeTargetPos.lerpVectors(calcVec  ,  activeTargetPos  , 1 - tpf*2.5);
+
+                calcVec.subVectors(activeTargetPos, cameraHandle.position);
+
+                cameraHandle.lookAt(calcVec);
+
+                var distance = calcVec.length() + 5;
+
+                var maxDist = 15;
+
+
+
+                var distanceFactor = MATH.clamp(0.5 * maxDist / (distance*0.2), 0, 1) ;
+
+            //    calcVec.set(0, 0, distance*0.99);
+
+            //    calcVec.applyQuaternion(cameraHandle.quaternion);
+
+                diff = MATH.clamp(diff+tpf*(0.5 + diff), 0, 1) * distanceFactor ;
+
+                if (distance > maxDist*2) {
+                //    diff = MATH.clamp(diff * (0.5 * maxDist / (distance*0.2)), 0, diff) ;
+                }
+
+
+                calcVec.multiplyScalar(diff / (distance / maxDist));
+
+            //    calcVec.subVectors(lastTargetPos  ,  targetPos );
+            //    calcVec.multiplyScalar(diff);
+
+                lastTargetPos.lerpVectors(lastTargetPos, calcVec, tpf*0.1);
+                activeTargetPos.addVectors(targetPos, calcVec);
+
+                // targetPos.copy(calcVec);
+            } else {
+
+                diff = MATH.clamp(diff-tpf*0.4, 0, 1) ;
+
+                //    lastTargetPos.multiplyScalar(diff);
+                calcVec.subVectors(lastTargetPos  ,  targetPos );
+                calcVec.multiplyScalar(diff);
+                activeTargetPos.addVectors(targetPos, calcVec);
+
+
+            }
+
+
+
+       //     lastTargetPos.addVectors(targetPos , activeTargetPos , 1 - (diff / (dist/30)));
+
+            lastTargetPos.copy(activeTargetPos);
+
+            cameraFunctions[this.config.cameraFunction](activeTargetPos, this.config, masterValue, rotY, tpf);
+        //    lastTargetPos.copy(targetPos);
         };
 
         CameraControl.prototype.updateCameraCopntrol = function(activeControlSystem, controlledActor, tpf) {

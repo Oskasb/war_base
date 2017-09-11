@@ -58,7 +58,8 @@
             {"channelid":"channel_sample_activation",        "stateid":"state_control_active"},
             {"channelid":"channel_activated_actor_position", "stateid":"state_selection_activated"},
             {"channelid":"channel_sample_activated_size",    "stateid":"state_bounding_radius"},
-            {"channelid":"channel_scale_xz",                 "stateid":"state_bounding_radius"}
+            {"channelid":"channel_scale_xz",                 "stateid":"state_bounding_radius"},
+            {"channelid":"channel_selection_activated",      "stateid":"state_control_active"}
           ],
           "attachment_points":[
             {

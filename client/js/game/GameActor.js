@@ -7,7 +7,6 @@ define([
         'PipelineObject',
         'game/pieces/GamePiece',
         'game/controls/ControlStateMap',
-        'game/controls/CameraControls',
         'game/worker/physics/PhysicalPiece'
     ],
     function(
@@ -15,7 +14,6 @@ define([
         PipelineObject,
         GamePiece,
         ControlStateMap,
-        CameraControls,
         PhysicalPiece
     ) {
 
@@ -24,7 +22,7 @@ define([
         var GameActor = function(actorId, dataKey, ready) {
 
             count++;
-            this.entryId = 'A_'+count;
+            this.entryId = count;
 
             this.id = actorId;
             this.dataKey = dataKey;

@@ -145,6 +145,14 @@
         }
       },
       {
+        "id":"channel_selection_activated",
+        "data":{
+          "targets":[
+            {"targetid":"target_selection_activated"}
+          ]
+        }
+      },
+      {
         "id":"channel_scale_activate",
         "data":{
           "targets":[

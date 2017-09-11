@@ -5,7 +5,7 @@
         "id":"gui_control_active",
         "data":{
           "piece":"activated_control_piece",
-          "camera":"camera_default"
+          "camera":"vehicle_look_camera"
         }
       },
       {

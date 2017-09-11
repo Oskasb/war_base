@@ -6,7 +6,7 @@
         {
           "name":"small",
           "visible_range":125,
-          "sector_size":35,
+          "sector_size":30,
           "rows_n_columns":5,
           "spawn_frames":2,
           "actor_count":2
@@ -14,7 +14,7 @@
         {
           "name":"big",
           "visible_range":125,
-          "sector_size":35,
+          "sector_size":30,
           "rows_n_columns":5,
           "spawn_frames":2,
           "actor_count":1
@@ -26,12 +26,12 @@
           "data":[
             {
               "patch_content":[
-                {"id":"actor_prop_oil_drum", "probability":0.05 , "slope":{"min":-0.01, "max":0.06} , "elevation":{"min":-1,    "max":50}}
+                {"id":"actor_prop_oil_drum", "probability":0.05 , "slope":{"min":-0.01, "max":0.03} , "elevation":{"min":-1,    "max":50}}
               ]
             },
             {
               "patch_content":[
-                {"id":"actor_prop_box_crate",       "probability":0.02 , "slope":{"min":-0.01, "max":0.12} , "elevation":{"min":-1,    "max":50}},
+                {"id":"actor_prop_box_crate",       "probability":0.02 , "slope":{"min": 0.02, "max":0.12} , "elevation":{"min":-1,    "max":50}},
                 {"id":"actor_tree_2_stump",         "probability":0.3  , "slope":{"min":-0.01, "max":0.22} , "elevation":{"min":3,    "max":50}},
                 {"id":"actor_compound_barrel_pile", "probability":0.01 , "slope":{"min":-0.01, "max":0.02} , "elevation":{"min":-1,    "max":50}}
               ]

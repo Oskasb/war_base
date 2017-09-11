@@ -83,6 +83,10 @@ define([
             activeCameraControl = camCtrl;
         };
 
+        GameAPI.getActiveCameraControl = function() {
+            return activeCameraControl;
+        };
+
         GameAPI.getControlledActor = function() {
             return controlledActor;
         };
@@ -107,7 +111,7 @@ define([
 
         GameAPI.dropActorControl = function(actor) {
             controlledActor = null;
-            gameCommander.disableActorControls(actor, activeControl)
+            gameCommander.disableActorControls(actor, activeControl);
             GameAPI.addPiece(actor.piece);
         };
 
