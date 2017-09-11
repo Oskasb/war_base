@@ -37,6 +37,15 @@ define([
             DISABLE_SIMULATION : 5
         };
 
+        var COLLISION_FLAGS = {
+            CF_STATIC_OBJECT:1,
+            CF_KINEMATIC_OBJECT:2,
+            CF_NO_CONTACT_RESPONSE:4,
+            CF_CUSTOM_MATERIAL_CALLBACK:8,
+            CF_CHARACTER_OBJECT:16,
+            CF_DISABLE_VISUALIZE_OBJECT:32,
+            CF_DISABLE_SPU_COLLISION_PROCESSING:64};
+
         var shapes = [];
         var bodyPools = {};
 
@@ -140,9 +149,26 @@ define([
             return physicsWorld;
         };
 
+        var disable = function(body) {
+            setTimeout(function() {
+                body.forceActivationState(STATE.DISABLE_SIMULATION);
+            }, 500)
+        }
+
         AmmoFunctions.prototype.removeAmmoRigidBody = function(body, dataKey) {
 
-            body.forceActivationState(STATE.DISABLE_SIMULATION);
+            VECTOR_AUX.setX(1);
+            VECTOR_AUX.setY(1);
+            VECTOR_AUX.setZ(1);
+
+
+
+            if (body.isKinematicObject()) {
+                body.forceActivationState(STATE.DISABLE_SIMULATION);
+            } else {
+                body.setMassProps(1, VECTOR_AUX);
+                disable(body);
+            }
 
             if (dataKey) {
 
@@ -151,6 +177,8 @@ define([
                 }
 
             }
+
+
 
         };
 
