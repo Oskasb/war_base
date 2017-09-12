@@ -33,13 +33,17 @@ define([
         };
 
         ChannelTarget.prototype.sampleModuleState = function(module, state, enable) {
-         //   if (isNaN(state.getValue())) state.setValue(0);
+            //   if (isNaN(state.getValue())) state.setValue(0);
+
             this.state = state;
             if (typeof(ModuleCallbacks[this.config.callback]) !== 'function') {
                 console.log("Bad callback", this.config.callback, ModuleCallbacks);
                 return;
             }
-            ModuleCallbacks[this.config.callback](module, this, enable)
+            ModuleCallbacks[this.config.callback](module, this, enable);
+
+            state.checkDirty();
+
         };
 
         ChannelTarget.prototype.removeEffectTarget = function() {

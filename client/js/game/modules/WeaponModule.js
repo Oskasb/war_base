@@ -93,7 +93,7 @@ define([
                 this.dynamic.fromZ.state = tempVec.z;
 
                 callFireWeapon(this.dynamic, module, this.weaponOptions);
-                state.buffer[0] = 0;
+                state.setBufferValue(0);
                 this.dynamic.activateCommand.state = 0;
             }
 

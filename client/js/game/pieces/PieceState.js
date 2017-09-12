@@ -11,6 +11,10 @@ define([],
             this.value = 0 || value;
             this.startValue = value;
 
+            this.dirty = true;
+
+            this.readCount = 0;
+
             this.sampler = null;
             this.callbacks = [];
 
@@ -69,14 +73,39 @@ define([],
         };
 
         PieceState.prototype.getValue = function () {
+            this.readCount++;
             return this.value;
         };
 
-        PieceState.prototype.isRadial = function (bool) {
-            this.radial = bool;
+
+        PieceState.prototype.setBufferValue = function (value) {
+            this.readCount = 0;
+            this.buffer[0] = value;
+            this.dirty = true;
+        };
+
+        PieceState.prototype.checkDirty = function () {
+            if (this.value !== this.buffer[0] || this.progressDelta) {
+                this.dirty = true;
+            } else {
+                if (this.readCount > 2) {
+                    this.dirty = false;
+                }
+            }
+
+            if (Math.random() < 0.02) {
+                this.dirty = true;
+            }
+
+        };
+
+        PieceState.prototype.isDirty = function () {
+            return this.dirty;
         };
 
         PieceState.prototype.setValueAtTime = function(value, time) {
+            this.dirty = true;
+            this.readCount = 0;
             this.buffer[0] = value;
             this.buffer[1] = time;
         };
@@ -99,6 +128,7 @@ define([],
                 var frac = MATH.calcFraction(0, this.targetTime, this.stateProgress);
                 this.progressDelta = MATH.calcFraction(0, this.targetTime, tpf);
                 this.setValue(MATH.interpolateFromTo(this.startValue, this.targetValue, frac));
+                this.readCount = 0;
             } else {
                 this.setValue(this.targetValue);
                 this.progressDelta = 0;
@@ -107,7 +137,9 @@ define([],
 
         PieceState.prototype.updateStateFrame = function (tpf, time) {
 
-            if (this.value === this.buffer[0]) return;
+            if (this.value === this.buffer[0]) {
+                return;
+            }
 
             this.lastUpdate = time;
 
@@ -116,6 +148,7 @@ define([],
             }
             this.updateStateProgress(tpf);
             this.notifyUpdate();
+
         };
 
         return PieceState
