@@ -1,6 +1,26 @@
 [{
   "WEAPON_DATA":{
     "WEAPONS":[
+
+      {
+        "id":"turret_sherman_tank",
+        "data":{
+          "turret":{
+            "name":"Main Turret",
+            "options":{
+              "turn_speed":0.2
+            }
+          },
+          "control_map":[
+            {"control":"target_current_selection",  "stateid":"state_selected_target", "factor": 1}
+          ],
+          "feedback_map":[],
+          "state_map":[
+            {"param":"quaternion","axis":"y",   "stateid": "quat_turret_y"},
+            {"param":"quaternion","axis":"w",   "stateid": "quat_turret_w"}
+          ]
+        }
+      },
       {
         "id":"weapon_swivel_gun",
         "data":{

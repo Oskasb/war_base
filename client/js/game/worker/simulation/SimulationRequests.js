@@ -22,6 +22,8 @@ define([
             this.simulationState.addLevel(opts, ready);
         };
 
+
+
         SimulationRequests.prototype.resetSimulation = function(bool) {
             var ready = function(res) {
                 postMessage([bool, res]);
@@ -54,6 +56,14 @@ define([
             };
             this.simulationState.spawnActor(opts, ready);
         };
+
+        SimulationRequests.prototype.setActorSelected = function(idx, actorId) {
+            var ready = function(res) {
+                postMessage([idx, res]);
+            };
+            this.simulationState.setSelectionActivatedActorId(actorId, ready);
+        };
+
 
         SimulationRequests.prototype.despawnActor = function(idx, actorId) {
             var ready = function(res) {

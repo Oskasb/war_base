@@ -8,7 +8,8 @@ define([
         'game/modules/VisualModule',
         'game/modules/ModuleChannel',
         'game/modules/AttachmentPoint',
-        'game/modules/WeaponModule'
+        'game/modules/WeaponModule',
+        'game/modules/TurretModule'
     
     ],
     function(
@@ -17,7 +18,8 @@ define([
         VisualModule,
         ModuleChannel,
         AttachmentPoint,
-        WeaponModule
+        WeaponModule,
+        TurretModule
     ) {
 
         var GameModule = function(id, ready) {
@@ -28,6 +30,7 @@ define([
             this.moduleChannels = [];
 
             this.weapons = [];
+            this.turrets = [];
 
             this.transform = {
                 rot:  [0, 0, 0],
@@ -88,6 +91,17 @@ define([
                 }
 
             }
+
+            if (this.config.turrets) {
+                var turretReady = function(turret) {
+                    this.turrets[turret.turretIndex] = turret
+                }.bind(this);
+
+                for (var i = 0; i < this.config.turrets.length; i++) {
+                    new TurretModule(this.config.turrets[i], turretReady, i)
+                }
+            }
+
 
             if (config[ENUMS.ModuleParams.attachment_points]) {
                 this.applyAttachmentPoints(config[ENUMS.ModuleParams.attachment_points]);
@@ -212,7 +226,13 @@ define([
                 this.visualModule.slerpTowardsTargetQuat(this.interpolateQuaternion)
             }
 
+
+
             if (simState) {
+                for (i = 0; i < this.turrets.length; i++) {
+                    this.turrets[i].updateTurretState(simState, this, tpf)
+                }
+
                 for (i = 0; i < this.weapons.length; i++) {
                     this.weapons[i].updateWeaponState(simState, this, tpf)
                 }

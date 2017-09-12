@@ -408,7 +408,7 @@ define([
 
         if (state.targetValue === 1) return;
         state.setValueAtTime(1, time);
-
+        return activatedActor;
     };
 
     GuiControlUtils.prototype.sampleSelectedActorSize = function(module, target, enable) {

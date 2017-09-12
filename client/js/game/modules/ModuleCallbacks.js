@@ -69,7 +69,8 @@ define([
 
         ModuleCallbacks.call_sample_activated_actor = function(module, target, enable) {
             target.state.dirty = true;
-            guiControlUtils.sampleActivatedActor(module, target, enable);
+            var activatedActor = guiControlUtils.sampleActivatedActor(module, target, enable);
+            GameAPI.selectionActivatedActor(activatedActor);
         };
 
         ModuleCallbacks.call_sample_selected_actor_size = function(module, target, enable) {
@@ -96,6 +97,7 @@ define([
                 if (GameAPI.getActiveCameraControl()) {
                     if (GameAPI.getActiveCameraControl().getActivatedSelection()) {
                         GameAPI.getActiveCameraControl().setActivatedSelection(null)
+                        GameAPI.selectionActivatedActor(null);
                     }
                 }
             }

@@ -21,6 +21,7 @@ define([
 
         var GameAPI;
         var gameWorker;
+        var selectionActiveActor;
         var levelBuilder;
         var actorBuilder;
         var combatFeedbackFunctions;
@@ -177,6 +178,25 @@ define([
 
             new CameraControls(dataKey, camReady);
         };
+
+
+        GameCommander.prototype.setSelectionActiveActor = function(actor) {
+
+            var onRes = function(res) {
+                console.log("Selection Confirmed", res);
+            };
+
+            if (selectionActiveActor !== actor) {
+                var id = null;
+                if (actor) {
+                    id = actor.id;
+                }
+                gameWorker.makeGameRequest('setActorSelected', id, onRes);
+            }
+
+
+        };
+
 
         GameCommander.prototype.enableActorControls = function(actor) {
 

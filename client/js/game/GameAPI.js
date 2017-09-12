@@ -79,6 +79,13 @@ define([
             gameCommander.enableActorControls(actor)
         };
 
+
+
+        GameAPI.selectionActivatedActor = function(actor) {
+            gameCommander.setSelectionActiveActor(actor)
+
+        };
+
         GameAPI.setActiveCameraControl = function(camCtrl) {
             activeCameraControl = camCtrl;
         };

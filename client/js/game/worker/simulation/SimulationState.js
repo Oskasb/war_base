@@ -29,6 +29,7 @@ define([
 
         var SimulationState = function(Ammo, protocolSystem) {
             this.protocolSystem = protocolSystem;
+            this.selectionActivatedActorId = null;
             this.controlledActorId = null;
 
             physicsApi = new AmmoAPI(Ammo);
@@ -197,6 +198,15 @@ define([
             }.bind(this);
 
             this.simulationOperations.buildActor(options, actorBuilt);
+        };
+
+        SimulationState.prototype.setSelectionActivatedActorId = function(actorId, onOk) {
+            this.selectionActivatedActorId = actorId;
+            onOk(actorId);
+        };
+
+        SimulationState.prototype.getSelectionActivatedActor = function() {
+            return this.getActorById(this.selectionActivatedActorId);
         };
 
         SimulationState.prototype.setControlledActorId = function(actorId, onOk) {

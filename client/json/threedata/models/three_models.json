@@ -36,8 +36,8 @@
           "urluv2": "./client/assets/models/sherman_turret_ao",
           "pool": 2,
           "transform": {
-            "pos": [0, -2.0, -0.3],
-            "rot": [0, 0, 0],
+            "pos": [0,-2.0, 0.3],
+            "rot": [0,  -1, 0],
             "scale": [1, 1, 1]
           }
         },
@@ -48,8 +48,8 @@
           "urluv2": "./client/assets/models/sherman_cannon_ao",
           "pool": 2,
           "transform": {
-            "pos": [0, -2.45, 0.6],
-            "rot": [0, 0, 0],
+            "pos": [0, -2.45,-0.6],
+            "rot": [0, -1, 0],
             "scale": [1, 1, 1]
           }
         },
