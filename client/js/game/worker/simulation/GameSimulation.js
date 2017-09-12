@@ -45,6 +45,8 @@ define([
 
                 activationGrid.createActivationGrid(this.simulationState);
 
+                this.simulationState.setActivationGrid(activationGrid);
+
                 var frameTime = tpf;
 
                 var update = function() {
@@ -66,7 +68,7 @@ define([
         };
 
         GameSimulation.prototype.stopGameLoop = function() {
-            clearInterval(this.gameLoop);
+            clearInterval(gameLoop);
         };
 
         return GameSimulation;

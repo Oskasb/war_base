@@ -24,7 +24,10 @@ define([
         };
 
 
-        var DynamicPatch = function(simState, sysIndex, config, gridSysData) {
+
+        var DynamicPatch = function(simState, sysIndex, config, gridSysData, actorCache) {
+
+            this.patchActorCache = actorCache;
 
             this.simulationState = simState;
             this.skipCount = 0;
@@ -41,7 +44,11 @@ define([
             this.indexZ = 'none';
 
             this.requestedEntries = 0;
-            this.spawnedEntries = [];
+            this.populationActive = false;
+
+            if (!this.patchActorCache[this.systemIndex]) {
+                this.patchActorCache[this.systemIndex] = [];
+            }
 
         };
 
@@ -54,7 +61,9 @@ define([
             return this.config[this.systemIndex]
         };
 
-
+        DynamicPatch.prototype.spawnedEntries = function() {
+            return this.patchActorCache[this.systemIndex][this.indexX][this.indexZ]
+        };
 
         DynamicPatch.prototype.enablePatch = function(ix, iz, x, z) {
 
@@ -71,46 +80,49 @@ define([
             this.posX = x;
             this.posZ = z;
 
+
+            if (!this.patchActorCache[this.systemIndex][this.indexX]) {
+                this.patchActorCache[this.systemIndex][this.indexX] = [];
+            }
+
+            if (!this.patchActorCache[this.systemIndex][this.indexX][this.indexZ]) {
+                this.patchActorCache[this.systemIndex][this.indexX][this.indexZ] = [];
+                this.doPopulate(this.getFramePlantCount());
+            }
         };
 
         DynamicPatch.prototype.despawnPatch = function() {
-                while (this.spawnedEntries.length) {
-                    this.simulationState.despawnActor(this.spawnedEntries.pop());
+            if (this.populationActive) {
+                for (var i = 0; i < this.spawnedEntries().length; i++) {
+                    this.simulationState.despawnActor(this.spawnedEntries()[i]);
                 }
+                this.spawnedEntries().length = 0;
+            }
         };
 
         DynamicPatch.prototype.getFramePlantCount = function() {
-
-            var targetCount = this.conf().actor_count - this.skipCount;
-            if (this.spawnedEntries.length > targetCount) {
-                targetCount = this.spawnedEntries.length;
-            }
-
-            return targetCount / this.conf().spawn_frames;
+            return this.conf().actor_count;
         };
 
         DynamicPatch.prototype.disablePatch = function(activePatches, patchPool) {
 
-            if (this.spawnedEntries.length) {
-                this.despawnPatch()
-            } else {
-                this.skipCount = 0;
-                var patch = activePatches.splice(activePatches.indexOf(this), 1)[0];
-                patchPool.push(patch);
 
-                if (!this.enabled) {
-                    console.log("Already disabled...");
-                    return;
-                }
+            this.despawnPatch();
 
-                this.enabled = false;
-                this.indexX = 'none';
-                this.indexZ = 'none';
+            this.skipCount = 0;
+            var patch = activePatches.splice(activePatches.indexOf(this), 1)[0];
+            patchPool.push(patch);
+
+            if (!this.enabled) {
+                console.log("Already disabled...");
+                return;
             }
 
-            if (this.debugging) {
-                this.debugRemove();
-            }
+            this.enabled = false;
+            this.indexX = 'none';
+            this.indexZ = 'none';
+
+            this.populationActive = false;
 
         };
 
@@ -180,21 +192,19 @@ define([
                 return;
             }
 
-            var onOk = function(res) {
-        //        this.requestedEntries--;
-                this.spawnedEntries.push(res.actorId);
+            var onOk = function(actor) {
+                //        this.requestedEntries--;
+                this.spawnedEntries().push(actor);
             }.bind(this);
 
             var facing = (Math.random()-0.5)*2;
 
             tempVec.copy(pos);
-        //    this.requestedEntries++;
-            this.simulationState.
-            generateActor(entryId, tempVec, tempVec3, facing, onOk);
+            //    this.requestedEntries++;
+            this.simulationState.generateActor(entryId, tempVec, tempVec3, facing, onOk);
 
 
         };
-
 
         DynamicPatch.prototype.doPopulate = function(count) {
 
@@ -209,14 +219,24 @@ define([
             }
         };
 
+        DynamicPatch.prototype.activatePopulation = function() {
+            this.populationActive = true;
+
+            for (var i = 0; i < this.spawnedEntries().length; i++) {
+                this.simulationState.activateActor(this.spawnedEntries()[i]);
+            }
+
+            // this.doPopulate(this.getFramePlantCount());
+        };
+
         DynamicPatch.prototype.checkSectorVisibility = function(sectorPool, activePatches, patchPool) {
 
             for (var i = 0; i < sectorPool.length; i++) {
                 if (sectorPool[i].indexX === this.indexX && sectorPool[i].indexZ === this.indexZ) {
-                    if (this.requestedEntries + this.spawnedEntries.length < this.conf().actor_count) {
-                        this.doPopulate(this.getFramePlantCount());
+                    if (!this.populationActive) {
+                        this.activatePopulation();
                     }
-                    return                     
+                    return
                 }
             }
 

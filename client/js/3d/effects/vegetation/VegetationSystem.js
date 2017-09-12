@@ -141,6 +141,7 @@ define([
 
             this.sectorPool[this.lastChecked % this.sectorPool.length].checkVisibility(this.activePatches, this.patchPool);
 
+
             this.lastChecked++;
 
             for (var i = 0; i < this.activePatches.length; i++) {

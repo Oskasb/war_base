@@ -19,6 +19,7 @@ define([
         var actors = [];
         var levels = [];
         var attacks = [];
+        var activationGrid;
         var time = 0;
 
         var physicsApi;
@@ -68,13 +69,18 @@ define([
 
         SimulationState.prototype.includeActor = function(actor) {
             physicsApi.setupPhysicalActor(actor);
+            actors.push(actor);
+        };
+
+
+        SimulationState.prototype.activateActor = function(actor) {
 
             ThreeAPI.addToScene(actor.piece.rootObj3D);
 
             if (actor.body) {
                 physicsApi.includeBody(actor.body);
             }
-            actors.push(actor);
+
         };
 
         var buildIt = function(actor, px, py, pz, nx, ny, nz, rotY, cb, simState) {
@@ -102,7 +108,7 @@ define([
 
 
             simState.includeActor(actor);
-            cb(res);
+            cb(actor);
 
             postMessage(['executeDeployActor', res]);
         };
@@ -161,17 +167,22 @@ define([
 
         };
 
+        SimulationState.prototype.setActivationGrid = function(grid) {
+            activationGrid = grid;
+        };
+
         SimulationState.prototype.getGridSystemIdAtPos = function(pos) {
             return "basic_grassland";
         };
 
-        SimulationState.prototype.despawnActor = function(actorId) {
+        SimulationState.prototype.despawnActor = function(actor) {
 
             var onOk = function(aId) {
                 postMessage(['executeRemoveActor', aId]);
             };
 
-            this.removeActor(actorId, onOk);
+            this.deactivateActorId(actor.id, onOk);
+
         };
 
         SimulationState.prototype.spawnActor = function(options, ready) {
@@ -179,6 +190,7 @@ define([
             var actorBuilt = function(actor) {
                 this.simulationOperations.getRandomPointOnTerrain(actor.piece.rootObj3D.position, levels);
                 this.includeActor(actor);
+                this.activateActor(actor);
                 ready({dataKey:actor.dataKey, actorId:actor.id});
             }.bind(this);
 
@@ -216,25 +228,32 @@ define([
             console.log("No level by id:", leveId, actors);
         };
 
-        SimulationState.prototype.removeActor = function(actorId, cb) {
+        SimulationState.prototype.deactivateActorId = function(actorId, cb) {
+
             var actor = this.getActorById(actorId);
 
             if (actorId === this.controlledActorId) {
                 this.controlledActorId = null;
             }
 
-            actors.splice(actors.indexOf(actor), 1);
-
-            this.protocolSystem.removeProtocol(actor);
             if (actor.body) {
                 physicsApi.disableActorPhysics(actor);
             }
-
-            actor.piece.removeGamePiece();
-            actor.removeGameActor();
             ThreeAPI.removeFromScene(actor.piece.rootObj3D);
 
-            cb(actorId);
+            if (typeof(cb) === 'function') {
+            //    cb(actorId);
+            }
+
+        };
+
+        SimulationState.prototype.removeActorFromSimulation = function(actor) {
+
+        //    actors.splice(actors.indexOf(actor), 1);
+            ThreeAPI.removeFromScene(actor.piece.rootObj3D);
+        //    this.protocolSystem.removeProtocol(actor);
+            actor.piece.removeGamePiece();
+            actor.removeGameActor();
         };
 
 
@@ -252,6 +271,13 @@ define([
         };
 
         SimulationState.prototype.cleanupSimulationState = function(cb) {
+
+            while (actors.length) {
+                this.removeActorFromSimulation(actors.pop());
+            }
+
+            activationGrid.createActivationGrid(this);
+
             physicsApi.cleanupPhysics(cb);
         };
 

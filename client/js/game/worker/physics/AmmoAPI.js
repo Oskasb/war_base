@@ -62,6 +62,7 @@ define(['worker/physics/AmmoFunctions'],
 
             ammoFunctions.addPhysicalActor(world, actor);
             bodies.push(actor.getPhysicsBody());
+            world.addRigidBody(actor.getPhysicsBody());
             return actor;
         };
 
@@ -74,7 +75,7 @@ define(['worker/physics/AmmoFunctions'],
                 bodies.push(body);
             }
 
-            world.addRigidBody(body);
+            ammoFunctions.enableBodySimulation(body);
         };
 
         AmmoAPI.prototype.disableActorPhysics = function(actor) {
@@ -100,7 +101,7 @@ define(['worker/physics/AmmoFunctions'],
                 return;
             }
 
-            ammoFunctions.removeAmmoRigidBody(body, dataKey);
+            ammoFunctions.disableBodySimulation(body);
         };
 
 

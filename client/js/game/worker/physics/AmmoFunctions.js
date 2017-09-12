@@ -152,36 +152,26 @@ define([
             return physicsWorld;
         };
 
+
         var disable = function(body) {
             setTimeout(function() {
                 body.forceActivationState(STATE.DISABLE_SIMULATION);
             }, 500)
         }
 
-        AmmoFunctions.prototype.removeAmmoRigidBody = function(body, dataKey) {
+        AmmoFunctions.prototype.enableBodySimulation = function(body) {
 
-            VECTOR_AUX.setX(1);
-            VECTOR_AUX.setY(1);
-            VECTOR_AUX.setZ(1);
+            if (body.isKinematicObject()) {
+                body.forceActivationState(STATE.ACTIVE);
+            }
 
+        };
 
+        AmmoFunctions.prototype.disableBodySimulation = function(body) {
 
             if (body.isKinematicObject()) {
                 body.forceActivationState(STATE.DISABLE_SIMULATION);
-            } else {
-                body.setMassProps(1, VECTOR_AUX);
-                disable(body);
             }
-
-            if (dataKey) {
-
-                if (bodyPools[dataKey]) {
-            //        bodyPools[dataKey].returnToPool(body);
-                }
-
-            }
-
-
 
         };
 
@@ -190,7 +180,6 @@ define([
             normal:null,
             ptr:null
         };
-
 
 
         AmmoFunctions.prototype.physicsRayRange = function(world, pos, dir, posRes, normalRes) {

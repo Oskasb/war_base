@@ -111,6 +111,10 @@
             "friction":2,
             "mass":0
           },
+          "ground_influence":{
+            "elevation":2.0,
+            "normal_factor":0
+          },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
             {"param":"position",  "axis":"y",   "stateid": "state_pos_z"},

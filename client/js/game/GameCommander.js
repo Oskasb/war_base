@@ -78,15 +78,15 @@ define([
         GameCommander.prototype.initLevel = function(levels, options, onOk) {
 
             var levelPopulated = function(lvl) {
-                onOk(lvl);
+
             };
 
 
             var levelReady = function(level) {
 
                 levels.push(level);
-                levelBuilder.populateLevel(level, levelPopulated);
-
+            //    levelBuilder.populateLevel(level, levelPopulated);
+                onOk(level);
             };
 
             var levelActorReady = function(level, actor) {
@@ -107,25 +107,44 @@ define([
             gameWorker.makeGameRequest('createLevel', options, onRes);
         };
 
+
+        GameCommander.prototype.removeRemainingActors = function() {
+            var remove = function() {
+                var actor = GameAPI.getActors()[0];
+                if (actor) {
+                    this.clearGameActor(actor.id, remove);
+                }
+            }.bind(this);
+
+            if (GameAPI.getControlledActor()) {
+                GameAPI.dropActorControl(GameAPI.getControlledActor());
+            }
+
+            remove()
+        };
+
+
         GameCommander.prototype.removeLevel = function(level) {
+
 
             var onReset = function(res) {
                 console.log("Reset level Simulation", res);
-            };
+                this.removeRemainingActors();
+            }.bind(this);
 
             var onRemove = function(l) {
-                console.log("Removed level Poplupation", l);
+                console.log("Removed level", l);
                 gameWorker.makeGameRequest('resetSimulation', true, onReset);
             };
 
             var removeLevelActors = function(lvl) {
-                levelBuilder.dePopulateLevel(lvl, onRemove);
+            //    levelBuilder.dePopulateLevel(lvl, onRemove);
             };
 
             var onRes = function (levelId) {
                 var lvl = GameAPI.getLevelById(levelId);
                 levelBuilder.removeLevelTerrainActors(lvl);
-                removeLevelActors(lvl)
+                onRemove(lvl)
             };
 
             level.removeGameLevel();
@@ -246,7 +265,7 @@ define([
             if (actors.indexOf(actr) !== -1) {
                 actors.splice(actors.indexOf(actr), 1);
             } else {
-                console.log("No actor to remove by id:", msg);
+                console.log("No actor to remove by id:", actorId);
             }
 
             actorBuilder.removeActor(actr);

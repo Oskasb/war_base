@@ -59,7 +59,7 @@ define([
             var ready = function(res) {
                 postMessage([idx,  res]);
             };
-            this.simulationState.removeActor(actorId, ready);
+            this.simulationState.deactivateActorId(actorId, ready);
         };
 
 

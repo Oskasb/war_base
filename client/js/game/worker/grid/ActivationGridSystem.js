@@ -20,7 +20,10 @@ define([
         var tempVec = new THREE.Vector3();
         var tempVec2 = new THREE.Vector3();
 
+
         var ActivationGridSystem = function(sysIndex, gridSysData, gridMasterData, simState) {
+
+            this.patchActorCache = [];
 
             this.simulationState = simState;
             this.systemIndex = sysIndex;
@@ -44,17 +47,17 @@ define([
 
         };
 
-
         ActivationGridSystem.prototype.conf = function() {
             return this.config[this.systemIndex]
         };
 
         ActivationGridSystem.prototype.createPatch = function() {
-            return new DynamicPatch(this.simulationState, this.systemIndex, this.config, this.gridSysData)
+            return new DynamicPatch(this.simulationState, this.systemIndex, this.config, this.gridSysData, this.patchActorCache)
         };
 
 
         ActivationGridSystem.prototype.generateActivationGrid = function(simulationState) {
+
 
             this.indexOffset = Math.floor(this.conf().rows_n_columns/ 2);
             
