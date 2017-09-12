@@ -96,7 +96,7 @@ define([
                 for (var i = 0; i < this.spawnedEntries().length; i++) {
                     this.simulationState.despawnActor(this.spawnedEntries()[i]);
                 }
-                this.spawnedEntries().length = 0;
+            //    this.spawnedEntries().length = 0;
             }
         };
 

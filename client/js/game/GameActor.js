@@ -29,6 +29,8 @@ define([
             this.piece = null;
             this.physicalPiece = null;
 
+            this.active = true;
+
             this.spatial = {
                 vel:new THREE.Vector3(),
                 pos:new THREE.Vector3()
@@ -58,6 +60,14 @@ define([
 
         GameActor.prototype.getPhysicsBody = function () {
             return this.body;
+        };
+
+        GameActor.prototype.setActive = function (bool) {
+            this.active = bool;
+        };
+
+        GameActor.prototype.isActive = function() {
+            return this.active;
         };
 
         GameActor.prototype.addControlState = function (ctrlSys, controlStateId, targetStateId) {

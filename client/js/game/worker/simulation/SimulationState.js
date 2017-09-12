@@ -81,6 +81,8 @@ define([
                 physicsApi.includeBody(actor.body);
             }
 
+            actor.setActive(true);
+
         };
 
         var buildIt = function(actor, px, py, pz, nx, ny, nz, rotY, cb, simState) {
@@ -239,6 +241,8 @@ define([
             if (actor.body) {
                 physicsApi.disableActorPhysics(actor);
             }
+
+            actor.setActive(false);
             ThreeAPI.removeFromScene(actor.piece.rootObj3D);
 
             if (typeof(cb) === 'function') {
@@ -384,15 +388,20 @@ define([
 
                 for ( i = 0; i < actors.length; i++) {
 
-                    actors[i].piece.rootObj3D.updateMatrixWorld();
+                    if (actors[i].isActive() === false) {
 
-                    this.updateActorFrame(actors[i], tpf);
+                    } else {
+                        actors[i].piece.rootObj3D.updateMatrixWorld();
 
-                    var integrity = this.simulationOperations.checkActorIntegrity(actors[i], levels);
+                        this.updateActorFrame(actors[i], tpf);
 
-                    if (!integrity) {
-                        //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
+                        var integrity = this.simulationOperations.checkActorIntegrity(actors[i], levels);
+
+                        if (!integrity) {
+                            //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
+                        }
                     }
+
                 }
             }
 
