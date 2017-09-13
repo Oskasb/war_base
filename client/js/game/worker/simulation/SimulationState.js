@@ -331,6 +331,29 @@ define([
         };
 
 
+        SimulationState.prototype.selectNearbyHostileActor = function(position) {
+
+            var outOfRange = 999;
+
+            var nearestDistance = outOfRange;
+            var distance = nearestDistance;
+
+            var selectedTarget = null;
+
+            for (var i = 0; i < actors.length; i++) {
+
+                if (actors[i].config.alignment === 'hostile') {
+                    distance = Math.sqrt(actors[i].piece.getPos().distanceToSquared(position));
+                    if (distance < nearestDistance) {
+                        nearestDistance = distance;
+                        selectedTarget = actors[i];
+                    }
+                }
+            }
+
+            return selectedTarget;
+        };
+
         SimulationState.prototype.registerAttackHit = function(targetActor, attack, pos, normal) {
             this.removeActiveAttack(attack);
             if (!targetActor) {

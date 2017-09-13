@@ -59,8 +59,8 @@ define([
             this.turnSpeed = this.turretOptions.turn_speed;
             this.axisFactors = this.turretOptions.axis_factors;
             this.defaultQuat = this.turretOptions.default_quat;
+            this.targetting = this.turretOptions.targetting;
         };
-
 
 
         TurretModule.prototype.releaseAim = function(module, tpf) {
@@ -147,10 +147,44 @@ define([
         };
 
 
+
+        var simState;
+
+
+
+        TurretModule.prototype.callTarget = function(callKey, simulationState, module) {
+            simState = simulationState;
+
+            var selectNearbyHostileActor = function(module) {
+                module.getObjec3D().getWorldPosition(tempObj3D.position);
+                return simState.selectNearbyHostileActor(tempObj3D.position)
+            };
+
+            var getSelectionActivatedActor = function( module) {
+                return simState.getSelectionActivatedActor(tempObj3D.position)
+            };
+
+            var calls = {
+                activated_selection:getSelectionActivatedActor,
+                nearest_hostile:selectNearbyHostileActor
+            };
+
+            return calls[callKey](module)
+        };
+
+        TurretModule.prototype.processTargetting = function(simulationState, module) {
+
+             return this.callTarget(this.targetting, simulationState, module);
+
+        };
+
+
+
+
         TurretModule.prototype.updateTurretState = function(simulationState, module, tpf) {
             if (!this.config) return;
 
-            var target = simulationState.getSelectionActivatedActor();
+            var target = this.processTargetting(simulationState, module);
 
             if (target) {
 
