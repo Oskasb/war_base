@@ -28,6 +28,14 @@ define([
 
             this.dataKey = dataKey;
 
+            this.dynamic = {
+                aimPitch:        {state:0},
+                aimYaw:          {state:0},
+                quatX:           {state:0},
+                quatY:           {state:0},
+                quatW:           {state:0}
+            };
+
             this.selectedTarget = null;
             this.targetFocusTime = 0;
             this.cooldownCountdown = 0;
@@ -47,43 +55,43 @@ define([
             this.stateMap = config.state_map;
             this.feedbackMap = config.feedback_map;
             this.turretOptions = config.turret.options;
+            this.turnSpeed = this.turretOptions.turn_speed;
+            this.axisFactors = this.turretOptions.axis_factors;
+            this.defaultQuat = this.turretOptions.default_quat;
         };
 
 
 
         TurretModule.prototype.releaseAim = function(module, tpf) {
 
-            module.getObjec3D().quaternion.y *= 1-tpf;
-            module.getObjec3D().quaternion.x = 0;
-            module.getObjec3D().quaternion.z = 0;
-            module.getObjec3D().quaternion.w = 1;
+            tempObj3D.quaternion.set( this.defaultQuat[0], this.defaultQuat[1], this.defaultQuat[2], this.defaultQuat[3]);
+
+            module.getObjec3D().quaternion.slerp(tempObj3D.quaternion, this.turnSpeed / tpf);
 
         };
 
         TurretModule.prototype.aimAtTargetActor = function(targetActor, module, tpf) {
 
-            module.getObjec3D().updateMatrixWorld();
-            targetActor.piece.rootObj3D.updateMatrixWorld();
+        //    module.getObjec3D().updateMatrixWorld();
+        //    targetActor.piece.rootObj3D.updateMatrixWorld();
 
             aimVec.copy(targetActor.piece.getPos());
-
-        //    module.getObjec3D().getWorldPosition(tempObj3D.position);
-        //    module.getObjec3D().getWorldQuaternion(tempObj3D.quaternion);
 
             tempObj3D.quaternion.copy(module.getObjec3D().quaternion);
 
             module.getObjec3D().parent.worldToLocal( aimVec );
             module.getObjec3D().lookAt( aimVec );
 
-            module.getObjec3D().quaternion.x = 0;
-            module.getObjec3D().quaternion.z = 0;
+            module.getObjec3D().quaternion.x *= this.axisFactors[0];
+            module.getObjec3D().quaternion.y *= this.axisFactors[1];
+            module.getObjec3D().quaternion.z *= this.axisFactors[2];
 
-        //    module.getObjec3D().rotateZ(-module.getObjec3D().rotation.z);
-        //    module.getObjec3D().rotateX(-module.getObjec3D().rotation.x);
+            tempObj3D.quaternion.slerp(module.getObjec3D().quaternion, this.turnSpeed / tpf);
+            module.getObjec3D().quaternion.copy(tempObj3D.quaternion);
 
+            this.dynamic.aimPitch = MATH.subAngles(module.getObjec3D().rotation.x, tempObj3D.rotation.x);
+            this.dynamic.aimYaw = MATH.subAngles(module.getObjec3D().rotation.y, tempObj3D.rotation.y);
 
-        //    module.getObjec3D().rotation.x = 0;
-        //    module.getObjec3D().rotation.z = 0;
 
         };
 
@@ -138,9 +146,12 @@ define([
                 this.aimAtTargetActor(target, module, tpf);
 
             } else {
-
+                this.dynamic.aimYaw = 1;
                 this.releaseAim( module, tpf);
-                module.getObjec3D().quaternion.set(0, 1, 0, 1);
+
+            //    module.getObjec3D().rotateY( module.getObjec3D().rotation.y * (1-tpf));
+
+
             }
 
             this.sampleState( module);

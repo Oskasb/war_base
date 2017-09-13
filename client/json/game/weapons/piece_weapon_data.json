@@ -8,16 +8,47 @@
           "turret":{
             "name":"Main Turret",
             "options":{
-              "turn_speed":0.2
+              "turn_speed":0.005,
+              "axis_factors":[0, 1, 0, 1],
+              "default_quat":[0, 1, 0, 0]
             }
           },
           "control_map":[
             {"control":"target_current_selection",  "stateid":"state_selected_target", "factor": 1}
           ],
-          "feedback_map":[],
+          "feedback_map":[
+            {"param":"dynamic",     "key":"aimYaw",          "property":"state", "stateid":"aim_turret_yaw",          "factor":1},
+            {"param":"dynamic",     "key":"quatY",           "property":"state", "stateid":"quat_turret_y",           "factor":1},
+            {"param":"dynamic",     "key":"quatW",           "property":"state", "stateid":"quat_turret_w",           "factor":1}
+
+          ],
           "state_map":[
             {"param":"quaternion","axis":"y",   "stateid": "quat_turret_y"},
             {"param":"quaternion","axis":"w",   "stateid": "quat_turret_w"}
+          ]
+        }
+      },
+
+      {
+        "id":"turret_sherman_cannon",
+        "data":{
+          "turret":{
+            "name":"Main Cannon",
+            "options":{
+              "turn_speed":0.002,
+              "axis_factors":[1, 0, 0, 1],
+              "default_quat":[0, 1, 0, 0]
+            }
+          },
+          "control_map":[],
+          "feedback_map":[
+            {"param":"dynamic",     "key":"aimPitch",        "property":"state", "stateid":"aim_cannon_pitch",          "factor":1},
+            {"param":"dynamic",     "key":"quatX",           "property":"state", "stateid":"quat_cannon_x",             "factor":1},
+            {"param":"dynamic",     "key":"quatW",           "property":"state", "stateid":"quat_cannon_w",             "factor":1}
+          ],
+          "state_map":[
+            {"param":"quaternion","axis":"x",   "stateid": "quat_cannon_x"},
+            {"param":"quaternion","axis":"w",   "stateid": "quat_cannon_w"}
           ]
         }
       },

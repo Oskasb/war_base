@@ -118,20 +118,7 @@
           ]
         }
       },
-      {
-        "id":"sherman_main_gun_module",
-        "data":{
-          "transform":{
-            "rot":  [0,   0,    0],
-            "pos":  [0,   0,  2.6],
-            "size": [0.4, 0.4,5.0]
-          },
-          "model":"sherman_cannon",
-          "channels":[
-            {"channelid":"channel_pitch", "stateid":"gun_pitch"}
-          ]
-        }
-      },
+
       {
         "id":"swivel_gun_module",
         "data":{
@@ -183,7 +170,23 @@
           ]
         }
       },
-
+      {
+        "id":"sherman_main_gun_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   0,  2.6],
+            "size": [0.4, 0.4,5.0]
+          },
+          "model":"sherman_cannon",
+          "turrets":["turret_sherman_cannon"],
+          "channels":[
+            {"channelid":"fire_channel",    "stateid": "aim_cannon_pitch"},
+            {"channelid":"channel_quat_x",  "stateid": "quat_cannon_x"},
+            {"channelid":"channel_quat_w",  "stateid": "quat_cannon_w"}
+          ]
+        }
+      },
       {
         "id":"sherman_turret_module",
         "data":{
@@ -195,10 +198,8 @@
           "model":"sherman_turret",
           "turrets":["turret_sherman_tank"],
           "channels":[
-            {"channelid":"fire_channel",    "stateid":"fire_state"},
-            {"channelid":"channel_quat_x",  "stateid": "quat_turret_x"},
+            {"channelid":"fire_channel",    "stateid": "aim_turret_yaw"},
             {"channelid":"channel_quat_y",  "stateid": "quat_turret_y"},
-            {"channelid":"channel_quat_z",  "stateid": "quat_turret_z"},
             {"channelid":"channel_quat_w",  "stateid": "quat_turret_w"}
           ],
 
