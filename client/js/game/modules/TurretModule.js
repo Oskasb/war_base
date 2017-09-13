@@ -195,14 +195,13 @@ define([
                 this.releaseAim( module, tpf);
 
             //    module.getObjec3D().rotateY( module.getObjec3D().rotation.y * (1-tpf));
-
-
             }
 
             this.sampleState( module);
 
             this.applyFeedback(module, this.feedbackMap);
 
+            return target;
         };
 
         TurretModule.prototype.removeTurretModule = function () {

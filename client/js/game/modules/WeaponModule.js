@@ -128,55 +128,36 @@ define([
             vec3.setFromMatrixPosition( muzzleModule.getObjec3D().matrixWorld );
         };
 
+        var distance;
 
-        WeaponModule.prototype.selectNearbyHostileActor = function(simulationState, module, tpf) {
-
-            this.targetFocusTime += tpf;
-
-        //    module.getObjec3D().getWorldPosition(tempObj3D.position);
+        WeaponModule.prototype.aimAtTargetActor = function(module, targetActor) {
 
             this.getMuzzlePosition(module, tempObj3D.position);
 
-            outOfRange = this.weaponOptions.range;
+            distance = Math.sqrt(targetActor.piece.getPos().distanceToSquared(tempObj3D.position));
 
-            nearestDistance = outOfRange;
-            var distance = nearestDistance;
+            aimVec.set(0, 0, 1);
 
-            var actors = simulationState.getActors();
+            module.getObjec3D().getWorldQuaternion( tempObj3D.quaternion );
 
-            var selectedTarget = null;
+            aimVec.applyQuaternion(tempObj3D.quaternion);
 
-            for (var i = 0; i < actors.length; i++) {
-                if (actors[i].config.alignment === 'hostile') {
-                    distance = Math.sqrt(actors[i].piece.getPos().distanceToSquared(tempObj3D.position));
-                    if (distance < nearestDistance) {
-                        nearestDistance = distance;
-                        selectedTarget = actors[i];
-                    }
-                }
-            }
 
-            if (this.selectedTarget !== selectedTarget) {
-                this.setSelectedTarget(selectedTarget);
-            }
-
-            return selectedTarget;
-        };
-
-        WeaponModule.prototype.aimAtTargetActor = function(targetActor, module) {
-
-            aimVec.copy(targetActor.piece.getPos());
+        //    aimVec.copy(targetActor.piece.getPos());
 
                 tempVec2.set(Math.random()-0.5,Math.random()-0.5,Math.random()-0.5);
                 tempVec2.normalize();
-                tempVec2.multiplyScalar(Math.random() * this.weaponOptions.bullet_spread * (2 + nearestDistance * 0.1) * (0.8 + nearestDistance*0.2));
+                tempVec2.multiplyScalar(Math.random() * this.weaponOptions.bullet_spread);
+
 
             aimVec.x += tempVec2.x;
             aimVec.y += tempVec2.y;
             aimVec.z += tempVec2.z;
 
-            module.getObjec3D().parent.worldToLocal( aimVec );
-            module.getObjec3D().lookAt( aimVec );
+            aimVec.multiplyScalar(this.weaponOptions.range);
+
+        //    module.getObjec3D().parent.worldToLocal( aimVec );
+        //    module.getObjec3D().lookAt( aimVec );
         };
 
 
@@ -197,11 +178,10 @@ define([
             var fromVec = tempObj3D.position;
 
 
-            aimVec.copy(this.selectedTarget.piece.getPos());
-            aimVec.x += tempVec2.x;
-            aimVec.y += tempVec2.y;
-            aimVec.z += tempVec2.z;
-
+        //    aimVec.copy(this.selectedTarget.piece.getPos());
+            aimVec.x += fromVec.x;
+            aimVec.y += fromVec.y;
+            aimVec.z += fromVec.z;
 
             this.dynamic.fromX.state = fromVec.x;
             this.dynamic.fromY.state = fromVec.y;
@@ -211,9 +191,7 @@ define([
             this.dynamic.toY.state = aimVec.y;
             this.dynamic.toZ.state = aimVec.z;
 
-        //    var distance = Math.sqrt(fromVec.distanceToSquared(aimVec));
-
-            this.dynamic.travelTime.state = nearestDistance / this.weaponOptions.velocity;
+            this.dynamic.travelTime.state = this.weaponOptions.range / this.weaponOptions.velocity;
             this.dynamic.activateCommand.state = 1;
 
             velVec.subVectors(aimVec, fromVec);
@@ -230,12 +208,18 @@ define([
         };
 
 
-        WeaponModule.prototype.determineBulletActivate = function(module, simulationState) {
+        WeaponModule.prototype.determineBulletActivate = function(target, module, simulationState) {
 
             if (this.cooldownCountdown <= 0) {
-                this.generateActiveBullet(module, simulationState);
-                this.cooldownCountdown = this.weaponOptions.cooldown;
-                this.activationFrame = 1;
+
+                this.aimAtTargetActor(module, target);
+
+                if (distance < this.weaponOptions.range) {
+                    this.generateActiveBullet(module, simulationState);
+                    this.cooldownCountdown = this.weaponOptions.cooldown;
+                    this.activationFrame = 1;
+                }
+
             } else {
 
             }
@@ -248,11 +232,11 @@ define([
 
         };
 
-        WeaponModule.prototype.determineTriggerState = function(module, simulationState) {
+        WeaponModule.prototype.determineTriggerState = function(target, module, simulationState) {
 
             if (this.targetFocusTime > this.weaponOptions.focus_time) {
                 this.dynamic.triggerCommand.state = 1;
-                this.determineBulletActivate(module, simulationState)
+                this.determineBulletActivate(target, module, simulationState)
             } else {
                 this.dynamic.triggerCommand.state = 0;
             }
@@ -298,20 +282,19 @@ define([
 
 
 
-        WeaponModule.prototype.updateWeaponState = function(simulationState, module, tpf) {
+        WeaponModule.prototype.updateWeaponState = function(target, simulationState, module, tpf) {
             if (!this.config) return;
 
-            var target = this.selectNearbyHostileActor(simulationState, module, tpf);
             if (target) {
+                if (target === this.lastTarget) {
+                    this.targetFocusTime += tpf;
+                } else {
+                    this.setSelectedTarget(target);
+                }
 
-                this.aimAtTargetActor(target, module);
-                this.determineTriggerState(module, simulationState);
+            //    this.aimAtTargetActor(target);
+                this.determineTriggerState(target, module, simulationState);
 
-
-            } else {
-                module.getObjec3D().rotation.x = 0;
-                module.getObjec3D().rotation.y = 3.141;
-                module.getObjec3D().rotation.z = 0;
             }
 
             this.cooldownCountdown -= tpf;
@@ -320,7 +303,7 @@ define([
 
             this.applyFeedback(module, this.feedbackMap);
 
-
+            this.lastTarget = target;
         };
 
         WeaponModule.prototype.removeWeaponModule = function () {

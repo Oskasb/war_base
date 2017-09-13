@@ -229,12 +229,13 @@ define([
 
 
             if (simState) {
+                var target;
                 for (i = 0; i < this.turrets.length; i++) {
-                    this.turrets[i].updateTurretState(simState, this, tpf)
+                    target = this.turrets[i].updateTurretState(simState, this, tpf)
                 }
 
                 for (i = 0; i < this.weapons.length; i++) {
-                    this.weapons[i].updateWeaponState(simState, this, tpf)
+                    this.weapons[i].updateWeaponState(target, simState, this, tpf)
                 }
             }
 

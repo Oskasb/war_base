@@ -52,6 +52,7 @@
           ]
         }
       },
+
       {
         "id":"sherman_steering_module",
         "data":{
@@ -67,6 +68,7 @@
           ]
         }
       },
+
       {
         "id":"sherman_engine_module",
         "data":{
@@ -128,23 +130,25 @@
             "size": [0.3, 0.3,  2.0]
           },
           "model":"swivel_gun",
+          "turrets":["turret_swivel_gun"],
           "weapons":["weapon_swivel_gun"],
           "channels":[
-            {"channelid":"channel_trigger", "stateid": "command_swivel_trigger"},
-            {"channelid":"channel_quat_x",  "stateid": "quat_swivel_x"},
-            {"channelid":"channel_quat_y",  "stateid": "quat_swivel_y"},
-            {"channelid":"channel_quat_z",  "stateid": "quat_swivel_z"},
-            {"channelid":"channel_quat_w",  "stateid": "quat_swivel_w"},
+            {"channelid":"channel_trigger",             "stateid": "command_swivel_trigger"},
+            {"channelid":"fire_channel",                "stateid": "aim_swivel_yaw"},
+            {"channelid":"fire_channel",                "stateid": "aim_swivel_pitch"},
+            {"channelid":"channel_quat_x",              "stateid": "quat_swivel_x"},
+            {"channelid":"channel_quat_y",              "stateid": "quat_swivel_y"},
+            {"channelid":"channel_quat_w",              "stateid": "quat_swivel_w"},
+            {"channelid":"channel_bullet_activate",     "stateid": "command_bullet_activate" },
+            {"channelid":"channel_setup_bullet",        "stateid": "command_bullet_activate" },
+            {"channelid":"channel_setup_bullet",        "stateid": "bullet_travel_time"      },
+            {"channelid":"channel_setup_bullet",        "stateid": "bullet_from_x"           },
+            {"channelid":"channel_setup_bullet",        "stateid": "bullet_from_y"           },
+            {"channelid":"channel_setup_bullet",        "stateid": "bullet_from_z"           },
+            {"channelid":"channel_setup_bullet",        "stateid": "bullet_to_x"             },
+            {"channelid":"channel_setup_bullet",        "stateid": "bullet_to_y"             },
+            {"channelid":"channel_setup_bullet",        "stateid": "bullet_to_z"             }
 
-            {"channelid":"channel_bullet_activate", "stateid": "command_bullet_activate" },
-            {"channelid":"channel_setup_bullet",    "stateid": "command_bullet_activate" },
-            {"channelid":"channel_setup_bullet",    "stateid": "bullet_travel_time"      },
-            {"channelid":"channel_setup_bullet",    "stateid": "bullet_from_x"           },
-            {"channelid":"channel_setup_bullet",    "stateid": "bullet_from_y"           },
-            {"channelid":"channel_setup_bullet",    "stateid": "bullet_from_z"           },
-            {"channelid":"channel_setup_bullet",    "stateid": "bullet_to_x"             },
-            {"channelid":"channel_setup_bullet",    "stateid": "bullet_to_y"             },
-            {"channelid":"channel_setup_bullet",    "stateid": "bullet_to_z"             }
           ],
           "attachment_points":[
             {"id":"ap_muzzle",
@@ -164,12 +168,13 @@
             "pos":  [0,   0,    0],
             "size": [0,   0,    0]
           },
+
           "channels":[
-            {"channelid":"fire_channel", "stateid": "command_bullet_activate" },
-            {"channelid":"channel_muzzle_fire_effect", "stateid": "command_bullet_activate" }
+            {"channelid":"channel_muzzle_fire_effect",  "stateid": "command_bullet_activate" }
           ]
         }
       },
+
       {
         "id":"sherman_main_gun_module",
         "data":{
@@ -180,13 +185,54 @@
           },
           "model":"sherman_cannon",
           "turrets":["turret_sherman_cannon"],
+          "weapons":["weapon_turret_main_gun"],
           "channels":[
+
+
+
             {"channelid":"fire_channel",    "stateid": "aim_cannon_pitch"},
             {"channelid":"channel_quat_x",  "stateid": "quat_cannon_x"},
-            {"channelid":"channel_quat_w",  "stateid": "quat_cannon_w"}
+            {"channelid":"channel_quat_w",  "stateid": "quat_cannon_w"},
+
+
+            {"channelid":"channel_trigger",             "stateid": "command_cannon_trigger"  },
+            {"channelid":"channel_bullet_activate",     "stateid": "command_shell_activate" },
+            {"channelid":"channel_setup_bullet",        "stateid": "command_shell_activate" },
+            {"channelid":"channel_setup_bullet",        "stateid": "shell_travel_time"      },
+            {"channelid":"channel_setup_bullet",        "stateid": "shell_from_x"           },
+            {"channelid":"channel_setup_bullet",        "stateid": "shell_from_y"           },
+            {"channelid":"channel_setup_bullet",        "stateid": "shell_from_z"           },
+            {"channelid":"channel_setup_bullet",        "stateid": "shell_to_x"             },
+            {"channelid":"channel_setup_bullet",        "stateid": "shell_to_y"             },
+            {"channelid":"channel_setup_bullet",        "stateid": "shell_to_z"             }
+
+          ],
+          "attachment_points":[
+            {"id":"ap_muzzle",
+              "transform":{
+                "rot":[  0,    0,    0],
+                "pos":[0.0,  0.0,  5.0]
+              }
+            }
           ]
         }
       },
+
+      {
+        "id":"cannon_muzzle",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   0,    0],
+            "size": [0,   0,    0]
+          },
+
+          "channels":[
+            {"channelid":"channel_muzzle_fire_effect",  "stateid": "command_shell_activate" }
+          ]
+        }
+      },
+
       {
         "id":"sherman_turret_module",
         "data":{

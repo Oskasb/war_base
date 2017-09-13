@@ -56,9 +56,9 @@
         "id":"turret_swivel_gun",
         "data":{
           "turret":{
-            "name":"Switvel Turret",
+            "name":"Swivel Turret",
             "options":{
-              "range":35,
+              "range":28,
               "targetting":"nearest_hostile",
               "turn_speed":0.008,
               "axis_factors":[1, 1, 0, 1],
@@ -78,13 +78,51 @@
           ]
         }
       },
+
+
+      {
+        "id":"weapon_turret_main_gun",
+        "data":{
+          "weapon":{
+            "name":"Main Gun",
+            "options":{
+              "range":80,
+              "velocity":200,
+              "cooldown":0.3,
+              "focus_time":2.5,
+              "particle_effect_id":"cannon_trail_effect",
+              "on_hit_module_effect_id":"shell_detonate",
+              "on_hit_damage":80,
+              "muzzle_attachment_point_id":"ap_muzzle",
+              "bullet_spread":0.01,
+              "gravity_factor":1.00
+            }
+          },
+          "control_map":[
+          ],
+          "feedback_map":[
+            {"param":"dynamic",     "key":"triggerCommand",  "property":"state", "stateid":"command_cannon_trigger",  "factor":1},
+            {"param":"dynamic",     "key":"activateCommand", "property":"state", "stateid":"command_shell_activate",  "factor":1},
+            {"param":"dynamic",     "key":"travelTime",      "property":"state", "stateid":"shell_travel_time",       "factor":1},
+            {"param":"dynamic",     "key":"fromX",           "property":"state", "stateid":"shell_from_x",            "factor":1},
+            {"param":"dynamic",     "key":"fromY",           "property":"state", "stateid":"shell_from_y",            "factor":1},
+            {"param":"dynamic",     "key":"fromZ",           "property":"state", "stateid":"shell_from_z",            "factor":1},
+            {"param":"dynamic",     "key":"toX",             "property":"state", "stateid":"shell_to_x",              "factor":1},
+            {"param":"dynamic",     "key":"toY",             "property":"state", "stateid":"shell_to_y",              "factor":1},
+            {"param":"dynamic",     "key":"toZ",             "property":"state", "stateid":"shell_to_z",              "factor":1}
+          ],
+          "state_map":[]
+        }
+      },
+
+
       {
         "id":"weapon_swivel_gun",
         "data":{
           "weapon":{
             "name":"Swivel Gun",
             "options":{
-              "range":35,
+              "range":28,
               "velocity":60,
               "cooldown":0.08,
               "focus_time":0.3,
@@ -109,14 +147,10 @@
             {"param":"dynamic",     "key":"toY",             "property":"state", "stateid":"bullet_to_y",             "factor":1},
             {"param":"dynamic",     "key":"toZ",             "property":"state", "stateid":"bullet_to_z",             "factor":1}
           ],
-          "state_map":[
-            {"param":"quaternion","axis":"x",   "stateid": "quat_swivel_x"},
-            {"param":"quaternion","axis":"y",   "stateid": "quat_swivel_y"},
-            {"param":"quaternion","axis":"z",   "stateid": "quat_swivel_z"},
-            {"param":"quaternion","axis":"w",   "stateid": "quat_swivel_w"}
-          ]
+          "state_map":[]
         }
       }
+
     ]
   }
 }]
