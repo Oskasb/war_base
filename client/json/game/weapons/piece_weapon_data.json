@@ -23,8 +23,7 @@
 
           ],
           "state_map":[
-            {"param":"quaternion","axis":"y",   "stateid": "quat_turret_y"},
-            {"param":"quaternion","axis":"w",   "stateid": "quat_turret_w"}
+
           ]
         }
       },
@@ -47,8 +46,7 @@
             {"param":"dynamic",     "key":"quatW",           "property":"state", "stateid":"quat_cannon_w",             "factor":1}
           ],
           "state_map":[
-            {"param":"quaternion","axis":"x",   "stateid": "quat_cannon_x"},
-            {"param":"quaternion","axis":"w",   "stateid": "quat_cannon_w"}
+
           ]
         }
       },

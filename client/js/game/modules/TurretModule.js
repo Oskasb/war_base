@@ -33,6 +33,7 @@ define([
                 aimYaw:          {state:0},
                 quatX:           {state:0},
                 quatY:           {state:0},
+                quatZ:           {state:0},
                 quatW:           {state:0}
             };
 
@@ -68,6 +69,11 @@ define([
 
             module.getObjec3D().quaternion.slerp(tempObj3D.quaternion, this.turnSpeed / tpf);
 
+            this.dynamic.quatX.state = module.getObjec3D().quaternion.x;
+            this.dynamic.quatY.state = module.getObjec3D().quaternion.y;
+            this.dynamic.quatZ.state = module.getObjec3D().quaternion.z;
+            this.dynamic.quatW.state = module.getObjec3D().quaternion.w;
+
         };
 
         TurretModule.prototype.aimAtTargetActor = function(targetActor, module, tpf) {
@@ -89,8 +95,13 @@ define([
             tempObj3D.quaternion.slerp(module.getObjec3D().quaternion, this.turnSpeed / tpf);
             module.getObjec3D().quaternion.copy(tempObj3D.quaternion);
 
-            this.dynamic.aimPitch = MATH.subAngles(module.getObjec3D().rotation.x, tempObj3D.rotation.x);
-            this.dynamic.aimYaw = MATH.subAngles(module.getObjec3D().rotation.y, tempObj3D.rotation.y);
+            this.dynamic.quatX.state = module.getObjec3D().quaternion.x;
+            this.dynamic.quatY.state = module.getObjec3D().quaternion.y;
+            this.dynamic.quatZ.state = module.getObjec3D().quaternion.z;
+            this.dynamic.quatW.state = module.getObjec3D().quaternion.w;
+
+            this.dynamic.aimPitch.state = MATH.subAngles(module.getObjec3D().rotation.x, tempObj3D.rotation.x);
+            this.dynamic.aimYaw.state = MATH.subAngles(module.getObjec3D().rotation.y, tempObj3D.rotation.y);
 
 
         };
@@ -104,8 +115,7 @@ define([
                 var axis = this.stateMap[i].axis;
                 var value = module.getObjec3D()[param][axis];
                 state.value = value;
-                state.setBufferValue(value);
-
+                state.dirty = true;
             }
         };
 
@@ -127,6 +137,7 @@ define([
             var factor =        feedback.factor;
             var state =         module.getPieceStateById(targetStateId);
             state.value =       this.interpretTurretState(param, key, property) * factor;
+            state.dirty = true;
         };
 
         TurretModule.prototype.applyFeedback = function(module, feedbackMap) {
@@ -146,7 +157,7 @@ define([
                 this.aimAtTargetActor(target, module, tpf);
 
             } else {
-                this.dynamic.aimYaw = 1;
+                this.dynamic.aimYaw.state = 1;
                 this.releaseAim( module, tpf);
 
             //    module.getObjec3D().rotateY( module.getObjec3D().rotation.y * (1-tpf));
