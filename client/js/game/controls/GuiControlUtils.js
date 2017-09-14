@@ -406,8 +406,10 @@ define([
             return;
         }
 
-        if (state.targetValue === 1) return;
-        state.setValueAtTime(1, time);
+        if (state.targetValue !== 1) {
+            state.setValueAtTime(1, time);
+        }
+
         return activatedActor;
     };
 

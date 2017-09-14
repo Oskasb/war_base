@@ -160,8 +160,10 @@
     "module_dust_puff":[
       {
         "particle_effects":[
-          {"id":"module_volume_dust_puff"},
-          {"id":"module_volume_dust_puff"}
+          {"id":"module_volume_dust_puff_effect"},
+          {"id":"module_volume_dust_puff_effect"},
+          {"id":"module_volume_dust_puff_effect"},
+          {"id":"module_volume_dust_puff_effect"}
         ]
       }
     ],
