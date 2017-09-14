@@ -166,6 +166,14 @@ define([
 
         };
 
+        ModuleCallbacks.call_aim_accuracy_pitch = function(module, target, enable) {
+
+        };
+
+        ModuleCallbacks.call_aim_accuracy_yaw = function(module, target, enable) {
+
+        };
+
         ModuleCallbacks.transform = function(module, target) {
             if (target.state.isDirty()) {
 

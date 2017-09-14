@@ -99,6 +99,18 @@
         }
       },
       {
+        "id":"target_aim_pitch",
+        "data":{
+          "callback":"call_aim_accuracy_pitch"
+        }
+      },
+      {
+        "id":"target_aim_yaw",
+        "data":{
+          "callback":"call_aim_accuracy_yaw"
+        }
+      },
+      {
         "id":"target_selection_activated",
         "data":{
           "callback":"call_selection_activated",
@@ -243,6 +255,13 @@
             "callback":"animate_texture",
             "offsetxy":[0, 1],
             "factor":-1
+        }
+      },
+      {
+        "id":"module_channel_emit_dust",
+        "data":{
+          "callback":"module_emit_effect",
+          "module_effect":"module_dust_puff"
         }
       },
       {

@@ -288,6 +288,14 @@
         }
       },
       {
+        "id":"dust_channel",
+        "data":{
+          "targets":[
+            {"targetid":"module_channel_emit_dust"}
+          ]
+        }
+      },
+      {
         "id":"fire_channel",
         "data":{
           "targets":[

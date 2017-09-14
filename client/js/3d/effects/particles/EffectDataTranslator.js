@@ -7,6 +7,7 @@ define([
     ) {
 
         var dataCurves = {
+            dust:47,
             earlyFadeOut:46,
             lateFadeOut:45,
             flashGrey:44,

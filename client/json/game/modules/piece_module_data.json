@@ -18,7 +18,8 @@
             {"channelid":"channel_quat_y",    "stateid": "quat_state_y"},
             {"channelid":"channel_quat_z",    "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w",    "stateid": "quat_state_w"},
-            {"channelid":"fire_channel",      "stateid": "fire_state"}
+            {"channelid":"fire_channel",      "stateid": "fire_state"},
+            {"channelid":"dust_channel",      "stateid": "command_shell_activate"}
           ],
 
           "attachment_points":[
@@ -97,6 +98,7 @@
           },
           "model":"sherman_track_r",
           "channels":[
+            {"channelid":"dust_channel",   "stateid":"command_shell_activate"},
             {"channelid":"track_speed",    "stateid":"track_speed_r"},
             {"channelid":"track_brake",    "stateid":"track_brake"},
             {"channelid":"track_rotation", "stateid":"track_rotation_r"}
@@ -114,6 +116,7 @@
           },
           "model":"sherman_track_l",
           "channels":[
+            {"channelid":"dust_channel",   "stateid":"command_shell_activate"},
             {"channelid":"track_speed",    "stateid":"track_speed_l"},
             {"channelid":"track_brake",    "stateid":"track_brake"},
             {"channelid":"track_rotation", "stateid":"track_rotation_l"}
@@ -134,8 +137,8 @@
           "weapons":["weapon_swivel_gun"],
           "channels":[
             {"channelid":"channel_trigger",             "stateid": "command_swivel_trigger"},
-            {"channelid":"fire_channel",                "stateid": "aim_swivel_yaw"},
-            {"channelid":"fire_channel",                "stateid": "aim_swivel_pitch"},
+            {"channelid":"channel_aim_yaw",             "stateid": "aim_swivel_yaw"},
+            {"channelid":"channel_aim_pitch",           "stateid": "aim_swivel_pitch"},
             {"channelid":"channel_quat_x",              "stateid": "quat_swivel_x"},
             {"channelid":"channel_quat_y",              "stateid": "quat_swivel_y"},
             {"channelid":"channel_quat_w",              "stateid": "quat_swivel_w"},
@@ -188,9 +191,10 @@
           "weapons":["weapon_turret_main_gun"],
           "channels":[
 
-            {"channelid":"fire_channel",    "stateid": "aim_cannon_pitch"},
-            {"channelid":"channel_quat_x",  "stateid": "quat_cannon_x"},
-            {"channelid":"channel_quat_w",  "stateid": "quat_cannon_w"},
+            {"channelid":"channel_aim_pitch",           "stateid": "aim_cannon_pitch"},
+            {"channelid":"dust_channel",                "stateid": "command_shell_activate"},
+            {"channelid":"channel_quat_x",              "stateid": "quat_cannon_x"},
+            {"channelid":"channel_quat_w",              "stateid": "quat_cannon_w"},
             {"channelid":"channel_trigger",             "stateid": "command_cannon_trigger"  },
             {"channelid":"channel_bullet_activate",     "stateid": "command_shell_activate" },
             {"channelid":"channel_setup_bullet",        "stateid": "command_shell_activate" },
@@ -224,7 +228,7 @@
           },
 
           "channels":[
-            {"channelid":"channel_muzzle_fire_effect",  "stateid": "command_shell_activate" },
+            {"channelid":"channel_muzzle_fire_effect",         "stateid": "command_shell_activate" },
             {"channelid":"channel_cannon_muzzle_fire_effect",  "stateid": "command_shell_activate" }
           ]
         }
@@ -241,7 +245,8 @@
           "model":"sherman_turret",
           "turrets":["turret_sherman_tank"],
           "channels":[
-            {"channelid":"fire_channel",    "stateid": "aim_turret_yaw"},
+            {"channelid":"dust_channel",    "stateid": "command_shell_activate"},
+            {"channelid":"channel_aim_yaw", "stateid": "aim_turret_yaw"},
             {"channelid":"channel_quat_y",  "stateid": "quat_turret_y"},
             {"channelid":"channel_quat_w",  "stateid": "quat_turret_w"}
           ],

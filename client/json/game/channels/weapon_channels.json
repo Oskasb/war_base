@@ -3,6 +3,22 @@
     "CHANNELS":[
 
       {
+        "id":"channel_aim_yaw",
+        "data":{
+          "targets":[
+            {"targetid":"target_aim_yaw"}
+          ]
+        }
+      },
+      {
+        "id":"channel_aim_pitch",
+        "data":{
+          "targets":[
+            {"targetid":"target_aim_pitch"}
+          ]
+        }
+      },
+      {
         "id":"channel_trigger",
         "data":{
           "targets":[

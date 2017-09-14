@@ -13,7 +13,16 @@
             "simulation_id":"gpu_predictive_simulation"
           }
         },
-
+        {
+          "id":"shockwave_hit_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_atlas_renderer",
+            "particle_id":"shockwave_hit_particles",
+            "count":1,
+            "simulation_id":"gpu_predictive_simulation"
+          }
+        },
         {
           "id":"implosion_shockwave_hit",
           "data":{
@@ -35,6 +44,16 @@
           }
         },
         {
+          "id":"module_volume_dust_puff",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_normal_atlas_renderer",
+            "particle_id":"quick_near_dust_particle",
+            "count":6,
+            "simulation_id":"gpu_predictive_simulation"
+          }
+        },
+        {
           "id":"vehicle_burn_smoke_effect",
           "data":{
             "system_key":"THREE",
@@ -45,6 +64,15 @@
           }
         },
         {
+          "id":"hit_sparks_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_atlas_renderer",
+            "particle_id":"sparks_hit_particles",
+            "count":1,
+            "simulation_id":"gpu_predictive_simulation"
+          }
+        },        {
           "id":"vehicle_fire_effect",
           "data":{
             "system_key":"THREE",
@@ -55,12 +83,21 @@
           }
         },
         {
+          "id":"fx_cannon_muzzle_flame",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_atlas_renderer",
+            "particle_id":"cannon_muzzle_flame_particles",
+            "count":3,
+            "simulation_id":"gpu_predictive_simulation"
+          }
+        },        {
           "id":"firey_explosion_core",
           "data":{
             "system_key":"THREE",
             "renderer_id":"gpu_additive_atlas_renderer",
             "particle_id":"firey_explosion_core_particles",
-            "count":3,
+            "count":5,
             "simulation_id":"gpu_predictive_simulation"
           }
         },
