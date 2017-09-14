@@ -280,9 +280,12 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
         this.mooch(this.cameraIdeal, this.frameCPos, this.camLerpFactor);
     };
 
-    CameraFunctions.prototype.above_target_obj = function(targetVec3, config, masterValue, rotY) {
+    CameraFunctions.prototype.aim_at_target_obj = function(targetVec3, config, masterValue, rotY) {
 
         var lastRotY = orbitControls.getAzimuthalAngle();
+
+
+        this.calcVec2.copy(orbitControls.object.position);
 
         for (var i = 0; i < config.offsets.length; i++) {
             targetVec3[config.offsets[i].axis] += config.offsets[i].value + masterValue;
@@ -290,29 +293,83 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
 
         this.calcVec.copy(orbitControls.target);
 
-    //    this.calcVec2.subVectors(targetVec3 , this.frameTPos );
+        //    this.calcVec2.subVectors(targetVec3 , this.frameTPos );
 
-    //    this.targetVel.multiplyScalar(4);
-    //    this.targetVel.lerpVectors(this.calcVec2, this.targetVel,  0.15);
+        //    this.targetVel.multiplyScalar(4);
+        //    this.targetVel.lerpVectors(this.calcVec2, this.targetVel,  0.15);
 
 
-    //    this.calcVec.addVectors( this.calcVec, this.targetVel);
+        //    this.calcVec.addVectors( this.calcVec, this.targetVel);
 
         orbitControls.target.lerpVectors(this.calcVec, targetVec3 , config.lerp || 0.02);
 
-    //    orbitControls.target.addVectors( orbitControls.target, this.targetVel);
+        //    orbitControls.target.addVectors( orbitControls.target, this.targetVel);
 
         for (i = 0; i < config.params.length; i++) {
             orbitControls[config.params[i].param] = config.params[i].value;
         }
 
+        rotY = MATH.radialLerp(lastRotY, rotY, config.radial_lerp)
+
+        orbitControls.minAzimuthAngle = rotY;
+        orbitControls.maxAzimuthAngle = rotY;
+
         orbitControls.update();
 
 
+        orbitControls.object.position.lerpVectors(this.calcVec2, orbitControls.object.position , config.lerp || 0.08);
 
         this.calcVec2.copy(orbitControls.object.position);
 
-    //    this.frameTPos.copy(targetVec3);
+        ThreeAPI.setYbyTerrainHeightAt(this.calcVec2);
+
+        if (this.calcVec2.y !== orbitControls.object.position.y) {
+            var minElevation = config.min_elevation || 5;
+            if (orbitControls.object.position.y < this.calcVec2.y+minElevation) {
+                orbitControls.object.position.y = this.calcVec2.y+minElevation
+            }
+        }
+
+    };
+
+    CameraFunctions.prototype.above_target_obj = function(targetVec3, config, masterValue, rotY) {
+
+        var lastRotY = orbitControls.getAzimuthalAngle();
+
+        var lastPolar = orbitControls.getPolarAngle();
+
+        this.calcVec2.copy(orbitControls.object.position);
+
+        for (var i = 0; i < config.offsets.length; i++) {
+            targetVec3[config.offsets[i].axis] += config.offsets[i].value + masterValue;
+        }
+
+        this.calcVec.copy(orbitControls.target);
+
+
+        orbitControls.target.lerpVectors(this.calcVec, targetVec3 , config.lerp || 0.02);
+
+
+        for (i = 0; i < config.params.length; i++) {
+            orbitControls[config.params[i].param] = config.params[i].value;
+        }
+
+        rotY = orbitControls.minAzimuthAngle;
+
+        rotY = MATH.radialLerp(lastRotY, rotY, config.radial_lerp);
+
+        orbitControls.minAzimuthAngle = rotY;
+        orbitControls.maxAzimuthAngle = rotY;
+
+        orbitControls.minPolarAngle = (orbitControls.minPolarAngle * config.radial_lerp) + (lastPolar * (1 - config.radial_lerp)) ;
+        orbitControls.maxPolarAngle = orbitControls.minPolarAngle;
+
+
+        orbitControls.update();
+
+        orbitControls.object.position.lerpVectors(this.calcVec2, orbitControls.object.position , config.lerp || 0.08);
+
+        this.calcVec2.copy(orbitControls.object.position);
 
         ThreeAPI.setYbyTerrainHeightAt(this.calcVec2);
 

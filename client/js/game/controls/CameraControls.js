@@ -100,11 +100,30 @@ define([
             //   targetPos.setFromMatrixPosition(targetObj3d.matrixWorld);
             targetObj3d.getWorldPosition(targetPos);
 
+            var config = this.config;
+
+
+            if (config.look_ahead) {
+
+                calcQuat.setFromRotationMatrix(targetObj3d.matrixWorld);
+                //  steeringObj.getWorldQuaternion(calcQuat);
+
+                calcVec.set(0, 0, -config.look_ahead);
+                calcVec.applyQuaternion(calcQuat);
+
+                targetPos.addVectors(targetPos, calcVec);
+
+            }
+
+
             cameraHandle.position.copy(targetPos);
 
             frameVel.subVectors(targetPos, activeTargetPos);
 
         //    if (isNaN(targetPos.y)) targetPos.copy(controls.rootObj3D.position);
+
+            var cameraFunc = this.config.cameraFunction;
+
 
             if (this.activatedSelection) {
                 var piece = this.activatedSelection;
@@ -115,12 +134,12 @@ define([
 
                 calcVec.subVectors(activeTargetPos, cameraHandle.position);
 
-                cameraHandle.lookAt(calcVec);
 
-                var distance = calcVec.length() + 5;
+                rotY = -Math.atan2(calcVec.z, calcVec.x) - Math.PI*0.5;
 
-                var maxDist = 15;
+                var distance = calcVec.length();
 
+                var maxDist = 2
 
 
                 var distanceFactor = MATH.clamp(0.5 * maxDist / (distance*0.2), 0, 1) ;
@@ -129,7 +148,7 @@ define([
 
             //    calcVec.applyQuaternion(cameraHandle.quaternion);
 
-                diff = MATH.clamp(diff+tpf*(0.5 + diff), 0, 1) * distanceFactor ;
+                diff = MATH.clamp(diff+tpf*(0.1 + diff), 0, 1) * distanceFactor ;
 
                 if (distance > maxDist*2) {
                 //    diff = MATH.clamp(diff * (0.5 * maxDist / (distance*0.2)), 0, diff) ;
@@ -144,7 +163,20 @@ define([
                 lastTargetPos.lerpVectors(lastTargetPos, calcVec, tpf*0.1);
                 activeTargetPos.addVectors(targetPos, calcVec);
 
+
+            //    activeTargetPos.copy(targetPos);
                 // targetPos.copy(calcVec);
+
+                if (this.config.aimCameraFunction) {
+                    cameraFunc = this.config.aimCameraFunction;
+
+                    if (this.config.aim_config) {
+                        config = this.config.aim_config;
+                    }
+                }
+
+
+
             } else {
 
                 diff = MATH.clamp(diff-tpf*0.4, 0, 1) ;
@@ -155,7 +187,10 @@ define([
                 activeTargetPos.addVectors(targetPos, calcVec);
 
 
+
             }
+
+
 
 
 
@@ -163,7 +198,7 @@ define([
 
             lastTargetPos.copy(activeTargetPos);
 
-            cameraFunctions[this.config.cameraFunction](activeTargetPos, this.config, masterValue, rotY, tpf);
+            cameraFunctions[cameraFunc](activeTargetPos, config, masterValue, rotY, tpf);
         //    lastTargetPos.copy(targetPos);
         };
 

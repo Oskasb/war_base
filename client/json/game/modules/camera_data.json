@@ -5,11 +5,15 @@
         "id":"vehicle_control_camera",
         "data":{
           "cameraFunction":"above_target_obj",
+          "aimCameraFunction":"aim_at_target_obj",
           "master_state":{"state_id":"state_control_active"},
+          "look_ahead":9,
           "min_elevation":20,
           "offsets":[
             {"property":"target", "axis":"y","value":-1}
           ],
+          "lerp":0.08,
+          "radial_lerp":0.03,
           "params":[
             {"param":"maxDistance",   "value":46},
             {"param":"minDistance",   "value":42},
@@ -23,10 +27,34 @@
             {"param":"minAzimuthAngle", "value":0.548},
             {"param":"maxAzimuthAngle", "value":0.548},
             {"param":"minPolarAngle",   "value":0.688},
-            {"param":"maxPolarAngle",   "value":0.728}
+            {"param":"maxPolarAngle",   "value":0.688}
           ],
-          "lerp":0.25,
-          "radial_lerp":0.08
+
+          "aim_config":{
+            "master_state":{"state_id":"state_control_active"},
+            "min_elevation":9,
+            "look_ahead":4,
+            "offsets":[
+              {"property":"target", "axis":"y","value":2}
+            ],
+            "params":[
+              {"param":"maxDistance",   "value":22},
+              {"param":"minDistance",   "value":16},
+              {"param":"enableDamping", "value":true},
+              {"param":"dampingFactor", "value":2.82},
+              {"param":"autoRotate",    "value":false},
+              {"param":"enableKeys",    "value":false},
+              {"param":"enablePan",     "value":false},
+              {"param":"enableRotate",  "value":false},
+              {"param":"enableZoom",    "value":false},
+              {"param":"minAzimuthAngle", "value":0.548},
+              {"param":"maxAzimuthAngle", "value":0.548},
+              {"param":"minPolarAngle",   "value":1.288},
+              {"param":"maxPolarAngle",   "value":1.828}
+            ],
+            "lerp":0.07,
+            "radial_lerp":0.06
+          }
         }
       },
       {
