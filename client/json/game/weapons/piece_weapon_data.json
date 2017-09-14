@@ -87,12 +87,12 @@
             "name":"Main Gun",
             "options":{
               "range":80,
-              "velocity":200,
-              "cooldown":0.3,
+              "velocity":140,
+              "cooldown":3.5,
               "focus_time":2.5,
               "particle_effect_id":"cannon_trail_effect",
               "on_hit_module_effect_id":"shell_detonate",
-              "on_hit_damage":80,
+              "on_hit_damage":1000,
               "muzzle_attachment_point_id":"ap_muzzle",
               "bullet_spread":0.01,
               "gravity_factor":1.00

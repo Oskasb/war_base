@@ -21,6 +21,13 @@
         }
       },
       {
+        "id":"target_cannon_muzzle_fire_effect",
+        "data":{
+          "callback":"module_emit_effect",
+          "module_effect":"muzzle_flash_cannon"
+        }
+      },
+      {
         "id":"target_weapon_bullet_activate",
         "data":{
           "callback":"module_weapon_emit_bullet_effect"

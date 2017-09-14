@@ -188,13 +188,9 @@
           "weapons":["weapon_turret_main_gun"],
           "channels":[
 
-
-
             {"channelid":"fire_channel",    "stateid": "aim_cannon_pitch"},
             {"channelid":"channel_quat_x",  "stateid": "quat_cannon_x"},
             {"channelid":"channel_quat_w",  "stateid": "quat_cannon_w"},
-
-
             {"channelid":"channel_trigger",             "stateid": "command_cannon_trigger"  },
             {"channelid":"channel_bullet_activate",     "stateid": "command_shell_activate" },
             {"channelid":"channel_setup_bullet",        "stateid": "command_shell_activate" },
@@ -228,7 +224,8 @@
           },
 
           "channels":[
-            {"channelid":"channel_muzzle_fire_effect",  "stateid": "command_shell_activate" }
+            {"channelid":"channel_muzzle_fire_effect",  "stateid": "command_shell_activate" },
+            {"channelid":"channel_cannon_muzzle_fire_effect",  "stateid": "command_shell_activate" }
           ]
         }
       },

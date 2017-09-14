@@ -8,25 +8,25 @@
         {
           "id":"explosion_smoke_plume_particles",
           "sprite_key":"ATLAS",
-          "sprite_id":"thick_smoke",
+          "sprite_id":"smokey",
           "config":{
             "age":     {"min":0.0, "max":0.02},
-            "lifeTime":{"min":0.15,"max":7.15},
+            "lifeTime":{"min":3.15,"max":3.15},
             "positionSpread":{"x":4.01, "y":2.01, "z":4.01},
-            "gravity":3.6,
+            "gravity":5.6,
             "drag":0.85,
             "bend":0.0001,
             "spinDrag":0.2,
             "colorCurve":"smoke",
-            "alphaCurve":"zeroOneZero",
+            "alphaCurve":"earlyFadeOut",
             "diffusionCurve":"halfQuickIn",
             "scaleCurve":"qubeIn",
             "size":{"value":1.1, "min": -0.7, "max": 2.5},
             "spin":{"value":0.01, "min":-17.5, "max":17.5},
-            "velocityDiffusion":1,
+            "velocityDiffusion":0.7,
             "accelerationDiffusion":0.5,
             "colorDiffusion":0.2,
-            "velocityFactor":1.2
+            "velocityFactor":0.2
           }
         },
         {
@@ -35,13 +35,13 @@
           "sprite_id":"smokey",
           "config":{
             "age":     {"min":0.0, "max":0.0002},
-            "lifeTime":{"min":1.15,"max":4.15},
+            "lifeTime":{"min":2.15,"max":2.15},
             "positionSpread":{"x":0.5, "y":1.01, "z":0.5},
             "gravity":2.6,
             "drag":0.85,
             "bend":0.0001,
             "spinDrag":0.2,
-            "colorCurve":"darkSmoke",
+            "colorCurve":"smoke",
             "alphaCurve":"quickFadeOut",
             "diffusionCurve":"halfQuickIn",
             "scaleCurve":"zeroToOne",
@@ -50,7 +50,7 @@
             "velocityDiffusion":1,
             "accelerationDiffusion":0.8,
             "colorDiffusion":0.4,
-            "velocityFactor":1.2
+            "velocityFactor":0.2
           }
         },
         {
@@ -85,25 +85,25 @@
           "sprite_key":"ATLAS",
           "sprite_id":"explosion",
           "config":{
-            "age":     {"min":0.0, "max":0.02},
-            "lifeTime":{"min":1.2,"max":1.8},
-            "positionSpread":{"x":2.01, "y":2.01, "z":4.01},
-            "gravity":5.001,
-            "drag":1.11,
+            "age":     {"min":0.001, "max":0.002},
+            "lifeTime":{"min":1.2,"max":1.2},
+            "positionSpread":{"x":1.01, "y":1.01, "z":1.01},
+            "gravity":7.001,
+            "drag":2.11,
             "bend":0.2,
 
             "colorCurve":"warmFire",
-            "alphaCurve":"quickFadeOut",
+            "alphaCurve":"earlyFadeOut",
             "diffusionCurve":"pulseSlowOut",
             "scaleCurve":"quickIn",
-            "size":{"value":0.8, "min": -0.2, "max": 3.9},
+            "size":{"value":0.8, "min": -0.2, "max": 2.9},
             "spin":{"value":0.1, "min":-0.30, "max":0.0},
             "spinDrag":0.31,
             "velocitySpread":{"min":-1,"max":1},
-            "velocityDiffusion":1,
+            "velocityDiffusion":0.6,
             "accelerationDiffusion":0.55,
-            "colorDiffusion":0.05,
-            "velocityFactor":2.8
+            "colorDiffusion":0.15,
+            "velocityFactor":0.2
           }
         },
 
@@ -139,16 +139,16 @@
           "sprite_id":"fire_shockwave",
           "config":{
             "age":     {"min":0.0, "max":0.02},
-            "lifeTime":{"min":0.15,"max":0.15},
+            "lifeTime":{"min":0.18,"max":0.18},
             "positionSpread":{"x":0.01, "y":0.01, "z":0.01},
             "gravity":0.001,
             "drag":0.41,
             "spinDrag":0.8,
             "colorCurve":"hotFire",
-            "alphaCurve":"quickFadeOut",
+            "alphaCurve":"oneToZero",
             "diffusionCurve":"zeroOneZero",
             "scaleCurve":"zeroToOne",
-            "size":{"value":52.2, "min": -0.7, "max": 3.2},
+            "size":{"value":35.2, "min": -0.5, "max": 0.5},
             "spin":{"value":0.01, "min":-2.5, "max":2.5},
             "velocitySpread":{"min":-2.1,"max":2.1},
             "velocityDiffusion":1,

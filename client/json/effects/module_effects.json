@@ -45,8 +45,8 @@
     "muzzle_flash_cannon":[
       {
         "particle_effects":[
-          {"id":"muzzle_pulse_flash"},
-          {"id":"muzzle_shockwave_flash"}
+          {"id":"firey_explosion_core"},
+          {"id":"explosion_smoke_plume"}
         ]
       }
     ],

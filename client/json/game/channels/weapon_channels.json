@@ -27,6 +27,14 @@
         }
       },
       {
+        "id":"channel_cannon_muzzle_fire_effect",
+        "data":{
+          "targets":[
+            {"targetid":"target_cannon_muzzle_fire_effect"}
+          ]
+        }
+      },
+      {
         "id":"channel_bullet_activate",
         "data":{
           "targets":[
