@@ -80,18 +80,10 @@ define([
                 this.debugShow();
             }
 
-
         };
 
-        VegetationPatch.prototype.despawnVegetation = function(count) {
-
-            for (var i = 0; i < count; i++) {
-                if (this.spawnedPlants.length) {
-                    EffectAPI.returnPassiveEffect(this.spawnedPlants.pop());
-                } else {
-                    return;
-                }
-            }
+        VegetationPatch.prototype.despawnVegetation = function() {
+            this.clearPatch();
         };
 
         VegetationPatch.prototype.getFramePlantCount = function() {
@@ -100,9 +92,8 @@ define([
 
         VegetationPatch.prototype.disablePatch = function(activePatches, patchPool) {
 
-            if (this.spawnedPlants.length) {
-                this.despawnVegetation(this.getFramePlantCount())
-            } else {
+                this.despawnVegetation();
+
                 this.skipCount = 0;
                 var patch = activePatches.splice(activePatches.indexOf(this), 1)[0];
                 patchPool.push(patch);
@@ -115,7 +106,7 @@ define([
                 this.enabled = false;
                 this.indexX = 'none';
                 this.indexZ = 'none';
-            }
+
 
             if (this.debugging) {
                 this.debugRemove();
@@ -212,9 +203,9 @@ define([
 
             for (var i = 0; i < count; i++) {
 
-                tempVec.x = this.posX + this.size() * Math.random() - 0.5;
+                tempVec.x = this.posX + this.size() * (Math.random() - 0.0);
                 tempVec.y = 0;
-                tempVec.z = this.posZ + this.size() * Math.random() - 0.5;
+                tempVec.z = this.posZ + this.size() * (Math.random() - 0.0);
                 this.spawnVegetation(tempVec, plantData)
             }
         };

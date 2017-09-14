@@ -33,10 +33,10 @@
             "state":"WANTS_DEACTIVATION",
             "shape":"Cylinder",
             "args":[2.5, 2.5, 4],
-            "friction":0.8,
-            "restitution":0.3,
-            "damping":0.8,
-            "mass":7500
+            "friction":0.6,
+            "restitution":0.2,
+            "damping":0.90,
+            "mass":4500
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
@@ -82,8 +82,9 @@
           "rigid_body":{
             "convex":true,
             "model_id":"platform_base_10x6",
-            "friction":1,
+            "friction":0.4,
             "restitution":0.01,
+            "damping":10,
             "mass":0
           },
           "ground_influence":{

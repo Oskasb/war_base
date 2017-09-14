@@ -7,16 +7,16 @@
           "cameraFunction":"above_target_obj",
           "aimCameraFunction":"aim_at_target_obj",
           "master_state":{"state_id":"state_control_active"},
-          "look_ahead":9,
-          "min_elevation":20,
+          "look_ahead":15,
+          "min_elevation":27,
           "offsets":[
-            {"property":"target", "axis":"y","value":-1}
+            {"property":"target", "axis":"y","value":3}
           ],
-          "lerp":0.08,
-          "radial_lerp":0.03,
+          "lerp":0.15,
+          "radial_lerp":0.04,
           "params":[
-            {"param":"maxDistance",   "value":46},
-            {"param":"minDistance",   "value":42},
+            {"param":"maxDistance",   "value":59},
+            {"param":"minDistance",   "value":51},
             {"param":"enableDamping", "value":true},
             {"param":"dampingFactor", "value":2.82},
             {"param":"autoRotate",    "value":false},
@@ -26,20 +26,20 @@
             {"param":"enableZoom",    "value":false},
             {"param":"minAzimuthAngle", "value":0.548},
             {"param":"maxAzimuthAngle", "value":0.548},
-            {"param":"minPolarAngle",   "value":0.688},
-            {"param":"maxPolarAngle",   "value":0.688}
+            {"param":"minPolarAngle",   "value":0.628},
+            {"param":"maxPolarAngle",   "value":0.628}
           ],
 
           "aim_config":{
             "master_state":{"state_id":"state_control_active"},
-            "min_elevation":9,
+            "min_elevation":7,
             "look_ahead":4,
             "offsets":[
-              {"property":"target", "axis":"y","value":2}
+              {"property":"target", "axis":"y","value":5}
             ],
             "params":[
-              {"param":"maxDistance",   "value":22},
-              {"param":"minDistance",   "value":16},
+              {"param":"maxDistance",   "value":18},
+              {"param":"minDistance",   "value":14},
               {"param":"enableDamping", "value":true},
               {"param":"dampingFactor", "value":2.82},
               {"param":"autoRotate",    "value":false},
@@ -52,8 +52,8 @@
               {"param":"minPolarAngle",   "value":1.288},
               {"param":"maxPolarAngle",   "value":1.828}
             ],
-            "lerp":0.07,
-            "radial_lerp":0.06
+            "lerp":0.25,
+            "radial_lerp":0.05
           }
         }
       },

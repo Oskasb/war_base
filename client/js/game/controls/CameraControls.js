@@ -101,6 +101,17 @@ define([
             targetObj3d.getWorldPosition(targetPos);
 
             var config = this.config;
+            var cameraFunc = this.config.cameraFunction;
+
+            if (this.activatedSelection) {
+                if (this.config.aimCameraFunction) {
+                    cameraFunc = this.config.aimCameraFunction;
+
+                    if (this.config.aim_config) {
+                        config = this.config.aim_config;
+                    }
+                }
+            }
 
 
             if (config.look_ahead) {
@@ -122,8 +133,6 @@ define([
 
         //    if (isNaN(targetPos.y)) targetPos.copy(controls.rootObj3D.position);
 
-            var cameraFunc = this.config.cameraFunction;
-
 
             if (this.activatedSelection) {
                 var piece = this.activatedSelection;
@@ -139,7 +148,7 @@ define([
 
                 var distance = calcVec.length();
 
-                var maxDist = 2
+                var maxDist = 4
 
 
                 var distanceFactor = MATH.clamp(0.5 * maxDist / (distance*0.2), 0, 1) ;
@@ -167,13 +176,7 @@ define([
             //    activeTargetPos.copy(targetPos);
                 // targetPos.copy(calcVec);
 
-                if (this.config.aimCameraFunction) {
-                    cameraFunc = this.config.aimCameraFunction;
 
-                    if (this.config.aim_config) {
-                        config = this.config.aim_config;
-                    }
-                }
 
 
 

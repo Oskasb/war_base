@@ -282,6 +282,8 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
 
     CameraFunctions.prototype.aim_at_target_obj = function(targetVec3, config, masterValue, rotY) {
 
+        ThreeAPI.setYbyTerrainHeightAt(targetVec3);
+
         var lastRotY = orbitControls.getAzimuthalAngle();
 
 
@@ -317,7 +319,7 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
         orbitControls.update();
 
 
-        orbitControls.object.position.lerpVectors(this.calcVec2, orbitControls.object.position , config.lerp || 0.08);
+        orbitControls.object.position.lerpVectors(this.calcVec2, orbitControls.object.position , config.lerp * 0.5 || 0.08);
 
         this.calcVec2.copy(orbitControls.object.position);
 
@@ -333,6 +335,8 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
     };
 
     CameraFunctions.prototype.above_target_obj = function(targetVec3, config, masterValue, rotY) {
+
+        ThreeAPI.setYbyTerrainHeightAt(targetVec3);
 
         var lastRotY = orbitControls.getAzimuthalAngle();
 
@@ -367,7 +371,7 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
 
         orbitControls.update();
 
-        orbitControls.object.position.lerpVectors(this.calcVec2, orbitControls.object.position , config.lerp || 0.08);
+        orbitControls.object.position.lerpVectors(this.calcVec2, orbitControls.object.position , config.lerp * 0.5 || 0.08);
 
         this.calcVec2.copy(orbitControls.object.position);
 

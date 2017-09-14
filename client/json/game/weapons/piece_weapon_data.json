@@ -8,9 +8,9 @@
           "turret":{
             "name":"Main Turret",
             "options":{
-              "range":135,
+              "range":235,
               "targetting":"activated_selection",
-              "turn_speed":0.005,
+              "turn_speed":0.003,
               "axis_factors":[0, 1, 0, 1],
               "default_quat":[0, 1, 0, 0]
             }
@@ -34,7 +34,7 @@
           "turret":{
             "name":"Main Cannon",
             "options":{
-              "range":135,
+              "range":235,
               "targetting":"activated_selection",
               "turn_speed":0.002,
               "axis_factors":[1, 0, 0, 1],
@@ -58,9 +58,9 @@
           "turret":{
             "name":"Swivel Turret",
             "options":{
-              "range":28,
+              "range":35,
               "targetting":"nearest_hostile",
-              "turn_speed":0.008,
+              "turn_speed":0.015,
               "axis_factors":[1, 1, 0, 1],
               "default_quat":[0, 1, 0, 0]
             }
@@ -86,10 +86,10 @@
           "weapon":{
             "name":"Main Gun",
             "options":{
-              "range":80,
-              "velocity":140,
-              "cooldown":3.5,
-              "focus_time":2.5,
+              "range":200,
+              "velocity":220,
+              "cooldown":4.5,
+              "focus_time":3.5,
               "particle_effect_id":"cannon_trail_effect",
               "on_hit_module_effect_id":"shell_detonate",
               "on_hit_damage":1000,
@@ -122,8 +122,8 @@
           "weapon":{
             "name":"Swivel Gun",
             "options":{
-              "range":28,
-              "velocity":60,
+              "range":35,
+              "velocity":80,
               "cooldown":0.08,
               "focus_time":0.3,
               "particle_effect_id":"machine_gun_trail_effect",
