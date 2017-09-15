@@ -32,8 +32,8 @@
 
           "aim_config":{
             "master_state":{"state_id":"state_control_active"},
-            "min_elevation":7,
-            "look_ahead":4,
+            "min_elevation":6,
+            "look_ahead":3,
             "offsets":[
               {"property":"target", "axis":"y","value":5}
             ],
@@ -52,8 +52,8 @@
               {"param":"minPolarAngle",   "value":1.288},
               {"param":"maxPolarAngle",   "value":1.828}
             ],
-            "lerp":0.25,
-            "radial_lerp":0.05
+            "lerp":0.3,
+            "radial_lerp":0.08
           }
         }
       },

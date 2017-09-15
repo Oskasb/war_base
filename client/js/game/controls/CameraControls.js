@@ -148,7 +148,7 @@ define([
 
                 var distance = calcVec.length();
 
-                var maxDist = 4
+                var maxDist = 2
 
 
                 var distanceFactor = MATH.clamp(0.5 * maxDist / (distance*0.2), 0, 1) ;

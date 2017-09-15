@@ -24,7 +24,7 @@
           "urluv2": "./client/assets/models/sherman_hull_ao",
           "pool": 2,
           "transform": {
-            "pos": [0, -1.2, -0.3],
+            "pos": [0, -0.7, -0.3],
             "rot": [0, 0, 0],
             "scale": [1, 1, 1]
           }

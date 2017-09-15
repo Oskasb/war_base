@@ -637,8 +637,8 @@
             "gravity":-6.81,
             "drag":2.5,
             "spinDrag":1.2,
-            "lifeTime":{"min":0.2,"max":1.4},
-            "positionSpread":{"x":0.1, "y":0.1, "z":0.1},
+            "lifeTime":{"min":1.1,"max":1.1},
+            "positionSpread":{"x":0.1, "y":0.4, "z":0.1},
             "colorCurve":"nearWhite",
             "alphaCurve":"oneToZero",
             "diffusionCurve":"halfQuickIn",
@@ -659,7 +659,7 @@
             "gravity":-4.81,
             "drag":2.5,
             "spinDrag":0.2,
-            "lifeTime":{"min":0.3,"max":0.9},
+            "lifeTime":{"min":0.8,"max":0.8},
             "positionSpread":{"x":0.2, "y":0.1, "z":0.2},
             "colorCurve":"dirt",
             "alphaCurve":"oneToZero",
@@ -703,6 +703,7 @@
           "sprite_id":"little_shrub",
           "config":{
             "lifeTime":{"min":0.01,"max":0.01},
+            "positionSpread":{"x":0.05, "y":0.01, "z":0.05},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -720,6 +721,7 @@
           "sprite_id":"little_shrub",
           "config":{
             "lifeTime":{"min":0.01,"max":0.01},
+            "positionSpread":{"x":0.05, "y":0.01, "z":0.05},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -737,6 +739,7 @@
           "sprite_id":"fuzzy_shrub",
           "config":{
             "lifeTime":{"min":0.01,"max":0.01},
+            "positionSpread":{"x":0.05, "y":0.01, "z":0.05},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -754,6 +757,7 @@
           "sprite_id":"fuzzy_shrub",
           "config":{
             "lifeTime":{"min":0.01,"max":0.01},
+            "positionSpread":{"x":0.05, "y":0.01, "z":0.05},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -771,6 +775,7 @@
           "sprite_id":"red_flower",
           "config":{
             "lifeTime":{"min":0.01,"max":0.01},
+            "positionSpread":{"x":0.15, "y":0.01, "z":0.15},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -785,6 +790,7 @@
           "sprite_id":"white_flower",
           "config":{
             "lifeTime":{"min":0.01,"max":0.01},
+            "positionSpread":{"x":0.15, "y":0.01, "z":0.15},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -799,6 +805,7 @@
           "sprite_id":"standing_grass",
           "config":{
             "lifeTime":{"min":0.01,"max":0.01},
+            "positionSpread":{"x":0.15, "y":0.01, "z":0.15},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",
@@ -813,6 +820,7 @@
           "sprite_id":"standing_fern",
           "config":{
             "lifeTime":{"min":0.01,"max":0.01},
+            "positionSpread":{"x":0.05, "y":0.01, "z":0.05},
             "colorCurve":"nearWhite",
             "alphaCurve":"quickIn",
             "diffusionCurve":"zeroOneZero",

@@ -177,20 +177,20 @@ define([
             var rpmSpan = driveTrain.rpm_max - minRpm;
 
 
-            var revUpFrameLimit = 0.001 * rpmSpan;
+            var revUpFrameLimit = 0.04 * rpmSpan;
 
-            var maxRpm = minRpm + rpmSpan * 0.55 + rpmSpan* 0.45 * accelerateIntent;
+            var maxRpm = minRpm + rpmSpan * 0.45 + rpmSpan* 0.55 * accelerateIntent;
 
             var targetRpm = gearFactor * maxRpm ;
 
             var clutch = 1-dynamic.clutch.state;
 
             if (accelerateIntent > 0) {
-            //    targetRpm = Math.clamp(targetRpm, minRpm, dynamic.rpm.state * driveTrain.rpm_max + revUpFrameLimit);
+                //    targetRpm = Math.clamp(targetRpm, minRpm, dynamic.rpm.state * driveTrain.rpm_max + revUpFrameLimit);
 
-                targetRpm = Math.clamp(targetRpm + clutch * revUpFrameLimit, minRpm, driveTrain.rpm_max) ;
+                targetRpm = Math.clamp(dynamic.rpm.state / driveTrain.rpm_max + clutch * revUpFrameLimit, minRpm, driveTrain.rpm_max) ;
             } else {
-                targetRpm = Math.clamp((targetRpm - clutch * revUpFrameLimit*0.5), minRpm * 0.1, maxRpm*0.1) ;
+                targetRpm = Math.clamp((targetRpm - clutch * revUpFrameLimit*0.5), minRpm * 0.5, maxRpm*0.2) ;
             }
 
             if (targetRpm > dynamic.rpm.state * driveTrain.rpm_max) {
@@ -237,17 +237,42 @@ define([
         AmmoVehicleProcessor.prototype.determineBrakeState = function(dynamic, speedInputState, driveTrain) {
         //    if ()
 
-            var wheelBrake = speedInputState*this.framelWheelRotation * 1;
+            var wheelFactor = speedInputState*this.framelWheelRotation * 1;
 
-            var brakeState = MATH.clamp(-wheelBrake, 0, 1);
+            var brakeState = MATH.clamp(-wheelFactor, 0, 1);
+            var dirSwitch = speedInputState * this.lastInputState;
 
-            if (-wheelBrake > 0.05) {
-                this.brakeCommand = 1;
+
+            if (this.lastbrakeState) {
+                this.brakeCommand += 0.01;
             }
+
+            if (speedInputState === this.lastInputState && Math.abs(this.lastbrakeState)) {
+                this.brakeCommand += 0.01;
+            }
+
+            if (wheelFactor > 0) {
+                if (Math.abs(speedInputState) > Math.abs(this.lastInputState)) {
+                    this.brakeCommand = 0;
+                }
+            } else {
+                this.brakeCommand += 0.01;
+            }
+
+            if (dirSwitch < 0) {
+            //    this.brakeCommand = 0;
+            }
+
+            if (Math.abs(speedInputState) > 0.95) {
+                this.brakeCommand = 0;
+            }
+
+            this.brakeCommand = MATH.clamp(this.brakeCommand, 0, 1);
 
             dynamic.brake.state = brakeState;
             dynamic.brakeCommand.state = this.brakeCommand;
             this.lastbrakeState = MATH.clamp(brakeState*this.brakeCommand + this.brakeCommand * 0.4, 0, 1);
+            this.lastInputState = speedInputState;
         };
 
         AmmoVehicleProcessor.prototype.determineForwardState = function(speedInputState) {
@@ -255,22 +280,8 @@ define([
                 return this.lastInputState;
             }
 
-            var sameDir = speedInputState * this.lastInputState;
-            var forward = speedInputState;
-
-            if (sameDir > 0) {
-                if (Math.abs(forward) > Math.abs(this.lastInputState)) {
-                    this.brakeCommand = 0;
-                }
-            } else {
-                this.brakeCommand = 1;
-            }
-
-            this.lastInputState = forward;
-
-            return forward;
+            return speedInputState;
         };
-
 
         var getWheelInfo = function(vehicle) {
             return vehicle.getWheelInfo();
@@ -307,21 +318,29 @@ define([
 
             vehicleQuat.set(q.x(), q.y(), q.z(), q.w());
 
+            var steerYaw;
+
+            var brake;
 
             for (var i = 0; i < numWheels; i++) {
                 var info = target.getWheelInfo(i);
                 var yawFactor = this.transmissionYawMatrix[i] * yaw_state;
 
+                steerYaw = yaw_state* this.steerMatrix[i];
+
+                brake = 0;
+
                 if (Math.abs(this.lastbrakeState)) {
-                    target.setBrake(this.lastbrakeState * this.brakeMatrix[i] * driveTrain.brake, i);
+                    brake = this.lastbrakeState * this.brakeMatrix[i] * driveTrain.brake;
+                    steerYaw += MATH.clamp(this.transmissionYawMatrix[i] * this.lastbrakeState * 10, -1.5, 1.5);
+                    target.setBrake(brake, i);
                     target.applyEngineForce(0, i);
                 } else {
                     target.setBrake(0, i);
                     target.applyEngineForce(powerState * this.transmissionMatrix[i] + powerState * yawFactor , i);
                 }
 
-
-                target.setSteeringValue(yaw_state* this.steerMatrix[i], i);
+                target.setSteeringValue(steerYaw, i);
 
                 target.updateWheelTransform(i, false);
 

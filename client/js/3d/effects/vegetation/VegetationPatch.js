@@ -206,7 +206,7 @@ define([
                 tempVec.x = this.posX + this.size() * (Math.random() - 0.0);
                 tempVec.y = 0;
                 tempVec.z = this.posZ + this.size() * (Math.random() - 0.0);
-                this.spawnVegetation(tempVec, plantData)
+                this.spawnVegetation(tempVec)
             }
         };
 

@@ -7,63 +7,63 @@
           "shape":"vehicle",
           "rigid_body":{
             "drive_train":{
-              "rpm_min":300,
-              "rpm_max":800,
-              "gears":[2200, 1600, 1100, 850, 650, 220],
-              "enginePower": 5000,
-              "brake"      : 15000
+              "rpm_min":100,
+              "rpm_max":1100,
+              "gears":[2200, 1700, 1300, 1150, 850, 620],
+              "enginePower": 2000,
+              "brake"      : 90000
             },
 
             "mass"      : 55000,
-            "width"     : 3.4,
-            "length"    : 6.2,
+            "width"     : 3.6,
+            "length"    : 6.0,
             "height"    : 1.4,
             "clearance" : 0.0,
 
-            "friction":0.2,
-            "restitution":0.8,
-            "damping":0.37,
+            "friction":0.1,
+            "restitution":0.88,
+            "damping":0.25,
 
             "steerMatrix":[
               -0.3, -0.3,
               -0.0, -0.0,
-               0.1,  0.1
+               0.2,  0.2
             ],
 
             "brakeMatrix":[
-              0.0, 0.0,
-              0.3, 0.3,
-              0.0, 0.0
-            ],
-
-            "transmissionMatrix":[
-              0.0, 0.0,
+              0.5, 0.5,
               0.5, 0.5,
               0.5, 0.5
             ],
 
+            "transmissionMatrix":[
+              0.0, 0.0,
+              0.8, 0.8,
+              0.2, 0.2
+            ],
+
             "transmissionYawMatrix":[
-              0, 0,
-              0.6, -0.6,
-              0.6, -0.6
+              0.0, -0.0,
+              0.8, -0.8,
+              0.0, -0.0
             ],
 
             "wheelMatrix":[
-              [-0.8, 0.2,  0.85],[0.8, 0.2, 0.85],
-              [-0.8, 0.2,     0],[0.8, 0.2,    0],
-              [-0.8, 0.2, -0.85],[0.8, 0.2,-0.85]
+              [-0.7, 0.0,  0.90],[0.7, 0.0, 0.90],
+              [-0.7, 0.0,     0],[0.7, 0.0,    0],
+              [-0.7, 0.0, -0.90],[0.7, 0.0,-0.90]
             ],
 
             "wheelOptions":{
-              "radius":0.5,
-              "suspensionLength":1.0,
-              "suspensionTravelCm":95,
+              "radius":0.7,
+              "suspensionLength":0.60,
+              "suspensionTravelCm":59,
               "suspensionCompression":1,
               "dampingCompression":0.2,
               "dampingRelaxation":1.2,
               "suspensionDamping": 0.2,
-              "rollInfluence":0.4,
-              "frictionSlip":1.1
+              "rollInfluence":0.16,
+              "frictionSlip":3.5
             }
           },
           "control_map":[

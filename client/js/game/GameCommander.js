@@ -192,6 +192,7 @@ define([
                     id = actor.id;
                 }
                 gameWorker.makeGameRequest('setActorSelected', id, onRes);
+                selectionActiveActor = actor;
             }
 
 
