@@ -190,6 +190,8 @@ define([
         };
 
 
+
+
         GameCommander.prototype.setSelectionActiveActor = function(actor) {
 
             var onRes = function(res) {
@@ -205,9 +207,11 @@ define([
                 selectionActiveActor = actor;
             }
 
-
         };
 
+        GameCommander.prototype.getSelectionActiveActor = function() {
+            return selectionActiveActor;
+        };
 
         GameCommander.prototype.enableActorControls = function(actor) {
 

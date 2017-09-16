@@ -477,7 +477,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		dollyStart.copy( dollyEnd );
 
-		scope.update();
+	//	scope.update();
 
 	}
 
@@ -493,7 +493,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		panStart.copy( panEnd );
 
-		scope.update();
+	//	scope.update();
 
 	}
 
@@ -517,7 +517,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		}
 
-		scope.update();
+	//	scope.update();
 
 	}
 
@@ -597,7 +597,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		rotateStart.copy( rotateEnd );
 
-		scope.update();
+	//	scope.update();
 
 	}
 
@@ -626,7 +626,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		dollyStart.copy( dollyEnd );
 
-		scope.update();
+	//	scope.update();
 
 	}
 
@@ -642,7 +642,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		panStart.copy( panEnd );
 
-		scope.update();
+	//	scope.update();
 
 	}
 

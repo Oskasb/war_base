@@ -13,14 +13,14 @@ define([
 
         var expandingPools = {};
 
+        function createActorByDataKey(dataKey, onReadyCB) {
+            new GameActor(null, dataKey, onReadyCB)
+        }
+
         var ActorBuilder = function() {
 
         };
 
-
-        function createActorByDataKey(dataKey, onReadyCB) {
-            new GameActor(null, dataKey, onReadyCB)
-        }
 
         ActorBuilder.prototype.getActor = function(dataKey, callback) {
 

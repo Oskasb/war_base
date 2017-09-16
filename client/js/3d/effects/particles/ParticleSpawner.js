@@ -303,7 +303,6 @@ define([
                 idleEffects.push(spliced);
             }
 
-
             for (i = 0; i < activeEffects.length; i++) {
 
                 if (typeof(activeEffects[i]) === 'undefined') {

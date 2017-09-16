@@ -33,7 +33,7 @@ define([
 
 			this.inputState = new InputState();
 
-			this.visualCursor = new VisualCursor();
+		//	this.visualCursor = new VisualCursor();
 			this.interactiveLayers = {};
 			this.x = 0;
 			this.y = 0;
@@ -69,7 +69,7 @@ define([
 		};
 
 		PointerCursor.prototype.inputMouseState = function(mouseState) {
-			this.visualCursor.visualizeMouseState(mouseState);
+		//	this.visualCursor.visualizeMouseState(mouseState);
 		};
 
 		PointerCursor.prototype.registerInteractiveLayer = function(canvasGuiLayer) {

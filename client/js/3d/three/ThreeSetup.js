@@ -83,7 +83,7 @@ define(['../../ui/GameScreen',
 
         postrenderCallbacks.push(postrenderTick);
 
-        ThreeSetup.addPrerenderCallback(ThreeSetup.updateCameraMatrix);
+    //    ThreeSetup.addPrerenderCallback(ThreeSetup.updateCameraMatrix);
 
         lastTime = 0;
         init();
@@ -93,7 +93,7 @@ define(['../../ui/GameScreen',
 
             scene = new THREE.Scene();
 
-            camera = new THREE.PerspectiveCamera( 45, containerElement.innerWidth / containerElement.innerHeight, 1.0, 5000 );
+            camera = new THREE.PerspectiveCamera( 45, containerElement.innerWidth / containerElement.innerHeight, 0.3, 5000 );
             camera.position.z = 10;
 
          //   console.log("Three Camera:", camera);
@@ -135,13 +135,13 @@ define(['../../ui/GameScreen',
             return store;// Do something with the position...
         }
         
-        tempObj.updateMatrixWorld();
-        vector.setFromMatrixPosition(tempObj.matrixWorld);
+    //    tempObj.updateMatrixWorld();
+        tempObj.getWorldPosition(vector)
         vector.project(camera);
 
         store.x = vector.x * 0.5;
         store.y = vector.y * 0.5;
-        store.z = vector.z;
+        store.z = vector.z * -1;
 
         return store;
     };
@@ -181,10 +181,18 @@ define(['../../ui/GameScreen',
     };
 
     ThreeSetup.updateCameraMatrix = function() {
-        camera.updateMatrix();
-        camera.updateMatrixWorld();
+
+    //    camera.updateProjectionMatrix();
+
+        camera.updateMatrixWorld(true);
+
         frustum.setFromMatrix(frustumMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
         camera.needsUpdate = true;
+
+        for (var i = 0; i < camera.children.length; i++) {
+            camera.children[i].updateMatrixWorld(true);
+        }
+
     };
 
 

@@ -231,6 +231,8 @@ define([
             if (!this.enable) return;
             var distance = ThreeAPI.distanceToCamera(this.rootObj3D.position);
 
+
+
             if (distance < this.boundingSize) {
 
                 this.setRendereable(true);

@@ -6,6 +6,31 @@
         {
           "id":"cursor",
           "tiles":[[0, 0]]
+        },
+        {
+          "id":"cross",
+          "tiles":[[0, 1]]
+        },
+
+        {
+          "id":"horizontal",
+          "tiles":[[0, 2]]
+        },
+        {
+          "id":"vertical",
+          "tiles":[[0, 3]]
+        },
+        {
+          "id":"corner",
+          "tiles":[[1, 0]]
+        },
+        {
+          "id":"hp_plate",
+          "tiles":[[2, 0]]
+        },
+        {
+          "id":"hp_light",
+          "tiles":[[3, 0]]
         }
       ]
     }

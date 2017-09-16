@@ -4,14 +4,16 @@ define([
         'game/GameCommander',
         'game/levels/LevelBuilder',
         'game/worker/GameWorker',
-        'game/worker/io/ConfigPublisher'
+        'game/worker/io/ConfigPublisher',
+        'io/GuiRenderer'
     ],
 
     function(
         GameCommander,
         LevelBuilder,
         GameWorker,
-        ConfigPublisher
+        ConfigPublisher,
+        GuiRenderer
     ) {
 
 
@@ -19,6 +21,7 @@ define([
         var gameWorker;
         var levelBuilder;
         var configPublisher = ConfigPublisher;
+        var guiRenderer;
 
         var pieces = [];
         var controls = [];
@@ -38,7 +41,7 @@ define([
         };
 
         GameAPI.setupGameWorker = function() {
-
+            guiRenderer = new GuiRenderer(GameAPI);
             levelBuilder = new LevelBuilder(GameAPI);
             gameWorker = new GameWorker(workerReady);
             gameCommander = new GameCommander(GameAPI, gameWorker, levelBuilder)
@@ -93,7 +96,10 @@ define([
 
         GameAPI.selectionActivatedActor = function(actor) {
             gameCommander.setSelectionActiveActor(actor)
+        };
 
+        GameAPI.getSelectionActivatedActor = function() {
+            return gameCommander.getSelectionActiveActor()
         };
 
         GameAPI.setActiveCameraControl = function(camCtrl) {
@@ -177,20 +183,24 @@ define([
         };
 
         GameAPI.tickPlayerPiece = function(tpf, time) {
+
+            guiRenderer.requestCameraMatrixUpdate();
+
+            guiRenderer.updateGuiRenderer();
+
             if (controlledActor) {
                 controlledActor.piece.updateGamePiece(tpf, time);
                 controlledActor.piece.setRendereable(true);
             }
+
         };
 
         GameAPI.tickGame = function(tpf, time) {
 
             for (var i = 0; i < pieces.length; i++) {
-
-                    pieces[i].determineVisibility();
-                    pieces[i].updateGamePiece(tpf, time)
+                pieces[i].determineVisibility();
+                pieces[i].updateGamePiece(tpf, time)
             }
-
 
         };
 

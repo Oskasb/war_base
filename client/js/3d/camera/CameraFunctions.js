@@ -426,6 +426,8 @@ define(['PipelineAPI','ThreeAPI', 'ui/GameScreen'], function(PipelineAPI, ThreeA
 
     CameraFunctions.prototype.updateCamera = function() {
 
+        console.log("CAll legacy CAM update")
+
         var targetPos = this.targetPiece.spatial.pos;
         this.targetPiece.spatial.getHeading(headingVec);
         var targetVel = this.targetPiece.spatial.vel;

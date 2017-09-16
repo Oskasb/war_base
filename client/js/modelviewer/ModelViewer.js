@@ -157,8 +157,9 @@ define([
         var gameTime = 0;
 
         ModelViewer.prototype.tickPostrender = function(tpf) {
-            GameAPI.tickPlayerPiece(tpf, gameTime);
+
             PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
+
             evt.fire(evt.list().CLIENT_TICK, tickEvent);
         };
 
@@ -186,18 +187,13 @@ define([
 
             aggDiff += tpf-exactTpf;
 
-            if (Math.abs(tpf-exactTpf) < 0.002) {
-        //        tpf = exactTpf;
-
-            } else {
-       //         console.log("Big DT", tpf, exactTpf, aggDiff);
-            }
+            GameAPI.tickControls(tpf, gameTime);
 
             this.pointerCursor.tick();
 
+            GameAPI.tickPlayerPiece(tpf, gameTime);
 
-            GameAPI.tickControls(tpf, gameTime);
-
+            sceneController.tickEffectPlayers(tpf);
 
             clearTimeout(tickTimeout);
             tickTimeout = setTimeout(function() {
@@ -207,15 +203,13 @@ define([
 
                 GameAPI.tickGame(tpf, gameTime);
 
-                sceneController.tickEffectPlayers(tpf);
-
             }, 0);
 
 
 
             this.viewerMain.tickViewerClient(tpf);
             
-            evt.fire(evt.list().CAMERA_TICK, {frame:frame, tpf:tpf});
+        //    evt.fire(evt.list().CAMERA_TICK, {frame:frame, tpf:tpf});
 
             PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_GAME_TICK', performance.now() - start);
 

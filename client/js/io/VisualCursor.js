@@ -79,9 +79,10 @@ define([
 		};
 
 
+
 		VisualCursor.prototype.visualizeMouseState = function(mState) {
             mouseState = mState;
-            this.showCursorPoint();
+        //    this.showCursorPoint();
 		};
 
 		VisualCursor.prototype.visualizeVector = function(fromX, fromY, toX, toY) {

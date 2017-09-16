@@ -18,7 +18,7 @@ define(['Events',
 
     var setupThreeCamera = function(e) {
 
-        evt.on(evt.list().CLIENT_TICK, updateCamera);
+    //    evt.on(evt.list().CLIENT_TICK, updateCamera);
         
         cameraFunctions = new CameraFunctions();
         PipelineAPI.setCategoryKeyValue('CAMERA_DATA', 'CAMERA', cameraFunctions);
@@ -29,10 +29,10 @@ define(['Events',
 
     var updateCamera = function(e) {
         if (!on) return;
-        tpf = evt.args(e).tpf;
-        ownPiece = PipelineAPI.readCachedConfigKey('GAME_DATA', 'OWN_PLAYER').ownPiece;
-        cameraFunctions.setCameraTargetPiece(ownPiece);
-        cameraFunctions.updateCamera(tpf);
+    //    tpf = evt.args(e).tpf;
+    //    ownPiece = PipelineAPI.readCachedConfigKey('GAME_DATA', 'OWN_PLAYER').ownPiece;
+    //    cameraFunctions.setCameraTargetPiece(ownPiece);
+    //    cameraFunctions.updateCamera(tpf);
     };
 
     evt.on(evt.list().ENGINE_READY, setupThreeCamera);

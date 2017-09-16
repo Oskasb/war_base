@@ -103,20 +103,11 @@ define([],
         };
                 
         Particle.prototype.setAttribute1D = function(name, value) {
-            if (isNaN(value)) {
-                console.log("Value isNaN")
-            }
             this.buffers[name][this.attributes[name]] = value;
             this.attributeBuffers[name].needsUpdate = true;
         };
 
         Particle.prototype.setAttribute2D = function(name, value1, value2) {
-            if (isNaN(value1)) {
-                console.log("Value1 isNaN")
-            }
-            if (isNaN(value2)) {
-                console.log("Value2 isNaN")
-            }
 
             this.buffers[name][this.attributes[name]] = value1;
             this.buffers[name][this.attributes[name]+1] = value2;
@@ -125,16 +116,6 @@ define([],
 
         Particle.prototype.setAttribute3D = function(name, value1, value2, value3) {
 
-            if (isNaN(value1)) {
-                console.log("Value1 isNaN")
-            }
-            if (isNaN(value2)) {
-                console.log("Value2 isNaN")
-            }
-            if (isNaN(value3)) {
-                console.log("Value3 isNaN")
-            }
-
             this.buffers[name][this.attributes[name]] = value1;
             this.buffers[name][this.attributes[name]+1] = value2;
             this.buffers[name][this.attributes[name]+2] = value3;
@@ -142,20 +123,6 @@ define([],
         };
 
         Particle.prototype.setAttribute4D = function(name, value1, value2, value3, value4) {
-
-            if (isNaN(value1)) {
-                console.log("Value1 isNaN")
-            }
-            if (isNaN(value2)) {
-                console.log("Value2 isNaN")
-            }
-            if (isNaN(value3)) {
-                console.log("Value3 isNaN")
-            }
-            if (isNaN(value4)) {
-                console.log("Value4 isNaN")
-            }
-
 
             this.buffers[name][this.attributes[name]] = value1;
             this.buffers[name][this.attributes[name]+1] = value2;

@@ -141,8 +141,6 @@ define([
 
         ViewerMain.prototype.trackClientPieces = function(count) {
 
-
-
             if (this.lastPieceCount != count) {
                 this.lastPieceCount = count;
                 evt.fire(evt.list().MONITOR_STATUS, {CLIENT_PIECES:this.pieceCount});
@@ -152,14 +150,13 @@ define([
         ViewerMain.prototype.updatePieces = function(tpf) {
             this.pieceCount = 0;
             for (var key in this.pieces) {
-                this.pieces[key].updatePlayer(tpf);
                 this.pieceCount += 1;
             }
         };
 
         ViewerMain.prototype.tickViewerClient = function(tpf) {
-            this.updatePieces(tpf);
-            this.trackClientPieces(this.pieceCount);
+        //    this.updatePieces(tpf);
+        //    this.trackClientPieces(this.pieceCount);
             evt.getFiredCount();
         };
 
