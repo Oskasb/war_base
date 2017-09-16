@@ -7,11 +7,11 @@
           "shape":"vehicle",
           "rigid_body":{
             "drive_train":{
-              "rpm_min":150,
+              "rpm_min":200,
               "rpm_max":1500,
               "gears":[2200, 1200, 800, 650],
               "enginePower": 2000,
-              "brake"      : 50000
+              "brake"      : 80000
             },
 
             "mass"      : 55000,
@@ -44,8 +44,8 @@
 
             "transmissionYawMatrix":[
               0.0, -0.0,
-              1.5, -1.5,
-              1.5, -1.5
+              1.0, -1.0,
+              0.5, -0.5
             ],
 
             "wheelMatrix":[
@@ -62,8 +62,8 @@
               "dampingCompression":0.2,
               "dampingRelaxation":1.2,
               "suspensionDamping": 0.2,
-              "rollInfluence":0.16,
-              "frictionSlip":3.5
+              "rollInfluence":0.19,
+              "frictionSlip":5.5
             }
           },
           "control_map":[

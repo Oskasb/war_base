@@ -333,7 +333,7 @@ define([
                 body.setLinearFactor(VECTOR_AUX);
             } else {
 
-                superDrag = Math.clamp(superDrag + this.brakeCommand * 2, 0, 1);
+                superDrag = Math.clamp(superDrag + this.brakeCommand, 0, 1);
 
                 VECTOR_AUX.setX(1 - superDrag);
                 VECTOR_AUX.setY(1);
@@ -353,7 +353,7 @@ define([
             var brake;
 
             for (var i = 0; i < numWheels; i++) {
-                var info = target.getWheelInfo(i);
+
                 var yawFactor = this.transmissionYawMatrix[i] * yaw_state;
 
                 steerYaw = yaw_state* this.steerMatrix[i];
@@ -362,21 +362,21 @@ define([
 
                 if (Math.abs(this.lastbrakeState)) {
                     brake = this.lastbrakeState * this.brakeMatrix[i] * driveTrain.brake;
-                //    steerYaw += MATH.clamp(this.transmissionYawMatrix[i] * this.lastbrakeState * 10, -1.5, 1.5);
+                    steerYaw += MATH.clamp(this.transmissionYawMatrix[i] * this.lastbrakeState * 2, -1.0, 1.0);
                     target.setBrake(brake, i);
                     target.applyEngineForce(0, i);
                 } else {
                     target.setBrake(0, i);
-                    target.applyEngineForce(powerState * this.transmissionMatrix[i] + powerState * yawFactor , i);
+                    target.applyEngineForce(powerState * this.transmissionMatrix[i] + powerState * this.transmissionMatrix[i] * yawFactor , i);
                 }
 
                 target.setSteeringValue(steerYaw, i);
 
                 target.updateWheelTransform(i, false);
 
-            //    var transform = target.getWheelTransformWS(i);
-             //   this.wheelInfos[i].setTransform(transform);
                 this.framelWheelRotation = this.wheelInfos[i].updateValue('deltaRotation', vehicleQuat) * (1 - superDrag);
+
+
             }
 
             this.lastbrakeState = 0;

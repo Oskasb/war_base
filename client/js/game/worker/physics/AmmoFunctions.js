@@ -331,9 +331,9 @@ define([
 
             var heightDiff = maxHeight-minHeight;
 
-            var restitution =  0.25;
+            var restitution =  0.15;
             var damping     =  8.0;
-            var friction    =  4.0;
+            var friction    =  2.0;
 
             //    console.log("Ground Matrix: ", data.length)
 
