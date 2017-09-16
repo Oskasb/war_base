@@ -7,21 +7,21 @@
           "shape":"vehicle",
           "rigid_body":{
             "drive_train":{
-              "rpm_min":100,
-              "rpm_max":1100,
-              "gears":[2200, 1700, 1300, 1150, 850, 620],
+              "rpm_min":150,
+              "rpm_max":1500,
+              "gears":[2200, 1200, 800, 650],
               "enginePower": 2000,
-              "brake"      : 90000
+              "brake"      : 50000
             },
 
             "mass"      : 55000,
             "width"     : 3.6,
             "length"    : 6.0,
-            "height"    : 1.4,
+            "height"    : 1.2,
             "clearance" : 0.0,
 
             "friction":0.1,
-            "restitution":0.88,
+            "restitution":0.8,
             "damping":0.25,
 
             "steerMatrix":[
@@ -44,18 +44,18 @@
 
             "transmissionYawMatrix":[
               0.0, -0.0,
-              0.8, -0.8,
-              0.0, -0.0
+              1.5, -1.5,
+              1.5, -1.5
             ],
 
             "wheelMatrix":[
-              [-0.7, 0.0,  0.90],[0.7, 0.0, 0.90],
-              [-0.7, 0.0,     0],[0.7, 0.0,    0],
-              [-0.7, 0.0, -0.90],[0.7, 0.0,-0.90]
+              [-0.7, 0.2,  0.90],[0.7, 0.2, 0.90],
+              [-0.7, 0.2,     0],[0.7, 0.2,    0],
+              [-0.7, 0.2, -0.90],[0.7, 0.2,-0.90]
             ],
 
             "wheelOptions":{
-              "radius":0.7,
+              "radius":0.5,
               "suspensionLength":0.60,
               "suspensionTravelCm":59,
               "suspensionCompression":1,

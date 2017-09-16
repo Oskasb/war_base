@@ -244,11 +244,11 @@ define([
 
 
             if (this.lastbrakeState) {
-                this.brakeCommand += 0.01;
+                this.brakeCommand += 0.02;
             }
 
             if (speedInputState === this.lastInputState && Math.abs(this.lastbrakeState)) {
-                this.brakeCommand += 0.01;
+                this.brakeCommand += 0.02;
             }
 
             if (wheelFactor > 0) {
@@ -256,7 +256,7 @@ define([
                     this.brakeCommand = 0;
                 }
             } else {
-                this.brakeCommand += 0.01;
+                this.brakeCommand += 0.05;
             }
 
             if (dirSwitch < 0) {
@@ -288,6 +288,8 @@ define([
         };
 
 
+        var superDrag = 0;
+
         AmmoVehicleProcessor.prototype.applyControlState = function(target, controls) {
 
             var driveTrain = this.driveTrain;
@@ -307,13 +309,41 @@ define([
 
             var yaw_state = controls.yaw_state + controls.steer_reverse;
 
+
+            yaw_state *= driveTrain.gears.length / (driveTrain.gears.length + dynamic.gearIndex.state * 2);
+
             var powerState = accelerateIntent * driveTrain.enginePower * driveTrain.gears[dynamic.gearIndex.state] * dynamic.rpm.state;
+
+            powerState *= (1-Math.abs(yaw_state*0.7));
 
             this.framelWheelRotation = 0;
 
             var numWheels = target.getNumWheels();
 
-            target.getRigidBody().getMotionState().getWorldTransform(TRANSFORM_AUX);
+            var body = target.getRigidBody();
+
+            body.getMotionState().getWorldTransform(TRANSFORM_AUX);
+
+
+            if (!this.lastbrakeState) {
+                superDrag = 0;
+                VECTOR_AUX.setX(1);
+                VECTOR_AUX.setY(1);
+                VECTOR_AUX.setZ(1);
+                body.setLinearFactor(VECTOR_AUX);
+            } else {
+
+                superDrag = Math.clamp(superDrag + this.brakeCommand * 2, 0, 1);
+
+                VECTOR_AUX.setX(1 - superDrag);
+                VECTOR_AUX.setY(1);
+                VECTOR_AUX.setZ(1 - superDrag);
+                body.setLinearFactor(VECTOR_AUX);
+
+            }
+
+
+
             var q = TRANSFORM_AUX.getRotation();
 
             vehicleQuat.set(q.x(), q.y(), q.z(), q.w());
@@ -332,7 +362,7 @@ define([
 
                 if (Math.abs(this.lastbrakeState)) {
                     brake = this.lastbrakeState * this.brakeMatrix[i] * driveTrain.brake;
-                    steerYaw += MATH.clamp(this.transmissionYawMatrix[i] * this.lastbrakeState * 10, -1.5, 1.5);
+                //    steerYaw += MATH.clamp(this.transmissionYawMatrix[i] * this.lastbrakeState * 10, -1.5, 1.5);
                     target.setBrake(brake, i);
                     target.applyEngineForce(0, i);
                 } else {
@@ -346,7 +376,7 @@ define([
 
             //    var transform = target.getWheelTransformWS(i);
              //   this.wheelInfos[i].setTransform(transform);
-                this.framelWheelRotation = this.wheelInfos[i].updateValue('deltaRotation', vehicleQuat);
+                this.framelWheelRotation = this.wheelInfos[i].updateValue('deltaRotation', vehicleQuat) * (1 - superDrag);
             }
 
             this.lastbrakeState = 0;
@@ -375,7 +405,7 @@ define([
                 var property =      feedback.property;
                 var targetStateId = feedback.stateid;
                 var factor =        feedback.factor;
-                var state =         piece.getPieceStateByStateId(targetStateId);
+                var state =         piece.getPieceStateByStateId(targetStateId) ;
                 state.value +=      this.interpretVehicleState(param, key, property) * factor;
         };
 
@@ -395,8 +425,8 @@ define([
 
 
         AmmoVehicleProcessor.prototype.constrainRotation = function(body, threeObj) {
-            var safeAngle = 0.8;
-            var criticalAngle = 0.8;
+            var safeAngle = 0.6;
+            var criticalAngle = 0.6;
             var slugX = 1;
             var slugZ = 1;
 

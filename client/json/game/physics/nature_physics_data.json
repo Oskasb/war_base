@@ -11,11 +11,11 @@
           },
           "rigid_body":{
             "shape":"Cylinder",
-            "args":[0.3, 0.3, 1],
+            "args":[0.6, 0.6, 1],
 
-            "friction":25,
-            "restitution":0.01,
-            "damping":1,
+            "friction":15,
+            "restitution":0.5,
+            "damping":10,
             "mass":0
           },
           "state_map":[
@@ -40,13 +40,13 @@
           "rigid_body":{
             "shape":"Cylinder",
             "state":"WANTS_DEACTIVATION",
-            "args":[0.5, 0.5, 6],
+            "args":[0.7, 0.7, 6],
             "angular_factor":[1,  0, 1],
             "linear_factor":[1, 1.0, 1],
-            "friction":0.15,
-            "restitution":0.2,
-            "damping":4,
-            "mass":110000
+            "friction":0.85,
+            "restitution":0.8,
+            "damping":3,
+            "mass":60000
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
