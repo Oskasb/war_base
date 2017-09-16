@@ -199,8 +199,10 @@ define([
 
         };
 
+        var sysKey = 'THREE'
+
         ParticleSpawner.prototype.activateEffect = function(effect) {
-            effect.setEffectData(this.particleEffectData.buildEffect(effect.effectData, 'THREE', effect.getEffectId()));
+            effect.setEffectData(this.particleEffectData.buildEffect(effect.effectData, sysKey, effect.getEffectId()));
 
 
 

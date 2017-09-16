@@ -11,7 +11,11 @@ define(['PipelineObject'],
         var simulations = {};
 
         var cacheSprites = function(src, data) {
-            sprites[src] = {};
+
+            if (!sprites[src]) {
+                sprites[src] = {};
+            }
+
             for (var i = 0; i < data.length; i++) {
                 sprites[src][data[i].id] = data[i];
             }
@@ -29,14 +33,22 @@ define(['PipelineObject'],
         };
         
         var cacheParticles = function(src, data) {
-            particles[src] = {};
+
+            if (!particles[src]) {
+                particles[src] = {};
+            }
+
             for (var i = 0; i < data.length; i++) {
                 particles[src][data[i].id] = data[i];
             }
         };
 
         var cacheSimulations = function(src, data) {
-            simulations[src] = {};
+
+            if (!simulations[src]) {
+                simulations[src] = {};
+            }
+
             for (var i = 0; i < data.length; i++) {
                 simulations[src][data[i].id] = data[i];
             }
@@ -47,13 +59,17 @@ define(['PipelineObject'],
         };
 
         ParticleEffectData.prototype.loadEffectData = function() {
-            new PipelineObject("PARTICLE_SPRITES", "GUI_ATLAS", cacheSprites);
+            new PipelineObject("PARTICLE_SPRITES", "GUI", cacheSprites);
             new PipelineObject("PARTICLE_SPRITES", "ATLAS", cacheSprites);
             new PipelineObject("PARTICLE_SPRITES", "FONT",  cacheSprites);
+
             new PipelineObject("PARTICLE_EFFECTS", "THREE", cacheEffects);
+            new PipelineObject("GUI_EFFECTS",      "THREE", cacheEffects);
             new PipelineObject("VEGETATION_EFFECTS", "THREE", cacheEffects);
             new PipelineObject("PARTICLE_SIMULATIONS", "THREE", cacheSimulations);
             new PipelineObject("PARTICLES",        "THREE", cacheParticles);
+            new PipelineObject("GUI_PARTICLES",          "THREE", cacheParticles);
+            new PipelineObject("VEGETATION_PARTICLES",   "THREE", cacheParticles);
             
         };
 

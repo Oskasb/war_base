@@ -2,7 +2,7 @@
 [
   {
     "PARTICLE_SPRITES": {
-      "GUI_ATLAS": [
+      "GUI": [
         {
           "id":"cursor",
           "tiles":[[0, 0]]

@@ -1,6 +1,6 @@
 [
   {
-    "PARTICLE_EFFECTS": {
+    "GUI_EFFECTS": {
       "THREE":[
         {
           "id":"gui_pointer_follow_effect",

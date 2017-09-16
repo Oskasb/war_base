@@ -90,6 +90,7 @@
 
       "threedata/effects/three_vegetation_particles.json",
       "threedata/effects/three_gui_particles.json",
+      "threedata/effects/three_particles.json",
 
       "threedata/vegetation/three_particle_vegetation.json",
       "threedata/vegetation/three_vegetation_configs.json",

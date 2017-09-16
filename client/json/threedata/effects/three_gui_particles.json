@@ -1,10 +1,10 @@
 [
   {
-    "PARTICLES": {
+    "GUI_PARTICLES": {
       "THREE":[
         {
           "id":"gui_pointer_follow_particle",
-          "sprite_key":"GUI_ATLAS",
+          "sprite_key":"GUI",
           "sprite_id":"cursor",
           "config":{
             "lifeTime":{"min":0.5,"max":2},
