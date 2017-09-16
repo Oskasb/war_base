@@ -145,7 +145,7 @@ define([],
         };
 
         EffectSimulators.attrib2D = function(particle, tpf, source, target) {
-            particle.setAttribute3D(target,
+            particle.setAttribute2D(target,
                 particle.params[source].x,
                 particle.params[source].y)
         };

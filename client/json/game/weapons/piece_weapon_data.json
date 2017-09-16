@@ -58,7 +58,7 @@
           "turret":{
             "name":"Swivel Turret",
             "options":{
-              "range":35,
+              "range":40,
               "targetting":"nearest_hostile",
               "turn_speed":0.015,
               "axis_factors":[1, 1, 0, 1],
@@ -87,7 +87,7 @@
             "name":"Main Gun",
             "options":{
               "range":200,
-              "velocity":220,
+              "velocity":120,
               "cooldown":4.5,
               "focus_time":3.5,
               "particle_effect_id":"cannon_trail_effect",
@@ -103,14 +103,7 @@
           ],
           "feedback_map":[
             {"param":"dynamic",     "key":"triggerCommand",  "property":"state", "stateid":"command_cannon_trigger",  "factor":1},
-            {"param":"dynamic",     "key":"activateCommand", "property":"state", "stateid":"command_shell_activate",  "factor":1},
-            {"param":"dynamic",     "key":"travelTime",      "property":"state", "stateid":"shell_travel_time",       "factor":1},
-            {"param":"dynamic",     "key":"fromX",           "property":"state", "stateid":"shell_from_x",            "factor":1},
-            {"param":"dynamic",     "key":"fromY",           "property":"state", "stateid":"shell_from_y",            "factor":1},
-            {"param":"dynamic",     "key":"fromZ",           "property":"state", "stateid":"shell_from_z",            "factor":1},
-            {"param":"dynamic",     "key":"toX",             "property":"state", "stateid":"shell_to_x",              "factor":1},
-            {"param":"dynamic",     "key":"toY",             "property":"state", "stateid":"shell_to_y",              "factor":1},
-            {"param":"dynamic",     "key":"toZ",             "property":"state", "stateid":"shell_to_z",              "factor":1}
+            {"param":"dynamic",     "key":"activateCommand", "property":"state", "stateid":"command_shell_activate",  "factor":1}
           ],
           "state_map":[]
         }
@@ -124,7 +117,7 @@
             "name":"Swivel Gun",
             "options":{
               "range":35,
-              "velocity":80,
+              "velocity":55,
               "cooldown":0.08,
               "focus_time":0.3,
               "particle_effect_id":"machine_gun_trail_effect",
@@ -140,14 +133,7 @@
           ],
           "feedback_map":[
             {"param":"dynamic",     "key":"triggerCommand",  "property":"state", "stateid":"command_swivel_trigger",  "factor":1},
-            {"param":"dynamic",     "key":"activateCommand", "property":"state", "stateid":"command_bullet_activate", "factor":1},
-            {"param":"dynamic",     "key":"travelTime",      "property":"state", "stateid":"bullet_travel_time",      "factor":1},
-            {"param":"dynamic",     "key":"fromX",           "property":"state", "stateid":"bullet_from_x",           "factor":1},
-            {"param":"dynamic",     "key":"fromY",           "property":"state", "stateid":"bullet_from_y",           "factor":1},
-            {"param":"dynamic",     "key":"fromZ",           "property":"state", "stateid":"bullet_from_z",           "factor":1},
-            {"param":"dynamic",     "key":"toX",             "property":"state", "stateid":"bullet_to_x",             "factor":1},
-            {"param":"dynamic",     "key":"toY",             "property":"state", "stateid":"bullet_to_y",             "factor":1},
-            {"param":"dynamic",     "key":"toZ",             "property":"state", "stateid":"bullet_to_z",             "factor":1}
+            {"param":"dynamic",     "key":"activateCommand", "property":"state", "stateid":"command_bullet_activate", "factor":1}
           ],
           "state_map":[]
         }

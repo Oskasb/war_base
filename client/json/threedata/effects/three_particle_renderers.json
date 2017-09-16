@@ -17,6 +17,21 @@
         },
 
         {
+          "id":"gpu_additive_gui_renderer",
+          "material_id":"gpu_gui_sprite_atlas_material",
+          "particle_pool":300,
+          "particle_geometry":"quad",
+          "is_screenspace":true,
+          "material_options":{
+            "blending":"AdditiveBlending",
+            "transparent":true,
+            "alphaTest":0.001,
+            "depthWrite":false,
+            "depthTest":false
+          }
+        },
+
+        {
           "id":"gpu_additive_atlas_renderer",
           "material_id":"gpu_sprite_atlas_material",
           "particle_pool":300,

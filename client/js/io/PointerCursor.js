@@ -56,11 +56,6 @@ define([
 			evt.on(evt.list().SCREEN_CONFIG, configureListener);
 		};
 
-		PointerCursor.prototype.moveTo = function(x, y, hoverCount) {
-			this.x = x;
-			this.y = y;
-			return this.visualCursor.moveTo(x, y, hoverCount);
-		};
 
         PointerCursor.prototype.lineDistance = function(fromX, fromY, toX, toY) {
             return Math.sqrt((fromX - toX)*(fromX - toX) + (fromY - toY)*(fromY - toY));
@@ -73,8 +68,8 @@ define([
 		//	this.visualCursor.visualizeVector(fromX, fromY, toX, toY);
 		};
 
-		PointerCursor.prototype.inputMouseAction = function(action) {
-			this.visualCursor.visualizeMouseAction(action);
+		PointerCursor.prototype.inputMouseState = function(mouseState) {
+			this.visualCursor.visualizeMouseState(mouseState);
 		};
 
 		PointerCursor.prototype.registerInteractiveLayer = function(canvasGuiLayer) {

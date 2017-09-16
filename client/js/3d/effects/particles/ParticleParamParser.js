@@ -66,7 +66,7 @@ define([],
             pParams[param].y = quat.y;
             pParams[param].z = quat.z;
             pParams[param].w = quat.w;
-            pParams[param].normalize()
+        //    pParams[param].normalize()
         }
 
         function applyCurve1D(pParams, params, curve) {
@@ -144,9 +144,15 @@ define([],
                 console.log("No tiles param for sprite", particle, sprite)
             }
 
-            var idx = Math.floor(Math.random()*sprite.tiles.length);
-            particle.params.tiles.x = sprite.tiles[idx][0];
-            particle.params.tiles.y = sprite.tiles[idx][1];
+            if (sprite.tiles.length > 1) {
+                var idx = Math.floor(Math.random()*sprite.tiles.length);
+                particle.params.tiles.x = sprite.tiles[idx][0];
+                particle.params.tiles.y = sprite.tiles[idx][1];
+            } else {
+                particle.params.tiles.x = sprite.tiles[0][0];
+                particle.params.tiles.y = sprite.tiles[0][1];
+            }
+
         };
 
         

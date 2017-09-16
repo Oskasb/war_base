@@ -1,0 +1,18 @@
+[
+  {
+    "PARTICLE_EFFECTS": {
+      "THREE":[
+        {
+          "id":"gui_pointer_follow_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_gui_renderer",
+            "particle_id":"gui_pointer_follow_particle",
+            "count":4,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        }
+      ]
+    }
+  }
+]

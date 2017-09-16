@@ -21,6 +21,16 @@ define([
 
     var outOfRange;
 
+        var g;
+
+        var calcElevationForTrajectory = function(vel, distance, gravity) {
+            var elevation = 0.5*Math.asin(gravity*distance / (vel*vel));
+            if (isNaN(elevation)) {
+                elevation = -0.2;
+            }
+            return elevation;
+        };
+
 
         var TurretModule = function(dataKey, ready, index) {
 
@@ -78,10 +88,13 @@ define([
 
         TurretModule.prototype.aimAtTargetActor = function(targetActor, module, tpf) {
 
-        //    module.getObjec3D().updateMatrixWorld();
+            module.getObjec3D().updateMatrixWorld();
         //    targetActor.piece.rootObj3D.updateMatrixWorld();
 
             aimVec.copy(targetActor.piece.getPos());
+
+            var elevate = 0;
+
 
             tempObj3D.quaternion.copy(module.getObjec3D().quaternion);
 
@@ -92,16 +105,29 @@ define([
             module.getObjec3D().quaternion.y *= this.axisFactors[1];
             module.getObjec3D().quaternion.z *= this.axisFactors[2];
 
+            if (module.weapons[0] && this.axisFactors[0]) {
+
+                module.weapons[0].getMuzzlePosition(module, tempObj3D.position);
+                tempObj3D.position.setFromMatrixPosition(module.getObjec3D().matrixWorld);
+
+                var distance = Math.sqrt(tempObj3D.position.distanceToSquared(targetActor.piece.getPos()));
+                var exitVelocity = module.weapons[0].weaponOptions.velocity;
+                elevate = calcElevationForTrajectory(exitVelocity, distance, g);
+                module.getObjec3D().rotateX(this.axisFactors[0] * elevate);
+            }
+
+
+            this.dynamic.aimPitch.state = MATH.subAngles(module.getObjec3D().rotation.x, tempObj3D.rotation.x);
+            this.dynamic.aimYaw.state = MATH.subAngles(module.getObjec3D().rotation.y, tempObj3D.rotation.y);
+
             tempObj3D.quaternion.slerp(module.getObjec3D().quaternion, this.turnSpeed / tpf);
+
             module.getObjec3D().quaternion.copy(tempObj3D.quaternion);
 
             this.dynamic.quatX.state = module.getObjec3D().quaternion.x;
             this.dynamic.quatY.state = module.getObjec3D().quaternion.y;
             this.dynamic.quatZ.state = module.getObjec3D().quaternion.z;
             this.dynamic.quatW.state = module.getObjec3D().quaternion.w;
-
-            this.dynamic.aimPitch.state = MATH.subAngles(module.getObjec3D().rotation.x, tempObj3D.rotation.x);
-            this.dynamic.aimYaw.state = MATH.subAngles(module.getObjec3D().rotation.y, tempObj3D.rotation.y);
 
 
         };
@@ -185,6 +211,8 @@ define([
             if (!this.config) return;
 
             var target = this.processTargetting(simulationState, module);
+
+            g = simulationState.getGravityConstant();
 
             if (target) {
 

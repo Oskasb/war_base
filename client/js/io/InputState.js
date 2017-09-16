@@ -31,7 +31,6 @@ define([
                 dragDistance:[0, 0],
                 action:[0, 0],
                 lastAction:[0, 0],
-                visualXY: {x:0, y:0},
                 interactionTargets:[],
                 pressingButton:false
             };
@@ -106,12 +105,12 @@ define([
             this.processDragState(pointerCursor);
 
             this.elementListeners.sampleMouseState(this.mouseState);
-            this.mouseState.visualXY = pointerCursor.moveTo(this.mouseState.x, this.mouseState.y);
+
             this.processHoverTargets();
+            pointerCursor.inputMouseState(this.mouseState);
 
             if (this.mouseState.lastAction[0] != this.mouseState.action[0]) {
                 this.dragEnded();
-                pointerCursor.inputMouseAction(this.mouseState.action);
 
                 if (this.mouseState.action[0] + this.mouseState.action[1]) {
                     this.mouseButtonEmployed();
@@ -139,9 +138,7 @@ define([
             }
 
             if (this.mouseState.action[0] + this.mouseState.action[1]) {
-
                 this.showActivatedHovered();
-
             }
 
             if (!this.buttonDownTargets.length) {

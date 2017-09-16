@@ -47,6 +47,7 @@ define(['PipelineObject'],
         };
 
         ParticleEffectData.prototype.loadEffectData = function() {
+            new PipelineObject("PARTICLE_SPRITES", "GUI_ATLAS", cacheSprites);
             new PipelineObject("PARTICLE_SPRITES", "ATLAS", cacheSprites);
             new PipelineObject("PARTICLE_SPRITES", "FONT",  cacheSprites);
             new PipelineObject("PARTICLE_EFFECTS", "THREE", cacheEffects);

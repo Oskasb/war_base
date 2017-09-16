@@ -1,0 +1,13 @@
+
+[
+  {
+    "PARTICLE_SPRITES": {
+      "GUI_ATLAS": [
+        {
+          "id":"cursor",
+          "tiles":[[0, 0]]
+        }
+      ]
+    }
+  }
+]

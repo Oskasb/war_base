@@ -35,8 +35,9 @@ define(['../../ui/GameScreen',
     var avgTfp = 0;
 
     ThreeSetup.callPrerender = function(time) {
-        time = performance.now()  - initTime;
+        requestAnimationFrame( ThreeSetup.callPrerender );
 
+        time = performance.now()  - initTime;
         idle = (performance.now() / 1000) - renderEnd;
 
         PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_ANIM_IDLE', idle);
@@ -69,8 +70,6 @@ define(['../../ui/GameScreen',
             postrenderCallbacks[i](avgTfp);
         }
         evt.fire(evt.list().POSTRENDER_TICK, postrenderEvt);
-        requestAnimationFrame( ThreeSetup.callPrerender );
-
     };
 
 

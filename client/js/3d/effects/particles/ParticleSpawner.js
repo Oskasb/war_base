@@ -160,7 +160,15 @@ define([
             effect.setEffectId(id);
 
             effect.setEffectPosition(pos);
-            
+
+            if (vel) {
+                effect.setEffectVelocity(vel);
+            } else {
+                effect.vel.x = 0;
+                effect.vel.y = 0;
+                effect.vel.z = 0;
+            }
+
             if (size) {
                 effect.setEffectSize(size);
             } else {
@@ -182,9 +190,9 @@ define([
                 effect.setEffectDuration(duration);
             }
 
-            effect.setEffectVelocity(vel);
-
             requestedEffects.push(effect);
+
+            //    this.activateEffect(effect);
 
             return effect;
         //    return this.activateEffect(effect);
@@ -204,7 +212,7 @@ define([
             }
 
             for (var i = 0; i < renderer.length; i++) {
-                if (renderer[i].particles.length > 25) {
+                if (renderer[i].particles.length > 5) {
                     return this.renderEffect(renderer[i], effect);
                 }
             }

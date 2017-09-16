@@ -122,7 +122,6 @@ define(['3d/effects/particles/EffectSimulators',
 
             var frameTpfFraction = this.lastTpf*(index/allowedCount);
 
-            if (this.effectData.gpuEffect) {
                 ParticleParamParser.applyEffectParams(particle, this.effectData.gpuEffect.init_params);
                 particle.posOffset.set(0, 0, 0);
 
@@ -132,9 +131,7 @@ define(['3d/effects/particles/EffectSimulators',
                 particle.setQuaternion(this.quat);
                 particle.setPosition(this.pos);
                 particle.addPosition(particle.posOffset)
-            } else {
-                ParticleParamParser.applyEffectParams(particle, this.effectData.simulation.init_params);
-            }
+
 
             ParticleParamParser.applyEffectSprite(particle, this.effectData.sprite);
 
@@ -192,9 +189,15 @@ define(['3d/effects/particles/EffectSimulators',
                     if (this.aliveParticles[i].dead) {
                         EffectSimulators.dead(this.aliveParticles[i], tpf);
                         this.deadParticles.push(this.aliveParticles[i]);
+
+                        console.log("Legacy Fx update called...")
+
                     } else {
                         //    this.updateGpuParticle(this.aliveParticles[i], tpf)
                         if (this.aliveParticles[i].params.lifeTime.value < this.age + this.lastTpf * 2) {
+
+                            console.log("Legacy Fx update called...")
+
                             EffectSimulators.dead(this.aliveParticles[i], tpf);
                             this.deadParticles.push(this.aliveParticles[i]);
                         }

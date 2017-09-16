@@ -1,0 +1,52 @@
+[
+  {
+    "PARTICLES": {
+      "THREE":[
+        {
+          "id":"gui_pointer_follow_particle",
+          "sprite_key":"GUI_ATLAS",
+          "sprite_id":"cursor",
+          "config":{
+            "lifeTime":{"min":0.5,"max":2},
+            "positionSpread":{"x":0.01, "y":0.01, "z":0.01},
+            "gravity":0.0001,
+            "colorCurve":"rainbow",
+            "alphaCurve":"zeroOneZero",
+            "diffusionCurve":"fullWhite",
+            "scaleCurve":"sublteSin",
+            "size":{"value":0.06, "min": 0.0, "max": 0.26},
+            "spin":{"value":3.145, "min": -2, "max": 0},
+            "velocityDiffusion":0.01,
+            "accelerationDiffusion":0.01,
+            "colorDiffusion":0.05,
+            "velocityFactor":0.03
+          }
+        },
+        {
+          "id":"gui_selection_active_particle",
+          "sprite_key":"ATLAS",
+          "sprite_id":"energy_dot",
+          "config":{
+            "age":     {"min":0.01, "max":2.5},
+            "lifeTime":{"min":3.2,"max":4.3},
+            "positionSpread":{"x":0.01, "y":0.01, "z":0.01},
+            "gravity":0.01,
+            "drag":2.7,
+            "bend":0.0001,
+            "spinDrag":0.05,
+            "colorCurve":"rainbow",
+            "alphaCurve":"sin",
+            "diffusionCurve":"nearBlack",
+            "scaleCurve":"sublteSin",
+            "size":{"value":1.7, "min": 0.001, "max": 0.01},
+            "spin":{"value":1, "min": -0, "max": 0},
+            "velocityDiffusion":0.0001,
+            "accelerationDiffusion":0.0001,
+            "colorDiffusion":0.35,
+            "velocityFactor":0.23
+          }
+        }
+      ]
+    }
+  }
+]

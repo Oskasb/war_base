@@ -61,8 +61,12 @@ define([
             ThreeAPI.hideModel(this.mesh);
         };
 
-        ParticleBuffer.prototype.addToScene = function() {
-            ThreeAPI.showModel(this.mesh);
+        ParticleBuffer.prototype.addToScene = function(screenSpace) {
+            if (screenSpace) {
+                ThreeAPI.attachObjectToCamera(this.mesh);
+            } else {
+                ThreeAPI.showModel(this.mesh);
+            }
         };
 
         return ParticleBuffer;

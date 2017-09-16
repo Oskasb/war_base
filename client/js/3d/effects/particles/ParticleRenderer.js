@@ -28,11 +28,12 @@ define([
 
             this.isRendering = false;
 
-            this.particleBuffers = [];
-
             this.config = rendererConfig;
             this.poolSize = rendererConfig.particle_pool;
             this.particleGeometry = rendererConfig.particle_geometry;
+
+            this.isScreenspace = rendererConfig.is_screenspace || false;
+
             this.material = {uniforms:{}};
             this.particles = [];
             this.attributes = {};
@@ -111,7 +112,8 @@ define([
                 this.attributes[key] = this.particleBuffer.geometry.attributes[key];
             }
 
-            this.particleBuffer.addToScene();
+
+            this.particleBuffer.addToScene(this.isScreenspace);
         //    this.particleBuffers.push(this.particleBuffer);
         };
 
@@ -158,7 +160,7 @@ define([
 
         ParticleRenderer.prototype.enableParticleRenderer = function() {
             this.isRendering = true;
-            this.particleBuffer.addToScene();
+            this.particleBuffer.addToScene(this.isScreenspace);
         };
 
 

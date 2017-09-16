@@ -359,40 +359,6 @@ define([
             }
         };
 
-        var callFireWeapon = function(dynamic, module, weaponOptions) {
-
-            return;
-
-            var fxCallbacks = module.visualModule.getEffectCallbacks();
-
-
-            var duration = dynamic.travelTime.state - 0.05;
-
-            calcVec.set(dynamic.fromX.state, dynamic.fromY.state, dynamic.fromZ.state);
-            calcVec2.set(dynamic.toX.state, dynamic.toY.state, dynamic.toZ.state);
-
-            calcVec2.subVectors(calcVec2, calcVec);
-
-            calcVec2.normalize();
-
-            calcObj.lookAt(calcVec2);
-
-            calcVec2.multiplyScalar(weaponOptions.velocity);
-
-            var fxId = weaponOptions.particle_effect_id;
-
-            fxCallbacks.createPassiveTemporalEffect(
-                fxId,
-                calcVec,
-                calcVec2,
-                0,
-                calcObj.quaternion,
-                duration
-            );
-
-        //    console.log("Call Fire Weapon", [dynamic, weaponOptions]);
-
-        };
 
 
         ModuleEffectCreator.module_weapon_emit_bullet_effect = function(visualModule, target, tpf) {
@@ -477,6 +443,11 @@ define([
             }
         };
 
+        ModuleEffectCreator.setEffectPosition = function(effect, position) {
+
+            EffectsAPI.updateEffectPosition(effect, position);
+
+        };
 
         return ModuleEffectCreator;
 

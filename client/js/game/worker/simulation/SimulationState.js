@@ -399,6 +399,10 @@ define([
 
         };
 
+        SimulationState.prototype.getGravityConstant = function() {
+            return physicsApi.getYGravity()
+        };
+
 
         SimulationState.prototype.updateActorFrame = function(actor, tpf) {
             this.protocolSystem.applyProtocolToActorState(actor, tpf);
