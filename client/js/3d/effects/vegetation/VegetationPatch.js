@@ -158,8 +158,6 @@ define([
         };
 
 
-
-
         VegetationPatch.prototype.spawnVegetation = function(pos) {
 
             tempVec2.x = 0;

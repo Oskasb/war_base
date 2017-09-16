@@ -49,6 +49,16 @@ define([
 
         };
 
+        GameAPI.getPieceById = function(id) {
+
+            if (id === controlledActor.piece.id) {
+                return controlledActor.piece;
+            }
+
+            return gameCommander.getEntryById(pieces, id)
+        };
+
+
         GameAPI.getActorById = function(id) {
             return gameCommander.getEntryById(actors, id)
         };
@@ -65,7 +75,7 @@ define([
             gameCommander.removeLevel(level)
         };
 
-        GameAPI.createControl = function(id, onRes) {
+        GameAPI.createControl = function(id, onRes) {3
             gameCommander.createGuiControl(id, onRes)
         };
 

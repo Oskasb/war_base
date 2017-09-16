@@ -21,6 +21,8 @@ define([
         var GamePiece = function(hostId, dataKey, ready) {
 
             this.pieceId = hostId+'_piece_'+dataKey;
+            this.id = this.pieceId;
+
             this.dataKey = dataKey;
             this.render = false;
             this.frustumCoords = new THREE.Vector3();
@@ -154,7 +156,7 @@ define([
             }.bind(this);
 
             for (var i = 0; i < slots.length; i++) {
-                var slot = new PieceSlot(slots[i].slot);
+                var slot = new PieceSlot(slots[i].slot, i);
                 slot.setSlotModuleId(slots[i].module, ready)
             }
         };
@@ -180,6 +182,14 @@ define([
         GamePiece.prototype.getSlotById = function (id) {
             for (var i = 0; i < this.pieceSlots.length;i++) {
                 if (this.pieceSlots[i].id === id) {
+                    return this.pieceSlots[i];
+                }
+            }
+        };
+
+        GamePiece.prototype.getSlotByIndex = function (slotIndex) {
+            for (var i = 0; i < this.pieceSlots.length;i++) {
+                if (this.pieceSlots[i].slotIndex === slotIndex) {
                     return this.pieceSlots[i];
                 }
             }

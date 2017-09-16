@@ -2,12 +2,10 @@
 
 
 define([
-        'game/controls/GuiControlUtils',
-        'game/controls/WeaponControlUtils'
+        'game/controls/GuiControlUtils'
     ],
     function(
-        GuiControlUtils,
-        WeaponControlUtils
+        GuiControlUtils
     ) {
 
         var guiControlUtils;
@@ -21,7 +19,6 @@ define([
         ModuleCallbacks.initCallbacks = function(gameApi) {
             GameAPI = gameApi;
             guiControlUtils = new GuiControlUtils(GameAPI);
-            weaponControlUtils = WeaponControlUtils;
         };
 
         ModuleCallbacks.apply_target_piece_position = function(module, target) {
@@ -143,11 +140,6 @@ define([
 
         ModuleCallbacks.call_weapon_trigger_active = function(module, target, enable) {
 
-            if (!weaponControlUtils) {
-                return;
-            }
-
-        //    weaponControlUtils.callWeaponTriggerActive(module, target, enable);
         };
 
         var applyWeaponState = function(weapon, state) {

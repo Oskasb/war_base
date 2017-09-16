@@ -228,7 +228,7 @@ define([
 
                         hitNormalStore.copy(attack.vel);
                         hitNormalStore.multiplyScalar(-1);
-                        simulationState.registerAttackHit(target, attack, attack.pos, hitNormalStore);
+                        simulationState.registerAttackHit(target, attack, hitNormalStore);
                         return target;
                 //    }
                 }

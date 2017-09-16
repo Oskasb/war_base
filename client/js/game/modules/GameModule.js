@@ -24,6 +24,7 @@ define([
 
         var GameModule = function(id, ready) {
             this.id = id;
+            this.hostSlotIndex = null;
             this.visualModule = new VisualModule(this);
 
             this.attachmentPoints = [];
@@ -215,7 +216,13 @@ define([
             this.visualModule.attachToParent(parentModule);
         };
 
+        GameModule.prototype.setHostSlotIndex = function (hostSlotIndex) {
+            this.hostSlotIndex = hostSlotIndex;
+        };
 
+        GameModule.prototype.getHostSlotIndex = function () {
+            return this.hostSlotIndex;
+        };
 
         GameModule.prototype.sampleModuleFrame = function (render, enable, tpf, simState) {
             this.visualModule.setVisibility(render);
@@ -235,7 +242,8 @@ define([
                 }
 
                 for (i = 0; i < this.weapons.length; i++) {
-                    this.weapons[i].updateWeaponState(target, simState, this, tpf)
+                    enable(true);
+                    this.weapons[i].updateWeaponState(enable(), target, simState, this, tpf)
                 }
             }
 

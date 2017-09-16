@@ -86,17 +86,7 @@ define([
         WeaponModule.prototype.applyWeaponTrigger = function(state, module, callFireWeapon) {
             if (this.dynamic.activateCommand.state) {
 
-                this.getMuzzlePosition(module, tempVec);
-
-                this.dynamic.fromX.state = tempVec.x;
-                this.dynamic.fromY.state = tempVec.y;
-                this.dynamic.fromZ.state = tempVec.z;
-
-                callFireWeapon(this.dynamic, module, this.weaponOptions);
-                state.setBufferValue(0);
-                this.dynamic.activateCommand.state = 0;
             }
-
         };
 
         WeaponModule.prototype.setupDynamicState = function (stateId, value) {
@@ -162,10 +152,10 @@ define([
 
 
 
-        WeaponModule.prototype.setupAttack = function(pos, vel, duration, weaponOptions, targetId, callback) {
+        WeaponModule.prototype.setupAttack = function(sourcePoieceId, hostSlotIndex, weaponIndex, pos, vel, duration, weaponOptions, targetId, callback) {
 
             var getAttack = function(attack) {
-                attack.initiateAttack(pos, vel, duration, weaponOptions, targetId);
+                attack.initiateAttack(sourcePoieceId, hostSlotIndex, weaponIndex, pos, vel, duration, weaponOptions, targetId);
                 callback(attack);
             };
 
@@ -173,7 +163,7 @@ define([
         };
 
 
-        WeaponModule.prototype.generateActiveBullet = function(module, simulationState) {
+        WeaponModule.prototype.generateActiveBullet = function(sourcePiece, module, simulationState) {
 
             var fromVec = tempObj3D.position;
 
@@ -203,19 +193,19 @@ define([
                 simulationState.registerActiveAttack(attack);
             };
 
-            this.setupAttack(fromVec, velVec, this.dynamic.travelTime.state, this.weaponOptions, this.selectedTarget.id, onReady)
+            this.setupAttack(sourcePiece.id, module.getHostSlotIndex(), this.weaponIndex ,fromVec, velVec, this.dynamic.travelTime.state, this.weaponOptions, this.selectedTarget.id, onReady)
 
         };
 
 
-        WeaponModule.prototype.determineBulletActivate = function(target, module, simulationState) {
+        WeaponModule.prototype.determineBulletActivate = function(sourcePiece, target, module, simulationState) {
 
             if (this.cooldownCountdown <= 0) {
 
                 this.aimAtTargetActor(module, target);
 
                 if (distance < this.weaponOptions.range) {
-                    this.generateActiveBullet(module, simulationState);
+                    this.generateActiveBullet(sourcePiece, module, simulationState);
                     this.cooldownCountdown = this.weaponOptions.cooldown;
                     this.activationFrame = 1;
                 }
@@ -232,11 +222,11 @@ define([
 
         };
 
-        WeaponModule.prototype.determineTriggerState = function(target, module, simulationState) {
+        WeaponModule.prototype.determineTriggerState = function(sourcePiece, target, module, simulationState) {
 
             if (this.targetFocusTime > this.weaponOptions.focus_time) {
                 this.dynamic.triggerCommand.state = 1;
-                this.determineBulletActivate(target, module, simulationState)
+                this.determineBulletActivate(sourcePiece, target, module, simulationState)
             } else {
                 this.dynamic.triggerCommand.state = 0;
             }
@@ -282,7 +272,7 @@ define([
 
 
 
-        WeaponModule.prototype.updateWeaponState = function(target, simulationState, module, tpf) {
+        WeaponModule.prototype.updateWeaponState = function(sourcePiece, target, simulationState, module, tpf) {
             if (!this.config) return;
 
             if (target) {
@@ -293,7 +283,7 @@ define([
                 }
 
             //    this.aimAtTargetActor(target);
-                this.determineTriggerState(target, module, simulationState);
+                this.determineTriggerState(sourcePiece, target, module, simulationState);
 
             }
 

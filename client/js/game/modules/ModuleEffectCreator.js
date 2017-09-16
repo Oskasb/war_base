@@ -361,6 +361,8 @@ define([
 
         var callFireWeapon = function(dynamic, module, weaponOptions) {
 
+            return;
+
             var fxCallbacks = module.visualModule.getEffectCallbacks();
 
 
@@ -394,20 +396,6 @@ define([
 
 
         ModuleEffectCreator.module_weapon_emit_bullet_effect = function(visualModule, target, tpf) {
-
-            var module = visualModule.module;
-
-            var weapons = module.weapons;
-
-            var state = target.state;
-
-            if (state.buffer[0] === 1) {
-
-                for (var i = 0; i < weapons.length; i++) {
-                    weapons[i].applyWeaponTrigger(state, module, callFireWeapon);
-                }
-
-            }
 
         };
 
@@ -450,8 +438,12 @@ define([
             if (!fx) {
                 console.log("effect pool dry:", fxId)
             } else {
-                store.push(fx);
+                if (store) {
+                    store.push(fx);
+                }
             }
+
+            return fx;
         };
 
         ModuleEffectCreator.createPassiveTemporalEffect = function(fxId, pos, vel, size, quat, duration) {
@@ -465,6 +457,10 @@ define([
                 EffectsAPI.returnPassiveEffect(fxArray.pop())
             }
 
+        };
+
+        ModuleEffectCreator.endEffect = function(effect) {
+            EffectsAPI.returnPassiveEffect(effect)
         };
 
         ModuleEffectCreator.remove_module_static_effect = function(fxArray) {

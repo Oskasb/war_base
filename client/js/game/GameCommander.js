@@ -52,10 +52,20 @@ define([
                 this.executeAttackHit(message[1], executorOkResponse)
             }.bind(this);
 
+            var executeAttackStart = function(message) {
+                this.executeAttackStart(message[1], executorOkResponse)
+            }.bind(this);
+
+            var executeAttackEnd  = function(message) {
+                this.executeAttackEnd(message[1], executorOkResponse)
+            }.bind(this);
+
+
             gameWorker.setExecutor('executeDeployActor', executeDeployActor);
             gameWorker.setExecutor('executeRemoveActor', executeRemoveActor);
-            gameWorker.setExecutor('executeAttackHit',  executeAttackHit)
-
+            gameWorker.setExecutor('executeAttackStart', executeAttackStart);
+            gameWorker.setExecutor('executeAttackHit',   executeAttackHit);
+            gameWorker.setExecutor('executeAttackEnd',   executeAttackEnd)
 
         };
 
@@ -303,23 +313,60 @@ define([
         };
 
         var posVec = new THREE.Vector3();
+        var velVec = new THREE.Vector3();
         var normalVec = new THREE.Vector3();
+
+
+        GameCommander.prototype.executeAttackStart = function(message) {
+            var piece = GameAPI.getPieceById(message[0]);
+
+            var attackId   =  message[1];
+
+            var slotIdx   =  message[2];
+            var weaponIdx =  message[3];
+            var startFx   =  message[4];
+
+            posVec.x = message[7];
+            posVec.y = message[8];
+            posVec.z = message[9];
+
+            velVec.x = message[10];
+            velVec.y = message[11];
+            velVec.z = message[12];
+
+            var bulletFxId = message[16];
+
+            combatFeedbackFunctions.registerAttackStart(attackId, piece, slotIdx, weaponIdx, posVec, velVec, startFx, bulletFxId);
+        };
 
         GameCommander.prototype.executeAttackHit = function(message) {
             var actor = GameAPI.getActorById(message[0]);
 
-            posVec.x = message[1];
-            posVec.y = message[2];
-            posVec.z = message[3];
+            var attackId = message[1];
 
-            normalVec.x = message[4];
-            normalVec.y = message[5];
-            normalVec.z = message[6];
+            posVec.x = message[7];
+            posVec.y = message[8];
+            posVec.z = message[9];
 
-            combatFeedbackFunctions.registerAttackHit(actor, posVec, normalVec, message[7], message[8]);
+            velVec.x = message[10];
+            velVec.y = message[11];
+            velVec.z = message[12];
+
+            normalVec.x = message[13];
+            normalVec.y = message[14];
+            normalVec.z = message[15];
+
+            var damage = message[6];
+            var hitFx = message[5];
+
+            combatFeedbackFunctions.registerAttackHit(attackId, actor, posVec, normalVec, damage, hitFx);
 
         };
 
+        GameCommander.prototype.executeAttackEnd = function(message) {
+            var attackId   =  message[1];
+            combatFeedbackFunctions.registerAttackEnd(attackId);
+        };
 
         return GameCommander;
     });

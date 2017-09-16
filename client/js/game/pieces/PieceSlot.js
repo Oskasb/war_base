@@ -10,7 +10,8 @@ define([
     ) {
 
 
-        var PieceSlot = function(id) {
+        var PieceSlot = function(id, slotIndex) {
+            this.slotIndex = slotIndex;
             this.id = id;
             this.module;
             this.isRootSlot = false;
@@ -28,11 +29,16 @@ define([
             if (this.module && this.module !== module) {
                 this.module.removeClientModule();
             }
+            module.setHostSlotIndex(this.slotIndex);
             this.module = module;
         };
 
         PieceSlot.prototype.getModuleChannels = function () {
             return this.module.moduleChannels;
+        };
+
+        PieceSlot.prototype.getModule = function () {
+            return this.module;
         };
 
         PieceSlot.prototype.getAttachmentPointById = function (apId) {

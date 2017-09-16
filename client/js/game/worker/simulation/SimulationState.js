@@ -58,10 +58,12 @@ define([
 
 
         SimulationState.prototype.registerActiveAttack = function(attack) {
+            attack.generateAttackMessage();
             attacks.push(attack);
         };
 
         SimulationState.prototype.removeActiveAttack = function(attack) {
+            attack.generateAttackEndMessage();
             attack.returnToPool();
             attacks.splice(attacks.indexOf(attack), 1);
 
@@ -354,15 +356,15 @@ define([
             return selectedTarget;
         };
 
-        SimulationState.prototype.registerAttackHit = function(targetActor, attack, pos, normal) {
+        SimulationState.prototype.registerAttackHit = function(targetActor, attack, normal) {
             this.removeActiveAttack(attack);
             if (!targetActor) {
                 console.log("No target actor for hit");
                 targetActor = {};
                 targetActor.id = 'unknown'
-                //return;
+                // return;
             }
-            postMessage(['executeAttackHit', [targetActor.id, pos.x, pos.y, pos.z, normal.x, normal.y, normal.z, attack.weaponOptions.on_hit_damage, attack.weaponOptions.on_hit_module_effect_id]]);
+            attack.generateAttackHitMessage(targetActor.id, normal)
         };
 
         SimulationState.prototype.updateAttackFrame = function(attack, tpf) {
