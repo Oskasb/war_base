@@ -203,8 +203,16 @@ define([
                 if (actor) {
                     id = actor.id;
                 }
+
+                if (selectionActiveActor) {
+                    selectionActiveActor.piece.getCombatStatus().notifyActivationDeactivate();
+                }
+
                 gameWorker.makeGameRequest('setActorSelected', id, onRes);
                 selectionActiveActor = actor;
+                if (actor) {
+                    selectionActiveActor.piece.getCombatStatus().notifySelectedActivation();
+                }
             }
 
         };

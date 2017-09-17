@@ -135,12 +135,23 @@ define([
 
                 if (!activeSelection.piece.render) {
                     guiElement.setTarget(null);
+                    guiElement.disableGuiElement();
                     return;
                 }
 
                 var combatStatus = activeSelection.piece.getCombatStatus();
-                if (!combatStatus) return;
 
+                if (!combatStatus) {
+                    guiElement.setTarget(null);
+                    guiElement.disableGuiElement();
+                    return;
+                }
+
+                if (combatStatus.getCombatState() === ENUMS.CombatStates.IDLE) {
+                    guiElement.setTarget(null);
+                    guiElement.disableGuiElement();
+                    return;
+                }
 
                 var factor =  guiElement.options.offset_y;
 

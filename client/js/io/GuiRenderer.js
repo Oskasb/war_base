@@ -1,8 +1,8 @@
 "use strict";
 
 define([
-    'ThreeAPI',
-    'PipelineAPI',
+        'ThreeAPI',
+        'PipelineAPI',
         'io/GuiRendererCallbacks',
         'io/GuiElement',
         'application/ExpandingPool'
@@ -93,7 +93,9 @@ define([
 
         };
 
-        GuiRenderer.prototype.getActorCombatElement = function(actor) {
+
+
+        GuiRenderer.prototype.getActorCombatElement = function(actor, isIdle) {
 
             var available = -1;
 
@@ -107,6 +109,8 @@ define([
                     available = i;
                 }
             }
+
+            if (isIdle) return;
 
             if (available > -1) {
                 combatStatusElements[available].setTarget(actor);
@@ -125,28 +129,20 @@ define([
             }
 
             var actors = GameAPI.getActors();
-            /*
-                   var actor = GameAPI.getSelectionActivatedActor();
 
-                   if (actor) {
-                       var combatElem = this.getActorCombatElement(actor);
-                       if (combatElem) {
-                           combatElem.updateGuiElement(guiRendererCallbacks)                  }
-                   }
+            for (var i = 0; i < actors.length; i++) {
 
+                var combatStatus = actors[i].piece.getCombatStatus();
 
-                   */
+                if (combatStatus) {
+                    var isIdle = (combatStatus.getCombatState() === ENUMS.CombatStates.IDLE);
 
-                   for (var i = 0; i < actors.length; i++) {
-
-                       if (actors[i].piece.getCombatStatus()) {
-                           var combatElem = this.getActorCombatElement(actors[i]);
-                           if (combatElem) {
-                               combatElem.updateGuiElement(guiRendererCallbacks);
-                           }
-                       }
-                   }
-
+                    var combatElem = this.getActorCombatElement(actors[i], isIdle);
+                    if (combatElem) {
+                        combatElem.updateGuiElement(guiRendererCallbacks);
+                    }
+                }
+            }
         };
 
         return GuiRenderer;

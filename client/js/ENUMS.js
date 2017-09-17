@@ -32,6 +32,17 @@ if(typeof(ENUMS) === "undefined"){
         HIDE:'HIDE'
     };
 
+    ENUMS.CombatStates = {
+        IDLE:'IDLE',
+        ENGAGING:'ENGAGING',
+        ENGAGED:'ENGAGED',
+        DISENGAGING:'DISENGAGING',
+        DISENGAGED:'DISENGAGED',
+        DISABLED:'DISABLED',
+        DESTROYED:'DESTROYED',
+        KILLED:'KILLED'
+    };
+
     ENUMS.Category = {
         POINTER_STATE:'POINTER_STATE',
         STATUS:'STATUS',
