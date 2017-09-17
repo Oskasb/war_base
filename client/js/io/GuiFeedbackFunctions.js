@@ -15,8 +15,6 @@ define([
     var calcVec = new THREE.Vector3();
     var calcVec2 = new THREE.Vector3();
 
-    var activeElements = {};
-
     var GuiFeedbackFunctions = function() {
 
     };
@@ -31,31 +29,20 @@ define([
             null,
             store
         );
-
     };
 
-    GuiFeedbackFunctions.prototype.enableElement = function(elementId, posVec, particleFxId) {
-
+    GuiFeedbackFunctions.prototype.enableElement = function(elementId, posVec, particleFxId, fxStore) {
         calcVec.copy(posVec);
-
-        if (!activeElements[elementId]) {
-            activeElements[elementId] = [];
-        }
-
-        return generateElement(calcVec, particleFxId, activeElements[elementId]);
+        return generateElement(calcVec, particleFxId, fxStore);
     };
 
-
-    GuiFeedbackFunctions.prototype.updateElementPosition = function(elementId, posVec) {
-        for (var i = 0; i < activeElements[elementId].length; i++) {
-            ModuleEffectCreator.setEffectPosition(activeElements[elementId][i], posVec);
-        }
+    GuiFeedbackFunctions.prototype.updateElementPosition = function(fxElement, posVec) {
+        ModuleEffectCreator.setEffectPosition(fxElement, posVec);
     };
 
-    GuiFeedbackFunctions.prototype.disableElement = function(particleFxId) {
-        ModuleEffectCreator.removeModuleStaticEffect(activeElements[particleFxId])
+    GuiFeedbackFunctions.prototype.disableElement = function(fxStore) {
+        ModuleEffectCreator.removeModuleStaticEffect(fxStore)
     };
-
 
     return GuiFeedbackFunctions;
 

@@ -186,19 +186,21 @@ define([
 
             guiRenderer.requestCameraMatrixUpdate();
 
+            for (var i = 0; i < pieces.length; i++) {
+                pieces[i].determineVisibility();
+            }
+
             guiRenderer.updateGuiRenderer();
 
             if (controlledActor) {
                 controlledActor.piece.updateGamePiece(tpf, time);
                 controlledActor.piece.setRendereable(true);
             }
-
         };
 
         GameAPI.tickGame = function(tpf, time) {
 
             for (var i = 0; i < pieces.length; i++) {
-                pieces[i].determineVisibility();
                 pieces[i].updateGamePiece(tpf, time)
             }
 

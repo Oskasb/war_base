@@ -4,7 +4,7 @@
       {
         "id":"gui_cursor_element",
         "data":{
-          "effect_id":"gui_pointer_follow_effect",
+          "effect_ids":["gui_pointer_follow_effect"],
           "gui_render_enable":"enable_fx_element",
           "gui_render_disable":"disable_fx_element",
           "gui_renderer_callback":"show_cursor_point"
@@ -13,10 +13,29 @@
       {
         "id":"gui_active_selection_element",
         "data":{
-          "effect_id":"gui_active_selection_effect",
+          "effect_ids":["gui_active_selection_effect"],
           "gui_render_enable":"enable_fx_element",
           "gui_render_disable":"disable_fx_element",
           "gui_renderer_callback":"show_active_selection"
+        }
+      },
+      {
+        "id":"gui_frame_selection_element",
+        "data":{
+          "effect_ids":[
+            "gui_corner_selection_effect",
+            "gui_corner_selection_effect",
+            "gui_corner_selection_effect",
+            "gui_corner_selection_effect",
+            "gui_vertical_edge_effect",
+            "gui_vertical_edge_effect",
+            "gui_horizontal_edge_effect",
+            "gui_horizontal_edge_effect"
+
+          ],
+          "gui_render_enable":"enable_fx_element",
+          "gui_render_disable":"disable_fx_element",
+          "gui_renderer_callback":"show_selection_corners"
         }
       }
     ]

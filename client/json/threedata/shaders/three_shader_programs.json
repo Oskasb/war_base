@@ -289,7 +289,7 @@
 
         "vertexPredictRotationMain":[
 
-          "float baseRotation = 100.0 * sillySeed * (1.0 - acceleration.w);",
+          "float baseRotation = 100.0 * sillySeed * (1.0 * acceleration.w);",
 
           "float rotation = velocity.w * cycleAge  +  0.5 * acceleration.w * cycleAge * cycleAge;",
 

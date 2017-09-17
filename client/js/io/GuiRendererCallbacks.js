@@ -11,7 +11,7 @@ define([
 
         var GameAPI;
         var mouseState;
-        var pointerFrustumPos = new THREE.Vector3();
+        var calcVec = new THREE.Vector3();
         var cursorElementId = 'gui_cursor_pointer_follow';
         var cursorEeffectId = 'gui_pointer_follow_effect';
 
@@ -49,16 +49,68 @@ define([
 
         };
 
-        GuiRendererCallbacks.prototype.enable_fx_element = function(cursorElementId, pointerFrustumPos, cursorEeffectId) {
-            return this.guiFeedbackFunctions.enableElement(cursorElementId, pointerFrustumPos, cursorEeffectId);
+        GuiRendererCallbacks.prototype.enable_fx_element = function(cursorElementId, pointerFrustumPos, cursorEeffectId, fxStore) {
+            return this.guiFeedbackFunctions.enableElement(cursorElementId, pointerFrustumPos, cursorEeffectId, fxStore);
         };
 
-        GuiRendererCallbacks.prototype.disable_fx_element = function(cursorElementId) {
-            this.guiFeedbackFunctions.disableElement(cursorElementId);
+        GuiRendererCallbacks.prototype.disable_fx_element = function(fxStore) {
+            this.guiFeedbackFunctions.disableElement(fxStore);
         };
 
-        GuiRendererCallbacks.prototype.setElementPosition = function(cursorElementId, pointerPos) {
-            this.guiFeedbackFunctions.updateElementPosition(cursorElementId, pointerPos);
+        GuiRendererCallbacks.prototype.setElementPosition = function(fxElement, pointerPos) {
+            this.guiFeedbackFunctions.updateElementPosition(fxElement, pointerPos);
+        };
+
+        GuiRendererCallbacks.prototype.show_selection_corners = function(guiElement) {
+
+            var activeSelection = GameAPI.getSelectionActivatedActor();
+
+            if (activeSelection) {
+
+                if (!guiElement.enabled) {
+                    guiElement.enableGuiElement();
+                }
+
+                guiElement.position.copy(activeSelection.piece.frustumCoords);
+                this.fitView(guiElement.position);
+
+                var distance = activeSelection.piece.cameraDistance;
+                var size = activeSelection.piece.boundingSize;
+
+                var factor = Math.clamp(size / (distance), 0.03, 0.3);
+
+                calcVec.z = 0;
+
+                calcVec.x = factor;
+
+                calcVec.y = factor;
+                guiElement.applyElementPosition(0, calcVec);
+
+                calcVec.x = 0;
+                guiElement.applyElementPosition(6, calcVec);
+
+                calcVec.x = -factor;
+                guiElement.applyElementPosition(1, calcVec);
+
+                calcVec.y = 0;
+                guiElement.applyElementPosition(4, calcVec);
+
+                calcVec.y = -factor;
+                guiElement.applyElementPosition(2, calcVec);
+
+                calcVec.x = 0;
+                guiElement.applyElementPosition(7, calcVec);
+
+                calcVec.x = factor;
+                guiElement.applyElementPosition(3, calcVec);
+
+                calcVec.y = 0;
+                guiElement.applyElementPosition(5, calcVec);
+
+            } else if (guiElement.enabled) {
+                guiElement.disableGuiElement();
+            }
+
         };
 
         GuiRendererCallbacks.prototype.show_cursor_point = function(guiElement) {
@@ -76,7 +128,7 @@ define([
                 );
 
                 this.fitView(guiElement.position);
-                guiElement.applyElementPosition();
+                guiElement.applyElementPosition(0);
 
             } else if (guiElement.enabled) {
                 guiElement.disableGuiElement();
@@ -94,12 +146,10 @@ define([
                     guiElement.enableGuiElement();
                 }
 
-                activeSelection.piece.rootObj3D.updateMatrixWorld(true);
-                activeSelection.piece.getScreenPosition(activeSelection.piece.frustumCoords);
                 guiElement.position.copy(activeSelection.piece.frustumCoords);
                 this.fitView(guiElement.position);
-                //guiElement.position.multiplyScalar(102);
-                guiElement.applyElementPosition();
+
+                guiElement.applyElementPosition(0);
 
             } else if (guiElement.enabled) {
                 guiElement.disableGuiElement();

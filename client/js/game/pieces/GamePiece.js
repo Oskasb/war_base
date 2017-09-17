@@ -26,6 +26,7 @@ define([
             this.dataKey = dataKey;
             this.render = false;
             this.frustumCoords = new THREE.Vector3();
+            this.cameraDistance = 0;
             this.pieceStates = [];
             this.rootObj3D = ThreeAPI.createRootObject();
 
@@ -231,7 +232,7 @@ define([
             if (!this.enable) return;
             var distance = ThreeAPI.distanceToCamera(this.rootObj3D.position);
 
-
+            this.cameraDistance = distance;
 
             if (distance < this.boundingSize) {
 
