@@ -19,7 +19,7 @@
         {
           "id":"gpu_additive_gui_renderer",
           "material_id":"gpu_gui_sprite_atlas_material",
-          "particle_pool":600,
+          "particle_pool":900,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":2,
@@ -34,7 +34,7 @@
         {
           "id":"gpu_normal_gui_renderer",
           "material_id":"gpu_gui_sprite_atlas_material",
-          "particle_pool":600,
+          "particle_pool":900,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":1,

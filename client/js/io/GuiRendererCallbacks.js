@@ -126,22 +126,21 @@ define([
 
         };
 
-        var lasActiveSelection;
 
         GuiRendererCallbacks.prototype.show_combat_status = function(guiElement) {
 
-            var activeSelection = GameAPI.getSelectionActivatedActor();
+            var activeSelection = guiElement.getTarget();
 
             if (activeSelection) {
 
-                if (activeSelection !== lasActiveSelection) {
-                    guiElement.disableGuiElement();
+                if (!activeSelection.piece.render) {
+                    guiElement.setTarget(null);
+                    return;
                 }
-
-                lasActiveSelection = activeSelection;
 
                 var combatStatus = activeSelection.piece.getCombatStatus();
                 if (!combatStatus) return;
+
 
                 var factor =  guiElement.options.offset_y;
 
@@ -372,6 +371,11 @@ define([
             mouseState = mState;
         };
 
+        GuiRendererCallbacks.prototype.renderCombatElements = function() {
+
+
+
+        };
 
         return GuiRendererCallbacks;
 

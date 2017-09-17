@@ -21,9 +21,13 @@ define([
 
         var GameAPI;
 
+        var combatElemId = "gui_combat_plate_element";
+
         var expandingPools = {};
 
         var guiElements = [];
+
+        var combatStatusElements = [];
 
         function createElementByDataKey(dataKey, onReadyCB) {
             new GuiElement(dataKey, onReadyCB)
@@ -80,6 +84,38 @@ define([
             ThreeAPI.updateCamera();
         };
 
+        var addBombatElementCB = function(element) {
+            combatStatusElements.push(element);
+        };
+
+        GuiRenderer.prototype.addCombatElement = function() {
+            this.getGuiElement(combatElemId, addBombatElementCB)
+
+        };
+
+        GuiRenderer.prototype.getActorCombatElement = function(actor) {
+
+            var available = -1;
+
+            for (var i = 0; i < combatStatusElements.length; i++) {
+                var target = combatStatusElements[i].getTarget();
+                if (target === actor) {
+                    return combatStatusElements[i];
+                }
+
+                if (!target) {
+                    available = i;
+                }
+            }
+
+            if (available > -1) {
+                combatStatusElements[available].setTarget(actor);
+                return combatStatusElements[available];
+            }
+
+            this.addCombatElement();
+        };
+
         GuiRenderer.prototype.updateGuiRenderer = function() {
 
             guiRendererCallbacks.updateMouseState(mouseState);
@@ -87,6 +123,29 @@ define([
             for (var i = 0; i < guiElements.length; i++) {
                 guiElements[i].updateGuiElement(guiRendererCallbacks);
             }
+
+            var actors = GameAPI.getActors();
+            /*
+                   var actor = GameAPI.getSelectionActivatedActor();
+
+                   if (actor) {
+                       var combatElem = this.getActorCombatElement(actor);
+                       if (combatElem) {
+                           combatElem.updateGuiElement(guiRendererCallbacks)                  }
+                   }
+
+
+                   */
+
+                   for (var i = 0; i < actors.length; i++) {
+
+                       if (actors[i].piece.getCombatStatus()) {
+                           var combatElem = this.getActorCombatElement(actors[i]);
+                           if (combatElem) {
+                               combatElem.updateGuiElement(guiRendererCallbacks);
+                           }
+                       }
+                   }
 
         };
 

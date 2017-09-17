@@ -49,6 +49,17 @@ define([
             ready(this)
         };
 
+        GuiElement.prototype.setTarget = function(target) {
+            if (this.target !== target) {
+                this.disableGuiElement();
+            }
+            this.target = target;
+        };
+
+        GuiElement.prototype.getTarget = function() {
+            return this.target;
+        };
+
         GuiElement.prototype.spawnChildElement = function(fxId) {
             var callback = function(element) {
                 if (!this.children[element.dataKey]) {
