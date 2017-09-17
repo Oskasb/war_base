@@ -10,14 +10,16 @@ define([
     ) {
 
         var GameAPI;
+        var guiRenderer;
         var mouseState;
         var calcVec = new THREE.Vector3();
         var cursorElementId = 'gui_cursor_pointer_follow';
         var cursorEeffectId = 'gui_pointer_follow_effect';
 
 
-        var GuiRendererCallbacks = function(gameApi) {
-            GameAPI = gameApi
+        var GuiRendererCallbacks = function(gRenderer, gameApi) {
+            GameAPI = gameApi;
+            guiRenderer = gRenderer;
             this.guiFeedbackFunctions = new GuiFeedbackFunctions();
             this.cursorElement = null;
         };
@@ -49,21 +51,187 @@ define([
 
         };
 
-        GuiRendererCallbacks.prototype.enable_fx_element = function(cursorElementId, pointerFrustumPos, cursorEeffectId, fxStore) {
-            return this.guiFeedbackFunctions.enableElement(cursorElementId, pointerFrustumPos, cursorEeffectId, fxStore);
+        GuiRendererCallbacks.prototype.generateChildElement = function(dataKey, callback) {
+            guiRenderer.getGuiElement(dataKey, callback)
+        };
+
+        GuiRendererCallbacks.prototype.removeChildElement = function(guiElement) {
+            guiRenderer.removeGuiElement(guiElement)
+        };
+
+        GuiRendererCallbacks.prototype.enable_geometry_element = function(guiElement, fxIndexe) {
+            return this.guiFeedbackFunctions.enableElement(guiElement.elementId, guiElement.position, guiElement.fxIds[fxIndex], guiElement.fxElements);
+        };
+
+        GuiRendererCallbacks.prototype.enable_fx_element = function(guiElement, fxIndex) {
+            return this.guiFeedbackFunctions.enableElement(guiElement.elementId, guiElement.position, guiElement.fxIds[fxIndex], guiElement.fxElements);
+        };
+
+        GuiRendererCallbacks.prototype.set_geomety_pos_quat = function(guiElement, fxElement) {
+            this.guiFeedbackFunctions.updateElementPosition(fxElement, guiElement.position);
+        };
+
+        GuiRendererCallbacks.prototype.set_element_position = function(guiElement, fxElement) {
+            this.guiFeedbackFunctions.updateElementPosition(fxElement, guiElement.position);
         };
 
         GuiRendererCallbacks.prototype.disable_fx_element = function(fxStore) {
             this.guiFeedbackFunctions.disableElement(fxStore);
         };
 
-        GuiRendererCallbacks.prototype.setElementPosition = function(fxElement, pointerPos) {
-            this.guiFeedbackFunctions.updateElementPosition(fxElement, pointerPos);
+        GuiRendererCallbacks.prototype.show_aim_state_status = function(guiElement) {
+
+            var activeSelection = GameAPI.getSelectionActivatedActor();
+
+            if (activeSelection) {
+
+                var controllerActor = GameAPI.getControlledActor();
+
+                var state = controllerActor.piece.getPieceStateByStateId(guiElement.options.sample_state);
+
+                var value = state.getValue();
+
+                var axisFactors = guiElement.options.axis_factors;
+
+                if (!guiElement.enabled) {
+                    guiElement.enableGuiElement();
+                }
+
+                guiElement.origin.copy(activeSelection.piece.frustumCoords);
+                this.fitView(guiElement.origin);
+
+                var max_offset = 20;
+
+                var distance = activeSelection.piece.cameraDistance;
+                var offset = max_offset * Math.sqrt(Math.abs(value * 0.6)) * Math.abs(value) * 4;
+                var factor = Math.clamp(offset / (distance), -0.25, 0.25);
+
+                calcVec.z = 0;
+
+                calcVec.x = factor * axisFactors[0];
+                calcVec.y = factor * axisFactors[1];
+                guiElement.applyElementPosition(0, calcVec);
+
+                calcVec.x = -factor * axisFactors[0];
+                calcVec.y = -factor * axisFactors[1];
+                guiElement.applyElementPosition(1, calcVec);
+
+            } else if (guiElement.enabled) {
+                guiElement.disableGuiElement();
+            }
+
         };
+
+        var lasActiveSelection;
+
+        GuiRendererCallbacks.prototype.show_combat_status = function(guiElement) {
+
+            var activeSelection = GameAPI.getSelectionActivatedActor();
+
+            if (activeSelection) {
+
+                if (activeSelection !== lasActiveSelection) {
+                    guiElement.disableGuiElement();
+                }
+
+                lasActiveSelection = activeSelection;
+
+                var combatStatus = activeSelection.piece.getCombatStatus();
+                if (!combatStatus) return;
+
+                var factor =  guiElement.options.offset_y;
+
+                var maxHealth = combatStatus.getMaxHealth();
+                var health = combatStatus.getHealth();
+
+                var maxArmor = combatStatus.getMaxArmor();
+                var armor = combatStatus.getArmor();
+
+                var healthElementId = guiElement.options.health_element_id;
+                var armorElementId = guiElement.options.armor_element_id;
+
+                if (!guiElement.enabled) {
+
+                    guiElement.enableGuiElement();
+
+                    for (var i = 0; i < maxHealth; i++) {
+                        guiElement.spawnChildElement(healthElementId);
+                    }
+                    for (i = 0; i < maxArmor; i++) {
+                        guiElement.spawnChildElement(armorElementId);
+                    }
+
+                }
+
+                guiElement.origin.copy(activeSelection.piece.frustumCoords);
+                this.fitView(guiElement.origin);
+
+                calcVec.z = 0;
+                calcVec.x = 0;
+                calcVec.y = factor;
+                guiElement.applyElementPosition(0, calcVec);
+                guiElement.applyElementPosition(1, calcVec);
+
+                calcVec.x = guiElement.options.offset_children[0];
+                calcVec.y = guiElement.options.offset_children[1];
+
+                if (guiElement.children[healthElementId]) {
+                    for (i = 0; i < guiElement.children[healthElementId].length; i++) {
+                        calcVec.z = 0;
+                        var child = guiElement.children[healthElementId][i];
+                        child.origin.copy(guiElement.position);
+                        child.applyElementPosition(0, calcVec);
+
+                        if (i < health) {
+                            child.applyElementPosition(1, calcVec);
+                        } else {
+                            calcVec.z = 99;
+                            child.applyElementPosition(1, calcVec);
+                        }
+
+                        calcVec.x += child.options.step_x;
+                        if (calcVec.x > Math.abs(guiElement.options.offset_children[0])) {
+                            calcVec.x = guiElement.options.offset_children[0];
+                            calcVec.y += child.options.step_y;
+                        }
+                    }
+                }
+
+                if (guiElement.children[armorElementId]) {
+
+                    calcVec.x += 0.003;
+
+                    for (i = 0; i < guiElement.children[armorElementId].length; i++) {
+                        calcVec.z = 0;
+                        var child = guiElement.children[armorElementId][i];
+                        child.origin.copy(guiElement.position);
+                        child.applyElementPosition(0, calcVec);
+
+                        if (i < armor) {
+                            child.applyElementPosition(1, calcVec);
+                        } else {
+                            calcVec.z = 99;
+                            child.applyElementPosition(1, calcVec);
+                        }
+
+                        calcVec.x += child.options.step_x;
+                        if (calcVec.x > Math.abs(guiElement.options.offset_children[0])) {
+                            calcVec.x = guiElement.options.offset_children[0];
+                            calcVec.y += child.options.step_y;
+                        }
+                    }
+                }
+
+            } else if (guiElement.enabled) {
+                guiElement.disableGuiElement();
+            }
+
+        };
+
 
         GuiRendererCallbacks.prototype.show_selection_corners = function(guiElement) {
 
-            var activeSelection = GameAPI.getSelectionActivatedActor();
+            var activeSelection = GameAPI.getSelectedActor();
 
             if (activeSelection) {
 
@@ -71,8 +239,8 @@ define([
                     guiElement.enableGuiElement();
                 }
 
-                guiElement.position.copy(activeSelection.piece.frustumCoords);
-                this.fitView(guiElement.position);
+                guiElement.origin.copy(activeSelection.piece.frustumCoords);
+                this.fitView(guiElement.origin);
 
                 var distance = activeSelection.piece.cameraDistance;
                 var size = activeSelection.piece.boundingSize;
@@ -121,14 +289,19 @@ define([
                     guiElement.enableGuiElement();
                 }
 
-                guiElement.position.set(
+                guiElement.origin.set(
                     ((mouseState.x-GameScreen.getLeft()) / GameScreen.getWidth() - 0.5),
                     -((mouseState.y-GameScreen.getTop()) / GameScreen.getHeight()) + 0.5,
                     -1
                 );
 
-                this.fitView(guiElement.position);
-                guiElement.applyElementPosition(0);
+                this.fitView(guiElement.origin);
+
+                for (var i = 0; i < guiElement.fxElements.length; i++) {
+                    guiElement.applyElementPosition(i);
+                }
+
+
 
             } else if (guiElement.enabled) {
                 guiElement.disableGuiElement();
@@ -146,10 +319,12 @@ define([
                     guiElement.enableGuiElement();
                 }
 
-                guiElement.position.copy(activeSelection.piece.frustumCoords);
-                this.fitView(guiElement.position);
+                guiElement.origin.copy(activeSelection.piece.frustumCoords);
+                this.fitView(guiElement.origin);
 
-                guiElement.applyElementPosition(0);
+                for (var i = 0; i < guiElement.fxElements.length; i++) {
+                    guiElement.applyElementPosition(i);
+                }
 
             } else if (guiElement.enabled) {
                 guiElement.disableGuiElement();

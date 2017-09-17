@@ -103,7 +103,7 @@ define([
 
             tempVec.x = 0;
             tempVec.y = 0;
-            tempVec.z = -100;
+            tempVec.z = -50;
 
             tempVec.applyQuaternion(camera.quaternion);
 

@@ -5,7 +5,7 @@
         {
           "id":"gpu_add_no_depth_atlas_renderer",
           "material_id":"gpu_sprite_atlas_material",
-          "particle_pool":300,
+          "particle_pool":100,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"AdditiveBlending",
@@ -19,11 +19,27 @@
         {
           "id":"gpu_additive_gui_renderer",
           "material_id":"gpu_gui_sprite_atlas_material",
-          "particle_pool":300,
+          "particle_pool":200,
           "particle_geometry":"quad",
           "is_screenspace":true,
+          "render_order":2,
           "material_options":{
             "blending":"AdditiveBlending",
+            "transparent":true,
+            "alphaTest":0.001,
+            "depthWrite":false,
+            "depthTest":false
+          }
+        },
+        {
+          "id":"gpu_normal_gui_renderer",
+          "material_id":"gpu_gui_sprite_atlas_material",
+          "particle_pool":200,
+          "particle_geometry":"quad",
+          "is_screenspace":true,
+          "render_order":1,
+          "material_options":{
+            "blending":"NormalBlending",
             "transparent":true,
             "alphaTest":0.001,
             "depthWrite":false,
@@ -34,7 +50,7 @@
         {
           "id":"gpu_additive_atlas_renderer",
           "material_id":"gpu_sprite_atlas_material",
-          "particle_pool":300,
+          "particle_pool":200,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"AdditiveBlending",
@@ -61,7 +77,7 @@
         {
           "id":"gpu_normal_atlas_renderer",
           "material_id":"gpu_fogged_sprite_atlas_material",
-          "particle_pool":1200,
+          "particle_pool":500,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"NormalBlending",
@@ -74,7 +90,7 @@
         {
           "id":"gpu_opaque_atlas_renderer",
           "material_id":"gpu_fogged_sprite_atlas_material",
-          "particle_pool":800,
+          "particle_pool":500,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"NoBlending",
@@ -87,7 +103,7 @@
         {
           "id":"gpu_opaque_vegetation_renderer",
           "material_id":"gpu_vegetation_sprite_material",
-          "particle_pool":2000,
+          "particle_pool":700,
           "particle_geometry":"plant3d",
           "material_options":{
             "blending":"NoBlending",
@@ -100,7 +116,7 @@
         {
           "id":"gpu_opaque_stamp_renderer",
           "material_id":"gpu_stamp_sprite_material",
-          "particle_pool":2000,
+          "particle_pool":700,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"NoBlending",

@@ -5,6 +5,10 @@
         "id":"piece_tank_sherman",
         "data":{
           "root_slot":"hull",
+          "combat_stats":{
+            "health":25,
+            "armor":10
+          },
           "slots":[
             {"slot":"hull",         "module":"sherman_hull_module"   },
             {"slot":"main_turret",  "module":"sherman_turret_module" },

@@ -7,6 +7,13 @@ define([
     ) {
 
         var dataCurves = {
+            steadyOrange:54,
+            darkPurple:53,
+            darkBlue:52,
+            darkRed:51,
+            steadyPurple:50,
+            steadyBlue:49,
+            steadyRed:48,
             dust:47,
             earlyFadeOut:46,
             lateFadeOut:45,
@@ -122,11 +129,13 @@ define([
 
         var tV = 0.000000001;
 
+        var pi = Math.PI;
+
         ConfiguredGpuEffect.prototype.setDefaults = function() {
             this.age.setValues(tV, 0.02);
             this.lifeTime.setValues(0.1, 0.2);
             this.tiles.setValues(1, 1, tV, tV);
-            this.position.setValues(tV, tV, tV, tV, tV, tV);
+            this.position.setValues(tV, tV, tV, 1, tV, tV);
             this.acceleration.setValues(tV, -9.81, tV, tV, tV, tV);
             this.velocity.setValues(tV, tV, tV, tV, tV, tV);
             this.texelRowSelect.setValues(2, 1, 2, 1, 0, 0);

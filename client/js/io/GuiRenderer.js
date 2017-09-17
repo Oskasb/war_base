@@ -31,7 +31,7 @@ define([
 
         var GuiRenderer = function(gameApi) {
             GameAPI = gameApi;
-            guiRendererCallbacks = new GuiRendererCallbacks(GameAPI);
+            guiRendererCallbacks = new GuiRendererCallbacks(this, GameAPI);
 
             this.generateGuiElements();
 
@@ -54,8 +54,8 @@ define([
             expandingPools[dataKey].getFromExpandingPool(callback);
         };
 
-        GuiRenderer.prototype.removeGuiElement = function(actor) {
-            expandingPools[actor.dataKey].returnToExpandingPool(actor);
+        GuiRenderer.prototype.removeGuiElement = function(guiElement) {
+            expandingPools[guiElement.dataKey].returnToExpandingPool(guiElement);
         };
 
 

@@ -31,6 +31,7 @@ define([
         var activeCameraControl;
         var activeControl;
         var controlledActor;
+        var selectedActor;
 
         var workerReady = function() {
             configPublisher.publishConfigs(gameWorker)
@@ -101,6 +102,15 @@ define([
         GameAPI.getSelectionActivatedActor = function() {
             return gameCommander.getSelectionActiveActor()
         };
+
+        GameAPI.setSelectedActor = function(actor) {
+            selectedActor = actor;
+        };
+
+        GameAPI.getSelectedActor = function(actor) {
+            return selectedActor;
+        };
+
 
         GameAPI.setActiveCameraControl = function(camCtrl) {
             activeCameraControl = camCtrl;

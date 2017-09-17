@@ -3,12 +3,82 @@
     "GUI_EFFECTS": {
       "THREE":[
         {
+          "id":"gui_combat_bar_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_gui_renderer",
+            "particle_id":"gui_combat_bar_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
+          "id":"gui_combat_bar_backdrop_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_normal_gui_renderer",
+            "particle_id":"gui_combat_bar_backdrop_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
+          "id":"gui_combat_hp_plate_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_normal_gui_renderer",
+            "particle_id":"gui_hp_plate_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
+          "id":"gui_combat_hp_light_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_gui_renderer",
+            "particle_id":"gui_hp_light_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
+          "id":"gui_combat_armor_plate_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_normal_gui_renderer",
+            "particle_id":"gui_armor_plate_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
+          "id":"gui_combat_armor_light_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_gui_renderer",
+            "particle_id":"gui_armor_light_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
           "id":"gui_pointer_follow_effect",
           "data":{
             "system_key":"THREE",
             "renderer_id":"gpu_additive_gui_renderer",
             "particle_id":"gui_pointer_follow_particle",
             "count":3,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
+          "id":"gui_pointer_follow_backdrop",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_normal_gui_renderer",
+            "particle_id":"gui_pointer_follow_particle",
+            "count":1,
             "simulation_id":"gpu_gui_simulation"
           }
         },
@@ -48,6 +118,44 @@
             "system_key":"THREE",
             "renderer_id":"gpu_additive_gui_renderer",
             "particle_id":"gui_box_horizontal_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },        {
+          "id":"gui_aim_yaw_left_indicator_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_gui_renderer",
+            "particle_id":"gui_aim_yaw_indicator_left_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },        {
+          "id":"gui_aim_yaw_right_indicator_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_gui_renderer",
+            "particle_id":"gui_aim_yaw_indicator_right_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
+          "id":"gui_aim_pitch_low_indicator_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_gui_renderer",
+            "particle_id":"gui_aim_pitch_indicator_low_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
+          "id":"gui_aim_pitch_upper_indicator_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_gui_renderer",
+            "particle_id":"gui_aim_pitch_indicator_upper_particle",
             "count":1,
             "simulation_id":"gpu_gui_simulation"
           }

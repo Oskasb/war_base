@@ -304,20 +304,18 @@
         }
       },
       {
-        "id":"health",
+        "id":"channel_health",
         "data":{
           "targets":[
-            {"targetid":"model_rotate_yaw"}
+            {"targetid":"module_channel_on_fire"}
           ]
         }
       },
       {
-        "id":"armor",
+        "id":"channel_armor",
         "data":{
           "targets": [
-            {
-              "targetid": "model_translate_z"
-            }
+            {"targetid":"module_channel_on_fire"}
           ]
         }
       }

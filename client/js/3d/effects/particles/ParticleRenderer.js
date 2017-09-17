@@ -33,6 +33,8 @@ define([
             this.particleGeometry = rendererConfig.particle_geometry;
 
             this.isScreenspace = rendererConfig.is_screenspace || false;
+            this.renderOrder = rendererConfig.render_order || null;
+
 
             this.material = {uniforms:{}};
             this.particles = [];
@@ -114,6 +116,10 @@ define([
 
 
             this.particleBuffer.addToScene(this.isScreenspace);
+            if (this.renderOrder) {
+                this.particleBuffer.mesh.renderOrder = this.renderOrder;
+            }
+
         //    this.particleBuffers.push(this.particleBuffer);
         };
 

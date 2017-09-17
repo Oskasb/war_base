@@ -15,6 +15,8 @@ define([
     var calcVec = new THREE.Vector3();
     var calcVec2 = new THREE.Vector3();
 
+ //   ModuleEffectCreator.createPassiveEffect(fx[i].particle_effects[j].id, calcVec2, zeroVec, zeroVec, threeObj.quaternion, groundprints);
+
     var GuiFeedbackFunctions = function() {
 
     };

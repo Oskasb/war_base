@@ -7,14 +7,16 @@ define([
         'PipelineObject',
         'ThreeAPI',
         'game/pieces/PieceSlot',
-        'game/pieces/PieceState'
+        'game/pieces/PieceState',
+        'game/combat/CombatStatus'
     ],
     function(
         evt,
         PipelineObject,
         ThreeAPI,
         PieceSlot,
-        PieceState
+        PieceState,
+        CombatStatus
     ) {
 
 
@@ -31,6 +33,8 @@ define([
             this.rootObj3D = ThreeAPI.createRootObject();
 
             this.enable = true;
+
+            this.combatStatus = null;
 
             var controlsEnable = function(bool) {
                 if (typeof(bool) !== 'boolean') {
@@ -89,11 +93,23 @@ define([
                 this.getSlotById(this.config.root_slot).setObject3dToPieceRoot(this.rootObj3D);
             }
 
+            if (this.config.combat_stats) {
+                 this.setupCombatStatus(this.config.combat_stats)
+            };
+
 
             for (var i = 0; i < this.config.attachments.length;i++) {
                var aps = this.config.attachments[i];
                this.setSlotAttachment(aps.slot, aps.ap, aps.child)
             }
+        };
+
+        GamePiece.prototype.setupCombatStatus = function(combatStats) {
+            this.combatStatus = new CombatStatus(combatStats)
+        };
+
+        GamePiece.prototype.getCombatStatus = function() {
+            return this.combatStatus;
         };
 
         GamePiece.prototype.setSlotAttachment = function(parentSlotId, apId, childSlotId) {

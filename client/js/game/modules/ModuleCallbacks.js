@@ -61,7 +61,8 @@ define([
 
         ModuleCallbacks.call_sample_selected_actor = function(module, target, enable) {
             target.state.dirty = true;
-            guiControlUtils.sampleSelectedActor(module, target, enable);
+            var selectedActor = guiControlUtils.sampleSelectedActor(module, target, enable);
+            GameAPI.setSelectedActor(selectedActor);
         };
 
         ModuleCallbacks.call_sample_activated_actor = function(module, target, enable) {

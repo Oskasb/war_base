@@ -25,13 +25,12 @@ define([
 
         var maxGroundContactDistance = 0.5;
 
-        var maxActiveGroundPrints = 2000;
+        var maxActiveGroundPrints = 600;
 
-        var maxGeometryEffetcs = 1000;
+        var maxGeometryEffetcs = 500;
 
         var groundprints = [];
         var geometryEffects = [];
-
 
         var effectData = {
             effect:'',

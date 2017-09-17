@@ -95,7 +95,7 @@ define([
 
             var piece = actors[i].piece;
 
-            if (piece.render) {
+            if (piece.render && piece.getCombatStatus()) {
                 calcVec.setFromMatrixPosition(actors[i].piece.rootObj3D.matrixWorld);
                 ThreeAPI.toScreenPosition(calcVec, calcVec2);
                 distsq = ThreeAPI.getSpatialFunctions().getHoverDistanceToPos(calcVec2, mouseState);
@@ -389,8 +389,11 @@ define([
             return;
         }
 
-        if (state.targetValue === 1) return;
-        state.setValueAtTime(1, time);
+        if (state.targetValue !== 1) {
+            state.setValueAtTime(1, time);
+
+        }
+        return selectedActor;
 
     };
 

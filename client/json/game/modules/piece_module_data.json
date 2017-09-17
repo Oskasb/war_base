@@ -18,6 +18,8 @@
             {"channelid":"channel_quat_y",    "stateid": "quat_state_y"},
             {"channelid":"channel_quat_z",    "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w",    "stateid": "quat_state_w"},
+            {"channelid":"channel_health",    "stateid": "health_state"},
+            {"channelid":"channel_armor",     "stateid": "armor_state"},
             {"channelid":"fire_channel",      "stateid": "fire_state"},
             {"channelid":"dust_channel",      "stateid": "command_shell_activate"}
           ],
