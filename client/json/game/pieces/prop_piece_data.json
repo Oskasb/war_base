@@ -6,8 +6,8 @@
         "data":{
           "root_slot":"piece_root",
           "combat_stats":{
-            "health":8,
-            "armor":3
+            "health":25,
+            "armor":6
           },
           "slots":[
             {"slot":"piece_root",         "module":"module_root_box_crate"}
@@ -20,7 +20,7 @@
         "data":{
           "root_slot":"piece_root",
           "combat_stats":{
-            "health":5,
+            "health":6,
             "armor":2
           },
           "slots":[

@@ -6,7 +6,7 @@
         "data":{
           "effect_ids":["gui_combat_bar_effect", "gui_combat_bar_backdrop_effect"],
           "options":{
-            "offset_y":0.055,
+            "offset_y":0.047,
             "offset_children":[-0.052, -0.004],
             "health_element_id":"gui_combat_health_point_element",
             "armor_element_id":"gui_combat_armor_point_element"

@@ -87,6 +87,10 @@ define([
 
                 var controllerActor = GameAPI.getControlledActor();
 
+                if (!controllerActor) {
+                    return;
+                }
+
                 var state = controllerActor.piece.getPieceStateByStateId(guiElement.options.sample_state);
 
                 var value = state.getValue();
@@ -166,9 +170,40 @@ define([
                 guiElement.origin.copy(activeSelection.piece.frustumCoords);
                 this.fitView(guiElement.origin);
 
+                var rows = 0;
+
+                var rowHeight = 0;
+
+                var width = 0;
+
+                if (guiElement.children[healthElementId]) {
+                    var spaceNeeded = 0;
+                    if (guiElement.children[healthElementId].length) {
+                        width = guiElement.children[healthElementId][0].options.step_x
+                        spaceNeeded += (maxHealth * width);
+                        rowHeight = guiElement.children[healthElementId][0].options.step_y;
+                    }
+                }
+
+                if (guiElement.children[armorElementId]) {
+                    if (guiElement.children[armorElementId].length) {
+                        spaceNeeded += (maxArmor * guiElement.children[armorElementId][0].options.step_x)
+                    }
+                }
+
+                rows = Math.floor(spaceNeeded / (Math.abs(guiElement.options.offset_children[0])*2));
+
+                var padding = 0;
+
+                if (spaceNeeded < Math.abs(guiElement.options.offset_children[0])) {
+                    padding = width;
+                }
+
+
+
                 calcVec.z = 0;
                 calcVec.x = 0;
-                calcVec.y = factor;
+                calcVec.y = factor - rows*rowHeight;
                 guiElement.applyElementPosition(0, calcVec);
                 guiElement.applyElementPosition(1, calcVec);
 
@@ -189,7 +224,7 @@ define([
                             child.applyElementPosition(1, calcVec);
                         }
 
-                        calcVec.x += child.options.step_x;
+                        calcVec.x += child.options.step_x+padding;
                         if (calcVec.x > Math.abs(guiElement.options.offset_children[0])) {
                             calcVec.x = guiElement.options.offset_children[0];
                             calcVec.y += child.options.step_y;
