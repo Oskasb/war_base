@@ -30,6 +30,8 @@ define(['game/worker/DataProtocol'],
 
         };
 
+
+
         GameWorker.prototype.setExecutor = function(functionName, callback) {
             this.executors[functionName] = callback;
         };
@@ -114,6 +116,36 @@ define(['game/worker/DataProtocol'],
         GameWorker.prototype.storeConfig = function(confId, key, data) {
             var json = JSON.stringify(data);
             this.worker.postMessage(['storeConfig', [confId, key, json]]);
+        };
+
+        GameWorker.prototype.getCallCount = function() {
+            return calls;
+        };
+
+        GameWorker.prototype.getCallbackCount = function() {
+            return this.callbacks.length;
+        };
+
+        GameWorker.prototype.getProtocolCount = function() {
+            var count = 0;
+
+            for (var key in this.pieceProtocolMap) {
+                count++
+            }
+
+
+            return count;
+        };
+
+        GameWorker.prototype.getProtocolUpdateCount = function() {
+            var count = 0;
+
+            for (var key in this.pieceProtocolMap) {
+                count += this.pieceProtocolMap[key].messageCount;
+                this.pieceProtocolMap[key].messageCount = 0;
+            }
+
+            return count;
         };
 
         return GameWorker;

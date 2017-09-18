@@ -78,8 +78,14 @@ define([
         ModuleEffectCreator.removeModuleStaticEffect(activeAttacks[attackId])
     };
 
-    CombatFeedbackFunctions.prototype.tickEffectPlayers = function(tpf) {
+    CombatFeedbackFunctions.prototype.getActiveAttackCount = function() {
+        var count = 0;
 
+        for (var key in activeAttacks) {
+            count++;
+        }
+
+        return count;
     };
 
     return CombatFeedbackFunctions;

@@ -64,18 +64,24 @@
         ViewerPointer
     ) {
 
+        var modelViewer;
+        var onReady = function(client) {
+            modelViewer = client;
+        };
+
         var playerReady = function() {
             new DevConfigurator();
             new FullScreenConfigurator();
         //    new EnvironmentLoader();
         //    new ViewerPointer();
-            new AppLoader();
+            new AppLoader(modelViewer);
         //    new ControlLoader();
+            evt.removeListener(evt.list().PLAYER_READY, playerReady);
         };
 
         evt.on(evt.list().PLAYER_READY, playerReady);
 
-        Setup.init(ModelViewer)
+        Setup.init(ModelViewer, onReady)
 
     });
 

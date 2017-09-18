@@ -123,7 +123,7 @@ define([
 
         };
         
-        DataLoader.prototype.loadData = function(Client, PointerCursor, sceneController) {
+        DataLoader.prototype.loadData = function(Client, PointerCursor, sceneController, onReady) {
 
             var _this = this;
 
@@ -135,7 +135,9 @@ define([
                 client = new Client(new PointerCursor());
 
                 client.setupSimulation(sceneController, ready);
-
+                if (onReady) {
+                    onReady(client)
+                }
             };
 
             function connectionReady() {

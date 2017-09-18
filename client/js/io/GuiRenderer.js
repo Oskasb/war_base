@@ -67,7 +67,7 @@ define([
 
             var elementReady = function(guiElement) {
                 guiElements.push(guiElement);
-                console.log("Gui Element Ready", guiElement);
+            //    console.log("Gui Element Ready", guiElement);
             };
 
             var guiElemData = function(src, data) {

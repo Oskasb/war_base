@@ -63,8 +63,10 @@ define([
 
         }
 
+        var modelViewer;
 
-        var AppLoader = function() {
+        var AppLoader = function(viewerClient) {
+            modelViewer = viewerClient;
             this.running = false;
             this.panel = null;
             this.currentValue = 0;
@@ -138,6 +140,9 @@ define([
                     var activeRdy = function(ctrl) {
                         active = ctrl;
                         GameAPI.createActor({dataKey:"actor_sherman_tank"}, playerAdded);
+
+                        modelViewer.guiSetup.removeMainGui()
+
                     };
 
                     var selectorRdy = function(ctrl) {
@@ -189,7 +194,6 @@ define([
                         _this.loadLevel(list[i].id, true)
                     }
                 }
-
 
             } else  {
 

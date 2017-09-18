@@ -26,6 +26,8 @@ define([
         var actorBuilder;
         var combatFeedbackFunctions;
 
+        var execCalls = 0;
+
         var GameCommander = function(gameApi, gWorker, lvlBuilder) {
             GameAPI = gameApi;
             gameWorker =  gWorker;
@@ -37,7 +39,7 @@ define([
 
 
             var executorOkResponse = function(res) {
-            //    console.log("executorOkResponse:", res);
+                execCalls++
             };
 
             var executeDeployActor = function(message) {
@@ -188,8 +190,6 @@ define([
 
             new CameraControls(dataKey, camReady);
         };
-
-
 
 
         GameCommander.prototype.setSelectionActiveActor = function(actor) {
@@ -351,7 +351,7 @@ define([
             combatFeedbackFunctions.registerAttackStart(attackId, piece, slotIdx, weaponIdx, posVec, velVec, startFx, bulletFxId);
         };
 
-        GameCommander.prototype.executeAttackHit = function(message) {
+        GameCommander.prototype.executeAttackHit = function(message, executorOkResponse) {
             var actor = GameAPI.getActorById(message[0]);
 
             var attackId = message[1];
@@ -372,13 +372,25 @@ define([
             var hitFx = message[5];
 
             combatFeedbackFunctions.registerAttackHit(attackId, actor, posVec, normalVec, damage, hitFx);
-
+            executorOkResponse()
         };
 
-        GameCommander.prototype.executeAttackEnd = function(message) {
+        GameCommander.prototype.executeAttackEnd = function(message, executorOkResponse) {
             var attackId   =  message[1];
             combatFeedbackFunctions.registerAttackEnd(attackId);
+            executorOkResponse()
         };
+
+        GameCommander.prototype.countActiveAttacks = function() {
+            return combatFeedbackFunctions.getActiveAttackCount();
+        };
+
+        GameCommander.prototype.countExecutionCalls = function() {
+        //    var calls = execCalls;
+        //    execCalls = 0;
+            return execCalls;
+        };
+
 
         return GameCommander;
     });

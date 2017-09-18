@@ -3,6 +3,8 @@
 define([
 		'Events',
         'GameAPI',
+        'ThreeAPI',
+        'EffectsAPI',
 		'application/ClientRegistry',
         'application/debug/SetupDebug',
 		'io/Connection',
@@ -15,6 +17,8 @@ define([
 	function(
         evt,
         GameAPI,
+        ThreeAPI,
+        EffectsAPI,
         ClientRegistry,
         SetupDebug,
         Connection,
@@ -24,7 +28,7 @@ define([
         UiMessenger,
         PipelineAPI
     ) {
-
+3
 
 		var frame = 0;
 
@@ -119,9 +123,38 @@ define([
 
         var tickEvent = {frame:0, tpf:1};
 
+        var monitorTime = {};
+        var timeEntries = [];
+
+        var monitorRender = {};
+        var renderEntries = [];
+
+        var monitorEffects = {};
+        var effectEntries = [];
+
+        var monitorGame = {};
+        var gameEntries = [];
+
+        var monitorSystem = {};
+        var systemEntries = [];
+
+        var monitorBrowser = {};
+        var browserEntries = [];
+
+        var monitorStatus = {};
+        var statusEntries = [];
 
         ModelViewer.prototype.setupSimulation = function(sceneController, ready) {
             var _this = this;
+
+            PipelineAPI.setCategoryKeyValue('STATUS', 'RENDER_MONITOR', renderEntries);
+            PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_MONITOR', timeEntries);
+            PipelineAPI.setCategoryKeyValue('STATUS', 'EFFECT_MONITOR', effectEntries);
+            PipelineAPI.setCategoryKeyValue('STATUS', 'GAME_MONITOR', gameEntries);
+            PipelineAPI.setCategoryKeyValue('STATUS', 'SYSTEM_MONITOR', systemEntries);
+
+            PipelineAPI.setCategoryKeyValue('STATUS', 'BROWSER_MONITOR', browserEntries);
+            PipelineAPI.setCategoryKeyValue('STATUS', 'STATUS_MONITOR', statusEntries);
 
     //        console.log("Setup Simulation");
 
@@ -168,6 +201,124 @@ define([
         };
 
         var tickTimeout;
+
+        var percentify = function(number, total) {
+            return Math.round((number/total) * 100);
+        };
+
+        var kilofy = function(number) {
+            return Math.round((number/1000));
+        };
+
+        var notifyStatus = function(store, value, dataKey) {
+            if (!store[dataKey]) {
+                store[dataKey] = {}
+            }
+
+            store[dataKey].dirty = store[dataKey].value !== value;
+            store[dataKey].key = dataKey;
+            store[dataKey].value = value
+        };
+
+        var listData = function(list, data) {
+            var i = 0;
+            for (var key in data) {
+                list[i] = data[key];
+                i++;
+            }
+
+        }
+
+        ModelViewer.prototype.tickStatusUpdate = function() {
+
+
+            notifyStatus(monitorGame,    GameAPI.getActors().length,                      'ACTORS');
+            notifyStatus(monitorGame,    GameAPI.getPieces().length,                      'PIECES');
+            notifyStatus(monitorGame,    GameAPI.countCombatPieces(),                     'COMBATANTS');
+            notifyStatus(monitorGame,    GameAPI.getGameCommander().countActiveAttacks(), 'ATTACK_POOL');
+
+            notifyStatus(monitorSystem,    GameAPI.getGameWorker().getProtocolCount(),      'PROTOCOLS');
+            notifyStatus(monitorSystem,    GameAPI.getGameCommander().countExecutionCalls(),'EXEC_CALLS');
+            notifyStatus(monitorSystem,    GameAPI.getGameWorker().getCallCount(),          'WRKR_CALLS');
+            notifyStatus(monitorSystem,    GameAPI.getGameWorker().getCallbackCount(),      'CALLBACKS');
+            notifyStatus(monitorSystem,    GameAPI.getGameWorker().getProtocolUpdateCount(),'BAD_UPDATES');
+
+            notifyStatus(monitorEffects, EffectsAPI.sampleTotalParticlePool(),       'PRTCL_POOL');
+            notifyStatus(monitorEffects, EffectsAPI.sampleActiveRenderersCount(),    'RENDERERS');
+            notifyStatus(monitorEffects, EffectsAPI.countTotalEffectPool(),          'FX_POOL');
+            notifyStatus(monitorEffects, EffectsAPI.sampleActiveEffectsCount(),      'FX_COUNT');
+            notifyStatus(monitorEffects, EffectsAPI.sampleActiveParticleCount(),     'PARTICLES');
+            notifyStatus(monitorEffects, EffectsAPI.sampleEffectActivations(),       'FX_ADDS');
+
+
+            var memory = performance.memory;
+            var memoryUsed = ( (memory.usedJSHeapSize / 1048576) / (memory.jsHeapSizeLimit / 1048576 ));
+            var mb = Math.round(memory.usedJSHeapSize / 104857.6) / 10;
+
+            var tpf = PipelineAPI.readCachedConfigKey('STATUS', 'TPF')*1000;
+            var timeGame = PipelineAPI.readCachedConfigKey('STATUS', 'TIME_GAME_TICK')/1000;
+            var timeIdle = PipelineAPI.readCachedConfigKey('STATUS', 'TIME_ANIM_IDLE');
+            var timeRender = PipelineAPI.readCachedConfigKey('STATUS', 'TIME_ANIM_RENDER');
+
+
+            notifyStatus(monitorTime,      Math.floor(tpf)+'ms',                        'TPF');
+            notifyStatus(monitorTime,      Math.floor(tpf)+'ms',                        'IDLE');
+            notifyStatus(monitorTime,      percentify(timeGame*1000, tpf) + '%',        'TIME_GAME');
+            notifyStatus(monitorTime,      percentify(timeRender*1000, tpf) +'%',       'TIME_RENDER');
+            notifyStatus(monitorTime,      mb+'MB',                                     'MEM_USED');
+            notifyStatus(monitorTime,      Math.round(100 - (memoryUsed*100)) + '%',    'MEM_LEFT');
+
+
+            var shaders = ThreeAPI.sampleRenderInfo('programs', null);
+            var count = 0;
+            for (var key in shaders) {
+                count++
+            }
+
+            notifyStatus(monitorRender,      ThreeAPI.countAddedSceneModels(),                              'SCN_NODES');
+            notifyStatus(monitorRender,      ThreeAPI.countPooledModels(),                                  'MESH_POOL');
+            notifyStatus(monitorRender,      ThreeAPI.sampleRenderInfo('render', 'calls'),                  'DRAW_CALLS');
+            notifyStatus(monitorRender,      kilofy(ThreeAPI.sampleRenderInfo('render', 'vertices'))+'k',   'VERTICES');
+            notifyStatus(monitorRender,      ThreeAPI.sampleRenderInfo('memory', 'geometries'),             'GEOMETRIES');
+            notifyStatus(monitorRender,      ThreeAPI.sampleRenderInfo('memory', 'textures'),               'TEXTURES');
+            notifyStatus(monitorRender,      count,                                                         'SHADERS');
+
+            var monitorBrowser = {};
+            var monitorStatus = {};
+
+            var browserSetup = PipelineAPI.getCachedConfigs().SETUP;
+            var status       = PipelineAPI.getCachedConfigs().STATUS;
+
+
+            notifyStatus(monitorBrowser,      browserSetup.OS,              'OS');
+            notifyStatus(monitorBrowser,      browserSetup.BROWSER,         'BROWSER');
+            notifyStatus(monitorBrowser,      browserSetup.INPUT,           'INPUT');
+        //    notifyStatus(monitorBrowser,      browserSetup.LANDSCAPE,       'LANDSCAPE');
+
+        //    notifyStatus(monitorBrowser,      browserSetup.SCREEN[0],       'WIDTH'  );
+        //    notifyStatus(monitorBrowser,      browserSetup.SCREEN[1],       'HEIGHT' );
+        //    notifyStatus(monitorBrowser,      browserSetup.PX_SCALE,        'PX_SCALE' );
+
+
+            notifyStatus(monitorStatus,      status.DEV_MODE,                'DEV_MODE');
+            notifyStatus(monitorStatus,      status.DEV_STATUS,              'DEV_STATUS');
+            notifyStatus(monitorStatus,      status.FILE_CACHE,              'FILE_CACHE');
+            notifyStatus(monitorStatus,      status.EVENT_LISTENERS,         'EVT_LISTNRS');
+            notifyStatus(monitorStatus,      status.EVENT_TYPES,             'EVT_TYPES');
+            notifyStatus(monitorStatus,      status.LISTENERS_ONCE,          'LISTNERS_ONCE');
+            notifyStatus(monitorStatus,      status.FIRED_EVENTS,            'FIRED_EVENTS');
+
+//
+            listData(renderEntries, monitorRender);
+            listData(timeEntries, monitorTime);
+            listData(effectEntries, monitorEffects);
+            listData(gameEntries, monitorGame);
+            listData(systemEntries, monitorSystem);
+            listData(browserEntries, monitorBrowser);
+            listData(statusEntries, monitorStatus);
+
+        };
+
 
         ModelViewer.prototype.tick = function(tpf, sceneController) {
 
@@ -218,6 +369,8 @@ define([
         //    evt.fire(evt.list().CAMERA_TICK, {frame:frame, tpf:tpf});
 
             PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_GAME_TICK', performance.now() - start);
+
+            this.tickStatusUpdate();
 
 
             if (PipelineAPI.getPipelineOptions('jsonPipe').polling.enabled) {

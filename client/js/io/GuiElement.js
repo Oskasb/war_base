@@ -29,7 +29,7 @@ define([
             this.position = new THREE.Vector3();
             this.origin   = new THREE.Vector3();
             this.textOffsetVec = new THREE.Vector3();
-
+            this.requestedChildren = 0;
             this.dataKey = dataKey;
 
             this.target = null;
@@ -57,7 +57,7 @@ define([
         };
 
         GuiElement.prototype.setText = function(text) {
-            if (this.text !== text) {
+            if (this.text !== text || Math.random() < 0.1) {
                 this.generateChildrenForText(text);
             }
             this.text = text;
@@ -65,14 +65,24 @@ define([
 
 
         GuiElement.prototype.generateChildrenForText = function(text) {
-            var elemCountDiff = text.length - this.text.length;
+
+            var childCount = this.requestedChildren;
+
+            if (this.children[this.options.text_element_id]) {
+                childCount += this.children[this.options.text_element_id].length;
+            }
+
+            var elemCountDiff = text.length - childCount;
 
             if (!elemCountDiff) return;
 
             if (elemCountDiff < 0) {
-                for (var i = elemCountDiff; i < 0; i++) {
-                    this.despawnChildElement(this.children[this.options.text_element_id].pop());
+                if (this.children[this.options.text_element_id]) {
+                    while (this.requestedChildren + this.children[this.options.text_element_id].length > text.length) {
+                        this.despawnChildElement(this.children[this.options.text_element_id].pop());
+                    }
                 }
+
             } else if (elemCountDiff > 0) {
                 for (var i = this.text.length; i < text.length; i++) {
                     this.spawnChildElement(this.options.text_element_id);
@@ -87,14 +97,14 @@ define([
 
             this.textOffsetVec.copy(textOffsetVector);
 
-
             if (this.children[txElemId]) {
-                this.textOffsetVec.z = 0;
+
                 for (var i = 0; i < this.children[txElemId].length; i++) {
                     var letter = this.text[i];
 
                     child = this.children[txElemId][i];
                     child.origin.copy(this.position);
+
 
                     if (child.letter !== letter) {
                         child.setSpriteKey(this.text[i]);
@@ -102,6 +112,9 @@ define([
                     }
 
                     child.applyElementPosition(null, this.textOffsetVec);
+
+                    this.textOffsetVec.z = 0;
+
                     this.textOffsetVec.x += child.options.step_x;
                 }
             }
@@ -137,8 +150,10 @@ define([
                 }
                 element.enableGuiElement(guiRendererCallbacks);
                 this.children[element.dataKey].push(element);
+                this.requestedChildren--;
             }.bind(this);
 
+            this.requestedChildren++;
             guiRendererCallbacks.generateChildElement(fxId, callback)
         };
 
@@ -182,15 +197,18 @@ define([
         };
 
         GuiElement.prototype.applyElementPosition = function(fxIndex, offsetVec3) {
+            if (!guiRendererCallbacks) return;
+
             if (offsetVec3) {
                 this.position.addVectors(this.origin, offsetVec3);
             } else {
+                if (Math.random() < 0.999 && this.position.x === this.origin.x && this.position.y === this.origin.y && this.position.z === this.origin.z) {
+                    return;
+                }
                 this.position.copy(this.origin);
             }
 
-            if (!guiRendererCallbacks) return;
-
-            if (fxIndex) {
+            if (fxIndex !== null) {
                 guiRendererCallbacks[this.updateFunc](this, this.fxElements[fxIndex]);
             } else {
                 for (var i = 0; i < this.fxElements.length; i++) {

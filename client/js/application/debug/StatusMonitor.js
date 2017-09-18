@@ -89,8 +89,6 @@ define([
 
             PipelineAPI.subscribeToCategoryKey('STATUS', 'MON_VEGETATION', monitorVegetation);
 
-
-
         };
 
         StatusMonitor.prototype.monitorRenderStates = function() {

@@ -53,7 +53,8 @@ define([
 
         GuiSetup.prototype.removeMainGui = function() {
             this.active = false;
-            this.elements[this.config[0].id].removeElement();
+            panels[ENUMS.Gui.rightPanel].removeGuiPanel();
+            panels[ENUMS.Gui.leftPanel].removeGuiPanel();
             delete this;
         };
 

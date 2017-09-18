@@ -27,10 +27,10 @@ define([
 
     };
 
-    Setup.init = function(client) {
+    Setup.init = function(ModelViewer, onReady) {
         var sceneController = new SceneController();
         var dataLoader = new DataLoader();
-        dataLoader.loadData(client, PointerCursor, sceneController);
+        dataLoader.loadData(ModelViewer, PointerCursor, sceneController, onReady);
     };
 
 

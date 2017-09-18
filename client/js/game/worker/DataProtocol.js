@@ -7,6 +7,8 @@ define([],
 
         var DataProtocol = function(pieceKey, pieceStates, worker) {
 
+            this.messageCount = 0;
+
             this.ptcNr = pieceKey;
 
             this.worker = worker;
@@ -23,6 +25,7 @@ define([],
         };
 
         DataProtocol.prototype.recieveMessage = function(data) {
+            this.messageCount++;
             for (var i = 2; i < data.length-1; i++) {
                 this.setStateValue(data[i], data[i+1], data[i+2]);
                 i++;

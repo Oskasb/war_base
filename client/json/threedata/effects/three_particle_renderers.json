@@ -5,7 +5,7 @@
         {
           "id":"gpu_additive_gui_renderer",
           "material_id":"gpu_gui_sprite_atlas_material",
-          "particle_pool":170,
+          "particle_pool":190,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":2,
@@ -20,7 +20,7 @@
         {
           "id":"gpu_normal_gui_renderer",
           "material_id":"gpu_gui_sprite_atlas_material",
-          "particle_pool":170,
+          "particle_pool":190,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":1,
@@ -35,7 +35,7 @@
         {
           "id":"gpu_normal_font_renderer",
           "material_id":"gpu_gui_sprite_font_material",
-          "particle_pool":250,
+          "particle_pool":450,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":1,

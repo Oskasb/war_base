@@ -363,7 +363,7 @@ define([
         var totalRenderers = 0;
 
         ParticleSpawner.prototype.getActiveRendererCount = function() {
-            return activeRenderes+' / '+totalRenderers ;
+            return activeRenderes+'/'+totalRenderers ;
         };
         
         ParticleSpawner.prototype.getActiveEffectsCount = function() {

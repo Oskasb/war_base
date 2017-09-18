@@ -62,6 +62,29 @@ define([
             return gameCommander.getEntryById(pieces, id)
         };
 
+        GameAPI.countCombatPieces = function() {
+            var count = 0;
+
+            for (var i = 0; i < pieces.length; i++) {
+                if (pieces[i].getCombatStatus()) {
+                    count++
+                }
+            }
+
+            return count;
+        };
+
+        GameAPI.getPieces = function() {
+            return pieces;
+        };
+
+        GameAPI.getGameCommander = function() {
+            return gameCommander;
+        };
+
+        GameAPI.getGameWorker = function() {
+            return gameWorker;
+        };
 
         GameAPI.getActorById = function(id) {
             return gameCommander.getEntryById(actors, id)

@@ -1,10 +1,12 @@
 "use strict";
 
 define([
-        'ui/GameScreen'
+        'ui/GameScreen',
+    'PipelineAPI'
     ],
     function(
-        GameScreen
+        GameScreen,
+        PipelineAPI
     ) {
 
         var GameAPI;
@@ -146,11 +148,7 @@ define([
 
                 GameScreen.fitView(guiElement.origin);
 
-                for (var i = 0; i < guiElement.fxElements.length; i++) {
-                    guiElement.applyElementPosition(i);
-                }
-
-
+                guiElement.applyElementPosition(null);
 
             } else if (guiElement.enabled) {
                 guiElement.disableGuiElement();
@@ -191,7 +189,7 @@ define([
             guiElement.setText(text);
 
             for (var i = 0; i < guiElement.fxElements.length; i++) {
-                guiElement.applyElementPosition(i, position);
+                guiElement.applyElementPosition(null, position);
             }
 
             guiElement.renderText(offset);
@@ -203,10 +201,10 @@ define([
 
             var i;
 
-            var entries = [
-                {key:'test1', value:''+Math.floor(Math.random()*100)},
-                {key:'test2', value:''+Math.floor(Math.random()*100)}
-            ];
+            var monitor = PipelineAPI.readCachedConfigKey('STATUS', guiElement.options.monitor_key);
+
+            if (!monitor.length) return;
+
 
             var labelElemId = guiElement.options.label_elemet_id;
             var valueElemId = guiElement.options.value_elemet_id;
@@ -214,21 +212,31 @@ define([
             if (!guiElement.enabled) {
 
                 guiElement.enableGuiElement();
-                for (i = 0; i < entries.length; i++) {
-
-                    guiElement.spawnChildElement(labelElemId);
-                    guiElement.spawnChildElement(valueElemId);
-                }
             }
+
+            calcVec.z = 0;
+            calcVec.x = 0;
+            calcVec.y = 0;
 
             guiElement.origin.set(guiElement.options.screen_pos[0], guiElement.options.screen_pos[1], guiElement.options.screen_pos[2]);
             GameScreen.fitView(guiElement.origin);
-            guiElement.applyElementPosition(0);
+            guiElement.applyElementPosition(null, calcVec);
 
-            if (! guiElement.children[labelElemId]) {
+
+            if (!guiElement.children[labelElemId]) {
+                for (i = 0; i < monitor.length; i++) {
+                    guiElement.spawnChildElement(labelElemId);
+                    guiElement.spawnChildElement(valueElemId);
+                }
                 return;
             }
 
+            if (monitor.length > guiElement.children[labelElemId].length) {
+                for (i = guiElement.children[labelElemId].length; i < monitor.length; i++) {
+            //        guiElement.spawnChildElement(labelElemId);
+            //        guiElement.spawnChildElement(valueElemId);
+                }
+            }
 
             calcVec.z = 0;
             calcVec.x = 0;
@@ -240,7 +248,12 @@ define([
 
             var child;
 
+
             for (i = 0; i < guiElement.children[labelElemId].length; i++) {
+
+                if (!monitor[i]) {
+                    return;
+                }
 
                 child = guiElement.children[labelElemId][i];
 
@@ -251,17 +264,23 @@ define([
                 calcVec2.x = child.options.offset_x;
                 calcVec2.y = child.options.offset_y;
 
-                this.updateTextElement(entries[i].key, child, calcVec, calcVec2);
 
-                if (guiElement.children[valueElemId][i]) {
-                    calcVec.x = offsetChildren[2];
-                    child = guiElement.children[valueElemId][i];
-                    child.origin.copy(guiElement.origin);
+                if (monitor[i].dirty || Math.random() < 0.01) {
+                    this.updateTextElement(monitor[i].key, child, calcVec, calcVec2);
 
-                    calcVec2.x = child.options.offset_x;
-                    calcVec2.y = child.options.offset_y;
+                    if (guiElement.children[valueElemId]) {
 
-                    this.updateTextElement(entries[i].value, child, calcVec, calcVec2);
+                        if (guiElement.children[valueElemId][i]) {
+                            calcVec.x = offsetChildren[2];
+                            child = guiElement.children[valueElemId][i];
+                            child.origin.copy(guiElement.origin);
+
+                            calcVec2.x = child.options.offset_x;
+                            calcVec2.y = child.options.offset_y;
+
+                            this.updateTextElement(''+monitor[i].value, child, calcVec, calcVec2);
+                        }
+                    }
                 }
 
                 calcVec.y += offsetChildren[1];

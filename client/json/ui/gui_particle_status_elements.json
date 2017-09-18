@@ -1,16 +1,41 @@
 [{
   "GUI_PARTICLE_ELEMENTS":{
     "ELEMENTS":[
+
       {
-        "id":"gui_status_plate_element",
+        "id":"gui_browser_status_monitor_element",
         "data":{
           "effect_ids":[
             "gui_combat_bar_effect"
-
           ],
           "options":{
-            "screen_pos":[0.30, 0.4, -1],
-            "offset_children":[-0.05, -0.011, 0.020, -0.002],
+            "monitor_key":"BROWSER_MONITOR",
+            "screen_pos":[0.38,-0.44, -1],
+            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "label_elemet_id":"gui_status_label_container_element",
+            "value_elemet_id":"gui_status_value_container_element"
+          },
+          "render_calls":{
+            "gui_render_enable":"enable_fx_element",
+            "gui_render_disable":"disable_fx_element",
+            "gui_renderer_callback":"show_application_status",
+            "gui_update_callback":"set_element_position"
+          }
+        }
+      },
+
+
+
+      {
+        "id":"gui_system_status_monitor_element",
+        "data":{
+          "effect_ids":[
+            "gui_combat_bar_effect"
+          ],
+          "options":{
+            "monitor_key":"SYSTEM_MONITOR",
+            "screen_pos":[0.20, 0.48, -1],
+            "offset_children":[-0.05, -0.012, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
           },
@@ -23,14 +48,125 @@
         }
       },
       {
+        "id":"gui_game_status_monitor_element",
+        "data":{
+          "effect_ids":[
+            "gui_combat_bar_effect"
+          ],
+          "options":{
+            "monitor_key":"GAME_MONITOR",
+            "screen_pos":[0.32, 0.48, -1],
+            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "label_elemet_id":"gui_status_label_container_element",
+            "value_elemet_id":"gui_status_value_container_element"
+          },
+          "render_calls":{
+            "gui_render_enable":"enable_fx_element",
+            "gui_render_disable":"disable_fx_element",
+            "gui_renderer_callback":"show_application_status",
+            "gui_update_callback":"set_element_position"
+          }
+        }
+      },
+
+      {
+        "id":"gui_time_status_monitor_element",
+        "data":{
+          "effect_ids":[
+            "gui_combat_bar_effect"
+          ],
+          "options":{
+            "monitor_key":"TIME_MONITOR",
+            "screen_pos":[0.44, 0.48, -1],
+            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "label_elemet_id":"gui_status_label_container_element",
+            "value_elemet_id":"gui_status_value_container_element"
+          },
+          "render_calls":{
+            "gui_render_enable":"enable_fx_element",
+            "gui_render_disable":"disable_fx_element",
+            "gui_renderer_callback":"show_application_status",
+            "gui_update_callback":"set_element_position"
+          }
+        }
+      },
+
+      {
+        "id":"gui_effect_status_monitor_element",
+        "data":{
+          "effect_ids":[
+            "gui_combat_bar_effect"
+          ],
+          "options":{
+            "monitor_key":"EFFECT_MONITOR",
+            "screen_pos":[0.44, 0.34, -1],
+            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "label_elemet_id":"gui_status_label_container_element",
+            "value_elemet_id":"gui_status_value_container_element"
+          },
+          "render_calls":{
+            "gui_render_enable":"enable_fx_element",
+            "gui_render_disable":"disable_fx_element",
+            "gui_renderer_callback":"show_application_status",
+            "gui_update_callback":"set_element_position"
+          }
+        }
+      },
+
+
+      {
+        "id":"gui_render_status_monitor_element",
+        "data":{
+          "effect_ids":[
+            "gui_combat_bar_effect"
+          ],
+          "options":{
+            "monitor_key":"RENDER_MONITOR",
+            "screen_pos":[0.44, 0.18, -1],
+            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "label_elemet_id":"gui_status_label_container_element",
+            "value_elemet_id":"gui_status_value_container_element"
+          },
+          "render_calls":{
+            "gui_render_enable":"enable_fx_element",
+            "gui_render_disable":"disable_fx_element",
+            "gui_renderer_callback":"show_application_status",
+            "gui_update_callback":"set_element_position"
+          }
+        }
+      },
+
+      {
+        "id":"gui_status_monitor_element",
+        "data":{
+          "effect_ids":[
+            "gui_combat_bar_effect"
+          ],
+          "options":{
+            "monitor_key":"STATUS_MONITOR",
+            "screen_pos":[0.44, 0.02, -1],
+            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "label_elemet_id":"gui_status_label_container_element",
+            "value_elemet_id":"gui_status_value_container_element"
+          },
+          "render_calls":{
+            "gui_render_enable":"enable_fx_element",
+            "gui_render_disable":"disable_fx_element",
+            "gui_renderer_callback":"show_application_status",
+            "gui_update_callback":"set_element_position"
+          }
+        }
+      },
+
+      {
         "id":"gui_status_label_container_element",
         "data":{
           "effect_ids":[
-            "gui_corner_selection_effect"
+            "gui_text_background_effect"
           ],
           "options":{
             "text_element_id":"gui_status_text_element",
-            "offset_x": 0.002 ,
+            "offset_x": 0.003 ,
             "offset_y":-0.003
           },
           "render_calls":{
@@ -45,11 +181,11 @@
         "id":"gui_status_value_container_element",
         "data":{
           "effect_ids":[
-            "gui_corner_selection_effect"
+            "gui_text_background_effect"
           ],
           "options":{
             "text_element_id":"gui_status_value_element",
-            "offset_x":0.005,
+            "offset_x":0.003,
             "offset_y":-0.003
           },
           "render_calls":{
@@ -67,7 +203,7 @@
             "gui_status_text_effect"
           ],
           "options": {
-            "step_x": 0.005,
+            "step_x": 0.007,
             "step_y": 0.005
           },
           "render_calls": {
@@ -85,7 +221,7 @@
             "gui_status_text_effect"
           ],
           "options":{
-            "step_x":0.005,
+            "step_x":0.008,
             "step_y":0.005
           },
           "render_calls":{
