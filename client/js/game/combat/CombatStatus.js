@@ -48,7 +48,7 @@ define([],
         };
 
         CombatStatus.prototype.getCombatState = function() {
-            if (Math.random() < 0.001) {
+            if (Math.random() < 0.001 && this.combatState === ENUMS.CombatStates.IDLE) {
                 this.setCombatState(ENUMS.CombatStates.ENGAGING);
 
                 if (Math.random() < 0.2) {
@@ -58,7 +58,7 @@ define([],
                 }
             }
 
-            if (Math.random() < 0.02) {
+            if (Math.random() < 0.02 && this.combatState !== ENUMS.CombatStates.IDLE) {
                 this.health -= 1;
 
                 if (this.health === 0) this.health = this.max_health;

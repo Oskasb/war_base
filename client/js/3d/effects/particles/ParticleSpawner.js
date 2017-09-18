@@ -147,7 +147,7 @@ define([
 
             renderer.adding = true;
             //   if (!renderer.particles.length) {
-            console.log("request new renderer...");
+            console.log("request new renderer...", renderer);
             this.addRenderer(renderer.config, onReady);
             return this.renderEffect(renderer, effect);
 
@@ -214,7 +214,7 @@ define([
             }
 
             for (var i = 0; i < renderer.length; i++) {
-                if (renderer[i].particles.length > 5) {
+                if (renderer[i].particles.length > renderer[i].biggestRequest * 2) {
                     return this.renderEffect(renderer[i], effect);
                 }
             }

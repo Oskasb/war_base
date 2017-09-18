@@ -35,6 +35,7 @@ define([
             this.isScreenspace = rendererConfig.is_screenspace || false;
             this.renderOrder = rendererConfig.render_order || null;
 
+            this.biggestRequest = 1;
 
             this.material = {uniforms:{}};
             this.particles = [];
@@ -137,8 +138,15 @@ define([
         };
 
 
+
+
         ParticleRenderer.prototype.calculateAllowance = function(requestSize) {
-            if (this.particles.length - requestSize > this.poolSize / 3) {
+
+            if (this.biggestRequest < requestSize) {
+                this.biggestRequest = requestSize;
+            }
+
+            if (this.particles.length - requestSize > this.biggestRequest) {
                 return requestSize;
             } else {
                 var req = Math.round( (this.poolSize / this.particles.length) * requestSize) || 1;

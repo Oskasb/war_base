@@ -634,21 +634,21 @@
           "sprite_key":"ATLAS",
           "sprite_id":"leafy_tuft",
           "config":{
-            "gravity":-6.81,
-            "drag":2.5,
+            "gravity":-3.81,
+            "drag":2.6,
             "spinDrag":1.2,
-            "lifeTime":{"min":1.1,"max":1.1},
-            "positionSpread":{"x":0.1, "y":0.4, "z":0.1},
+            "lifeTime":{"min":0.8,"max":0.8},
+            "positionSpread":{"x":0.1, "y":0.3, "z":0.1},
             "colorCurve":"nearWhite",
             "alphaCurve":"oneToZero",
             "diffusionCurve":"halfQuickIn",
             "scaleCurve":"quickIn",
-            "size":{"value":0.3, "min": 0.3, "max": 1.32},
+            "size":{"value":0.6, "min": 0.3, "max": 1.32},
             "spin":{"value":1.01, "min":-4.5, "max":4.5},
-            "velocityDiffusion":0.73,
+            "velocityDiffusion":0.43,
             "accelerationDiffusion":0.5,
             "colorDiffusion":0.45,
-            "velocityFactor":0.9
+            "velocityFactor":2.5
           }
         },
         {
@@ -656,21 +656,21 @@
           "sprite_key":"ATLAS",
           "sprite_id":"splatter",
           "config":{
-            "gravity":-4.81,
-            "drag":2.5,
-            "spinDrag":0.2,
-            "lifeTime":{"min":0.8,"max":0.8},
+            "gravity":-2.81,
+            "drag":2.3,
+            "spinDrag":0.4,
+            "lifeTime":{"min":0.5,"max":0.5},
             "positionSpread":{"x":0.2, "y":0.1, "z":0.2},
             "colorCurve":"dirt",
             "alphaCurve":"oneToZero",
             "diffusionCurve":"halfQuickIn",
             "scaleCurve":"halfQuickIn",
-            "size":{"value":0.42, "min": 0.1, "max": 1.32},
+            "size":{"value":0.62, "min": 0.1, "max": 1.32},
             "spin":{"value":1.01, "min":-4.5, "max":3.5},
-            "velocityDiffusion":0.43,
+            "velocityDiffusion":0.33,
             "accelerationDiffusion":0.5,
             "colorDiffusion":0.55,
-            "velocityFactor":0.9
+            "velocityFactor":2.3
           }
         },
         {

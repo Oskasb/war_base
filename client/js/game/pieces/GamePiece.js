@@ -250,9 +250,16 @@ define([
 
             this.cameraDistance = distance;
 
-            if (distance < this.boundingSize) {
+            if (distance < this.boundingSize / 2) {
 
                 this.setRendereable(true);
+                return this.render;
+            }
+
+            if (distance >  50 + Math.sqrt(this.boundingSize + 10) * 25) {
+                if (this.render) {
+                    this.setRendereable(false);
+                }
                 return this.render;
             }
 
