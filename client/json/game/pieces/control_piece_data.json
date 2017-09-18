@@ -11,6 +11,23 @@
           "attachments":[]
         }
       },
+
+      {
+        "id":"activated_control_piece_hidden",
+        "data":{
+          "root_slot":"root",
+          "slots":[
+            {"slot":"root",         "module":"control_root_module"   },
+            {"slot":"pointer_state",    "module":"control_pointer_module"},
+            {"slot":"control_selector", "module":"control_activator_module"}
+          ],
+          "attachments":[
+            {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
+            {"slot":"pointer_state",   "ap":"ap_element",      "child":"control_selector"}
+          ]
+        }
+      },
+
       {
         "id":"activated_control_piece",
         "data":{
@@ -31,6 +48,22 @@
                   {"slot":"slot_0_cursor",    "ap":"ap_element",    "child":"slot_0_highlight"},
                 {"slot":"control_selector","ap":"ap_element_2",    "child":"slot_2_cursor"},
                   {"slot":"slot_2_cursor",    "ap":"ap_element",    "child":"slot_2_highlight"}
+          ]
+        }
+      },
+      {
+        "id":"selector_control_piece_hidden",
+        "data":{
+          "root_slot":"root",
+          "slots":[
+            {"slot":"root",         "module":"control_root_module"   },
+            {"slot":"pointer_state",    "module":"control_pointer_module"},
+            {"slot":"control_selector", "module":"control_selector_module"}
+
+          ],
+          "attachments":[
+            {"slot":"root",         "ap":"ap_pointer_state","child":"pointer_state" },
+            {"slot":"pointer_state",   "ap":"ap_element",      "child":"control_selector"}
           ]
         }
       },

@@ -42,6 +42,10 @@ define([
         ModuleEffectCreator.setEffectPosition(fxElement, posVec);
     };
 
+    GuiFeedbackFunctions.prototype.updateElementsSprite = function(fxArray, spriteKey) {
+        ModuleEffectCreator.applySpriteKeyToFxArray(fxArray, spriteKey);
+    };
+
     GuiFeedbackFunctions.prototype.disableElement = function(fxStore) {
         ModuleEffectCreator.removeModuleStaticEffect(fxStore)
     };

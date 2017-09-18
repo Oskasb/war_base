@@ -32,7 +32,21 @@
             "depthTest":false
           }
         },
-
+        {
+          "id":"gpu_normal_font_renderer",
+          "material_id":"gpu_gui_sprite_font_material",
+          "particle_pool":250,
+          "particle_geometry":"quad",
+          "is_screenspace":true,
+          "render_order":1,
+          "material_options":{
+            "blending":"NormalBlending",
+            "transparent":true,
+            "alphaTest":0.001,
+            "depthWrite":false,
+            "depthTest":false
+          }
+        },
         {
           "id":"gpu_additive_atlas_renderer",
           "material_id":"gpu_sprite_atlas_material",

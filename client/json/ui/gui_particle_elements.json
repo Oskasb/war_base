@@ -7,14 +7,33 @@
           "effect_ids":["gui_combat_bar_effect", "gui_combat_bar_backdrop_effect"],
           "options":{
             "offset_y":0.047,
-            "offset_children":[-0.052, -0.004],
+            "offset_children":[-0.052, -0.002, -0.054, 0.013],
             "health_element_id":"gui_combat_health_point_element",
-            "armor_element_id":"gui_combat_armor_point_element"
+            "armor_element_id":"gui_combat_armor_point_element",
+            "text_element_id":"gui_combat_bar_text_element"
           },
           "render_calls":{
             "gui_render_enable":"enable_fx_element",
             "gui_render_disable":"disable_fx_element",
             "gui_renderer_callback":"show_combat_status",
+            "gui_update_callback":"set_element_position"
+          }
+        }
+      },
+      {
+        "id":"gui_combat_bar_text_element",
+        "data":{
+          "effect_ids":[
+            "gui_combat_bar_text_effect"
+          ],
+          "options":{
+            "step_x":0.009,
+            "step_y":-0.007
+          },
+          "render_calls":{
+            "gui_render_enable":"enable_fx_element",
+            "gui_render_disable":"disable_fx_element",
+            "gui_renderer_callback":null,
             "gui_update_callback":"set_element_position"
           }
         }

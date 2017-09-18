@@ -199,12 +199,10 @@ define([
 
         };
 
-        var sysKey = 'THREE'
+        var sysKey = 'THREE';
 
         ParticleSpawner.prototype.activateEffect = function(effect) {
             effect.setEffectData(this.particleEffectData.buildEffect(effect.effectData, sysKey, effect.getEffectId()));
-
-
 
             var renderer = this.getRenderersById(effect.effectData.effect.renderer_id);
 
@@ -240,6 +238,14 @@ define([
             effect.updateEffectPositionSimulator(pos, tpf);
         };
 
+
+
+        ParticleSpawner.prototype.updateEffectParticleSprite = function(effect, spriteKey) {
+            var fxConf = this.particleEffectData.fetchEffect(sysKey,  effect.id);
+            var particleConf = this.particleEffectData.fetchParticle(fxConf.system_key, fxConf.particle_id);
+            var sprite = this.particleEffectData.fetchSprite(particleConf.sprite_key, spriteKey);
+            effect.updateEffectSpriteSimulator(sprite, spriteKey);
+        };
 
         ParticleSpawner.prototype.spawnTemporaryPassiveEffect = function(id, pos, vel, size, quat, duration) {
 

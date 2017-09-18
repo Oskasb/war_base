@@ -20,7 +20,7 @@
         "data":{
           "root_slot":"piece_root",
           "combat_stats":{
-            "health":6,
+            "health":7,
             "armor":2
           },
           "slots":[

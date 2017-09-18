@@ -24,6 +24,8 @@ define(['3d/effects/particles/EffectSimulators',
             this.quat = new THREE.Quaternion();
             this.deadParticles = [];
 
+            this.dynamicSprite = null;
+
             this.temporary = {
                 startTime:0,
                 endTime:0
@@ -39,12 +41,12 @@ define(['3d/effects/particles/EffectSimulators',
             this.id = id;
         };
 
-        ParticleEffect.prototype.getEffectId = function(id) {
+        ParticleEffect.prototype.getEffectId = function() {
             return this.id;
         };
 
         ParticleEffect.prototype.resetParticleEffect = function() {
-
+            this.dynamicSprite = null;
         };
 
         ParticleEffect.prototype.setEffectData = function(effectData) {
@@ -130,10 +132,10 @@ define(['3d/effects/particles/EffectSimulators',
 
                 particle.setQuaternion(this.quat);
                 particle.setPosition(this.pos);
-                particle.addPosition(particle.posOffset)
+                particle.addPosition(particle.posOffset);
 
 
-            ParticleParamParser.applyEffectSprite(particle, this.effectData.sprite);
+            ParticleParamParser.applyEffectSprite(particle, this.dynamicSprite || this.effectData.sprite);
 
             particle.initToSimulation(systemTime+frameTpfFraction, calcVec, this.vel);
 
@@ -148,6 +150,14 @@ define(['3d/effects/particles/EffectSimulators',
                 simulator.source,
                 simulator.target
             );
+        };
+
+        ParticleEffect.prototype.updateEffectSpriteSimulator = function(sprite, spriteKey) {
+            this.dynamicSprite = sprite;
+            for (var i = 0; i < this.aliveParticles.length; i++) {
+                ParticleParamParser.applyEffectSprite(this.aliveParticles[i], sprite);
+                this.applyParticleSimulator(EffectSimulators.simulators.tiles, this.aliveParticles[i], 0)
+            }
         };
 
         ParticleEffect.prototype.updateEffectPositionSimulator = function(pos, tpf) {

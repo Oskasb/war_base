@@ -442,6 +442,13 @@ define([
             }
         };
 
+        ModuleEffectCreator.applySpriteKeyToFxArray = function(fxArray, spriteKey) {
+
+            for (var i = 0; i < fxArray.length; i++) {
+                EffectsAPI.updateEffectSpriteKey(fxArray[i], spriteKey);
+            }
+        };
+
         ModuleEffectCreator.setEffectPosition = function(effect, position) {
 
             EffectsAPI.updateEffectPosition(effect, position);

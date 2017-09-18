@@ -3,6 +3,26 @@
     "GUI_PARTICLES": {
       "THREE":[
         {
+          "id":"gui_combat_bar_text_particle",
+          "sprite_key":"FONT",
+          "sprite_id":"test",
+          "config":{
+            "lifeTime":{"min":4,"max":4},
+            "positionSpread":{"x":0.0001, "y":0.0001, "z":0.0001},
+            "gravity":0.0001,
+            "colorCurve":"steadyBlue",
+            "alphaCurve":"sublteSin",
+            "diffusionCurve":"dampen",
+            "scaleCurve":"fullWhite",
+            "size":{"value":0.004, "min": 0.0, "max": 0.0001},
+            "spin":{"value":0.000001, "min": 0.0001, "max": 0.0001},
+            "velocityDiffusion":0.01,
+            "accelerationDiffusion":0.01,
+            "colorDiffusion":0.05,
+            "velocityFactor":0.03
+          }
+        },
+        {
           "id":"gui_combat_bar_particle",
           "sprite_key":"GUI",
           "sprite_id":"combat_bar",
@@ -156,7 +176,7 @@
             "alphaCurve":"sublteSin",
             "diffusionCurve":"dampen",
             "scaleCurve":"fullWhite",
-            "size":{"value":0.04, "min": 0.0, "max": 0.001},
+            "size":{"value":0.028, "min": 0.0, "max": 0.001},
             "spin":{"value":0.000001, "min": 0.0001, "max": 0.0001},
             "velocityDiffusion":0.01,
             "accelerationDiffusion":0.01,

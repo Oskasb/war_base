@@ -113,7 +113,6 @@
             "pos":  [0,   1.6,   0],
             "size": [200, 50, 200]
           },
-          "model":"control_selector_inner_model",
           "channels":[
             {"channelid":"channel_sample_selected",         "stateid":"state_control_active"},
             {"channelid":"channel_rotate_yaw_cumulative",   "stateid":"state_control_active"},

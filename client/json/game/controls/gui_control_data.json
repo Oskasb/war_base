@@ -4,14 +4,14 @@
       {
         "id":"gui_control_active",
         "data":{
-          "piece":"activated_control_piece",
+          "piece":"activated_control_piece_hidden",
           "camera":"vehicle_look_camera"
         }
       },
       {
         "id":"gui_control_selector",
         "data":{
-          "piece":"selector_control_piece",
+          "piece":"selector_control_piece_hidden",
           "camera":"camera_default"
         }
       },

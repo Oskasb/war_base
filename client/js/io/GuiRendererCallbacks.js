@@ -57,6 +57,11 @@ define([
 
         GuiRendererCallbacks.prototype.removeChildElement = function(guiElement) {
             guiRenderer.removeGuiElement(guiElement)
+
+        };
+
+        GuiRendererCallbacks.prototype.updateElementsSpriteKey = function(fxElements, spriteKey) {
+            this.guiFeedbackFunctions.updateElementsSprite(fxElements, spriteKey);
         };
 
         GuiRendererCallbacks.prototype.enable_geometry_element = function(guiElement, fxIndexe) {
@@ -153,7 +158,9 @@ define([
                     return;
                 }
 
-                var factor =  guiElement.options.offset_y;
+                var factor = guiElement.options.offset_y;
+
+                var displayName = activeSelection.id;
 
                 var maxHealth = combatStatus.getMaxHealth();
                 var health = combatStatus.getHealth();
@@ -163,6 +170,8 @@ define([
 
                 var healthElementId = guiElement.options.health_element_id;
                 var armorElementId = guiElement.options.armor_element_id;
+
+                var textElementId = guiElement.options.text_element_id;
 
                 if (!guiElement.enabled) {
 
@@ -175,12 +184,15 @@ define([
                         guiElement.spawnChildElement(armorElementId);
                     }
 
+                    for (i = 0; i < displayName.length; i++) {
+                        guiElement.spawnChildElement(textElementId);
+                    }
+
                 }
 
                 guiElement.origin.copy(activeSelection.piece.frustumCoords);
                 this.fitView(guiElement.origin);
 
-                var rows = 0;
 
                 var rowHeight = 0;
 
@@ -201,14 +213,13 @@ define([
                     }
                 }
 
-                rows = Math.floor(spaceNeeded / (Math.abs(guiElement.options.offset_children[0])*2));
+                var rows = Math.floor(spaceNeeded / (Math.abs(guiElement.options.offset_children[0])*2));
 
                 var padding = 0;
 
                 if (spaceNeeded < Math.abs(guiElement.options.offset_children[0])) {
                     padding = width;
                 }
-
 
 
                 calcVec.z = 0;
@@ -220,10 +231,12 @@ define([
                 calcVec.x = guiElement.options.offset_children[0];
                 calcVec.y = guiElement.options.offset_children[1];
 
+                var child;
+
                 if (guiElement.children[healthElementId]) {
                     for (i = 0; i < guiElement.children[healthElementId].length; i++) {
                         calcVec.z = 0;
-                        var child = guiElement.children[healthElementId][i];
+                        child = guiElement.children[healthElementId][i];
                         child.origin.copy(guiElement.position);
                         child.applyElementPosition(0, calcVec);
 
@@ -248,7 +261,7 @@ define([
 
                     for (i = 0; i < guiElement.children[armorElementId].length; i++) {
                         calcVec.z = 0;
-                        var child = guiElement.children[armorElementId][i];
+                        child = guiElement.children[armorElementId][i];
                         child.origin.copy(guiElement.position);
                         child.applyElementPosition(0, calcVec);
 
@@ -267,6 +280,22 @@ define([
                     }
                 }
 
+                if (guiElement.children[textElementId]) {
+
+                    calcVec.x = guiElement.options.offset_children[2];
+                    calcVec.y = guiElement.options.offset_children[3];
+
+                    for (i = 0; i < guiElement.children[textElementId].length; i++) {
+                        calcVec.z = 0;
+                        child = guiElement.children[textElementId][i];
+                        child.origin.copy(guiElement.position);
+                        child.setSpriteKey(displayName[i]);
+                        child.applyElementPosition(0, calcVec);
+                        calcVec.x += child.options.step_x;
+                    }
+                }
+
+
             } else if (guiElement.enabled) {
                 guiElement.disableGuiElement();
             }
@@ -280,9 +309,18 @@ define([
 
             if (activeSelection) {
 
+                if (!activeSelection.piece.render) {
+                    guiElement.setTarget(null);
+                    guiElement.disableGuiElement();
+                    return;
+                }
+
+
                 if (!guiElement.enabled) {
                     guiElement.enableGuiElement();
                 }
+
+
 
                 guiElement.origin.copy(activeSelection.piece.frustumCoords);
                 this.fitView(guiElement.origin);
@@ -359,6 +397,12 @@ define([
             var activeSelection = GameAPI.getSelectionActivatedActor();
 
             if (activeSelection) {
+
+                if (!activeSelection.piece.render) {
+                    guiElement.setTarget(null);
+                    guiElement.disableGuiElement();
+                    return;
+                }
 
                 if (!guiElement.enabled) {
                     guiElement.enableGuiElement();

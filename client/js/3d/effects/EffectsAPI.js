@@ -51,6 +51,10 @@ define([
             particleSpawner.updateActiveParticleEffect(effect, pos, state, tpf);
         };
 
+        EffectsAPI.updateEffectSpriteKey = function(effect, spriteKey) {
+            particleSpawner.updateEffectParticleSprite(effect, spriteKey);
+        };
+
         EffectsAPI.requestTemporaryPassiveEffect = function(id, pos, vel, size, quat, duration) {
             return particleSpawner.spawnTemporaryPassiveEffect(id, pos, vel, size, quat, duration);
         };
