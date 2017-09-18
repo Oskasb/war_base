@@ -3,6 +3,16 @@
     "GUI_EFFECTS": {
       "THREE":[
         {
+          "id":"gui_status_text_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_normal_font_renderer",
+            "particle_id":"gui_status_text_particle",
+            "count":1,
+            "simulation_id":"gpu_gui_simulation"
+          }
+        },
+        {
           "id":"gui_combat_bar_text_effect",
           "data":{
             "system_key":"THREE",

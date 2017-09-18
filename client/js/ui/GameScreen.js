@@ -198,6 +198,11 @@ define([
 
         };
 
+       var fitView = function(vec3) {
+            vec3.x *= (0.82 * getAspect());
+            vec3.y *= (0.82);
+        };
+
         return {
             registerAppContainer:registerAppContainer,
             notifyResize:handleResize,
@@ -219,7 +224,8 @@ define([
             getLandscape:getLandscape,
             setLandscape:setLandscape,
             goFullscreen:goFullscreen,
-            exitFullscreen:exitFullscreen
+            exitFullscreen:exitFullscreen,
+            fitView:fitView
         }
 
     });

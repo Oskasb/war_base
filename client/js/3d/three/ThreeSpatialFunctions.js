@@ -12,13 +12,13 @@ define([
     var pointerFrustumPos = new THREE.Vector3();
     var frustumCoordinates = new THREE.Vector3(0, 0, 0);
     var hoverCoords = new THREE.Vector3(0, 0, 0);
-    var distsq
+    var distsq;
 
-    var sizeFactor = 0.5 // 0.84;
+    var sizeFactor = 0.51;
 
-    var fitView = function(vec3) {
+    var matchView = function(vec3) {
         vec3.x *= sizeFactor * GameScreen.getAspect();
-        vec3.v *= -sizeFactor;
+        vec3.v *= sizeFactor;
         vec3.z = 0;
     };
 
@@ -30,12 +30,13 @@ define([
     ThreeSpatialFunctions.prototype.getHoverDistanceToPos = function(pos, mouseState) {
 
         pointerFrustumPos.set(
-            ((mouseState.x-GameScreen.getLeft()) / GameScreen.getWidth() - 0.5),
-            -((mouseState.y-GameScreen.getTop()) / GameScreen.getHeight()) + 0.5,
+            ((mouseState.x-GameScreen.getLeft()) / GameScreen.getWidth() - 0.5) ,
+            -((mouseState.y-GameScreen.getTop()) / GameScreen.getHeight()- 0.5) ,
             0
         );
 
-        fitView(pos);
+        matchView(pos);
+
 
         distsq = pos.distanceToSquared(pointerFrustumPos);
 

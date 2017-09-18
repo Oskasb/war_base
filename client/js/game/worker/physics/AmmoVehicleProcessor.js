@@ -263,7 +263,7 @@ define([
             //    this.brakeCommand = 0;
             }
 
-            if (Math.abs(speedInputState) > 0.95) {
+            if (Math.abs(speedInputState) > 0.1 && Math.abs(speedInputState) > Math.abs(this.lastInputState)) {
                 this.brakeCommand = 0;
             }
 

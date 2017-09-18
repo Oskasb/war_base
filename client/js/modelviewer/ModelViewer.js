@@ -139,11 +139,15 @@ define([
 
             var sysReady = function() {
                 systems++;
-                if (systems == 1) {
+                if (systems === 1) {
                     ready();
                 }
 
-            };
+                if (systems === 2) {
+                    this.ready = true;
+                }
+
+            }.bind(this);
 
             sceneController.setup3dScene(clientTick, postrenderTick, sysReady);
             sceneController.setupEffectPlayers(sysReady);
@@ -166,6 +170,8 @@ define([
         var tickTimeout;
 
         ModelViewer.prototype.tick = function(tpf, sceneController) {
+
+            if (!this.ready) return;
 
             gameTime += tpf;
             start = performance.now();

@@ -20,12 +20,6 @@ define([
 		};
 
 
-        VisualCursor.prototype.fitView = function(vec3) {
-            vec3.x *= (0.82 * GameScreen.getAspect()) * 2;
-            vec3.y *= (0.82) * 2;
-        };
-
-
         VisualCursor.prototype.pxXtoPercentX = function(x) {
 			return 100*x/GameScreen.getWidth()
 		};
@@ -68,7 +62,7 @@ define([
                     -2
                 );
 
-                this.fitView(pointerFrustumPos);
+                GameScreen.fitView(pointerFrustumPos);
                 this.setElementPosition(pointerFrustumPos);
 
             } else if (this.cursorElement) {

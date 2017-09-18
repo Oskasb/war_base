@@ -13,6 +13,7 @@
       "ui/buttons.json",
       "ui/gui_elements.json",
       "ui/gui_particle_elements.json",
+      "ui/gui_particle_status_elements.json",
       "ui/main_navigation.json",
       "ui/popups.json",
       "ui/type_style_map.json",
