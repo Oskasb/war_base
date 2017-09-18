@@ -94,9 +94,15 @@ define([
         DynamicPatch.prototype.despawnPatch = function() {
             if (this.populationActive) {
                 for (var i = 0; i < this.spawnedEntries().length; i++) {
-                    this.simulationState.despawnActor(this.spawnedEntries()[i]);
+                    var entry = this.spawnedEntries()[i];
+                    if (!entry) {
+                        console.log("Bad grid entry", i);
+                    } else {
+                        this.simulationState.despawnActor(entry);
+                    }
                 }
             //    this.spawnedEntries().length = 0;
+                this.populationActive = false;
             }
         };
 
@@ -106,6 +112,9 @@ define([
 
         DynamicPatch.prototype.disablePatch = function(activePatches, patchPool) {
 
+            if (this.requestedEntries) {
+                console.log(" -------------- Try Despawn while still spawning?", this)
+            }
 
             this.despawnPatch();
 
@@ -158,7 +167,6 @@ define([
                         totalWeight++
                     }
                 }
-
             }
 
             if (!totalWeight) return null;
@@ -171,10 +179,7 @@ define([
                 }
             }
             console.log("Bad patch by normal lookup");
-
         };
-
-
 
 
         DynamicPatch.prototype.spawnPatchActor = function(pos) {
@@ -193,16 +198,22 @@ define([
             }
 
             var onOk = function(actor) {
-                //        this.requestedEntries--;
+                if (!actor.isCompanion()) {
+                    this.requestedEntries--;
+                }
                 this.spawnedEntries().push(actor);
+
+                if (!this.requestedEntries) {
+                    this.activatePopulation();
+                }
+
             }.bind(this);
 
             var facing = (Math.random()-0.5)*2;
 
             tempVec.copy(pos);
-            //    this.requestedEntries++;
+            this.requestedEntries++;
             this.simulationState.generateActor(entryId, tempVec, tempVec3, facing, onOk);
-
 
         };
 
@@ -217,6 +228,7 @@ define([
                 tempVec.y = this.simulationState.getTerrainHeightAtPos(tempVec, tempVec3);
                 this.spawnPatchActor(tempVec, plantData)
             }
+
         };
 
         DynamicPatch.prototype.activatePopulation = function() {
@@ -235,21 +247,25 @@ define([
                 if (sectorPool[i].indexX === this.indexX && sectorPool[i].indexZ === this.indexZ) {
                     if (!this.populationActive) {
                         this.activatePopulation();
+                        this.activeFrames = 0;
                     }
+
+                    this.activeFrames++;
                     return
                 }
             }
 
+            if (this.requestedEntries) {
+                console.log("Cant disable while still spawning...")
+                return;
+            }
+
+            if (this.activeFrames < 5) {
+                console.log("Dont kill young patches..  :|  ")
+            //    return;
+            }
+
             this.disablePatch(activePatches, patchPool);
-        };
-
-
-        DynamicPatch.prototype.applyPatchDebug = function(bool) {
-
-        };
-
-        DynamicPatch.prototype.clearPatch = function() {
-            this.despawnPatch();
         };
 
         return DynamicPatch;

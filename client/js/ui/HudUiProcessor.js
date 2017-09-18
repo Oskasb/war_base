@@ -188,9 +188,9 @@ define([
         HudUiProcessor.prototype.updateTextElement = function(text, guiElement, position, offset) {
             guiElement.setText(text);
 
-            for (var i = 0; i < guiElement.fxElements.length; i++) {
-                guiElement.applyElementPosition(null, position);
-            }
+            //    if (Math.random() < 0.05) {
+            guiElement.applyElementPosition(null, position);
+            //    }
 
             guiElement.renderText(offset);
         };
@@ -220,7 +220,10 @@ define([
 
             guiElement.origin.set(guiElement.options.screen_pos[0], guiElement.options.screen_pos[1], guiElement.options.screen_pos[2]);
             GameScreen.fitView(guiElement.origin);
-            guiElement.applyElementPosition(null, calcVec);
+
+            if (Math.random() < 0.05) {
+                guiElement.applyElementPosition(null, calcVec);
+            }
 
 
             if (!guiElement.children[labelElemId]) {
@@ -265,7 +268,7 @@ define([
                 calcVec2.y = child.options.offset_y;
 
 
-                if (monitor[i].dirty || Math.random() < 0.01) {
+                if (monitor[i].dirty || Math.random() < 0.002) {
                     this.updateTextElement(monitor[i].key, child, calcVec, calcVec2);
 
                     if (guiElement.children[valueElemId]) {

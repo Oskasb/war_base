@@ -10,7 +10,7 @@
           ],
           "options":{
             "monitor_key":"BROWSER_MONITOR",
-            "screen_pos":[0.38,-0.44, -1],
+            "screen_pos":[0.39,-0.46, -1],
             "offset_children":[-0.05, -0.012, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"

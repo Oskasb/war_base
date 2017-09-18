@@ -43,10 +43,13 @@ define([
             };
 
             var executeDeployActor = function(message) {
+            //    console.log("Exe Deploy", message[1].actorId);
                 this.buildGameActor(message[1].actorId, message[1].dataKey, executorOkResponse)
             }.bind(this);
 
             var executeRemoveActor = function(message) {
+            //    console.log("Exe Remove", message[1]);
+
                 this.clearGameActor(message[1], executorOkResponse)
             }.bind(this);
 
@@ -296,6 +299,12 @@ define([
             var actors = GameAPI.getActors();
 
             var actr = GameAPI.getActorById(actorId);
+
+            if (!actr) {
+                console.log("No actor to remove:", actorId);
+                return;
+            }
+
 
             if (actr === GameAPI.getControlledActor()) {
                 GameAPI.dropActorControl(actr);

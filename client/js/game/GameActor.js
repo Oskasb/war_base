@@ -29,6 +29,8 @@ define([
             this.piece = null;
             this.physicalPiece = null;
 
+            this.isCompanionActor = false;
+
             this.active = true;
 
             this.spatial = {
@@ -44,6 +46,15 @@ define([
 
             this.pipeObj = new PipelineObject('PIECE_DATA', 'ACTORS', applyData, dataKey);
         };
+
+        GameActor.prototype.setIsCompanion = function (bool) {
+            this.isCompanionActor = bool;
+        };
+
+        GameActor.prototype.isCompanion = function () {
+            return this.isCompanionActor;
+        };
+
 
         GameActor.prototype.setGamePiece = function (piece) {
             if (this.piece) this.piece.removeGamePiece();

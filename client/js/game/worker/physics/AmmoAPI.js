@@ -60,6 +60,11 @@ define(['worker/physics/AmmoFunctions'],
 
         AmmoAPI.prototype.setupPhysicalActor = function(actor) {
 
+            if (actor.getPhysicsBody()) {
+                console.log("Actor already has a body...");
+                return actor;
+            }
+
             ammoFunctions.addPhysicalActor(world, actor);
             bodies.push(actor.getPhysicsBody());
             world.addRigidBody(actor.getPhysicsBody());

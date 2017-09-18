@@ -70,13 +70,18 @@ define([
         };
 
 
-        SimulationState.prototype.includeActor = function(actor) {
+        SimulationState.prototype.attachActorRigidBody = function(actor) {
             physicsApi.setupPhysicalActor(actor);
-            actors.push(actor);
+        };
+
+        SimulationState.prototype.detatchActor = function(actor) {
+            actors.splice(actors.indexOf(actor), 1)
+            // actors.push(actor);
         };
 
 
         SimulationState.prototype.activateActor = function(actor) {
+
 
             ThreeAPI.addToScene(actor.piece.rootObj3D);
 
@@ -86,10 +91,19 @@ define([
 
             actor.setActive(true);
 
+            if (actors.indexOf(actor) === -1) {
+                actors.push(actor);
+            }
+
+            var res = {dataKey:actor.dataKey, actorId:actor.id};
+            postMessage(['executeDeployActor', res]);
+
         };
 
+
+
         var buildIt = function(actor, px, py, pz, nx, ny, nz, rotY, cb, simState) {
-            var res = {dataKey:actor.dataKey, actorId:actor.id};
+
 
             var elevation = 0;
             var normalFactor = 3.14;
@@ -112,10 +126,10 @@ define([
             actor.piece.rootObj3D.rotateZ(-calcVec.x * normalFactor);
 
 
-            simState.includeActor(actor);
+            simState.attachActorRigidBody(actor);
             cb(actor);
 
-            postMessage(['executeDeployActor', res]);
+
         };
 
         var attachCompanions = function(actor, px, py, pz, nx, ny, nz, rotY, respond, _this, companion_actors, index) {
@@ -133,6 +147,8 @@ define([
                     var offset = companionActors[i].offset;
 
                     i++;
+
+                    companionActor.setIsCompanion( true);
 
                     buildIt(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, rotY, respond, _this);
                     attachCompanions(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, rotY, respond, _this, companionActor.config.companion_actors, i);
@@ -165,6 +181,7 @@ define([
                     }
                 }
 
+                actor.setIsCompanion(false);
                 buildIt(actor, px, py, pz, nx, ny, nz, rotY, respond, _this)
             };
 
@@ -194,8 +211,25 @@ define([
 
             var actorBuilt = function(actor) {
                 this.simulationOperations.getRandomPointOnTerrain(actor.piece.rootObj3D.position, levels);
-                this.includeActor(actor);
-                this.activateActor(actor);
+
+                if (actors.indexOf(actor) !== -1) {
+                    console.log("Double add actor fail");
+                } else {
+                    this.attachActorRigidBody(actor);
+                }
+
+                ThreeAPI.addToScene(actor.piece.rootObj3D);
+
+                if (actor.body) {
+                    physicsApi.includeBody(actor.body);
+                }
+
+                actor.setActive(true);
+
+                if (actors.indexOf(actor) === -1) {
+                    actors.push(actor);
+                }
+
                 ready({dataKey:actor.dataKey, actorId:actor.id});
             }.bind(this);
 
@@ -257,14 +291,16 @@ define([
             actor.setActive(false);
             ThreeAPI.removeFromScene(actor.piece.rootObj3D);
 
+            this.detatchActor(actor);
+
             if (typeof(cb) === 'function') {
-            //    cb(actorId);
+                cb(actorId);
             }
 
         };
 
         SimulationState.prototype.removeActorFromSimulation = function(actor) {
-
+            this.detatchActor(actor);
         //    actors.splice(actors.indexOf(actor), 1);
             ThreeAPI.removeFromScene(actor.piece.rootObj3D);
         //    this.protocolSystem.removeProtocol(actor);
@@ -344,7 +380,8 @@ define([
 
             for (var i = 0; i < actors.length; i++) {
 
-                if (actors[i].config.alignment === 'hostile') {
+                if (actors[i].config.alignment === 'hostile' && actors[i].isActive()) {
+
                     distance = Math.sqrt(actors[i].piece.getPos().distanceToSquared(position));
                     if (distance < nearestDistance) {
                         nearestDistance = distance;
