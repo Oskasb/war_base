@@ -214,7 +214,7 @@ define([
                 gameWorker.makeGameRequest('setActorSelected', id, onRes);
                 selectionActiveActor = actor;
                 if (actor) {
-                    selectionActiveActor.piece.getCombatStatus().notifySelectedActivation();
+//                    selectionActiveActor.piece.getCombatStatus().notifySelectedActivation();
                 }
             }
 

@@ -148,7 +148,7 @@ define([
                     return;
                 }
 
-                if (combatStatus.getCombatState() === ENUMS.CombatStates.IDLE) {
+                if (combatStatus.getDynamic('combat_state') === ENUMS.CombatStates.NONE) {
                     guiElement.setTarget(null);
                     guiElement.disableGuiElement();
                     return;
@@ -158,11 +158,11 @@ define([
 
                 var displayName = activeSelection.id;
 
-                var maxHealth = combatStatus.getMaxHealth();
-                var health = combatStatus.getHealth();
+                var maxHealth = combatStatus.getDynamic('max_health');
+                var health = combatStatus.getDynamic('health');
 
-                var maxArmor = combatStatus.getMaxArmor();
-                var armor = combatStatus.getArmor();
+                var maxArmor = combatStatus.getDynamic('max_armor');
+                var armor = combatStatus.getDynamic('armor');
 
                 var healthElementId = guiElement.options.health_element_id;
                 var armorElementId = guiElement.options.armor_element_id;

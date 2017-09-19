@@ -7,11 +7,30 @@ define([],
 
         var CombatStatus = function(combatStats) {
 
-            this.setMaxHealth(combatStats.health);
-            this.setMaxArmor(combatStats.armor);
+            this.initHealth = combatStats.health;
+            this.initArmor = combatStats.armor;
+            this.setMaxHealth(this.initHealth);
+            this.setMaxArmor(this.initArmor);
             this.setHealth(this.getMaxHealth());
             this.setArmor(this.getMaxArmor());
             this.setCombatState(ENUMS.CombatStates.NONE);
+
+            this.dynamic = {
+                combat_state:     {state:0},
+                max_health:       {state:0},
+                max_armor:        {state:0},
+                health:           {state:0},
+                armor:            {state:0}
+            };
+
+        };
+
+        CombatStatus.prototype.setDynamic = function(key, value) {
+            this.dynamic[key].state = value;
+        };
+
+        CombatStatus.prototype.getDynamic = function(key) {
+            return this.dynamic[key].state;
         };
 
         CombatStatus.prototype.setMaxHealth = function(value) {

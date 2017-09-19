@@ -38,7 +38,7 @@ define([
 
         CombatModule.prototype.applyCombatStatus = function (combatStatus) {
             this.dynamic.combatState.state = combatStatus.getCombatState();
-            this.dynamic.maxHealth.state = combatStatus.getMaxHealth();
+            this.dynamic.maxHealth.state = combatStatus.initHealth;
             this.dynamic.maxArmor.state = combatStatus.getMaxArmor();
             this.dynamic.health.state = combatStatus.getHealth();
             this.dynamic.armor.state = combatStatus.getArmor();
@@ -56,7 +56,6 @@ define([
             var factor =        feedback.factor;
             var state =         module.getPieceStateById(targetStateId);
             state.value =       this.interpretCombatState(param, key, property) * factor;
-            state.dirty = true;
         };
 
         CombatModule.prototype.applyFeedback = function(module, feedbackMap) {
@@ -72,9 +71,8 @@ define([
                 console.log("Combat Status missing?", this);
                 return;
             }
-            this.applyCombatStatus(combatStatus);
 
-        //    this.sampleState( module);
+            this.applyCombatStatus(combatStatus);
             this.applyFeedback(module, this.feedbackMap);
             return piece;
         };

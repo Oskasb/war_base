@@ -237,7 +237,28 @@ define([
         };
 
         SimulationState.prototype.setSelectionActivatedActorId = function(actorId, onOk) {
+            var actor;
+            if (this.selectionActivatedActorId !== actorId) {
+                actor = this.getActorById(this.selectionActivatedActorId);
+
+                if (!actor) {
+                } else {
+                    actor.piece.getCombatStatus().notifyActivationDeactivate();
+                }
+            }
+
             this.selectionActivatedActorId = actorId;
+
+            if (actorId) {
+                actor = this.getActorById(actorId);
+
+                if (!actor) {
+                    console.log("Cant select missing actor!");
+                } else {
+                    actor.piece.getCombatStatus().notifySelectedActivation();
+                }
+            }
+
             onOk(actorId);
         };
 

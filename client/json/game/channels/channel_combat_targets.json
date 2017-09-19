@@ -5,7 +5,7 @@
         "id":"target_combat_state_update",
         "data":{
           "callback":"call_combat_status_update",
-          "combat_state_setter":"setCombatState"
+          "combat_state_setter":"combat_state"
         }
       },
 
@@ -13,14 +13,14 @@
         "id":"target_combat_max_health_status",
         "data":{
           "callback":"call_combat_status_update",
-          "combat_state_setter":"setMaxHealth"
+          "combat_state_setter":"max_health"
         }
       },
       {
         "id":"target_combat_max_armor_status",
         "data":{
           "callback":"call_combat_status_update",
-          "combat_state_setter":"setMaxArmor"
+          "combat_state_setter":"max_armor"
         }
       },
 
@@ -28,14 +28,14 @@
         "id":"target_combat_health_status",
         "data":{
           "callback":"call_combat_status_update",
-          "combat_state_setter":"setHealth"
+          "combat_state_setter":"health"
         }
       },
       {
         "id":"target_combat_armor_status",
         "data":{
           "callback":"call_combat_status_update",
-          "combat_state_setter":"setArmor"
+          "combat_state_setter":"armor"
         }
       }
     ]

@@ -159,14 +159,14 @@ define([
             enable(true);
             var piece = enable();
 
-            var functionName = target.config.combat_state_setter;
+            var key = target.config.combat_state_setter;
 
             var combatStatus = piece.getCombatStatus();
             if (!combatStatus) {
                 console.log("Piece missing CombatStatus", piece, target);
                 return;
             }
-            combatStatus[functionName](target.state.sampleBufferValue())
+            combatStatus.setDynamic(key, target.state.sampleBufferValue())
         };
 
 

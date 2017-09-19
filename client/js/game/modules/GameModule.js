@@ -107,8 +107,8 @@ define([
             }
 
             if (this.config.combat_models) {
-                var combatReady = function(turret) {
-                    this.combatModules[turret.turretIndex] = turret
+                var combatReady = function(combat) {
+                    this.combatModules[combat.index] = combat
                 }.bind(this);
 
                 for (var i = 0; i < this.config.combat_models.length; i++) {
