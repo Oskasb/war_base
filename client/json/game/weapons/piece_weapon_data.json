@@ -18,7 +18,7 @@
               "muzzle_attachment_point_id":"ap_muzzle",
               "bullet_spread":0.01,
               "gravity_factor":1.00,
-
+              "recoil_force":0.5,
               "damage":{
                 "min_base_damage":5,
                 "max_base_damage":8,
@@ -60,7 +60,7 @@
               "muzzle_attachment_point_id":"ap_muzzle",
               "bullet_spread":0.15,
               "gravity_factor":1.00,
-
+              "recoil_force":0.01,
               "damage":{
                 "min_base_damage":1,
                 "max_base_damage":2,

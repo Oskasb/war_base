@@ -58,6 +58,7 @@ define([
 
         GameActor.prototype.setGamePiece = function (piece) {
             if (this.piece) this.piece.removeGamePiece();
+            piece.setActor(this);
             this.piece = piece;
         };
 

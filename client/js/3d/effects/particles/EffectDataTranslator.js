@@ -151,6 +151,10 @@ define([
         var effect = new ConfiguredGpuEffect();
 
 
+        EffectDataTranslator.getTexelRowByName = function(curveName) {
+            return dataCurves[curveName];
+        };
+
         EffectDataTranslator.interpretCustomEffectData = function(effectData, pCfg, customEffectData) {
 
             effect.setDefaults();

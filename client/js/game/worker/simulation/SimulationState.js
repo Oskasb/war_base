@@ -326,9 +326,9 @@ define([
 
         SimulationState.prototype.removeActorFromSimulation = function(actor) {
             this.detatchActor(actor);
-        //    actors.splice(actors.indexOf(actor), 1);
+            //    actors.splice(actors.indexOf(actor), 1);
             ThreeAPI.removeFromScene(actor.piece.rootObj3D);
-        //    this.protocolSystem.removeProtocol(actor);
+            //    this.protocolSystem.removeProtocol(actor);
             actor.piece.removeGamePiece();
             actor.removeGameActor();
         };
@@ -427,7 +427,11 @@ define([
 
         };
 
+        SimulationState.prototype.applyForceToSimulationActor = function(impactForce, actor, randomize) {
 
+            physicsApi.applyForceToActor(impactForce, actor, randomize);
+
+        };
 
         SimulationState.prototype.registerAttackHit = function(targetActor, attack, normal) {
             this.removeActiveAttack(attack);
@@ -450,18 +454,20 @@ define([
                 var aoeDmgFactor = attack.getAreaEffectDamageFactor();
 
                 for (var i = 0; i < actors.length; i++) {
-                    if (actors[i].piece.getCombatStatus()) {
 
-                        var splashHitActor = this.checkActorInRangeFromPosition(actors[i], aoeRange, attack.getImpactPoint());
-                        if (splashHitActor) {
+                    var splashHitActor = this.checkActorInRangeFromPosition(actors[i], aoeRange, attack.getImpactPoint());
+                    if (splashHitActor) {
+
+                        if (actors[i].piece.getCombatStatus()) {
                             attack.applyHitDamageToTargetActor(splashHitActor, aoeDmgFactor);
-                            physicsApi.applyForceToActor(attack.getAreaDamageForce(splashHitActor), splashHitActor);
-
                         }
+
+                        this.applyForceToSimulationActor(attack.getAreaDamageForce(splashHitActor), splashHitActor, 0.3);
+
                     }
                 }
             } else {
-                physicsApi.applyForceToActor(attack.getImpactForce(), targetActor);
+                this.applyForceToSimulationActor(attack.getImpactForce(), targetActor, 0.5);
             }
 
         };
@@ -472,7 +478,7 @@ define([
             var stepTime = tpf / steps;
 
 
-        //    var hit = this.simulationOperations.castPhysicsRay(this, physicsApi, attack, tpf);
+            //    var hit = this.simulationOperations.castPhysicsRay(this, physicsApi, attack, tpf);
 
             if (hit) {
                 return;
@@ -485,12 +491,12 @@ define([
                 } else {
                     attack.applyFrame(stepTime);
 
-                     var hit = this.simulationOperations.checkActorProximity(this, this.getActors(), attack);
+                    var hit = this.simulationOperations.checkActorProximity(this, this.getActors(), attack);
 
-                     if (hit) {
-                         i = steps;
-                         return;
-                     }
+                    if (hit) {
+                        i = steps;
+                        return;
+                    }
 
                     attack.advanceFrame(stepTime, physicsApi.getYGravity());
                 }

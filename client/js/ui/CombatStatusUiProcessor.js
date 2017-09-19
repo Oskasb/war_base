@@ -10,7 +10,7 @@ define([
         var GameAPI;
         var guiRenderer;
         var calcVec = new THREE.Vector3();
-
+        var calcVec2 = new THREE.Vector3();
 
         var CombatStatusUiProcessor = function(gRenderer, gameApi) {
             GameAPI = gameApi;
@@ -125,8 +125,9 @@ define([
             } else if (guiElement.enabled) {
                 guiElement.disableGuiElement();
             }
-
         };
+
+
 
         CombatStatusUiProcessor.prototype.show_combat_status = function(guiElement) {
 
@@ -158,12 +159,15 @@ define([
 
                 var displayName = activeSelection.id;
 
+                var combatState = combatStatus.getDynamic('combat_state');
+
                 var maxHealth = combatStatus.getDynamic('max_health');
                 var health = combatStatus.getDynamic('health');
 
                 var maxArmor = combatStatus.getDynamic('max_armor');
                 var armor = combatStatus.getDynamic('armor');
 
+                var stateElementId = guiElement.options.status_element_id;
                 var healthElementId = guiElement.options.health_element_id;
                 var armorElementId = guiElement.options.armor_element_id;
 
@@ -172,6 +176,8 @@ define([
                 if (!guiElement.enabled) {
 
                     guiElement.enableGuiElement();
+
+                    guiElement.spawnChildElement(stateElementId);
 
                     for (var i = 0; i < maxHealth; i++) {
                         guiElement.spawnChildElement(healthElementId);
@@ -228,6 +234,24 @@ define([
                 calcVec.y = guiElement.options.offset_children[1];
 
                 var child;
+
+                if (guiElement.children[stateElementId]) {
+                    for (i = 0; i < guiElement.children[stateElementId].length; i++) {
+                        child = guiElement.children[stateElementId][i];
+                        calcVec2.z = 0;
+
+                        calcVec2.x = child.options.offset_x;
+                        calcVec2.y = child.options.offset_y;
+
+                        var stateMap = child.options.state_map;
+
+                        child.origin.copy(guiElement.position);
+                        child.setColorCurveKey(stateMap[combatState].color_curve);
+                        child.setSpriteKey(stateMap[combatState].sprite_id);
+                        child.applyElementPosition(null, calcVec2);
+                    }
+                }
+
 
                 if (guiElement.children[healthElementId]) {
                     for (i = 0; i < guiElement.children[healthElementId].length; i++) {

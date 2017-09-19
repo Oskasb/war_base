@@ -25,6 +25,8 @@ define(['3d/effects/particles/EffectSimulators',
             this.deadParticles = [];
 
             this.dynamicSprite = null;
+            this.dynamicColorKey = null;
+            this.dynamicColow = null;
 
             this.temporary = {
                 startTime:0,
@@ -47,6 +49,8 @@ define(['3d/effects/particles/EffectSimulators',
 
         ParticleEffect.prototype.resetParticleEffect = function() {
             this.dynamicSprite = null;
+            this.dynamicColorKey = null;
+            this.dynamicColow = null;
         };
 
         ParticleEffect.prototype.setEffectData = function(effectData) {
@@ -137,6 +141,10 @@ define(['3d/effects/particles/EffectSimulators',
 
             ParticleParamParser.applyEffectSprite(particle, this.dynamicSprite || this.effectData.sprite);
 
+            if (this.dynamicColor) {
+                this.updateEffectColorTexelRow(this.dynamicColor);
+            }
+
             particle.initToSimulation(systemTime+frameTpfFraction, calcVec, this.vel);
 
             this.updateParticle(particle, frameTpfFraction);
@@ -152,7 +160,18 @@ define(['3d/effects/particles/EffectSimulators',
             );
         };
 
-        ParticleEffect.prototype.updateEffectSpriteSimulator = function(sprite, spriteKey) {
+        ParticleEffect.prototype.updateEffectColorTexelRow = function(value, colorKey) {
+            this.dynamicColow = value;
+            this.dynamicColorKey = colorKey;
+
+            for (var i = 0; i < this.aliveParticles.length; i++) {
+                this.aliveParticles[i].params.texelRowSelect.x = value;
+                this.applyParticleSimulator(EffectSimulators.simulators.texelRowSelect, this.aliveParticles[i], 0)
+            }
+
+        };
+
+        ParticleEffect.prototype.updateEffectSpriteSimulator = function(sprite) {
             this.dynamicSprite = sprite;
             for (var i = 0; i < this.aliveParticles.length; i++) {
                 ParticleParamParser.applyEffectSprite(this.aliveParticles[i], sprite);

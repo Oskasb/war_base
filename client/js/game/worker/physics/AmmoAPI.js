@@ -114,8 +114,8 @@ define(['worker/physics/AmmoFunctions'],
             ammoFunctions.updatePhysicalWorld(world, currentTime)
         };
 
-        AmmoAPI.prototype.applyForceToActor = function(forceVec3, actor) {
-            ammoFunctions.applyForceToBodyWithMass(forceVec3, actor.getPhysicsBody(), actor.physicalPiece.getPhysicsPieceMass())
+        AmmoAPI.prototype.applyForceToActor = function(forceVec3, actor, randomize) {
+            ammoFunctions.applyForceToBodyWithMass(forceVec3, actor.getPhysicsBody(), actor.physicalPiece.getPhysicsPieceMass(), randomize)
         };
 
         AmmoAPI.prototype.raycastPhysicsWorld = function(position, direction, hitPositionStore, hitNormalStore) {

@@ -8,6 +8,7 @@
           "options":{
             "offset_y":0.047,
             "offset_children":[-0.052, -0.002, -0.054, 0.013],
+            "status_element_id":"gui_combat_status_icon_element",
             "health_element_id":"gui_combat_health_point_element",
             "armor_element_id":"gui_combat_armor_point_element",
             "text_element_id":"gui_combat_bar_text_element"
@@ -20,6 +21,36 @@
           }
         }
       },
+
+      {
+        "id":"gui_combat_status_icon_element",
+        "data":{
+          "effect_ids":["gui_combat_status_icon_effect"],
+          "options":{
+            "offset_x":-0.07,
+            "offset_y":0.004,
+            "state_map":[
+              {"sprite_id":"alert",       "color_curve":"rainbow"},
+              {"sprite_id":"sleep",       "color_curve":"steadyBlue"},
+              {"sprite_id":"sleep",       "color_curve":"steadyBlue"},
+              {"sprite_id":"sleep",       "color_curve":"steadyBlue"},
+              {"sprite_id":"sleep",       "color_curve":"steadyBlue"},
+              {"sprite_id":"shield",      "color_curve":"steadyBlue"},
+              {"sprite_id":"crosshair",   "color_curve":"steadyRed"},
+              {"sprite_id":"droplet",     "color_curve":"steadyRed"},
+              {"sprite_id":"broken",      "color_curve":"steadyRed"},
+              {"sprite_id":"dead",        "color_curve":"steadyRed"}
+            ]
+          },
+          "render_calls":{
+            "gui_render_enable":"enable_fx_element",
+            "gui_render_disable":"disable_fx_element",
+            "gui_renderer_callback":null,
+            "gui_update_callback":"set_element_position"
+          }
+        }
+      },
+
       {
         "id":"gui_combat_bar_text_element",
         "data":{

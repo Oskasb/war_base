@@ -228,7 +228,7 @@ define([], function() {
         tempVec2.normalize();
 
         var distance = tempVec.length() + 2;
-        var addY = (this.getAreaEffectRange() / distance) - 1;
+        var addY = Math.abs((this.getAreaEffectRange() / distance) - 1);
         tempVec.y += addY * 0.5;
 
         tempVec.addVectors(tempVec, tempVec2);

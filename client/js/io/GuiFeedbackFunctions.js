@@ -42,6 +42,10 @@ define([
         ModuleEffectCreator.setEffectPosition(fxElement, posVec);
     };
 
+    GuiFeedbackFunctions.prototype.updateElementsColor = function(fxArray, colorKey) {
+        ModuleEffectCreator.applyColorKeyToFxArray(fxArray, colorKey);
+    };
+
     GuiFeedbackFunctions.prototype.updateElementsSprite = function(fxArray, spriteKey) {
         ModuleEffectCreator.applySpriteKeyToFxArray(fxArray, spriteKey);
     };

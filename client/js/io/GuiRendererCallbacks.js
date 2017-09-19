@@ -60,6 +60,10 @@ define([
             this.guiFeedbackFunctions.updateElementsSprite(fxElements, spriteKey);
         };
 
+        GuiRendererCallbacks.prototype.updateElementsColorCurveKey = function(fxElements, colorKey) {
+            this.guiFeedbackFunctions.updateElementsColor(fxElements, colorKey);
+        };
+
         GuiRendererCallbacks.prototype.enable_geometry_element = function(guiElement, fxIndexe) {
             return this.guiFeedbackFunctions.enableElement(guiElement.elementId, guiElement.position, guiElement.fxIds[fxIndex], guiElement.fxElements);
         };

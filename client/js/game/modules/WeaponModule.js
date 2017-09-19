@@ -187,13 +187,19 @@ define([
             velVec.subVectors(aimVec, fromVec);
 
             velVec.normalize();
+
+            tempVec.copy(velVec);
+            tempVec.multiplyScalar(-this.weaponOptions.recoil_force);
+
+            simulationState.applyForceToSimulationActor(tempVec, sourcePiece.getActor(), 0.15);
+
             velVec.multiplyScalar(this.weaponOptions.velocity);
 
             var onReady = function(attack) {
                 simulationState.registerActiveAttack(attack);
             };
 
-            this.setupAttack(sourcePiece.id, module.getHostSlotIndex(), this.weaponIndex ,fromVec, velVec, this.dynamic.travelTime.state, this.weaponOptions, this.selectedTarget.id, onReady)
+            this.setupAttack(sourcePiece.id, module.getHostSlotIndex(), this.weaponIndex , fromVec, velVec, this.dynamic.travelTime.state, this.weaponOptions, this.selectedTarget.id, onReady)
 
         };
 

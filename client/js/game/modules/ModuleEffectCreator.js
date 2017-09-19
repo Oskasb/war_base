@@ -449,6 +449,13 @@ define([
             }
         };
 
+        ModuleEffectCreator.applyColorKeyToFxArray = function(fxArray, colorKey) {
+
+            for (var i = 0; i < fxArray.length; i++) {
+                EffectsAPI.updateEffectColorKey(fxArray[i], colorKey);
+            }
+        };
+
         ModuleEffectCreator.setEffectPosition = function(effect, position) {
 
             EffectsAPI.updateEffectPosition(effect, position);

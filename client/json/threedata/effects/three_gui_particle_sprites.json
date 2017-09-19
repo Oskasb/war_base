@@ -24,6 +24,58 @@
           "tiles":[[0, 3]]
         },
         {
+          "id":"alert",
+          "tiles":[[0, 4]]
+        },
+
+        {
+          "id":"fuel",
+          "tiles":[[0, 5]]
+        },
+        {
+          "id":"warning",
+          "tiles":[[1, 4]]
+        },
+        {
+          "id":"oil",
+          "tiles":[[1, 5]]
+        },
+        {
+          "id":"crosshair",
+          "tiles":[[2, 4]]
+        },
+        {
+          "id":"fire",
+          "tiles":[[2, 5]]
+        },
+        {
+          "id":"sleep",
+          "tiles":[[3, 4]]
+        },
+        {
+          "id":"energy",
+          "tiles":[[3, 5]]
+        },
+
+
+        {
+          "id":"broken",
+          "tiles":[[4, 4]]
+        },
+        {
+          "id":"shield",
+          "tiles":[[4, 5]]
+        },
+        {
+          "id":"dead",
+          "tiles":[[5, 4]]
+        },
+        {
+          "id":"droplet",
+          "tiles":[[5, 5]]
+        },
+
+        {
           "id":"indicate_pitch_upper",
           "tiles":[[1, 2]]
         },

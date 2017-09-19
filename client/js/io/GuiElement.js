@@ -23,6 +23,7 @@ define([
             this.fxElements = [];
 
             this.spriteKey = null;
+            this.colorCurveKey = null;
             this.children = {};
 
             this.enabled = false;
@@ -131,16 +132,29 @@ define([
         };
 
         GuiElement.prototype.setSpriteKey = function(spriteKey) {
+
             if (this.spriteKey !== spriteKey) {
+                if (!this.fxElements.length) return;
                 this.updateRenderingSpriteKey(spriteKey);
             }
             this.spriteKey = spriteKey;
+        };
+
+        GuiElement.prototype.setColorCurveKey = function(colorCurveKey) {
+            if (this.colorCurveKey !== colorCurveKey || Math.random() < 0.05) {
+                if (!this.fxElements.length) return;
+                this.updateRenderingColorCurveKey(colorCurveKey);
+            }
+            this.colorCurveKey = colorCurveKey;
         };
 
         GuiElement.prototype.updateRenderingSpriteKey = function(spriteKey) {
             guiRendererCallbacks.updateElementsSpriteKey(this.fxElements, spriteKey)
         };
 
+        GuiElement.prototype.updateRenderingColorCurveKey = function(colorCurveKey) {
+            guiRendererCallbacks.updateElementsColorCurveKey(this.fxElements, colorCurveKey)
+        };
 
         GuiElement.prototype.getTarget = function() {
             return this.target;
@@ -188,6 +202,7 @@ define([
         GuiElement.prototype.disableGuiElement = function() {
             this.enabled = false;
             this.spriteKey = null;
+            this.colorCurveKey = null;
             guiRendererCallbacks[this.disableFunc](this.fxElements);
             this.removeChildren();
         };

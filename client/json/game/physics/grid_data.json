@@ -6,16 +6,16 @@
         {
           "name":"small",
           "visible_range":255,
-          "sector_size":45,
+          "sector_size":75,
           "rows_n_columns":5,
-          "actor_count":3
+          "actor_count":5
         },
         {
           "name":"big",
           "visible_range":255,
-          "sector_size":79,
+          "sector_size":90,
           "rows_n_columns":5,
-          "actor_count":2
+          "actor_count":4
         }
       ],
       "GRID_SYSTEMS":[
@@ -24,13 +24,13 @@
           "data":[
             {
               "patch_content":[
-                {"id":"actor_prop_oil_drum", "probability":0.5 , "slope":{"min":-0.01, "max":0.03} , "elevation":{"min":-1,    "max":50}}
+                {"id":"actor_prop_oil_drum", "probability":0.2 , "slope":{"min":-0.01, "max":0.03} , "elevation":{"min":-1,    "max":50}}
               ]
             },
             {
               "patch_content":[
                 {"id":"actor_prop_box_crate",       "probability":0.02 , "slope":{"min": 0.02, "max":0.12} , "elevation":{"min":-1,    "max":50}},
-                {"id":"actor_tree_2_stump",         "probability":0.3  , "slope":{"min":-0.01, "max":0.22} , "elevation":{"min":3,    "max":50}}
+                {"id":"actor_tree_2_stump",         "probability":0.2  , "slope":{"min":-0.01, "max":0.22} , "elevation":{"min":3,    "max":50}}
               ]
             }
           ]

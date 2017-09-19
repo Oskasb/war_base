@@ -247,6 +247,18 @@ define([
             effect.updateEffectSpriteSimulator(sprite, spriteKey);
         };
 
+        ParticleSpawner.prototype.updateEffectParticleColor = function(effect, colorKey) {
+            var texelRow = EffectDataTranslator.getTexelRowByName(colorKey);
+
+            if (isNaN(texelRow)) {
+                console.log("No such curve: ", colorKey);
+                return;
+            }
+
+            effect.updateEffectColorTexelRow(texelRow, colorKey);
+
+        };
+
         ParticleSpawner.prototype.spawnTemporaryPassiveEffect = function(id, pos, vel, size, quat, duration) {
 
             var effect = this.buildEffect(id, pos, vel, size, quat, duration);

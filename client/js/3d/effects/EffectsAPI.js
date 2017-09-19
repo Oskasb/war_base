@@ -55,6 +55,12 @@ define([
             particleSpawner.updateEffectParticleSprite(effect, spriteKey);
         };
 
+
+
+        EffectsAPI.updateEffectColorKey = function(effect, colorKey) {
+            particleSpawner.updateEffectParticleColor(effect, colorKey);
+        };
+
         EffectsAPI.requestTemporaryPassiveEffect = function(id, pos, vel, size, quat, duration) {
             return particleSpawner.spawnTemporaryPassiveEffect(id, pos, vel, size, quat, duration);
         };

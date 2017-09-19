@@ -111,6 +111,14 @@ define([
             return this.combatStatus;
         };
 
+        GamePiece.prototype.setActor = function(actor) {
+            this.actor = actor;
+        };
+
+        GamePiece.prototype.getActor = function() {
+            return this.actor;
+        };
+
         GamePiece.prototype.setSlotAttachment = function(parentSlotId, apId, childSlotId) {
             var ap = this.getSlotById(parentSlotId).getAttachmentPointById(apId);
             ap.setAttachedModule(this.getSlotById(childSlotId).module);
@@ -255,7 +263,7 @@ define([
                 return this.render;
             }
 
-            if (distance >  50 + Math.sqrt(this.boundingSize + 10) * 25) {
+            if (distance >  80 + Math.sqrt(this.boundingSize + 10) + 5 * this.boundingSize * this.boundingSize) {
                 if (this.render) {
                     this.setRendereable(false);
                 }

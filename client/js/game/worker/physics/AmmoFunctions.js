@@ -159,7 +159,9 @@ define([
             }, 500)
         }
 
-        AmmoFunctions.prototype.applyForceToBodyWithMass = function(forceVec3, body, mass) {
+        AmmoFunctions.prototype.applyForceToBodyWithMass = function(forceVec3, body, mass, randomize) {
+
+            var randomFactor = randomize || 0.01;
 
             var massFactor = 5000 * Math.sqrt(mass/3) + mass*150;
 
@@ -167,17 +169,17 @@ define([
 
             body.forceActivationState(STATE.ACTIVE);
 
-            VECTOR_AUX.setX(forceVec3.x + forceVec3.x * (Math.random() - 0.5) * 1.0);
-            VECTOR_AUX.setY(forceVec3.y + forceVec3.y * (Math.random() - 0.5) * 1.0);
-            VECTOR_AUX.setZ(forceVec3.z + forceVec3.z * (Math.random() - 0.5) * 0.3);
+            VECTOR_AUX.setX(forceVec3.x + forceVec3.x * (Math.random() - 0.5) * randomFactor);
+            VECTOR_AUX.setY(forceVec3.y + forceVec3.y * (Math.random() - 0.5) * randomFactor);
+            VECTOR_AUX.setZ(forceVec3.z + forceVec3.z * (Math.random() - 0.5) * randomFactor);
 
             body.applyCentralForce(VECTOR_AUX);
 
-            VECTOR_AUX.setX(forceVec3.x * 1.1    + (Math.random() - 0.5) * massFactor*0.03);
-            VECTOR_AUX.setY(forceVec3.y * 0.1    + (Math.random() - 0.5) * massFactor*0.05);
-            VECTOR_AUX.setZ(forceVec3.z * 1.1    + (Math.random() - 0.5) * massFactor*0.03);
+            VECTOR_AUX.setX(forceVec3.x * randomFactor + (Math.random() - 0.5) * massFactor*0.1 * randomFactor);
+            VECTOR_AUX.setY(forceVec3.y * randomFactor * 0.1 + (Math.random() - 0.5) * massFactor*0.01 * randomFactor);
+            VECTOR_AUX.setZ(forceVec3.z * randomFactor + (Math.random() - 0.5) * massFactor*0.1 * randomFactor);
 
-            body.applyLocalTorque(VECTOR_AUX);
+            body.applyTorque(VECTOR_AUX);
 
         };
 
@@ -550,8 +552,8 @@ define([
 
 
             var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, geometry, localInertia);
-            rbInfo.set_m_linearSleepingThreshold(1.2);
-            rbInfo.set_m_angularSleepingThreshold(0.6);
+            rbInfo.set_m_linearSleepingThreshold(1.0);
+            rbInfo.set_m_angularSleepingThreshold(0.4);
 
             var body = new Ammo.btRigidBody(rbInfo);
 
