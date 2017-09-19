@@ -180,22 +180,31 @@ define([], function() {
         this.duration -= tpf;
     };
 
-    SimulatedAttack.prototype.applyHitDamageToTargetActor = function(actor) {
+    SimulatedAttack.prototype.applyHitDamageToTargetActor = function(actor, factor) {
+
+        if (!factor) {
+            factor = 1;
+        }
+
         var combatStatus = actor.piece.getCombatStatus();
         if (!combatStatus) {
             console.log("Actor missing combat status.. cant hit it!");
             return;
         }
 
-        var dmg              = this.simulatedHit.getOnHitCalculatedDamage();
-        var penetration      = this.simulatedHit.getCalculatedArmorPenetration();
-        var shred            = this.simulatedHit.getCalculatedArmorShred();
+        var dmg              = Math.round(this.simulatedHit.getOnHitCalculatedDamage() * factor);
+        var penetration      = Math.round(this.simulatedHit.getCalculatedArmorPenetration() * factor);
+        var shred            = Math.round(this.simulatedHit.getCalculatedArmorShred() * factor);
 
         combatStatus.applyHitValues(dmg, penetration, shred);
     };
 
-    SimulatedAttack.prototype.getAreaEffectRange = function(store) {
+    SimulatedAttack.prototype.getAreaEffectRange = function() {
         return this.simulatedHit.areaDamageRange;
+    };
+
+    SimulatedAttack.prototype.getAreaEffectDamageFactor = function() {
+        return this.simulatedHit.areaDamageFactor;
     };
 
     SimulatedAttack.prototype.getImpactPoint = function(store) {
@@ -209,6 +218,24 @@ define([], function() {
         store.copy(this.hitNormal);
         store.multiplyScalar(this.simulatedHit.impactForce);
         return store;
+    };
+
+    SimulatedAttack.prototype.getAreaDamageForce = function(splashHitActor) {
+        this.getImpactPoint(tempVec2);
+        tempVec.subVectors(splashHitActor.piece.getPos() , tempVec2 );
+
+        tempVec2.copy(this.vel);
+        tempVec2.normalize();
+
+        var distance = tempVec.length() + 2;
+        var addY = (this.getAreaEffectRange() / distance) - 1;
+        tempVec.y += addY * 0.5;
+
+        tempVec.addVectors(tempVec, tempVec2);
+
+        tempVec.normalize();
+        tempVec.multiplyScalar(this.simulatedHit.impactForce * Math.sqrt(addY));
+        return tempVec;
     };
 
     SimulatedAttack.prototype.returnToPool = function() {

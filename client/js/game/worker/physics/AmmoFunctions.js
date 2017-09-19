@@ -161,7 +161,7 @@ define([
 
         AmmoFunctions.prototype.applyForceToBodyWithMass = function(forceVec3, body, mass) {
 
-            var massFactor = 5000 * Math.sqrt(mass/3) + mass*100;
+            var massFactor = 5000 * Math.sqrt(mass/3) + mass*150;
 
             forceVec3.multiplyScalar(massFactor);
 

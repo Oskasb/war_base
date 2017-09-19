@@ -8,7 +8,7 @@
           "visible_range":255,
           "sector_size":45,
           "rows_n_columns":5,
-          "actor_count":1
+          "actor_count":3
         },
         {
           "name":"big",

@@ -418,6 +418,17 @@ define([
             return selectedTarget;
         };
 
+
+        SimulationState.prototype.checkActorInRangeFromPosition = function(actor, range, position) {
+
+            if (actor.piece.getPos().distanceTo(position) < range) {
+                return actor;
+            }
+
+        };
+
+
+
         SimulationState.prototype.registerAttackHit = function(targetActor, attack, normal) {
             this.removeActiveAttack(attack);
             if (!targetActor) {
@@ -429,9 +440,29 @@ define([
             attack.registerAttackHit(targetActor.id, normal);
             attack.generateAttackHitMessage();
 
-            attack.applyHitDamageToTargetActor(targetActor);
+            attack.applyHitDamageToTargetActor(targetActor, 1);
 
-            physicsApi.applyForceToActor(attack.getImpactForce(), targetActor);
+
+
+            var aoeRange = attack.getAreaEffectRange();
+
+            if (aoeRange) {
+                var aoeDmgFactor = attack.getAreaEffectDamageFactor();
+
+                for (var i = 0; i < actors.length; i++) {
+                    if (actors[i].piece.getCombatStatus()) {
+
+                        var splashHitActor = this.checkActorInRangeFromPosition(actors[i], aoeRange, attack.getImpactPoint());
+                        if (splashHitActor) {
+                            attack.applyHitDamageToTargetActor(splashHitActor, aoeDmgFactor);
+                            physicsApi.applyForceToActor(attack.getAreaDamageForce(splashHitActor), splashHitActor);
+
+                        }
+                    }
+                }
+            } else {
+                physicsApi.applyForceToActor(attack.getImpactForce(), targetActor);
+            }
 
         };
 

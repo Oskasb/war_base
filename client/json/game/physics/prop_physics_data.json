@@ -36,7 +36,7 @@
             "friction":0.6,
             "restitution":0.4,
             "damping":0.30,
-            "mass":100
+            "mass":2000
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
