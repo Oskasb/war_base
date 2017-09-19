@@ -155,6 +155,43 @@ define([
             }
         };
 
+        ModuleCallbacks.call_combat_state_update = function(module, target, enable) {
+            enable(true);
+            var piece = enable();
+
+            var combatStatus = piece.getCombatStatus();
+            if (!combatStatus) {
+                console.log("Piece missing CombatStatus", piece, target)
+                return;
+            }
+            combatStatus.setCombatState(target.state.sampleBufferValue())
+        };
+
+        ModuleCallbacks.call_combat_health_status = function(module, target, enable) {
+            enable(true);
+            var piece = enable();
+
+            var combatStatus = piece.getCombatStatus();
+            if (!combatStatus) {
+                console.log("Piece missing CombatStatus", piece, target)
+                return;
+            }
+            combatStatus.setHealth(target.state.sampleBufferValue())
+        };
+
+        ModuleCallbacks.call_combat_armor_status = function(module, target, enable) {
+            enable(true);
+            var piece = enable();
+
+            var combatStatus = piece.getCombatStatus();
+            if (!combatStatus) {
+                console.log("Piece missing CombatStatus", piece, target);
+                return;
+            }
+            combatStatus.setArmor(target.state.sampleBufferValue())
+        };
+
+
         ModuleCallbacks.call_weapon_bullet_activate = function(module, target, enable) {
 
         };

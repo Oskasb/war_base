@@ -73,6 +73,10 @@ define([
             this.attachmentPoints = [];
             this.moduleChannels = [];
             this.boundingSize = 10;
+
+            if (this.config.combat_stats) {
+                this.setupCombatStatus(this.config.combat_stats)
+            }
         };
 
         GamePiece.prototype.resetGamePiece = function() {
@@ -92,11 +96,6 @@ define([
             if (!this.getSlotById(this.config.root_slot).isRootSlot) {
                 this.getSlotById(this.config.root_slot).setObject3dToPieceRoot(this.rootObj3D);
             }
-
-            if (this.config.combat_stats) {
-                 this.setupCombatStatus(this.config.combat_stats)
-            };
-
 
             for (var i = 0; i < this.config.attachments.length;i++) {
                var aps = this.config.attachments[i];

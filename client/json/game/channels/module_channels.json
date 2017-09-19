@@ -302,22 +302,6 @@
             {"targetid":"module_channel_on_fire"}
           ]
         }
-      },
-      {
-        "id":"channel_health",
-        "data":{
-          "targets":[
-            {"targetid":"module_channel_on_fire"}
-          ]
-        }
-      },
-      {
-        "id":"channel_armor",
-        "data":{
-          "targets": [
-            {"targetid":"module_channel_on_fire"}
-          ]
-        }
       }
     ]
   }

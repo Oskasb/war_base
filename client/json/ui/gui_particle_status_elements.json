@@ -11,7 +11,7 @@
           "options":{
             "monitor_key":"BROWSER_MONITOR",
             "screen_pos":[0.39,-0.46, -1],
-            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "offset_children":[-0.05, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
           },
@@ -35,7 +35,7 @@
           "options":{
             "monitor_key":"SYSTEM_MONITOR",
             "screen_pos":[0.20, 0.48, -1],
-            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "offset_children":[-0.05, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
           },
@@ -56,7 +56,7 @@
           "options":{
             "monitor_key":"GAME_MONITOR",
             "screen_pos":[0.32, 0.48, -1],
-            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "offset_children":[-0.05, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
           },
@@ -78,7 +78,7 @@
           "options":{
             "monitor_key":"TIME_MONITOR",
             "screen_pos":[0.44, 0.48, -1],
-            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "offset_children":[-0.05, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
           },
@@ -100,7 +100,7 @@
           "options":{
             "monitor_key":"EFFECT_MONITOR",
             "screen_pos":[0.44, 0.34, -1],
-            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "offset_children":[-0.05, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
           },
@@ -123,7 +123,7 @@
           "options":{
             "monitor_key":"RENDER_MONITOR",
             "screen_pos":[0.44, 0.18, -1],
-            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "offset_children":[-0.05, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
           },
@@ -145,7 +145,7 @@
           "options":{
             "monitor_key":"STATUS_MONITOR",
             "screen_pos":[0.44, 0.02, -1],
-            "offset_children":[-0.05, -0.012, 0.03, -0.002],
+            "offset_children":[-0.05, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
           },
@@ -166,8 +166,11 @@
           ],
           "options":{
             "text_element_id":"gui_status_text_element",
-            "offset_x": 0.003 ,
-            "offset_y":-0.003
+            "offset_x": 0.004 ,
+            "offset_y": 0.001,
+            "row_y":0.012,
+            "pad_x":-0.0038,
+            "pad_y":0.0
           },
           "render_calls":{
             "gui_render_enable":"enable_fx_element",
@@ -185,8 +188,11 @@
           ],
           "options":{
             "text_element_id":"gui_status_value_element",
-            "offset_x":0.003,
-            "offset_y":-0.003
+            "offset_x": 0.004 ,
+            "offset_y": 0.001,
+            "row_y":0.012,
+            "pad_x":-0.0038,
+            "pad_y":0.0
           },
           "render_calls":{
             "gui_render_enable":"enable_fx_element",
@@ -204,7 +210,7 @@
           ],
           "options": {
             "step_x": 0.007,
-            "step_y": 0.005
+            "step_y": 0.002
           },
           "render_calls": {
             "gui_render_enable": "enable_fx_element",
@@ -222,7 +228,7 @@
           ],
           "options":{
             "step_x":0.008,
-            "step_y":0.005
+            "step_y":0.002
           },
           "render_calls":{
             "gui_render_enable":"enable_fx_element",

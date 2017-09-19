@@ -1,0 +1,24 @@
+[{
+  "COMBAT_DATA":{
+    "COMBAT_MODELS":[
+      {
+        "id":"default_combat_model",
+        "data":{
+            "options":{
+          },
+          "control_map":[
+          ],
+          "feedback_map":[
+            {"param":"dynamic",     "key":"aimYaw",          "property":"state", "stateid":"aim_turret_yaw",          "factor":1},
+            {"param":"dynamic",     "key":"quatY",           "property":"state", "stateid":"quat_turret_y",           "factor":1},
+            {"param":"dynamic",     "key":"quatW",           "property":"state", "stateid":"quat_turret_w",           "factor":1}
+
+          ],
+          "state_map":[
+
+          ]
+        }
+      }
+    ]
+  }
+}]

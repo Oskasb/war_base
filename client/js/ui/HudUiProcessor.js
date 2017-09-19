@@ -221,9 +221,6 @@ define([
             guiElement.origin.set(guiElement.options.screen_pos[0], guiElement.options.screen_pos[1], guiElement.options.screen_pos[2]);
             GameScreen.fitView(guiElement.origin);
 
-            if (Math.random() < 0.05) {
-                guiElement.applyElementPosition(null, calcVec);
-            }
 
 
             if (!guiElement.children[labelElemId]) {
@@ -251,6 +248,9 @@ define([
 
             var child;
 
+            calcVec.y = offsetChildren[1];
+
+            var update = false;
 
             for (i = 0; i < guiElement.children[labelElemId].length; i++) {
 
@@ -267,8 +267,8 @@ define([
                 calcVec2.x = child.options.offset_x;
                 calcVec2.y = child.options.offset_y;
 
-
-                if (monitor[i].dirty || Math.random() < 0.002) {
+                if (monitor[i].dirty || Math.random() < 0.005) {
+                    update = true;
                     this.updateTextElement(monitor[i].key, child, calcVec, calcVec2);
 
                     if (guiElement.children[valueElemId]) {
@@ -284,9 +284,17 @@ define([
                             this.updateTextElement(''+monitor[i].value, child, calcVec, calcVec2);
                         }
                     }
+                    monitor[i].dirty = false;
                 }
 
-                calcVec.y += offsetChildren[1];
+                calcVec.y -= child.options.row_y;
+            }
+
+            if (update) {
+                calcVec.z = 0;
+                calcVec.x = 0;
+                calcVec.y = 0;
+                guiElement.applyElementPosition(null, calcVec);
             }
 
         };

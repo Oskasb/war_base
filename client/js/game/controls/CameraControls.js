@@ -169,16 +169,12 @@ define([
             //    calcVec.subVectors(lastTargetPos  ,  targetPos );
             //    calcVec.multiplyScalar(diff);
 
-                lastTargetPos.lerpVectors(lastTargetPos, calcVec, tpf*0.1);
+                lastTargetPos.lerpVectors(lastTargetPos, calcVec, tpf*0.5);
                 activeTargetPos.addVectors(targetPos, calcVec);
 
 
             //    activeTargetPos.copy(targetPos);
                 // targetPos.copy(calcVec);
-
-
-
-
 
             } else {
 

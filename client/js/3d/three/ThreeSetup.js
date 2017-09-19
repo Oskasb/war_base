@@ -38,12 +38,17 @@ define(['../../ui/GameScreen',
         requestAnimationFrame( ThreeSetup.callPrerender );
 
         time = performance.now()  - initTime;
+        tpf = (time - lastTime)*0.001;
+
+    //    if (tpf < 0.03) return;
+
+
         idle = (performance.now() / 1000) - renderEnd;
 
         PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_ANIM_IDLE', idle);
 
 
-        tpf = (time - lastTime)*0.001;
+
         lastTime = time;
 
         avgTfp = tpf*0.3 + avgTfp*0.7;

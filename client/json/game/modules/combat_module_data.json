@@ -1,0 +1,22 @@
+[{
+  "MODULE_DATA":{
+    "MODULES":[
+      {
+        "id":"combat_module",
+        "data":{
+          "transform":{
+            "rot":  [0,   0,    0],
+            "pos":  [0,   0,    0],
+            "size": [0,   0,    0]
+          },
+
+          "channels":[
+            {"channelid":"channel_combat_state",  "stateid": "combat_state" },
+            {"channelid":"channel_health",        "stateid": "health_state" },
+            {"channelid":"channel_armor",         "stateid": "armor_state" }
+          ]
+        }
+      }
+    ]
+  }
+}]

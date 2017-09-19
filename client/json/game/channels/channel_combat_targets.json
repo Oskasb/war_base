@@ -1,0 +1,25 @@
+[{
+  "CHANNEL_TARGETS":{
+    "TARGETS":[
+      {
+        "id":"target_combat_state_update",
+        "data":{
+          "callback":"call_combat_state_update"
+        }
+      },
+
+      {
+        "id":"target_combat_health_status",
+        "data":{
+          "callback":"call_combat_health_status"
+        }
+      },
+      {
+        "id":"target_combat_armor_status",
+        "data":{
+          "callback":"call_combat_armor_status"
+        }
+      }
+    ]
+  }
+}]

@@ -97,6 +97,9 @@ define([
 
             this.textOffsetVec.copy(textOffsetVector);
 
+            this.textOffsetVec.x += this.options.pad_x || 0;
+            this.textOffsetVec.y += this.options.pad_y || 0;
+
             if (this.children[txElemId]) {
 
                 for (var i = 0; i < this.children[txElemId].length; i++) {

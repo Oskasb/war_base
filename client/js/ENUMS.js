@@ -33,14 +33,15 @@ if(typeof(ENUMS) === "undefined"){
     };
 
     ENUMS.CombatStates = {
-        IDLE:'IDLE',
-        ENGAGING:'ENGAGING',
-        ENGAGED:'ENGAGED',
-        DISENGAGING:'DISENGAGING',
-        DISENGAGED:'DISENGAGED',
-        DISABLED:'DISABLED',
-        DESTROYED:'DESTROYED',
-        KILLED:'KILLED'
+        NONE:0,
+        IDLE:1,
+        ENGAGING:2,
+        ENGAGED:3,
+        DISENGAGING:4,
+        DISENGAGED:5,
+        DISABLED:6,
+        DESTROYED:7,
+        KILLED:8
     };
 
     ENUMS.Category = {

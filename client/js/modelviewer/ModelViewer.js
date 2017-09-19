@@ -210,11 +210,11 @@ define([
             return Math.round((number/1000));
         };
 
+
         var notifyStatus = function(store, value, dataKey) {
             if (!store[dataKey]) {
                 store[dataKey] = {}
             }
-
             store[dataKey].dirty = store[dataKey].value !== value;
             store[dataKey].key = dataKey;
             store[dataKey].value = value
@@ -226,11 +226,15 @@ define([
                 list[i] = data[key];
                 i++;
             }
+        };
 
-        }
+        var statusUpdate = 0;
 
-        ModelViewer.prototype.tickStatusUpdate = function() {
+        ModelViewer.prototype.tickStatusUpdate = function(ftpf) {
 
+            statusUpdate += ftpf;
+            if (statusUpdate < 0.5) return;
+            statusUpdate = 0;
 
             notifyStatus(monitorGame,    GameAPI.getActors().length,                      'ACTORS');
             notifyStatus(monitorGame,    GameAPI.getPieces().length,                      'PIECES');
@@ -249,7 +253,6 @@ define([
             notifyStatus(monitorEffects, EffectsAPI.sampleActiveEffectsCount(),      'FX_COUNT');
             notifyStatus(monitorEffects, EffectsAPI.sampleActiveParticleCount(),     'PARTICLES');
             notifyStatus(monitorEffects, EffectsAPI.sampleEffectActivations(),       'FX_ADDS');
-
 
             var memory = performance.memory;
             var memoryUsed = ( (memory.usedJSHeapSize / 1048576) / (memory.jsHeapSizeLimit / 1048576 ));
@@ -305,8 +308,8 @@ define([
             notifyStatus(monitorStatus,      status.FILE_CACHE,              'FILE_CACHE');
             notifyStatus(monitorStatus,      status.EVENT_LISTENERS,         'EVT_LISTNRS');
             notifyStatus(monitorStatus,      status.EVENT_TYPES,             'EVT_TYPES');
-            notifyStatus(monitorStatus,      status.LISTENERS_ONCE,          'LISTNERS_ONCE');
-            notifyStatus(monitorStatus,      status.FIRED_EVENTS,            'FIRED_EVENTS');
+            notifyStatus(monitorStatus,      status.LISTENERS_ONCE,          'LISTNRS_1');
+            notifyStatus(monitorStatus,      status.FIRED_EVENTS,            'FIRED_EVTS');
 
 //
             listData(renderEntries, monitorRender);
@@ -318,6 +321,7 @@ define([
             listData(statusEntries, monitorStatus);
 
         };
+
 
 
         ModelViewer.prototype.tick = function(tpf, sceneController) {
@@ -370,7 +374,8 @@ define([
 
             PipelineAPI.setCategoryKeyValue('STATUS', 'TIME_GAME_TICK', performance.now() - start);
 
-            this.tickStatusUpdate();
+
+            this.tickStatusUpdate(tpf);
 
 
             if (PipelineAPI.getPipelineOptions('jsonPipe').polling.enabled) {

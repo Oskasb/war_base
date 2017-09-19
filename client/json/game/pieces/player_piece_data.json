@@ -11,6 +11,7 @@
           },
           "slots":[
             {"slot":"hull",         "module":"sherman_hull_module"   },
+            {"slot":"combat",       "module":"combat_module"         },
             {"slot":"main_turret",  "module":"sherman_turret_module" },
             {"slot":"track_r",      "module":"sherman_track_r_module"},
             {"slot":"track_l",      "module":"sherman_track_l_module"},
@@ -25,7 +26,8 @@
             {"slot":"hull",         "ap":"ap_turret",     "child":"main_turret" },
             {"slot":"hull",         "ap":"ap_track_r",    "child":"track_r"},
             {"slot":"hull",         "ap":"ap_track_l",    "child":"track_l"},
-            {"slot":"hull",         "ap":"ap_engine",     "child":"engine"  },
+            {"slot":"hull",         "ap":"ap_engine",     "child":"engine" },
+            {"slot":"hull",         "ap":"ap_combat",     "child":"combat" },
             {"slot":"main_turret",  "ap":"ap_cannon",     "child":"main_gun"},
               {"slot":"main_gun",     "ap":"ap_muzzle",     "child":"main_muzzle"},
             {"slot":"main_turret",  "ap":"ap_gun_swivel", "child":"swivel_gun"},

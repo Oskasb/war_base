@@ -21,6 +21,14 @@
             {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
             {"channelid":"fire_channel",   "stateid": "fire_state"}
+          ],
+          "attachment_points":[
+            {"id":"ap_combat",
+              "transform":{
+                "rot":[  0,    0,    0],
+                "pos":[  0,    0,    0]
+              }
+            }
           ]
         }
       },
@@ -43,6 +51,14 @@
             {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
             {"channelid":"fire_channel",   "stateid": "fire_state"}
+          ],
+          "attachment_points":[
+            {"id":"ap_combat",
+              "transform":{
+                "rot":[  0,    0,    0],
+                "pos":[  0,    0,    0]
+              }
+            }
           ]
         }
       },

@@ -77,6 +77,10 @@ define([],
             return this.value;
         };
 
+        PieceState.prototype.sampleBufferValue = function () {
+            this.readCount++;
+            return this.buffer[0];
+        };
 
         PieceState.prototype.setBufferValue = function (value) {
             this.readCount = 0;

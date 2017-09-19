@@ -10,9 +10,12 @@
             "armor":6
           },
           "slots":[
-            {"slot":"piece_root",         "module":"module_root_box_crate"}
+            {"slot":"piece_root",         "module":"module_root_box_crate"},
+            {"slot":"combat",             "module":"combat_module"         }
           ],
-          "attachments":[]
+          "attachments":[
+            {"slot":"piece_root",         "ap":"ap_combat",     "child":"combat" }
+          ]
         }
       },
       {
@@ -24,9 +27,12 @@
             "armor":2
           },
           "slots":[
-            {"slot":"piece_root",         "module":"module_root_oil_drum"}
+            {"slot":"piece_root",         "module":"module_root_oil_drum"},
+            {"slot":"combat",             "module":"combat_module"       }
           ],
-          "attachments":[]
+          "attachments":[
+            {"slot":"piece_root",         "ap":"ap_combat",     "child":"combat" }
+          ]
         }
       },
       {
