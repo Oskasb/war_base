@@ -159,6 +159,28 @@ define([
             }, 500)
         }
 
+        AmmoFunctions.prototype.applyForceToBodyWithMass = function(forceVec3, body, mass) {
+
+            var massFactor = 5000 * Math.sqrt(mass/3) + mass*100;
+
+            forceVec3.multiplyScalar(massFactor);
+
+            body.forceActivationState(STATE.ACTIVE);
+
+            VECTOR_AUX.setX(forceVec3.x + forceVec3.x * (Math.random() - 0.5) * 1.0);
+            VECTOR_AUX.setY(forceVec3.y + forceVec3.y * (Math.random() - 0.5) * 1.0);
+            VECTOR_AUX.setZ(forceVec3.z + forceVec3.z * (Math.random() - 0.5) * 0.3);
+
+            body.applyCentralForce(VECTOR_AUX);
+
+            VECTOR_AUX.setX(forceVec3.x * 1.1    + (Math.random() - 0.5) * massFactor*0.03);
+            VECTOR_AUX.setY(forceVec3.y * 0.1    + (Math.random() - 0.5) * massFactor*0.05);
+            VECTOR_AUX.setZ(forceVec3.z * 1.1    + (Math.random() - 0.5) * massFactor*0.03);
+
+            body.applyLocalTorque(VECTOR_AUX);
+
+        };
+
         AmmoFunctions.prototype.enableBodySimulation = function(body) {
 
             if (body.isKinematicObject()) {
@@ -346,7 +368,12 @@ define([
             var groundMass = 0;
             var groundLocalInertia = new Ammo.btVector3( 0, 0, 0 );
             var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
-            var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
+
+            var rbInfo = new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia )
+            rbInfo.set_m_linearSleepingThreshold(0);
+            rbInfo.set_m_angularSleepingThreshold(0);
+
+            var groundBody = new Ammo.btRigidBody(rbInfo);
 
             groundBody.setRestitution(restitution);
             groundBody.setFriction(friction);
@@ -520,7 +547,12 @@ define([
             var localInertia = new Ammo.btVector3(0, 0, 0);
             geometry.calculateLocalInertia(mass, localInertia);
 
+
+
             var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, geometry, localInertia);
+            rbInfo.set_m_linearSleepingThreshold(1.2);
+            rbInfo.set_m_angularSleepingThreshold(0.6);
+
             var body = new Ammo.btRigidBody(rbInfo);
 
             return body;
@@ -714,6 +746,7 @@ define([
 
                 body.setLinearFactor(linFac);
             }
+
 
 
             //    body.forceActivationState(STATE.WANTS_DEACTIVATION);

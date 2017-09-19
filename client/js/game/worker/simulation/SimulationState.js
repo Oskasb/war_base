@@ -288,6 +288,10 @@ define([
             //    console.log("No actor by id:", actorId, actors);
         };
 
+        SimulationState.prototype.getLevels = function() {
+            return levels;
+        };
+
         SimulationState.prototype.getLevelById = function(leveId) {
             for (var i = 0; i < levels.length; i++) {
                 if (levels[i].id === leveId) {
@@ -423,9 +427,11 @@ define([
                 // return;
             }
             attack.registerAttackHit(targetActor.id, normal);
-            attack.generateAttackHitMessage(targetActor.id, normal);
+            attack.generateAttackHitMessage();
 
             attack.applyHitDamageToTargetActor(targetActor);
+
+            physicsApi.applyForceToActor(attack.getImpactForce(), targetActor);
 
         };
 

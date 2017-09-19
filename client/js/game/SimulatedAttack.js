@@ -37,7 +37,7 @@ define([], function() {
         this.armorShredProbability          = dmgOpts.armor_shred_probability   || 0;
         this.armorShred                     = dmgOpts.armor_shred               || 0;
 
-        this.impactForce                    = dmgOpts.impact_dorce              || 0;
+        this.impactForce                    = dmgOpts.impact_force              || 0;
         this.areaDamageRange                = dmgOpts.area_damage_range         || 0;
         this.areaDamageFactor               = dmgOpts.area_damage_factor        || 0;
 
@@ -148,27 +148,26 @@ define([], function() {
         postMessage(this.message);
     };
 
-    SimulatedAttack.prototype.registerAttackHit = function(targetActorId, hitNormal) {
-        this.hitNormal.copy(hitNormal);
+    SimulatedAttack.prototype.generateAttackHitMessage = function() {
         this.message[0] = hitKey;
-        this.populateMessate(hitNormal);
-        this.messageBuffer[0] = targetActorId;
+        this.populateMessate(this.hitNormal);
+        this.messageBuffer[0] = this.targetId;
         postMessage(this.message);
     };
 
-    SimulatedAttack.prototype.generateAttackHitMessage = function(targetActorId, hitNormal) {
+
+    SimulatedAttack.prototype.registerAttackHit = function(targetActorId, hitNormal) {
         this.hitNormal.copy(hitNormal);
-        this.message[0] = hitKey;
-        this.populateMessate(hitNormal);
-        this.messageBuffer[0] = targetActorId;
-        postMessage(this.message);
+        this.targetId = targetActorId;
     };
+
 
     SimulatedAttack.prototype.generateAttackEndMessage = function() {
         this.message[0] = endKey;
         this.populateMessate(this.vel);
         postMessage(this.message);
     };
+
 
     SimulatedAttack.prototype.applyFrame = function(tpf) {
         this.frameVelocity.copy(this.vel);
@@ -202,12 +201,14 @@ define([], function() {
     SimulatedAttack.prototype.getImpactPoint = function(store) {
         store = store || tempVec;
         store.copy(this.pos);
+        return store;
     };
 
     SimulatedAttack.prototype.getImpactForce = function(store) {
-        store = store || tempVec;
+        store = store || tempVec2;
         store.copy(this.hitNormal);
         store.multiplyScalar(this.simulatedHit.impactForce);
+        return store;
     };
 
     SimulatedAttack.prototype.returnToPool = function() {

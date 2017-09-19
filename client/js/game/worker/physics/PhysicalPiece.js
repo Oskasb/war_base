@@ -26,6 +26,10 @@ define([
 
         };
 
+        PhysicalPiece.prototype.getPhysicsPieceMass = function () {
+            return this.config.rigid_body.mass
+        };
+
         PhysicalPiece.prototype.applyData = function (config, ready) {
             this.config = config;
             this.stateMap = config.state_map;

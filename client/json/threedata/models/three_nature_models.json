@@ -30,7 +30,7 @@
           "url": "./client/assets/models/trees/tree_2_trunk",
           "pool": 5,
           "transform": {
-            "pos": [0,-3, 0],
+            "pos": [0,-5, 0],
             "rot": [0, 0, 0],
             "scale": [0.5, 0.5, 0.5]
           }

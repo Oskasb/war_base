@@ -114,6 +114,9 @@ define(['worker/physics/AmmoFunctions'],
             ammoFunctions.updatePhysicalWorld(world, currentTime)
         };
 
+        AmmoAPI.prototype.applyForceToActor = function(forceVec3, actor) {
+            ammoFunctions.applyForceToBodyWithMass(forceVec3, actor.getPhysicsBody(), actor.physicalPiece.getPhysicsPieceMass())
+        };
 
         AmmoAPI.prototype.raycastPhysicsWorld = function(position, direction, hitPositionStore, hitNormalStore) {
             var hit = ammoFunctions.physicsRayRange(world, position, direction, hitPositionStore, hitNormalStore);

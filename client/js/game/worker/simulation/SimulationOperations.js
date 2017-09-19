@@ -224,8 +224,13 @@ define([
                 if (Math.sqrt(calcVec.lengthSq()) < Math.sqrt(attack.frameVelocity.lengthSq()) * 2 + 2) {
                 //    if (attack.frameVelocity.dot(pos) > 0) {
 
-                        hitNormalStore.copy(attack.vel);
-                        hitNormalStore.multiplyScalar(-1);
+                        hitNormalStore.copy(calcVec);
+                        hitNormalStore.normalize();
+
+                        var groundHeight = this.getHeightAtPos(pos, simulationState.getLevels(), calcVec);
+
+                        hitNormalStore.lerpVectors(hitNormalStore, calcVec, Math.clamp(0.1 * (groundHeight - pos.y), 0.5, 0.9));
+
                         simulationState.registerAttackHit(target, attack, hitNormalStore);
                         return target;
                 //    }

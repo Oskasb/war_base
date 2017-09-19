@@ -11,7 +11,7 @@
             "args":[6, 6, 6],
             "friction":2.5,
             "restitution":0.4,
-            "damping":0.5,
+            "damping":0.4,
             "mass":5000
           },
           "state_map":[
@@ -35,8 +35,8 @@
             "args":[2.5, 2.5, 4],
             "friction":0.6,
             "restitution":0.4,
-            "damping":0.70,
-            "mass":4500
+            "damping":0.30,
+            "mass":100
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
