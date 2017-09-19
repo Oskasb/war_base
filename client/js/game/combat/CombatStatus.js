@@ -71,9 +71,12 @@ define([],
 
         CombatStatus.prototype.applyHitValues = function(baseDamage, armorPenetration, armorShred) {
 
-            var mitigation = MATH.clamp(this.getArmor() - armorPenetration, 0, armorPenetration);
 
-            var deductDmg = baseDamage - mitigation;
+
+            var mitigation = MATH.clamp(this.getArmor() - armorPenetration, 0, this.getArmor());
+
+            var deductDmg =  MATH.clamp(baseDamage - mitigation, 0, baseDamage);
+
             this.setHealth(this.getHealth() - deductDmg);
 
             this.setArmor(MATH.clamp(this.getArmor() - armorShred, 0, this.getArmor()));
@@ -85,7 +88,7 @@ define([],
             }
 
             if (this.getHealth() <= 0 ) {
-                this.notifyZeroHealth();
+                this.notifyZeroHealth(deductDmg);
             }
 
         };
@@ -98,8 +101,8 @@ define([],
         };
 
         CombatStatus.prototype.notifyAttackMitigated = function() {
-            if (this.getCombatState() < ENUMS.CombatStates.THREATENED) {
-                this.setCombatState(ENUMS.CombatStates.THREATENED);
+            if (this.getCombatState() < ENUMS.CombatStates.ENGAGING) {
+                this.setCombatState(ENUMS.CombatStates.ENGAGING);
             }
         };
 
@@ -109,9 +112,23 @@ define([],
             }
         };
 
-        CombatStatus.prototype.notifyZeroHealth = function() {
+        CombatStatus.prototype.notifyZeroHealth = function(deductDmg) {
             if (this.getCombatState() < ENUMS.CombatStates.DISABLED) {
                 this.setCombatState(ENUMS.CombatStates.DISABLED);
+                return;
+            }
+
+            if (this.getCombatState() < ENUMS.CombatStates.DESTROYED) {
+                if (Math.random() *(this.getMaxArmor() + this.getMaxHealth()) < deductDmg) {
+                    this.setCombatState(ENUMS.CombatStates.DESTROYED);
+                }
+                return;
+            }
+
+            if (this.getCombatState() < ENUMS.CombatStates.KILLED) {
+                if (Math.random() * (this.getMaxArmor() + this.getMaxHealth()) < deductDmg) {
+                    this.setCombatState(ENUMS.CombatStates.KILLED);
+                }
             }
         };
 

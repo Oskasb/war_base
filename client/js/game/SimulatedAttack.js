@@ -50,12 +50,12 @@ define([], function() {
         }
         var damage = this.minBaseDamage + Math.floor(Math.random()*(this.maxBaseDamage - this.minBaseDamage));
 
-        return damage + this.minBaseDamage*this.isCrit;
+        return damage + this.maxBaseDamage*this.isCrit;
 
     };
 
     SimulatedHit.prototype.getCalculatedArmorPenetration = function() {
-        var pen = this.isCrit;
+        var pen = 0;
         if (Math.random() < this.armorPenetrationProbability) {
             pen += 1;
         }
@@ -192,9 +192,9 @@ define([], function() {
             return;
         }
 
-        var dmg              = Math.round(this.simulatedHit.getOnHitCalculatedDamage() * factor);
-        var penetration      = Math.round(this.simulatedHit.getCalculatedArmorPenetration() * factor);
-        var shred            = Math.round(this.simulatedHit.getCalculatedArmorShred() * factor);
+        var dmg              = Math.floor(this.simulatedHit.getOnHitCalculatedDamage() * factor);
+        var penetration      = Math.floor(this.simulatedHit.getCalculatedArmorPenetration() * factor);
+        var shred            = Math.floor(this.simulatedHit.getCalculatedArmorShred() * factor);
 
         combatStatus.applyHitValues(dmg, penetration, shred);
     };

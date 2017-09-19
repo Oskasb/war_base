@@ -64,8 +64,8 @@
               "damage":{
                 "min_base_damage":1,
                 "max_base_damage":2,
-                "critical_hit_probability":0.02,
-                "penetration_probability":0.05,
+                "critical_hit_probability":0.08,
+                "penetration_probability":0.04,
                 "armor_penetration":1,
                 "armor_shred":1,
                 "armor_shred_probability":0.01,
