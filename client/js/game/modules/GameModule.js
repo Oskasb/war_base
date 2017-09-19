@@ -8,6 +8,7 @@ define([
         'game/modules/VisualModule',
         'game/modules/ModuleChannel',
         'game/modules/AttachmentPoint',
+        'game/modules/CombatModule',
         'game/modules/WeaponModule',
         'game/modules/TurretModule'
     
@@ -18,6 +19,7 @@ define([
         VisualModule,
         ModuleChannel,
         AttachmentPoint,
+        CombatModule,
         WeaponModule,
         TurretModule
     ) {
@@ -32,6 +34,7 @@ define([
 
             this.weapons = [];
             this.turrets = [];
+            this.combatModules = [];
 
             this.transform = {
                 rot:  [0, 0, 0],
@@ -103,6 +106,15 @@ define([
                 }
             }
 
+            if (this.config.combat_models) {
+                var combatReady = function(turret) {
+                    this.combatModules[turret.turretIndex] = turret
+                }.bind(this);
+
+                for (var i = 0; i < this.config.combat_models.length; i++) {
+                    new CombatModule(this.config.combat_models[i], combatReady, i)
+                }
+            }
 
             if (config[ENUMS.ModuleParams.attachment_points]) {
                 this.applyAttachmentPoints(config[ENUMS.ModuleParams.attachment_points]);
@@ -238,13 +250,20 @@ define([
             if (simState) {
                 var target;
                 for (i = 0; i < this.turrets.length; i++) {
-                    target = this.turrets[i].updateTurretState(simState, this, tpf)
+                    target = this.turrets[i].
+                    updateTurretState(simState, this, tpf)
                 }
 
                 for (i = 0; i < this.weapons.length; i++) {
                     enable(true);
                     this.weapons[i].updateWeaponState(enable(), target, simState, this, tpf)
                 }
+
+                for (i = 0; i < this.combatModules.length; i++) {
+                    enable(true);
+                    this.combatModules[i].updateCombatState(enable(), simState, this)
+                }
+
             }
 
 

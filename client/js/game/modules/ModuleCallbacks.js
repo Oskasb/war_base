@@ -155,40 +155,18 @@ define([
             }
         };
 
-        ModuleCallbacks.call_combat_state_update = function(module, target, enable) {
+        ModuleCallbacks.call_combat_status_update = function(module, target, enable) {
             enable(true);
             var piece = enable();
 
-            var combatStatus = piece.getCombatStatus();
-            if (!combatStatus) {
-                console.log("Piece missing CombatStatus", piece, target)
-                return;
-            }
-            combatStatus.setCombatState(target.state.sampleBufferValue())
-        };
-
-        ModuleCallbacks.call_combat_health_status = function(module, target, enable) {
-            enable(true);
-            var piece = enable();
-
-            var combatStatus = piece.getCombatStatus();
-            if (!combatStatus) {
-                console.log("Piece missing CombatStatus", piece, target)
-                return;
-            }
-            combatStatus.setHealth(target.state.sampleBufferValue())
-        };
-
-        ModuleCallbacks.call_combat_armor_status = function(module, target, enable) {
-            enable(true);
-            var piece = enable();
+            var functionName = target.config.combat_state_setter;
 
             var combatStatus = piece.getCombatStatus();
             if (!combatStatus) {
                 console.log("Piece missing CombatStatus", piece, target);
                 return;
             }
-            combatStatus.setArmor(target.state.sampleBufferValue())
+            combatStatus[functionName](target.state.sampleBufferValue())
         };
 
 

@@ -4,20 +4,38 @@
       {
         "id":"target_combat_state_update",
         "data":{
-          "callback":"call_combat_state_update"
+          "callback":"call_combat_status_update",
+          "combat_state_setter":"setCombatState"
+        }
+      },
+
+      {
+        "id":"target_combat_max_health_status",
+        "data":{
+          "callback":"call_combat_status_update",
+          "combat_state_setter":"setMaxHealth"
+        }
+      },
+      {
+        "id":"target_combat_max_armor_status",
+        "data":{
+          "callback":"call_combat_status_update",
+          "combat_state_setter":"setMaxArmor"
         }
       },
 
       {
         "id":"target_combat_health_status",
         "data":{
-          "callback":"call_combat_health_status"
+          "callback":"call_combat_status_update",
+          "combat_state_setter":"setHealth"
         }
       },
       {
         "id":"target_combat_armor_status",
         "data":{
-          "callback":"call_combat_armor_status"
+          "callback":"call_combat_status_update",
+          "combat_state_setter":"setArmor"
         }
       }
     ]

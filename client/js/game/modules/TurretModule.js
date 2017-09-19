@@ -205,8 +205,6 @@ define([
         };
 
 
-
-
         TurretModule.prototype.updateTurretState = function(simulationState, module, tpf) {
             if (!this.config) return;
 
