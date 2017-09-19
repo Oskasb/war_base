@@ -50,7 +50,7 @@ define([],
         };
 
         CombatStatus.prototype.setHealth = function(value) {
-            this.health = value;
+            this.health = MATH.clamp(value, 0, this.getMaxHealth());
         };
 
         CombatStatus.prototype.getHealth = function() {
@@ -69,12 +69,56 @@ define([],
             this.combatState = state;
         };
 
+        CombatStatus.prototype.applyHitValues = function(baseDamage, armorPenetration, armorShred) {
+
+            var mitigation = MATH.clamp(this.getArmor() - armorPenetration, 0, armorPenetration);
+
+            var deductDmg = baseDamage - mitigation;
+            this.setHealth(this.getHealth() - deductDmg);
+
+            this.setArmor(MATH.clamp(this.getArmor() - armorShred, 0, this.getArmor()));
+
+            if (deductDmg < 0 || armorShred) {
+                this.notifyDamageTaken();
+            } else {
+                this.notifyAttackMitigated();
+            }
+
+            if (this.getHealth() <= 0 ) {
+                this.notifyZeroHealth();
+            }
+
+        };
+
+
         CombatStatus.prototype.notifySelectedActivation = function() {
-            this.setCombatState(ENUMS.CombatStates.ENGAGED);
+            if (this.getCombatState() < ENUMS.CombatStates.THREATENED) {
+                this.setCombatState(ENUMS.CombatStates.THREATENED);
+            }
+        };
+
+        CombatStatus.prototype.notifyAttackMitigated = function() {
+            if (this.getCombatState() < ENUMS.CombatStates.THREATENED) {
+                this.setCombatState(ENUMS.CombatStates.THREATENED);
+            }
+        };
+
+        CombatStatus.prototype.notifyDamageTaken = function() {
+            if (this.getCombatState() < ENUMS.CombatStates.ENGAGED) {
+                this.setCombatState(ENUMS.CombatStates.ENGAGED);
+            }
+        };
+
+        CombatStatus.prototype.notifyZeroHealth = function() {
+            if (this.getCombatState() < ENUMS.CombatStates.DISABLED) {
+                this.setCombatState(ENUMS.CombatStates.DISABLED);
+            }
         };
 
         CombatStatus.prototype.notifyActivationDeactivate = function() {
-            this.setCombatState(ENUMS.CombatStates.NONE);
+            if (this.getCombatState() <= ENUMS.CombatStates.THREATENED) {
+                this.setCombatState(ENUMS.CombatStates.NONE);
+            }
         };
 
         CombatStatus.prototype.getCombatState = function() {

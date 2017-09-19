@@ -422,7 +422,11 @@ define([
                 targetActor.id = 'unknown'
                 // return;
             }
-            attack.generateAttackHitMessage(targetActor.id, normal)
+            attack.registerAttackHit(targetActor.id, normal);
+            attack.generateAttackHitMessage(targetActor.id, normal);
+
+            attack.applyHitDamageToTargetActor(targetActor);
+
         };
 
         SimulationState.prototype.updateAttackFrame = function(attack, tpf) {

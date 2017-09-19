@@ -63,7 +63,8 @@
       "game/modules/control_module_data.json",
 
       "game/combat/piece_combat_data.json",
-            "game/weapons/piece_weapon_data.json",
+      "game/weapons/piece_weapon_data.json",
+      "game/weapons/piece_turret_data.json",
 
       "game/channels/channel_combat_targets.json",
       "game/channels/channel_targets.json",
