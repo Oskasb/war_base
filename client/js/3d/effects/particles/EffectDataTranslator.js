@@ -7,6 +7,14 @@ define([
     ) {
 
         var dataCurves = {
+
+            threatSixe  :61,
+            threatFive  :60,
+            threatFour  :59,
+            threatThree :58,
+            threatTwo   :57,
+            threatOne   :56,
+            threatZero  :55,
             steadyOrange:54,
             darkPurple:53,
             darkBlue:52,

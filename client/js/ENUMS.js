@@ -42,7 +42,8 @@ if(typeof(ENUMS) === "undefined"){
         ENGAGED:        6,
         DISABLED:       7,
         DESTROYED:      8,
-        KILLED:         9
+        KILLED:         9,
+        REMOVED:       10
     };
 
     ENUMS.Category = {

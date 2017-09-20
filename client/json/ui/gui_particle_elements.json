@@ -31,15 +31,16 @@
             "offset_y":0.004,
             "state_map":[
               {"sprite_id":"alert",       "color_curve":"rainbow"},
-              {"sprite_id":"sleep",       "color_curve":"steadyBlue"},
-              {"sprite_id":"sleep",       "color_curve":"steadyBlue"},
-              {"sprite_id":"sleep",       "color_curve":"steadyBlue"},
-              {"sprite_id":"sleep",       "color_curve":"steadyBlue"},
-              {"sprite_id":"shield",      "color_curve":"steadyBlue"},
-              {"sprite_id":"crosshair",   "color_curve":"steadyRed"},
-              {"sprite_id":"droplet",     "color_curve":"steadyRed"},
-              {"sprite_id":"broken",      "color_curve":"steadyRed"},
-              {"sprite_id":"dead",        "color_curve":"steadyRed"}
+              {"sprite_id":"sleep",       "color_curve":"threatZero"},
+              {"sprite_id":"sleep",       "color_curve":"threatOne"},
+              {"sprite_id":"sleep",       "color_curve":"threatTwo"},
+              {"sprite_id":"sleep",       "color_curve":"threatThree"},
+              {"sprite_id":"shield",      "color_curve":"threatFour"},
+              {"sprite_id":"crosshair",   "color_curve":"threatFive"},
+              {"sprite_id":"droplet",     "color_curve":"randomRed"},
+              {"sprite_id":"broken",      "color_curve":"sin"},
+              {"sprite_id":"dead",        "color_curve":"flashGrey"},
+              {"sprite_id":"alert",       "color_curve":"rainbow"}
             ]
           },
           "render_calls":{

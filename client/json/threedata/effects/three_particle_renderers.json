@@ -127,6 +127,19 @@
           }
         },
         {
+          "id":"gpu_spatial_box_renderer",
+          "material_id":"gpu_vegetation_spatial_material",
+          "particle_pool":200,
+          "particle_geometry":"box3d",
+          "material_options":{
+            "blending":"NoBlending",
+            "transparent":false,
+            "alphaTest":0.4,
+            "depthWrite":true,
+            "depthTest":true
+          }
+        },
+        {
           "id":"gpu_opaque_stamp_renderer",
           "material_id":"gpu_stamp_sprite_material",
           "particle_pool":800,

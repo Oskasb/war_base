@@ -73,10 +73,10 @@
             "args":[1.6, 2, 1.6],
             "angular_factor":[1,  1, 1],
             "linear_factor":[1, 1, 1],
-            "friction":0.85,
-            "restitution":0.1,
-            "damping":0.62,
-            "mass":200
+            "friction":0.95,
+            "restitution":0.01,
+            "damping":0.72,
+            "mass":400
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},

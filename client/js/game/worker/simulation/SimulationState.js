@@ -522,9 +522,15 @@ define([
 
         SimulationState.prototype.updateActorFrame = function(actor, tpf) {
 
-            var controlUpdated = this.protocolSystem.applyProtocolToActorState(actor, tpf);
+            this.protocolSystem.applyProtocolToActorState(actor, tpf);
 
-        //    this.activityFilter.notifyActorActiveState(actor, controlUpdated);
+            var combatStatus = actor.piece.getCombatStatus();
+
+            if (combatStatus) {
+                combatStatus.tickCombatStatus();
+                this.activityFilter.notifyActorActiveState(actor, combatStatus.getCombatState());
+            }
+
 
             if (!actor.body) {
                 return;

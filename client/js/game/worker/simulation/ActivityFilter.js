@@ -45,7 +45,7 @@ define([
              return true;
          }
 
-         if (this.entries[actor.id].framesInactive > 100 + (Math.random() * 10000)) {
+         if (this.entries[actor.id].framesInactive > 200 + (Math.random() * 100000)) {
              this.entries[actor.id].framesInactive = 0;
          }
 

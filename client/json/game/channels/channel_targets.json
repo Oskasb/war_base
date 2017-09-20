@@ -273,7 +273,14 @@
           "scale":0.01
         }
       },
-
+      {
+        "id":"target_visual_module_creative_crate_medium",
+        "data":{
+          "callback":"module_geometry_static_effect",
+          "module_effect":"creative_crate_module_fx",
+          "scale":0.01
+        }
+      },
       {
         "id":"module_channel_on_fire",
         "data":{

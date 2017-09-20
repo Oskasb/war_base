@@ -183,14 +183,26 @@ define([],
         ];
 
 
+
+
         var trailGeometry = new THREE.PlaneBufferGeometry(2, 2, 5, 1);
+
 
 
         var ParticleMesh = function() {2
 
         };
 
+        var plantclamped = false;
+
         ParticleMesh.plant3d = function() {
+            if (!plantclamped) {
+                for (var i = 0; i < plantUvs.length; i++) {
+                    plantUvs[i] = MATH.clamp(plantUvs[i], 0.01, 0.99);
+                }
+                plantclamped = true;
+            }
+
             return {verts:plantVerts, indices:plantInds, uvs:plantUvs};
         };
 
@@ -217,8 +229,17 @@ define([],
         ParticleMesh.stamp = function() {
             return {verts:stampVerts, indices:quadInds, uvs:quadUvs};
         };
-        
+
+        var boxclamped = false;
+
         ParticleMesh.box3d = function() {
+            if (!boxclamped) {
+                for (var i = 0; i < boxUvs.length; i++) {
+                    boxUvs[i] = MATH.clamp(boxUvs[i], 0.01, 0.99);
+                }
+                boxclamped = true;
+            }
+
             return {verts:boxVerts, indices:boxIndices, uvs:boxUvs};
         };
 

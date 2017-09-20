@@ -11,6 +11,7 @@ define([],
             this.initArmor = combatStats.armor;
 
             this.dirty = false;
+            this.ticksAtState = 0;
 
             this.setMaxHealth(this.initHealth);
             this.setMaxArmor(this.initArmor);
@@ -95,6 +96,7 @@ define([],
             }
 
             this.dirty = true;
+            this.ticksAtState = 0;
         };
 
 
@@ -102,30 +104,35 @@ define([],
             this.dirty = true;
             if (this.getCombatState() < ENUMS.CombatStates.THREATENED) {
                 this.setCombatState(ENUMS.CombatStates.THREATENED);
+                this.ticksAtState = 0;
             }
         };
 
         CombatStatus.prototype.notifyAttackMitigated = function() {
             if (this.getCombatState() < ENUMS.CombatStates.ENGAGING) {
                 this.setCombatState(ENUMS.CombatStates.ENGAGING);
+                this.ticksAtState = 0;
             }
         };
 
         CombatStatus.prototype.notifyDamageTaken = function() {
             if (this.getCombatState() < ENUMS.CombatStates.ENGAGED) {
                 this.setCombatState(ENUMS.CombatStates.ENGAGED);
+                this.ticksAtState = 0;
             }
         };
 
         CombatStatus.prototype.notifyZeroHealth = function(deductDmg) {
             if (this.getCombatState() < ENUMS.CombatStates.DISABLED) {
                 this.setCombatState(ENUMS.CombatStates.DISABLED);
+                this.ticksAtState = 0;
                 return;
             }
 
             if (this.getCombatState() < ENUMS.CombatStates.DESTROYED) {
                 if (Math.random() *(this.getMaxArmor() + this.getMaxHealth()) < deductDmg) {
                     this.setCombatState(ENUMS.CombatStates.DESTROYED);
+                    this.ticksAtState = 0;
                 }
                 return;
             }
@@ -133,14 +140,50 @@ define([],
             if (this.getCombatState() < ENUMS.CombatStates.KILLED) {
                 if (Math.random() * (this.getMaxArmor() + this.getMaxHealth()) < deductDmg) {
                     this.setCombatState(ENUMS.CombatStates.KILLED);
+                    this.ticksAtState = 0;
                 }
             }
         };
 
         CombatStatus.prototype.notifyActivationDeactivate = function() {
             if (this.getCombatState() <= ENUMS.CombatStates.THREATENED) {
-                this.setCombatState(ENUMS.CombatStates.NONE);
+                this.deescalateCombatState();
+                this.ticksAtState = 0;
             }
+        };
+
+        CombatStatus.prototype.notifyDeactivateCombatStatus = function() {
+            if (this.getCombatState() <= ENUMS.CombatStates.THREATENED) {
+                this.setCombatState(ENUMS.CombatStates.DISENGAGING);
+                this.ticksAtState = 0;
+            }
+        };
+
+        CombatStatus.prototype.deescalateCombatState = function() {
+
+            this.setCombatState(MATH.clamp(this.getCombatState() - 1, 0 , this.getCombatState()));
+
+        };
+
+        CombatStatus.prototype.escalateCombatState = function() {
+
+            this.setCombatState(MATH.clamp(this.getCombatState() + 1, this.getCombatState() , ENUMS.CombatStates.REMOVED));
+
+        };
+
+        CombatStatus.prototype.tickCombatStatus = function() {
+
+            if (this.ticksAtState > 120) {
+
+                if (this.combatState < ENUMS.CombatStates.DISABLED) {
+                    this.deescalateCombatState();
+                } else {
+                    this.escalateCombatState();
+                }
+                this.ticksAtState = 0;
+            }
+
+            this.ticksAtState++;
         };
 
         CombatStatus.prototype.getCombatState = function() {

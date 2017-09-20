@@ -155,6 +155,12 @@ define([
                     return;
                 }
 
+                if (combatStatus.getDynamic('combat_state') === ENUMS.CombatStates.REMOVED) {
+                    guiElement.setTarget(null);
+                    guiElement.disableGuiElement();
+                    return;
+                }
+
                 var factor = guiElement.options.offset_y;
 
                 var displayName = activeSelection.id;

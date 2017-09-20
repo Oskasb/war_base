@@ -133,6 +133,14 @@
       }
     ],
 
+    "creative_crate_module_fx":[
+      {
+        "particle_effects":[
+          {"id":"creative_crate_geometry_effect"}
+        ]
+      }
+    ],
+
     "festive_flowers_veg_module_fx":[
       {
         "particle_effects":[

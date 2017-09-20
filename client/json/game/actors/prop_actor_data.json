@@ -11,6 +11,15 @@
         }
       },
       {
+        "id":"actor_prop_creative_crate_medium",
+        "data":{
+          "piece":"piece_creative_crate",
+          "alignment":"neutral",
+          "physics":"physical_creative_crate_medium",
+          "state_map":[]
+        }
+      },
+      {
         "id":"actor_prop_oil_drum",
         "data":{
           "piece":"piece_oil_drum",

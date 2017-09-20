@@ -269,8 +269,8 @@ define([
         var remaining = 0;
         var MODEL = {};
 
-        MODEL.PhysicsStepTime = 0.05;
-        MODEL.PhysicsMaxSubSteps = 5;
+        MODEL.PhysicsStepTime = 0.025;
+        MODEL.PhysicsMaxSubSteps = 8;
         MODEL.SpatialTolerance = 1;
         MODEL.AngularVelocityTolerance = 1;
         MODEL.TemporalTolerance = 1;

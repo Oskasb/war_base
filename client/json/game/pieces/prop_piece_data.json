@@ -6,11 +6,28 @@
         "data":{
           "root_slot":"piece_root",
           "combat_stats":{
-            "health":25,
-            "armor":6
+            "health":15,
+            "armor":4
           },
           "slots":[
             {"slot":"piece_root",         "module":"module_root_box_crate"},
+            {"slot":"combat",             "module":"combat_module"         }
+          ],
+          "attachments":[
+            {"slot":"piece_root",         "ap":"ap_combat",     "child":"combat" }
+          ]
+        }
+      },
+      {
+        "id":"piece_creative_crate",
+        "data":{
+          "root_slot":"piece_root",
+          "combat_stats":{
+            "health":4,
+            "armor":3
+          },
+          "slots":[
+            {"slot":"piece_root",         "module":"module_root_creative_crate_medium"},
             {"slot":"combat",             "module":"combat_module"         }
           ],
           "attachments":[

@@ -74,10 +74,6 @@ define([
                 combatStatus.dirty = false;
             }
 
-            if (this.idleTime > 12) {
-                combatStatus.setCombatState(ENUMS.CombatStates.NONE);
-            }
-
             if (!combatStatus) {
                 console.log("Combat Status missing?", this);
                 return;

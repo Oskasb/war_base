@@ -263,7 +263,7 @@ define([
                 return this.render;
             }
 
-            if (distance >  80 + Math.sqrt(this.boundingSize + 10) + 5 * this.boundingSize * this.boundingSize) {
+            if (distance >  150 + Math.sqrt(this.boundingSize + 10) + 10 * this.boundingSize * this.boundingSize) {
                 if (this.render) {
                     this.setRendereable(false);
                 }
@@ -287,20 +287,29 @@ define([
         };
 
 
-        GamePiece.prototype.updateGamePiece = function(tpf, time, simulate) {
-
+        GamePiece.prototype.updatePieceStates = function (tpf, time) {
             for (var i = 0; i < this.pieceStates.length; i++) {
                 this.pieceStates[i].updateStateFrame(tpf, time)
             }
+        };
 
-
-            for (i = 0; i < this.pieceSlots.length;i++) {
+        GamePiece.prototype.updatePieceSlots = function(tpf, simulate) {
+            for (var i = 0; i < this.pieceSlots.length;i++) {
                 this.pieceSlots[i].updatePieceSlot(this.render, this.enabler, tpf, simulate);
             }
+        };
 
-            for (i = 0; i < this.pieceSlots.length;i++) {
+        GamePiece.prototype.updatePieceVisuals = function (tpf) {
+            for (var i = 0; i < this.pieceSlots.length;i++) {
                 this.pieceSlots[i].updatePieceVisuals(tpf);
             }
+        };
+
+        GamePiece.prototype.updateGamePiece = function(tpf, time, simulate) {
+
+            this.updatePieceStates(tpf, time);
+            this.updatePieceSlots(tpf, simulate);
+            this.updatePieceVisuals(tpf);
 
         };
 
