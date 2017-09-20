@@ -36,13 +36,13 @@
           "rigid_body":{
             "shape":"Box",
             "state":"WANTS_DEACTIVATION",
-            "args":[3.0, 3.0, 3.0],
+            "args":[2.5, 2.5, 2.5],
             "angular_factor":[1,  1, 1],
             "linear_factor":[1, 1, 1],
-            "friction":0.85,
-            "restitution":0.2,
-            "damping":0.32,
-            "mass":500
+            "friction":0.45,
+            "restitution":0.5,
+            "damping":0.22,
+            "mass":200
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},

@@ -63,13 +63,20 @@ define(['PipelineObject'],
             new PipelineObject("PARTICLE_SPRITES", "ATLAS", cacheSprites);
             new PipelineObject("PARTICLE_SPRITES", "FONT",  cacheSprites);
 
-            new PipelineObject("PARTICLE_EFFECTS", "THREE", cacheEffects);
-            new PipelineObject("GUI_EFFECTS",      "THREE", cacheEffects);
-            new PipelineObject("VEGETATION_EFFECTS", "THREE", cacheEffects);
-            new PipelineObject("PARTICLE_SIMULATIONS", "THREE", cacheSimulations);
-            new PipelineObject("PARTICLES",        "THREE", cacheParticles);
-            new PipelineObject("GUI_PARTICLES",          "THREE", cacheParticles);
-            new PipelineObject("VEGETATION_PARTICLES",   "THREE", cacheParticles);
+
+            new PipelineObject("PARTICLE_EFFECTS",          "THREE", cacheEffects);
+            new PipelineObject("GUI_EFFECTS",               "THREE", cacheEffects);
+            new PipelineObject("VEGETATION_EFFECTS",        "THREE", cacheEffects);
+            new PipelineObject("PARTICLE_MODEL_EFFECTS",    "THREE", cacheEffects);
+
+
+            new PipelineObject("PARTICLE_SIMULATIONS",      "THREE", cacheSimulations);
+
+
+            new PipelineObject("PARTICLES",                 "THREE", cacheParticles);
+            new PipelineObject("MODEL_PARTICLES",           "THREE", cacheParticles);
+            new PipelineObject("GUI_PARTICLES",             "THREE", cacheParticles);
+            new PipelineObject("VEGETATION_PARTICLES",      "THREE", cacheParticles);
             
         };
 

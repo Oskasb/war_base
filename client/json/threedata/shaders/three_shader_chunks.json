@@ -23,6 +23,9 @@
           "precision highp float;"
         ],
 
+        "vx_instancing_normal":[
+          "attribute vec3 vertexNormal;"
+        ],
 
         "vx_predictive_simulation":[
           "varying vec3 velocityOffset;",

@@ -90,6 +90,7 @@ define([
             };
             
             new PipelineObject("PARTICLE_SYSTEMS", "RENDERERS", renderersData);
+            new PipelineObject("PARTICLE_MODEL_SYSTEMS", "RENDERERS", renderersData);
         };
 
         ParticleSpawner.prototype.addRenderer = function(rendererData, onReady) {

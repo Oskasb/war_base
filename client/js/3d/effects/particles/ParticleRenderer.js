@@ -103,23 +103,33 @@ define([
             if (this.particleBuffer) {
                 this.particleBuffer.dispose();
             }
-            var geom = ParticleMesh[this.particleGeometry]();
-            this.particleBuffer = new ParticleBuffer(geom.verts, geom.uvs, geom.indices);
+
+            var geomCB = function(geom) {
+                this.particleBuffer = new ParticleBuffer(geom.verts, geom.uvs, geom.indices, geom.normals);
 
 
-            for (var key in this.attributes) {
-                this.particleBuffer.geometry.addAttribute( key, this.attributes[key] );
+                for (var key in this.attributes) {
+                    this.particleBuffer.geometry.addAttribute( key, this.attributes[key] );
+                }
+
+                for (var key in this.particleBuffer.geometry.attributes) {
+                    this.attributes[key] = this.particleBuffer.geometry.attributes[key];
+                }
+
+
+                this.particleBuffer.addToScene(this.isScreenspace);
+                if (this.renderOrder) {
+                    this.particleBuffer.mesh.renderOrder = this.renderOrder;
+                }
+            }.bind(this);
+
+
+            if (typeof(this.particleGeometry) === 'string') {
+                geomCB(ParticleMesh[this.particleGeometry]())
+            } else  {
+                ParticleMesh.modelGeometry(this.particleGeometry, geomCB)
             }
 
-            for (var key in this.particleBuffer.geometry.attributes) {
-                this.attributes[key] = this.particleBuffer.geometry.attributes[key];
-            }
-
-
-            this.particleBuffer.addToScene(this.isScreenspace);
-            if (this.renderOrder) {
-                this.particleBuffer.mesh.renderOrder = this.renderOrder;
-            }
 
         //    this.particleBuffers.push(this.particleBuffer);
         };

@@ -273,6 +273,16 @@
           "scale":0.01
         }
       },
+
+      {
+        "id":"target_visual_module_tree_2_trunk",
+        "data":{
+          "callback":"module_geometry_static_effect",
+          "module_effect":"model_geometry_tree_2_trunk_module_fx",
+          "scale":0.01
+        }
+      },
+
       {
         "id":"target_visual_module_creative_crate_medium",
         "data":{

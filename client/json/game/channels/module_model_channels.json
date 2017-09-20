@@ -1,0 +1,30 @@
+[{
+  "MODULE_CHANNELS":{
+    "CHANNELS":[
+      {
+        "id":"channel_visual_shrub_medium",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_shrub_medium"}
+          ]
+        }
+      },
+      {
+        "id":"channel_visual_creative_crate_medium",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_creative_crate_medium"}
+          ]
+        }
+      },
+      {
+        "id":"channel_visual_module_tree_2_trunk",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_tree_2_trunk"}
+          ]
+        }
+      }
+    ]
+  }
+}]

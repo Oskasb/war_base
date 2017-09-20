@@ -72,9 +72,9 @@
 
       "game/channels/combat_channels.json",
       "game/channels/module_channels.json",
+      "game/channels/module_model_channels.json",
       "game/channels/vehicle_channels.json",
       "game/channels/weapon_channels.json",
-
 
       "threedata/models/three_materials.json",
       "threedata/models/three_models.json",
@@ -88,6 +88,9 @@
       "threedata/shaders/three_particle_shaders.json",
       "threedata/shaders/three_shader_programs.json",
 
+      "threedata/effects/three_particle_model_effects.json",
+      "threedata/effects/three_particle_model_particles.json",
+      "threedata/effects/three_particle_model_renderers.json",
       "threedata/effects/three_particle_renderers.json",
       "threedata/effects/three_particle_materials.json",
       "threedata/effects/three_particle_simulations.json",

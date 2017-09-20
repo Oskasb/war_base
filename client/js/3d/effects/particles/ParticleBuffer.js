@@ -7,37 +7,48 @@ define([
         ThreeAPI
     ) {
 
-        var scaleUVCoords = function(uvs) {
-            var buffer = new Float32Array( uvs );
 
-            return buffer;
 
-            for (var i = 0; i < uvs.length; i++) {
-                buffer[i] = uvs[i] / txSettings.tiles_x;
-                i++;
-                buffer[i] = uvs[i] / txSettings.tiles_y;
-            };
+        var ParticleBuffer = function(verts, uvs, indices, normals) {
 
+            this.buildGeometry(verts, uvs, indices, normals);
         };
 
-        var ParticleBuffer = function(verts, uvs, indices) {
-            var uvScaled = scaleUVCoords(uvs);
-            this.buildGeometry(verts, uvScaled, indices);
-        };
-
-        ParticleBuffer.prototype.buildGeometry = function(verts, uvScaled, indices) {
+        ParticleBuffer.prototype.buildGeometry = function(verts, uvarray, indices, normals) {
 
             var geometry = new THREE.InstancedBufferGeometry();
 
+            var posBuffer   =     verts;
+            var uvBuffer    =     uvarray;
+
             // per mesh data
-            var vertices = new THREE.BufferAttribute( new Float32Array( verts ), 3 );
+
+            if (indices) {
+                posBuffer   =     new Float32Array( verts );
+                uvBuffer    =      new Float32Array( uvarray );
+
+            } else {
+
+                indices = new Uint32Array( verts.length / 3 );
+                for ( var i = 0; i < indices.length; i ++ ) {
+                    indices[ i ] = i;
+                }
+
+                var normal = new THREE.BufferAttribute(normals , 3 );
+                geometry.addAttribute( 'vertexNormal', normal );
+            }
+
+            var indexBuffer =   new Uint16Array( indices );
+            geometry.setIndex( new THREE.BufferAttribute( indexBuffer , 1 ) );
+
+            geometry.index.needsUpdate = true;
+
+            var vertices = new THREE.BufferAttribute(posBuffer , 3 );
             geometry.addAttribute( 'vertexPosition', vertices );
 
-            var uvs = new THREE.BufferAttribute(  uvScaled, 2 );
-
+            var uvs = new THREE.BufferAttribute( uvBuffer , 2 );
             geometry.addAttribute( 'uv', uvs );
 
-            geometry.setIndex( new THREE.BufferAttribute( new Uint16Array( indices ), 1 ) );
 
             this.geometry = geometry;
 

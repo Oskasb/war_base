@@ -2,8 +2,13 @@
 
 "use strict";
 
-define([],
-    function() {
+define([
+
+        '3d/three/ThreeModelLoader'
+    ],
+    function(
+        ThreeModelLoader
+    ) {
 
         var stampVerts = [
             -1,  0,  1,
@@ -243,6 +248,28 @@ define([],
             return {verts:boxVerts, indices:boxIndices, uvs:boxUvs};
         };
 
+        var geomStore = {}
+
+        ParticleMesh.modelGeometry = function(modelConf, callback) {
+
+            var modelId = modelConf.model_id;
+
+            var modelPool = ThreeModelLoader.getModelPool();
+
+
+            if (!geomStore[modelId]) {
+                var mesh = modelPool[modelId][0];
+                geomStore[modelId] = mesh.geometry;
+            }
+
+            var geometry = geomStore[modelId];
+
+            var verts   = geometry.attributes.position.array;
+            var normals = geometry.attributes.normal.array;
+            var uvs     = geometry.attributes.uv.array;
+
+            callback({verts:verts, normals:normals, uvs:uvs});
+        };
 
         return ParticleMesh;
 

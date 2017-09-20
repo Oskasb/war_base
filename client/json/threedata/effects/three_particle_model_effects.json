@@ -1,0 +1,29 @@
+[
+  {
+    "PARTICLE_MODEL_EFFECTS": {
+      "THREE":[
+        {
+          "id":"creative_crate_geometry_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_spatial_box_renderer",
+            "particle_id":"creative_crate_particle",
+            "count":1,
+            "simulation_id":"gpu_spatial_simulation"
+          }
+        },
+        {
+          "id":"model_geometry_tree_2_trunk_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_spatial_tree_2_trunk_renderer",
+            "particle_id":"instanced_model_particle",
+            "count":1,
+            "simulation_id":"gpu_spatial_simulation"
+          }
+        }
+
+      ]
+    }
+  }
+]

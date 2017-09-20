@@ -140,7 +140,13 @@
         ]
       }
     ],
-
+    "model_geometry_tree_2_trunk_module_fx":[
+      {
+        "particle_effects":[
+          {"id":"model_geometry_tree_2_trunk_effect"}
+        ]
+      }
+    ],
     "festive_flowers_veg_module_fx":[
       {
         "particle_effects":[

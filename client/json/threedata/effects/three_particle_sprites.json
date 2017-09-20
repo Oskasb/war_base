@@ -5,6 +5,10 @@
     "PARTICLE_SPRITES": {
       "ATLAS": [
         {
+          "id":"top_left",
+          "tiles":[[0, 0]]
+        },
+        {
           "id":"dot",
           "tiles":[[0, 4]]
         },

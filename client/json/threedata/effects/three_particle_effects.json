@@ -14,16 +14,6 @@
           }
         },
         {
-          "id":"creative_crate_geometry_effect",
-          "data":{
-            "system_key":"THREE",
-            "renderer_id":"gpu_spatial_box_renderer",
-            "particle_id":"creative_crate_particle",
-            "count":1,
-            "simulation_id":"gpu_spatial_simulation"
-          }
-        },
-        {
           "id":"shockwave_hit_effect",
           "data":{
             "system_key":"THREE",
