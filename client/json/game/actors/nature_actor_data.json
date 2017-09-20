@@ -19,6 +19,15 @@
           "physics":"physical_tree_2_trunk",
           "state_map":[]
         }
+      },
+      {
+        "id":"actor_shrub_medium",
+        "data":{
+          "piece":"piece_shrub_medium",
+          "alignment":"neutral",
+          "physics":"physical_shrub_medium",
+          "state_map":[]
+        }
       }
     ]
   }

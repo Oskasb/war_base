@@ -15,6 +15,8 @@ define([
 
             this.dataKey = dataKey;
 
+            this.idleTime = 0;
+
             this.dynamic = {
                 combatState:     {state:0},
                 maxHealth:       {state:0},
@@ -38,7 +40,7 @@ define([
 
         CombatModule.prototype.applyCombatStatus = function (combatStatus) {
             this.dynamic.combatState.state = combatStatus.getCombatState();
-            this.dynamic.maxHealth.state = combatStatus.initHealth;
+            this.dynamic.maxHealth.state = combatStatus.getMaxHealth();
             this.dynamic.maxArmor.state = combatStatus.getMaxArmor();
             this.dynamic.health.state = combatStatus.getHealth();
             this.dynamic.armor.state = combatStatus.getArmor();
@@ -64,8 +66,17 @@ define([
             }
         };
 
-        CombatModule.prototype.updateCombatState = function(piece, simulationState, module) {
+        CombatModule.prototype.updateCombatState = function(piece, simulationState, module, tpf) {
             var combatStatus = piece.getCombatStatus();
+
+            if (combatStatus.dirty) {
+                this.idleTime = 0;
+                combatStatus.dirty = false;
+            }
+
+            if (this.idleTime > 5) {
+                combatStatus.setCombatState(ENUMS.CombatStates.NONE);
+            }
 
             if (!combatStatus) {
                 console.log("Combat Status missing?", this);
@@ -74,6 +85,9 @@ define([
 
             this.applyCombatStatus(combatStatus);
             this.applyFeedback(module, this.feedbackMap);
+
+            this.idleTime += tpf;
+
             return piece;
         };
 

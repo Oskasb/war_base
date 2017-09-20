@@ -86,7 +86,12 @@ define(['game/worker/physics/AmmoVehicleProcessor'
             var motionState = new Ammo.btDefaultMotionState(transform);
             var localInertia = new Ammo.btVector3(0, 1, 0);
             geometry.calculateLocalInertia(massVehicle, localInertia);
-            var body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, geometry, localInertia));
+
+            var rbInfo = new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, geometry, localInertia)
+            rbInfo.set_m_linearSleepingThreshold(0.0);
+            rbInfo.set_m_angularSleepingThreshold(0.0);
+
+            var body = new Ammo.btRigidBody(rbInfo);
             body.setActivationState(DISABLE_DEACTIVATION);
 
             body.setRestitution(restitution);

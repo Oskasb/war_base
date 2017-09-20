@@ -264,6 +264,16 @@
           "module_effect":"module_dust_puff"
         }
       },
+
+      {
+        "id":"target_visual_module_shrub_medium",
+        "data":{
+          "callback":"module_geometry_static_effect",
+          "module_effect":"big_fuzzy_shrub_module_fx",
+          "scale":0.01
+        }
+      },
+
       {
         "id":"module_channel_on_fire",
         "data":{

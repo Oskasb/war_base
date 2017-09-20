@@ -190,6 +190,15 @@ define(['3d/effects/particles/EffectSimulators',
             }
         };
 
+        ParticleEffect.prototype.updateEffectQuaternionSimulator = function(quat, tpf) {
+
+            for (var i = 0; i < this.aliveParticles.length; i++) {
+
+                this.aliveParticles[i].setQuaternion(quat);
+
+                this.applyParticleSimulator(EffectSimulators.simulators.orientation, this.aliveParticles[i], tpf)
+            }
+        };
 
         ParticleEffect.prototype.updateParticle = function(particle, tpf) {
             for (var i = 0; i < this.simulators.length; i++) {

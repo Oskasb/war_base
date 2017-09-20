@@ -9,6 +9,9 @@ define([],
 
             this.initHealth = combatStats.health;
             this.initArmor = combatStats.armor;
+
+            this.dirty = false;
+
             this.setMaxHealth(this.initHealth);
             this.setMaxArmor(this.initArmor);
             this.setHealth(this.getMaxHealth());
@@ -91,10 +94,12 @@ define([],
                 this.notifyZeroHealth(deductDmg);
             }
 
+            this.dirty = true;
         };
 
 
         CombatStatus.prototype.notifySelectedActivation = function() {
+            this.dirty = true;
             if (this.getCombatState() < ENUMS.CombatStates.THREATENED) {
                 this.setCombatState(ENUMS.CombatStates.THREATENED);
             }

@@ -29,6 +29,23 @@
             {"slot":"piece_root",         "ap":"ap_combat",     "child":"combat" }
           ]
         }
+      },
+      {
+        "id":"piece_shrub_medium",
+        "data":{
+          "root_slot":"piece_root",
+          "combat_stats":{
+            "health":3,
+            "armor":0
+          },
+          "slots":[
+            {"slot":"piece_root",         "module":"module_shrub_medium"},
+            {"slot":"combat",             "module":"combat_module"      }
+          ],
+          "attachments":[
+            {"slot":"piece_root",         "ap":"ap_combat",     "child":"combat" }
+          ]
+        }
       }
     ]
   }

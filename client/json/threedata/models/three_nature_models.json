@@ -14,7 +14,7 @@
           }
         },
         {
-          "id": "tree_trunk_1",
+          "id": "model_tree_1",
           "material": "main_atlas",
           "url": "./client/assets/models/trees/tree_1_combined",
           "pool": 5,

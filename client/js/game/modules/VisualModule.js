@@ -17,7 +17,7 @@ define([
             this.targetQuaternion = new THREE.Quaternion();
             this.effectTargets = [];
             this.isVisible = false;
-            this.model;
+            this.model = null;
         };
 
         VisualModule.prototype.setModuleData = function(data) {
@@ -47,14 +47,6 @@ define([
 
             if (this.data.model) {
                 this.attachModel(ThreeAPI.loadMeshModel(this.data.model, ThreeAPI.createRootObject()));
-                return;
-            }
-
-            if (this.data.terrain) {
-                var parent = this.rootObj;
-            //    parent.position.x -= this.data.options.terrain_size / 1;
-            //    parent.position.z -= this.data.options.terrain_size / 1;
-             //   GameAPI.createTerrain(this.data.options, onData);
                 return;
             }
 

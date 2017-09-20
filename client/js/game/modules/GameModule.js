@@ -261,7 +261,7 @@ define([
 
                 for (i = 0; i < this.combatModules.length; i++) {
                     enable(true);
-                    this.combatModules[i].updateCombatState(enable(), simState, this)
+                    this.combatModules[i].updateCombatState(enable(), simState, this, tpf)
                 }
 
             }

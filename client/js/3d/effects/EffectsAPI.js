@@ -51,6 +51,10 @@ define([
             particleSpawner.updateActiveParticleEffect(effect, pos, state, tpf);
         };
 
+        EffectsAPI.updateEffectQuaternion = function(effect, quat, state, tpf) {
+            particleSpawner.updateActiveEffectQuaternion(effect, quat, state, tpf);
+        };
+
         EffectsAPI.updateEffectSpriteKey = function(effect, spriteKey) {
             particleSpawner.updateEffectParticleSprite(effect, spriteKey);
         };

@@ -6,40 +6,40 @@
           "id":"little_shrub_veg",
           "data":{
             "system_key":"THREE",
-            "renderer_id":"gpu_opaque_vegetation_renderer",
+            "renderer_id":"gpu_spatial_vegetation_renderer",
             "particle_id":"little_shrub_particle",
             "count":1,
-            "simulation_id":"gpu_vegetation_simulation"
+            "simulation_id":"gpu_spatial_simulation"
           }
         },
         {
           "id":"big_shrub_veg",
           "data":{
             "system_key":"THREE",
-            "renderer_id":"gpu_opaque_vegetation_renderer",
+            "renderer_id":"gpu_spatial_vegetation_renderer",
             "particle_id":"big_shrub_particle",
             "count":1,
-            "simulation_id":"gpu_vegetation_simulation"
+            "simulation_id":"gpu_spatial_simulation"
           }
         },
         {
           "id":"big_fuzzy_shrub_veg",
           "data":{
             "system_key":"THREE",
-            "renderer_id":"gpu_opaque_vegetation_renderer",
+            "renderer_id":"gpu_spatial_vegetation_renderer",
             "particle_id":"big_fuzzy_shrub_particle",
             "count":1,
-            "simulation_id":"gpu_vegetation_simulation"
+            "simulation_id":"gpu_spatial_simulation"
           }
         },
         {
           "id":"fuzzy_shrub_veg",
           "data":{
             "system_key":"THREE",
-            "renderer_id":"gpu_opaque_vegetation_renderer",
+            "renderer_id":"gpu_spatial_vegetation_renderer",
             "particle_id":"fuzzy_shrub_particle",
             "count":1,
-            "simulation_id":"gpu_vegetation_simulation"
+            "simulation_id":"gpu_spatial_simulation"
           }
         },
         {

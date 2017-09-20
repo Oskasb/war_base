@@ -10,8 +10,8 @@
             "shape":"Box",
             "args":[6, 6, 6],
             "friction":2.5,
-            "restitution":0.4,
-            "damping":0.4,
+            "restitution":0.5,
+            "damping":0.3,
             "mass":5000
           },
           "state_map":[
@@ -33,9 +33,9 @@
             "state":"WANTS_DEACTIVATION",
             "shape":"Cylinder",
             "args":[2.5, 2.5, 4],
-            "friction":0.6,
-            "restitution":0.4,
-            "damping":0.30,
+            "friction":0.8,
+            "restitution":0.5,
+            "damping":0.25,
             "mass":2000
           },
           "state_map":[

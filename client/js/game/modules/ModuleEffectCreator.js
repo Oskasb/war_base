@@ -364,6 +364,36 @@ define([
 
         };
 
+        ModuleEffectCreator.module_geometry_static_effect = function(visualModule, target, tpf) {
+
+            if (target.effectArray.length) {
+                ModuleEffectCreator.updateGeometryEffect(
+                    target.effectArray,
+                    visualModule.model || visualModule.rootObj,
+                    target.state.getValue(),
+                    tpf
+                )
+            } else {
+                if (target.state.getValue() !== 0) {
+
+                    target.effectArray =  ModuleEffectCreator.createModuleStaticEffect(
+                        target.effectArray,
+                        target.config.module_effect,
+                        visualModule.module.transform,
+                        target.config.scale
+                    )
+
+                }
+            }
+
+            if (target.effectArray) {
+                if (target.state.getValue() === 0 || target.remove) {
+                    ModuleEffectCreator.removeModuleStaticEffect(target.effectArray)
+                }
+            }
+
+        };
+
 
         ModuleEffectCreator.module_static_state_effect = function(visualModule, target, tpf) {
 
@@ -431,6 +461,20 @@ define([
         ModuleEffectCreator.remove_module_static_effect = function(fxArray) {
             this.removeModuleStaticEffect(fxArray);
         };
+
+        ModuleEffectCreator.updateGeometryEffect = function(fxArray, model, state, tpf) {
+
+            model.updateMatrixWorld(true);
+            calcVec.setFromMatrixPosition( model.matrixWorld);
+
+            calcQuat.setFromRotationMatrix(model.matrixWorld);
+
+            for (var i = 0; i < fxArray.length; i++) {
+                EffectsAPI.updateEffectPosition(fxArray[i], calcVec, state, 0);
+                EffectsAPI.updateEffectQuaternion(fxArray[i], calcQuat, state, 0);
+            }
+        };
+
 
         ModuleEffectCreator.updateEffect = function(fxArray, model, state, tpf) {
 

@@ -271,8 +271,8 @@ define([
         var remaining = 0;
         var MODEL = {};
 
-        MODEL.PhysicsStepTime = 0.04;
-        MODEL.PhysicsMaxSubSteps = 1;
+        MODEL.PhysicsStepTime = 0.05;
+        MODEL.PhysicsMaxSubSteps = 5;
         MODEL.SpatialTolerance = 1;
         MODEL.AngularVelocityTolerance = 1;
         MODEL.TemporalTolerance = 1;
@@ -552,8 +552,12 @@ define([
 
 
             var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, geometry, localInertia);
-            rbInfo.set_m_linearSleepingThreshold(1.0);
-            rbInfo.set_m_angularSleepingThreshold(0.4);
+
+            if (mass) {
+                rbInfo.set_m_linearSleepingThreshold(1.2);
+                rbInfo.set_m_angularSleepingThreshold(0.7);
+            }
+
 
             var body = new Ammo.btRigidBody(rbInfo);
 

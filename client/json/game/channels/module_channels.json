@@ -302,6 +302,14 @@
             {"targetid":"module_channel_on_fire"}
           ]
         }
+      },
+      {
+        "id":"channel_visual_shrub_medium",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_shrub_medium"}
+          ]
+        }
       }
     ]
   }

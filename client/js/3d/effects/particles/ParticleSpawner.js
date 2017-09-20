@@ -238,6 +238,9 @@ define([
             effect.updateEffectPositionSimulator(pos, tpf);
         };
 
+        ParticleSpawner.prototype.updateActiveEffectQuaternion = function(effect, quat, state, tpf) {
+            effect.updateEffectQuaternionSimulator(quat, tpf);
+        };
 
 
         ParticleSpawner.prototype.updateEffectParticleSprite = function(effect, spriteKey) {

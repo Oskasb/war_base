@@ -225,7 +225,9 @@ define([
         ModuleCallbacks.module_static_state_effect = function(module, target) {
             module.visualModule.addEffectTarget(target);
         };
-
+        ModuleCallbacks.module_geometry_static_effect = function(module, target) {
+            module.visualModule.addEffectTarget(target);
+        };
         ModuleCallbacks.remove_module_static_effect = function(module, target) {
             module.visualModule.addEffectTarget(target);
         };
