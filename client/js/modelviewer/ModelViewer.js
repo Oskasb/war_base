@@ -236,11 +236,15 @@ define([
             if (statusUpdate < 0.5) return;
             statusUpdate = 0;
 
+
+            notifyStatus(monitorGame,    '',                                              'MAIN THREAD');
             notifyStatus(monitorGame,    GameAPI.getActors().length,                      'ACTORS');
             notifyStatus(monitorGame,    GameAPI.getPieces().length,                      'PIECES');
             notifyStatus(monitorGame,    GameAPI.countCombatPieces(),                     'COMBATANTS');
             notifyStatus(monitorGame,    GameAPI.getGameCommander().countActiveAttacks(), 'ATTACK_POOL');
 
+
+            notifyStatus(monitorSystem,    '',                                              'DATA TRANSFERS');
             notifyStatus(monitorSystem,    GameAPI.getGameWorker().getProtocolCount(),      'PROTOCOLS');
             notifyStatus(monitorSystem,    GameAPI.getGameCommander().countExecutionCalls(),'EXEC_CALLS');
             notifyStatus(monitorSystem,    GameAPI.getGameWorker().getCallCount(),          'WRKR_CALLS');

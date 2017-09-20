@@ -74,7 +74,7 @@ define([
                 combatStatus.dirty = false;
             }
 
-            if (this.idleTime > 5) {
+            if (this.idleTime > 12) {
                 combatStatus.setCombatState(ENUMS.CombatStates.NONE);
             }
 

@@ -35,7 +35,7 @@
         {
           "id":"gpu_normal_font_renderer",
           "material_id":"gpu_gui_sprite_font_material",
-          "particle_pool":650,
+          "particle_pool":1500,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":1,

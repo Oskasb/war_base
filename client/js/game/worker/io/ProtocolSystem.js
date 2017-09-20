@@ -113,6 +113,7 @@ define([], function() {
                 }
             }
         }
+        return true;
     };
 
     ProtocolSystem.prototype.updateTargetProtocol = function(target, channels, protocol) {

@@ -2,6 +2,7 @@
 
 define([
     'ThreeAPI',
+    'PipelineAPI',
     'game/ActorBuilder',
         'game/controls/GuiControlSystem',
         'game/modules/ModuleCallbacks',
@@ -11,6 +12,7 @@ define([
 
     function(
         ThreeAPI,
+        PipelineAPI,
         ActorBuilder,
         GuiControlSystem,
         ModuleCallbacks,
@@ -25,6 +27,8 @@ define([
         var levelBuilder;
         var actorBuilder;
         var combatFeedbackFunctions;
+
+        var workerEntrie = [];
 
         var execCalls = 0;
 
@@ -65,13 +69,21 @@ define([
                 this.executeAttackEnd(message[1], executorOkResponse)
             }.bind(this);
 
+            var executeMonitorWorker  = function(message) {
+                this.executeMonitorWorker(message[1], executorOkResponse)
+            }.bind(this);
+
 
             gameWorker.setExecutor('executeDeployActor', executeDeployActor);
             gameWorker.setExecutor('executeRemoveActor', executeRemoveActor);
             gameWorker.setExecutor('executeAttackStart', executeAttackStart);
             gameWorker.setExecutor('executeAttackHit',   executeAttackHit);
             gameWorker.setExecutor('executeAttackEnd',   executeAttackEnd)
+            gameWorker.setExecutor('executeMonitorWorker',   executeMonitorWorker);
 
+
+
+            PipelineAPI.setCategoryKeyValue('STATUS', 'WORKER_MONITOR', workerEntrie);
         };
 
         GameCommander.prototype.getEntryById = function(array, id) {
@@ -388,6 +400,17 @@ define([
             var attackId   =  message[1];
             combatFeedbackFunctions.registerAttackEnd(attackId);
             executorOkResponse()
+        };
+
+
+
+        GameCommander.prototype.executeMonitorWorker = function(message, executorOkResponse) {
+
+            for (var i = 0; i < message.length; i++) {
+                workerEntrie[i] = message[i];
+            }
+
+            executorOkResponse(workerEntrie.length);
         };
 
         GameCommander.prototype.countActiveAttacks = function() {

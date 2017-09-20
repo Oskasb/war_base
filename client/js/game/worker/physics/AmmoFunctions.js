@@ -183,20 +183,18 @@ define([
 
         };
 
+        AmmoFunctions.prototype.getBodyActiveState = function(body) {
+            return body.isActive()
+        };
+
         AmmoFunctions.prototype.enableBodySimulation = function(body) {
 
-            if (body.isKinematicObject()) {
-                body.forceActivationState(STATE.ACTIVE);
-            }
-
+            body.activate();
         };
 
         AmmoFunctions.prototype.disableBodySimulation = function(body) {
 
-            if (body.isKinematicObject()) {
                 body.forceActivationState(STATE.DISABLE_SIMULATION);
-            }
-
         };
 
         var hit = {

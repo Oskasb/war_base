@@ -118,6 +118,10 @@ define(['worker/physics/AmmoFunctions'],
             ammoFunctions.applyForceToBodyWithMass(forceVec3, actor.getPhysicsBody(), actor.physicalPiece.getPhysicsPieceMass(), randomize)
         };
 
+        AmmoAPI.prototype.isPhysicallyActive = function(actor) {
+            return ammoFunctions.getBodyActiveState(actor.getPhysicsBody());
+        };
+
         AmmoAPI.prototype.raycastPhysicsWorld = function(position, direction, hitPositionStore, hitNormalStore) {
             var hit = ammoFunctions.physicsRayRange(world, position, direction, hitPositionStore, hitNormalStore);
             if (hit) {
@@ -126,11 +130,9 @@ define(['worker/physics/AmmoFunctions'],
         };
 
         AmmoAPI.prototype.fetchPhysicsStatus = function() {
-            if (Math.random() < 0.01) {
-                console.log("BODIES:", bodies.length);
-            }
 
-            //    this.status.bodyCount = this.world.bodies.length;
+
+           status.bodyCount = bodies.length;
             //    this.status.contactCount = this.world.contacts.length;
 
             return status;

@@ -78,6 +78,7 @@ define([
             this.active = bool;
         };
 
+
         GameActor.prototype.isActive = function() {
             return this.active;
         };

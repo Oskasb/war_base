@@ -34,7 +34,7 @@
           ],
           "options":{
             "monitor_key":"SYSTEM_MONITOR",
-            "screen_pos":[0.20, 0.48, -1],
+            "screen_pos":[0.16, -0.30, -1],
             "offset_children":[-0.05, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
@@ -47,6 +47,7 @@
           }
         }
       },
+
       {
         "id":"gui_game_status_monitor_element",
         "data":{
@@ -55,7 +56,29 @@
           ],
           "options":{
             "monitor_key":"GAME_MONITOR",
-            "screen_pos":[0.32, 0.48, -1],
+            "screen_pos":[0.28, -0.30, -1],
+            "offset_children":[-0.05, -0.004, 0.03, -0.002],
+            "label_elemet_id":"gui_status_label_container_element",
+            "value_elemet_id":"gui_status_value_container_element"
+          },
+          "render_calls":{
+            "gui_render_enable":"enable_fx_element",
+            "gui_render_disable":"disable_fx_element",
+            "gui_renderer_callback":"show_application_status",
+            "gui_update_callback":"set_element_position"
+          }
+        }
+      },
+
+      {
+        "id":"gui_worker_status_monitor_element",
+        "data":{
+          "effect_ids":[
+            "gui_combat_bar_effect"
+          ],
+          "options":{
+            "monitor_key":"WORKER_MONITOR",
+            "screen_pos":[0.40, -0.30, -1],
             "offset_children":[-0.05, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_status_label_container_element",
             "value_elemet_id":"gui_status_value_container_element"
