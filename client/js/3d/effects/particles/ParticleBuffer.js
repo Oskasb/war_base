@@ -27,10 +27,12 @@ define([
                 posBuffer   =     new Float32Array( verts );
                 uvBuffer    =      new Float32Array( uvarray );
 
+
+
             } else {
 
-                indices = new Uint32Array( verts.length / 3 );
-                for ( var i = 0; i < indices.length; i ++ ) {
+                indices = [];
+                for ( var i = 0; i < verts.length / 3; i ++ ) {
                     indices[ i ] = i;
                 }
 

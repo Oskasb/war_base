@@ -264,6 +264,8 @@ define([
 
             var geometry = geomStore[modelId];
 
+        //    geometry.indices.needsUpdate = true;
+
             var verts   = geometry.attributes.position.array;
             var normals = geometry.attributes.normal.array;
             var uvs     = geometry.attributes.uv.array;

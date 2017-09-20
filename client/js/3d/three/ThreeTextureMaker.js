@@ -42,14 +42,19 @@ define([
                     textures[txType][url].needsUpdate = true;
 
                 } else {
-                    if (txType == 'envMap' || txType == 'data_texture' || txType == 'particle_texture') {
+                    if (txType === 'envMap' || txType === 'data_texture' || txType === 'particle_texture') {
                         tx.combine = THREE.AddOperation;
                         tx.generateMipmaps = false;
                         tx.magFilter = THREE.LinearFilter;
                         tx.minFilter = THREE.LinearFilter;
 
-                        if (txType == 'envMap') {
+                        if (txType === 'envMap') {
                             tx.mapping = THREE.SphericalReflectionMapping;
+                        }
+
+                        if (txType === 'particle_texture') {
+                            tx.wrapS = THREE.RepeatWrapping;
+                            tx.wrapT = THREE.RepeatWrapping;
                         }
 
                     } else {
