@@ -21,6 +21,32 @@
         }
       },
       {
+        "id":"actor_tree_3_small_instanced",
+        "data":{
+          "piece":"piece_tree_3_small_instanced",
+          "alignment":"neutral",
+          "physics":"physical_tree_3_small",
+          "state_map":[]
+        }
+      },
+      {
+        "id":"actor_tree_3_instanced",
+        "data":{
+          "piece":"piece_tree_3_combined_instanced",
+          "alignment":"neutral",
+          "physics":"physical_tree_3_instanced",
+          "state_map":[]
+        }
+      },      {
+        "id":"actor_tree_2_instanced",
+        "data":{
+          "piece":"piece_tree_2_trunk_instanced",
+          "alignment":"neutral",
+          "physics":"physical_tree_2_instanced",
+          "state_map":[]
+        }
+      },
+      {
         "id":"actor_shrub_medium",
         "data":{
           "piece":"piece_shrub_medium",

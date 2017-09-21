@@ -116,18 +116,21 @@ define([
 
             var elevation = 0;
             var normalFactor = 3.14;
+            actor.piece.rootObj3D.quaternion.set(0, 0, 0, 1);
 
             if (actor.physicalPiece) {
                 var groungInf = actor.physicalPiece.config.ground_influence;
                 if (groungInf) {
                     elevation = groungInf.elevation;
                     normalFactor *= groungInf.normal_factor;
+
+                    if (groungInf.rotate_y) {
+                        actor.piece.rootObj3D.rotateY(groungInf.rotate_y[0]*Math.PI +  Math.PI * Math.random() * (groungInf.rotate_y[1] - groungInf.rotate_y[0]));
+                    }
                 }
             }
 
             actor.piece.getPos().set(px, py+elevation, pz);
-
-            actor.piece.rootObj3D.quaternion.set(0, 0, 0, 1);
 
             calcVec.set(nx, ny, nz);
 

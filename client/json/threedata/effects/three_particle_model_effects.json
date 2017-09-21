@@ -21,8 +21,27 @@
             "count":1,
             "simulation_id":"gpu_spatial_simulation"
           }
+        },
+        {
+          "id":"model_geometry_tree_3_combined_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_spatial_tree_3_combined_renderer",
+            "particle_id":"instanced_model_particle",
+            "count":1,
+            "simulation_id":"gpu_spatial_simulation"
+          }
+        },
+        {
+          "id":"model_geometry_tree_3_small_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_spatial_tree_3_combined_renderer",
+            "particle_id":"instanced_model_quarter_particle",
+            "count":1,
+            "simulation_id":"gpu_spatial_simulation"
+          }
         }
-
       ]
     }
   }

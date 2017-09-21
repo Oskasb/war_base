@@ -5,7 +5,7 @@
         {
           "id":"gpu_additive_gui_renderer",
           "material_id":"gpu_gui_sprite_atlas_material",
-          "particle_pool":250,
+          "particle_pool":550,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":2,
@@ -20,7 +20,7 @@
         {
           "id":"gpu_normal_gui_renderer",
           "material_id":"gpu_gui_sprite_atlas_material",
-          "particle_pool":250,
+          "particle_pool":550,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":1,
@@ -50,7 +50,7 @@
         {
           "id":"gpu_additive_atlas_renderer",
           "material_id":"gpu_sprite_atlas_material",
-          "particle_pool":250,
+          "particle_pool":350,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"AdditiveBlending",
@@ -64,7 +64,7 @@
         {
           "id":"gpu_additive_atlas_trail_renderer",
           "material_id":"gpu_sprite_atlas_trail_material",
-          "particle_pool":150,
+          "particle_pool":250,
           "particle_geometry":"cross3d",
           "material_options":{
             "blending":"AdditiveBlending",
@@ -77,7 +77,7 @@
         {
           "id":"gpu_normal_atlas_renderer",
           "material_id":"gpu_fogged_sprite_atlas_material",
-          "particle_pool":300,
+          "particle_pool":500,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"NormalBlending",

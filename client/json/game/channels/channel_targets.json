@@ -273,6 +273,21 @@
           "scale":0.01
         }
       },
+      {
+        "id":"target_visual_module_tree_3_small",
+        "data":{
+          "callback":"module_geometry_static_effect",
+          "module_effect":"model_geometry_tree_3_small_module_fx",
+          "scale":0.01
+        }
+      },      {
+        "id":"target_visual_module_tree_3_combined",
+        "data":{
+          "callback":"module_geometry_static_effect",
+          "module_effect":"model_geometry_tree_3_combined_module_fx",
+          "scale":0.01
+        }
+      },
 
       {
         "id":"target_visual_module_tree_2_trunk",

@@ -27,18 +27,19 @@ define([
                 posBuffer   =     new Float32Array( verts );
                 uvBuffer    =      new Float32Array( uvarray );
 
-
-
             } else {
-
                 indices = [];
                 for ( var i = 0; i < verts.length / 3; i ++ ) {
                     indices[ i ] = i;
                 }
+            }
 
+
+            if (normals) {
                 var normal = new THREE.BufferAttribute(normals , 3 );
                 geometry.addAttribute( 'vertexNormal', normal );
             }
+
 
             var indexBuffer =   new Uint16Array( indices );
             geometry.setIndex( new THREE.BufferAttribute( indexBuffer , 1 ) );

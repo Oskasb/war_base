@@ -18,6 +18,22 @@
         }
       },
       {
+        "id":"channel_visual_module_tree_3_small",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_tree_3_small"}
+          ]
+        }
+      },
+      {
+        "id":"channel_visual_module_tree_3_combined",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_tree_3_combined"}
+          ]
+        }
+      },
+      {
         "id":"channel_visual_module_tree_2_trunk",
         "data":{
           "targets":[

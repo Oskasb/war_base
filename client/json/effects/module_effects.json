@@ -140,7 +140,19 @@
         ]
       }
     ],
-    "model_geometry_tree_2_trunk_module_fx":[
+    "model_geometry_tree_3_small_module_fx":[
+      {
+        "particle_effects":[
+          {"id":"model_geometry_tree_3_small_effect"}
+        ]
+      }
+    ],     "model_geometry_tree_3_combined_module_fx":[
+      {
+        "particle_effects":[
+          {"id":"model_geometry_tree_3_combined_effect"}
+        ]
+      }
+    ],    "model_geometry_tree_2_trunk_module_fx":[
       {
         "particle_effects":[
           {"id":"model_geometry_tree_2_trunk_effect"}

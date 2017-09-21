@@ -25,6 +25,28 @@
           }
         },
         {
+          "id": "model_tree_2_rooted",
+          "material": "main_atlas",
+          "url": "./client/assets/models/trees/tree_2_rooted",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "model_tree_2_rooted_hull",
+          "material": "main_atlas",
+          "url": "./client/assets/models/trees/tree_2_rooted_hull",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
           "id": "model_tree_2_trunk",
           "material": "main_atlas",
           "url": "./client/assets/models/trees/tree_2_trunk",
@@ -47,9 +69,20 @@
           }
         },
         {
-          "id": "tree_trunk_3",
+          "id": "model_tree_3_combined",
           "material": "main_atlas",
           "url": "./client/assets/models/trees/tree_3_combined",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "model_tree_3_combined_hull",
+          "material": "main_atlas",
+          "url": "./client/assets/models/trees/tree_3_combined_hull",
           "pool": 5,
           "transform": {
             "pos": [0, -10, 0],

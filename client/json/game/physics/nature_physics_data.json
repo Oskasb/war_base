@@ -60,6 +60,130 @@
         }
       },
       {
+        "id":"physical_tree_2_small",
+        "data":{
+          "shape":"primitive",
+          "ground_influence":{
+            "elevation":2,
+            "normal_factor":0.7,
+            "rotate_Y":[-1, 1]
+          },
+          "rigid_body":{
+            "shape":"Box",
+            "state":"WANTS_DEACTIVATION",
+            "args":[3.2, 5, 3.2],
+            "angular_factor":[1,  1, 1],
+            "linear_factor":[1, 1, 1],
+            "friction":0.15,
+            "restitution":0.75,
+            "damping":0.72,
+            "mass":0
+          },
+          "state_map":[
+            {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
+            {"param":"position",  "axis":"y",   "stateid": "state_pos_z"},
+            {"param":"position",  "axis":"z",   "stateid": "state_pos_y"},
+            {"param":"quaternion","axis":"x",   "stateid": "quat_state_x"},
+            {"param":"quaternion","axis":"y",   "stateid": "quat_state_y"},
+            {"param":"quaternion","axis":"z",   "stateid": "quat_state_z"},
+            {"param":"quaternion","axis":"w",   "stateid": "quat_state_w"}
+          ]
+        }
+      },
+      {
+        "id":"physical_tree_2_instanced",
+        "data":{
+          "shape":"mesh",
+          "ground_influence":{
+            "elevation":8,
+            "normal_factor":0.7,
+            "rotate_Y":[-1, 1]
+          },
+          "rigid_body":{
+            "convex":true,
+            "model_id":"model_tree_2_rooted_hull",
+            "state":"WANTS_DEACTIVATION",
+            "angular_factor":[1,  1, 1],
+            "linear_factor":[1, 1, 1],
+            "friction":0.15,
+            "restitution":0.75,
+            "damping":0.72,
+            "mass":0
+          },
+          "state_map":[
+            {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
+            {"param":"position",  "axis":"y",   "stateid": "state_pos_z"},
+            {"param":"position",  "axis":"z",   "stateid": "state_pos_y"},
+            {"param":"quaternion","axis":"x",   "stateid": "quat_state_x"},
+            {"param":"quaternion","axis":"y",   "stateid": "quat_state_y"},
+            {"param":"quaternion","axis":"z",   "stateid": "quat_state_z"},
+            {"param":"quaternion","axis":"w",   "stateid": "quat_state_w"}
+          ]
+        }
+      },
+      {
+        "id":"physical_tree_3_small",
+        "data":{
+          "shape":"primitive",
+          "ground_influence":{
+            "elevation":2,
+            "normal_factor":0.5,
+            "rotate_Y":[-1, 1]
+          },
+          "rigid_body":{
+            "shape":"Box",
+            "state":"WANTS_DEACTIVATION",
+            "args":[1.6, 5, 1.6],
+            "angular_factor":[1,  1, 1],
+            "linear_factor":[1, 1, 1],
+            "friction":3.95,
+            "restitution":0.65,
+            "damping":0.32,
+            "mass":32000
+          },
+          "state_map":[
+            {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
+            {"param":"position",  "axis":"y",   "stateid": "state_pos_z"},
+            {"param":"position",  "axis":"z",   "stateid": "state_pos_y"},
+            {"param":"quaternion","axis":"x",   "stateid": "quat_state_x"},
+            {"param":"quaternion","axis":"y",   "stateid": "quat_state_y"},
+            {"param":"quaternion","axis":"z",   "stateid": "quat_state_z"},
+            {"param":"quaternion","axis":"w",   "stateid": "quat_state_w"}
+          ]
+        }
+      },
+      {
+        "id":"physical_tree_3_instanced",
+        "data":{
+          "shape":"mesh",
+          "ground_influence":{
+            "elevation":7,
+            "normal_factor":0.5,
+            "rotate_Y":[-1, 1]
+          },
+          "rigid_body":{
+            "convex":true,
+            "model_id":"model_tree_3_combined_hull",
+            "state":"WANTS_DEACTIVATION",
+            "angular_factor":[1,  1, 1],
+            "linear_factor":[1, 1, 1],
+            "friction":0.15,
+            "restitution":0.75,
+            "damping":0.72,
+            "mass":0
+          },
+          "state_map":[
+            {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
+            {"param":"position",  "axis":"y",   "stateid": "state_pos_z"},
+            {"param":"position",  "axis":"z",   "stateid": "state_pos_y"},
+            {"param":"quaternion","axis":"x",   "stateid": "quat_state_x"},
+            {"param":"quaternion","axis":"y",   "stateid": "quat_state_y"},
+            {"param":"quaternion","axis":"z",   "stateid": "quat_state_z"},
+            {"param":"quaternion","axis":"w",   "stateid": "quat_state_w"}
+          ]
+        }
+      },
+      {
         "id":"physical_shrub_medium",
         "data":{
           "shape":"primitive",
@@ -70,13 +194,13 @@
           "rigid_body":{
             "shape":"Box",
             "state":"WANTS_DEACTIVATION",
-            "args":[1.6, 2, 1.6],
+            "args":[1.2, 2, 1.2],
             "angular_factor":[1,  1, 1],
             "linear_factor":[1, 1, 1],
-            "friction":0.95,
+            "friction":1.95,
             "restitution":0.01,
-            "damping":0.72,
-            "mass":400
+            "damping":0.42,
+            "mass":500
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
