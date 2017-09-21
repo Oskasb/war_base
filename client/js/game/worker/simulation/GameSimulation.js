@@ -13,9 +13,12 @@ define([
         SimulationState
     ) {
 
-        var GameSimulation = function(Ammo, protocolSystem) {
+    var workerReadyCB;
+
+        var GameSimulation = function(onWorkerReady, protocolSystem) {
+            workerReadyCB = onWorkerReady;
             this.activationGrid = null;
-            this.simulationState = new SimulationState(Ammo, protocolSystem);
+            this.simulationState = new SimulationState(protocolSystem);
             this.simulationRequests = new SimulationRequests(this.simulationState);
         };
 
@@ -38,7 +41,7 @@ define([
         GameSimulation.prototype.runGameLoop = function(tpf) {
 
             console.log("Run Worker Game Loop", tpf);
-
+            workerReadyCB();
             var activationGrid;
 
             var gridReady = function() {

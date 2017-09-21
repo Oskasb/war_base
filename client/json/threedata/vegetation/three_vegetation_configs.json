@@ -9,7 +9,7 @@
           "vegetationSectorSize":35,
           "rowsNColumns":5,
           "spawnFrames":5,
-          "plantCount":10
+          "plantCount":20
         },
         {
           "name":"big",

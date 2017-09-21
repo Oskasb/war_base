@@ -75,7 +75,7 @@ define([
             threeEuler2 = new THREE.Euler();
             this.calcVec = new CANNON.Vec3();
             this.calcVec2 = new CANNON.Vec3();
-            ThreeModelLoader.loadData();
+
         };
 
         var lastTime;

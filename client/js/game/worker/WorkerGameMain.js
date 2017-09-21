@@ -2,24 +2,32 @@
 
 define([
         'PipelineAPI',
-        'worker/physics/CannonAPI',
         'worker/terrain/TerrainFunctions',
         'worker/io/ProtocolSystem',
-        'worker/simulation/GameSimulation'
+        'worker/simulation/GameSimulation',
+        'three/ThreeModelLoader'
+
     ],
     function(
         PipelineAPI,
-        CannonAPI,
         TerrainFunctions,
         ProtocolSystem,
-        GameSimulation
+        GameSimulation,
+        ThreeModelLoader
     ) {
 
+        var onModelsOk;
 
-        var WorkerGameMain = function(Ammo) {
+        var loaded = false;
+
+        var WorkerGameMain = function(onWorkerReady) {
+            onModelsOk = onWorkerReady;
+
             this.protocolSystem = new ProtocolSystem();
-            this.gameSimulation = new GameSimulation(Ammo, this.protocolSystem);
+            this.gameSimulation = new GameSimulation(onWorkerReady, this.protocolSystem);
             this.gameSimulation.runGameLoop(0.05);
+
+
         };
 
         WorkerGameMain.prototype.handleMessage = function(msg) {
@@ -41,7 +49,12 @@ define([
         };
 
         WorkerGameMain.prototype.storeConfig = function(config) {
-            PipelineAPI.setCategoryKeyValue(config[0], config[1], JSON.parse(config[2]))
+            PipelineAPI.setCategoryKeyValue(config[0], config[1], JSON.parse(config[2]));
+
+            if (!loaded) {
+                ThreeModelLoader.loadPhysicsData(onModelsOk);
+                loaded = true;
+            }
         };
 
         WorkerGameMain.prototype.mapTarget = function(protocol) {

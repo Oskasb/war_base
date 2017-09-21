@@ -1,0 +1,44 @@
+
+[
+  {
+    "MODELS": {
+      "THREE_PHYSICS": [
+        {
+          "id": "platform_base_10x6",
+          "material": "main_atlas",
+          "format":"obj",
+          "url": "./client/assets/models/props/platform_base_10x6",
+          "pool": 3,
+          "transform": {
+            "pos":   [0, 0, 0],
+            "rot":   [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "model_tree_2_rooted_hull",
+          "material": "main_atlas",
+          "url": "./client/assets/models/trees/tree_2_rooted_hull",
+          "pool": 5,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
+          "id": "model_tree_3_combined_hull",
+          "material": "main_atlas",
+          "url": "./client/assets/models/trees/tree_3_combined_hull",
+          "pool": 5,
+          "transform": {
+            "pos": [0, -10, 0],
+            "rot": [0, 0, 0],
+            "scale": [0.5, 0.5, 0.5]
+          }
+        }
+
+      ]
+    }
+  }
+]

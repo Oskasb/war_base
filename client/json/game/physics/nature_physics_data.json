@@ -65,7 +65,7 @@
           "shape":"primitive",
           "ground_influence":{
             "elevation":2,
-            "normal_factor":0.7,
+            "normal_factor":0.5,
             "rotate_Y":[-1, 1]
           },
           "rigid_body":{
@@ -96,7 +96,7 @@
           "shape":"mesh",
           "ground_influence":{
             "elevation":8,
-            "normal_factor":0.7,
+            "normal_factor":0.4,
             "rotate_Y":[-1, 1]
           },
           "rigid_body":{
@@ -158,7 +158,7 @@
           "shape":"mesh",
           "ground_influence":{
             "elevation":7,
-            "normal_factor":0.5,
+            "normal_factor":0.4,
             "rotate_Y":[-1, 1]
           },
           "rigid_body":{
@@ -189,7 +189,8 @@
           "shape":"primitive",
           "ground_influence":{
             "elevation":0,
-            "normal_factor":1
+            "normal_factor":1,
+            "rotate_Y":[-1, 1]
           },
           "rigid_body":{
             "shape":"Box",

@@ -40,12 +40,24 @@ require(
 	    WorkerGameMain
     ) {
 
+
+        var count = 0;
+
+        var onWorkerReady = function() {
+            count ++;
+
+            console.log("Worker Configs & Models Loaded", count);
+
+        };
+
 		var MainGameWorker = function() {
-			this.workerGameMain = new WorkerGameMain();
+            this.workerGameMain = new WorkerGameMain(onWorkerReady);
 		};
 
 
         mainGameWorker = new MainGameWorker();
+
+
         postMessage([1, 'ready']);
 
 	}

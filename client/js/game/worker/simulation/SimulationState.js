@@ -6,7 +6,7 @@ define([
         'ThreeAPI',
         'worker/physics/AmmoAPI',
         'worker/terrain/TerrainFunctions',
-    'worker/simulation/ActivityFilter',
+        'worker/simulation/ActivityFilter',
         'worker/simulation/SimulationMonitor'
 
     ],
@@ -31,12 +31,12 @@ define([
         var calcVec = new THREE.Vector3();
         var calcObj = new THREE.Object3D();
 
-        var SimulationState = function(Ammo, protocolSystem) {
+        var SimulationState = function(protocolSystem) {
             this.protocolSystem = protocolSystem;
             this.selectionActivatedActorId = null;
             this.controlledActorId = null;
 
-            physicsApi = new AmmoAPI(Ammo);
+            physicsApi = new AmmoAPI();
             this.terrainFunctions = new TerrainFunctions(physicsApi);
             this.simulationOperations = new SimulationOperations(this.terrainFunctions);
 
