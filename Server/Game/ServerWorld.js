@@ -2,32 +2,9 @@
 var tempVec;
 var CnnAPI;
 
-ServerWorld = function(sectorGrid) {
-    this.cannonAPI = new CannonAPI();
-    CnnAPI = this.cannonAPI;
-    this.terrainFunctions = new TerrainFunctions(this.cannonAPI);
-    this.sectorGrid = sectorGrid;
-    sectorGrid.setServerWorld(this);
-	this.players = {};
-	this.playerCount = 0;
-	this.pieces = [];
-    this.terrains = [];
-	this.stars = [];
-	this.actionHandlers;
-	this.pieceCount = 0;
+ServerWorld = function() {
 
-	this.calcVec = new MATH.Vec3(0, 0, 0);
 
-    this.gravityVector = new MATH.Vec3(0, -9, 0);
-
-    var _this = this;
-    var broadcast = function(piece) {
-        _this.broadcastPieceState(piece);
-    };
-
-    this.serverPieceProcessor = new ServerPieceProcessor(broadcast);
-
-    tempVec = new MATH.Vec3(0, 0, 0);
 };
 
 ServerWorld.prototype.setPieceSpawner = function(pieceSpawner) {

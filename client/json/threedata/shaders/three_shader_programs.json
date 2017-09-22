@@ -289,9 +289,9 @@
         "junk":[
           "velocityOffset = velocityOffset.xyz + vec3(frameVel.x * stretch, frameVel.y * stretch, frameVel.z * stretch);",
           "billboardFacing = projectionMatrix * modelPosition;",
-
-          "vec3 vcV = cross(quat.xyz, vPosition);",
           "vPosition=vPosition + 2.0*cross(cross(vPosition, quat.xyz ) + quat.w*vPosition, quat.xyz);",
+          "vec3 vcV = cross(quat.xyz, vPosition);",
+
           "vPosition = vcV * (2.0 * quat.w) + (cross(quat.xyz, vcV) * 2.0 + vPosition);"
 
           ],
