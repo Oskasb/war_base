@@ -64,8 +64,10 @@
         {
           "id":"gpu_additive_atlas_trail_renderer",
           "material_id":"gpu_sprite_atlas_trail_material",
-          "particle_pool":250,
-          "particle_geometry":"cross3d",
+          "particle_pool":5,
+          "particle_geometry":{
+            "model_id":"model_bullet"
+          },
           "material_options":{
             "blending":"AdditiveBlending",
             "transparent":true,

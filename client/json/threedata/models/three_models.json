@@ -4,6 +4,18 @@
     "MODELS": {
       "THREE": [
         {
+          "id": "model_bullet",
+          "material": "main_atlas",
+          "format":"obj",
+          "url": "./client/assets/models/shapes/bullet",
+          "pool": 2,
+          "transform": {
+            "pos": [0, 0, 0],
+            "rot": [0, -1, 0],
+            "scale": [1, 1, 1]
+          }
+        },
+        {
           "id": "swivel_gun",
           "material": "main_atlas",
           "format":"obj",

@@ -280,13 +280,77 @@
 
           "float speed = length(frameVel);",
 
-          "float stretch = vUv.x * (1.0 + vPosition.y);",
+          "float stretch = (vPosition.y - 0.5);",
 
-
-
+          "velocityOffset = velocityOffset.xyz + vec3(frameVel.x, frameVel.y, frameVel.z);",
           "velocityOffset = velocityOffset.xyz + vec3(frameVel.x * stretch, frameVel.y * stretch, frameVel.z * stretch);"
+        ],
+
+        "junk":[
+          "velocityOffset = velocityOffset.xyz + vec3(frameVel.x * stretch, frameVel.y * stretch, frameVel.z * stretch);",
+          "billboardFacing = projectionMatrix * modelPosition;",
+
+          "vec3 vcV = cross(quat.xyz, vPosition);",
+          "vPosition=vPosition + 2.0*cross(cross(vPosition, quat.xyz ) + quat.w*vPosition, quat.xyz);",
+          "vPosition = vcV * (2.0 * quat.w) + (cross(quat.xyz, vcV) * 2.0 + vPosition);"
+
+          ],
+
+        "vertexStretchedSpatialMain":[
+
+          "vec3 zAxis = vec3(0.0, 0.0, 1.0);",
+          "vec3 direction = zAxis + 2.0 * cross( cross( zAxis, orientation.xyz ) + orientation.w * zAxis, orientation.xyz );",
+
+
+          "normalize(frameVel);",
+
+          "vec3 angleVec = cross(frameVel, direction);",
+
+          "vec4 quat = vec4(angleVec.xyz, 0.0);",
+
+          "quat.w=sqrt(2.0 +  dot(frameVel, zAxis));",
+
+
+
+
+
+          "vec4 modelPosition =  vec4(vPosition.xyz + velocityOffset, 1.0);",
+
+          "vec4 finalVpos = projectionMatrix * modelViewMatrix * vec4( velocityOffset + vPosition, 1.0 );"
 
         ],
+
+
+        "vertexStretchedSpatialFinal":[
+          "finalVpos.z = finalVpos.z * zHideFactor;",
+          "gl_Position = finalVpos;"
+        ],
+
+        "vertexSpatialMain":[
+          "vec3 vcV = cross(orientation.xyz, vPosition);",
+          "vPosition = vcV * (2.0 * orientation.w) + (cross(orientation.xyz, vcV) * 2.0 + vPosition);"
+        ],
+
+
+        "vertexBillboardFaceMain":[
+
+          "vec4 particlePosition = modelViewMatrix * vec4(velocityOffset, 1.0);",
+          "vec4 modelPosition = particlePosition + vec4(vPosition.xy, 0, 0);",
+          "billboardFacing = projectionMatrix * modelPosition;"
+
+        ],
+
+        "vertexBillboardFinal":[
+          "billboardFacing.z = billboardFacing.z * zHideFactor;",
+          "gl_Position = billboardFacing;"
+        ],
+
+
+
+        "vertexSpatialFinal":[
+          "gl_Position = projectionMatrix * modelViewMatrix * vec4( offset + vPosition, 1.0 );"
+        ],
+
 
 
         "vertexPredictRotationMain":[
@@ -344,11 +408,11 @@
           "sunTurned.x = -sunLightDirection.x;",
           "sunTurned.z = -sunLightDirection.z;",
           "vec3 lightNormal = sunTurned + 2.0 * cross( cross( sunTurned, orientation.xyz ) + orientation.w * sunTurned, orientation.xyz );",
-          "sunDir = sunLightColor * (0.9 + dot(normal, lightNormal ) * 0.6);",
+          "sunDir = sunLightColor * (0.5 + dot(normal, lightNormal ) * 0.4);",
 
-          "vColor.r = ambientLightColor.r*1.2 + sunLightColor.r*0.2 ;",
-          "vColor.g = ambientLightColor.g*1.2 + sunLightColor.g*0.2 ;",
-          "vColor.b = ambientLightColor.b*1.2 + sunLightColor.b*0.2 ;"
+          "vColor.r = ambientLightColor.r*1.0 + sunLightColor.r*0.3 ;",
+          "vColor.g = ambientLightColor.g*1.0 + sunLightColor.g*0.3 ;",
+          "vColor.b = ambientLightColor.b*1.0 + sunLightColor.b*0.3 ;"
         ],
         "vertexFogExp2Verts":[
 
@@ -362,29 +426,7 @@
 
         ],
 
-        "vertexSpatialMain":[
-          "vec3 vcV = cross(orientation.xyz, vPosition);",
-          "vPosition = vcV * (2.0 * orientation.w) + (cross(orientation.xyz, vcV) * 2.0 + vPosition);"
-        ],
 
-
-        "vertexBillboardFaceMain":[
-
-          "vec4 particlePosition = modelViewMatrix * vec4(velocityOffset, 1);",
-          "vec4 modelPosition = particlePosition + vec4(vPosition.xy, 0, 0);",
-          "billboardFacing = projectionMatrix * modelPosition;"
-
-        ],
-
-
-        "vertexBillboardFinal":[
-          "billboardFacing.z = billboardFacing.z * zHideFactor;",
-          "gl_Position = billboardFacing;"
-        ],
-
-        "vertexSpatialFinal":[
-          "gl_Position = projectionMatrix * modelViewMatrix * vec4( offset + vPosition, 1.0 );"
-        ],
 
         "vertexUvMain":[
           "vUv = uv;"
