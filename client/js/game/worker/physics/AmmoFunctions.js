@@ -354,7 +354,7 @@ define([
 
             var heightDiff = maxHeight-minHeight;
 
-            var restitution =  0.15;
+            var restitution =  0.01;
             var damping     =  8.0;
             var friction    =  2.0;
 

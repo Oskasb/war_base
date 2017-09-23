@@ -86,7 +86,7 @@ define([
                     value = 1 + Math.random();
                 }
 
-                actorActiveState.setValue(value);
+                actorActiveState.setBufferValue(value);
             }
 
             this.active = bool;

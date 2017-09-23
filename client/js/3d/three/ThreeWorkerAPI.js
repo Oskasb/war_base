@@ -100,16 +100,16 @@ define([
         };
 
         ThreeAPI.toScreenPosition = function(vec3, store) {
-            ThreeSetup.toScreenPosition(vec3, store);
+        //    ThreeSetup.toScreenPosition(vec3, store);
         };
 
         ThreeAPI.checkVolumeObjectVisible = function(vec3, radius) {
-            return ThreeSetup.cameraTestXYZRadius(vec3, radius);
+        //    return ThreeSetup.cameraTestXYZRadius(vec3, radius);
         };
 
 
         ThreeAPI.distanceToCamera = function(vec3) {
-            return ThreeSetup.calcDistanceToCamera(vec3);
+        //    return ThreeSetup.calcDistanceToCamera(vec3);
         };        
         
         ThreeAPI.newCanvasTexture = function(canvas) {

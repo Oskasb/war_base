@@ -557,7 +557,9 @@ define([
 
             if (this.activityFilter.getActorExpectActive(actor)) {
 
-                actor.setActive(true);
+                if (!actor.isActive()) {
+                    actor.setActive(true);
+                };
                 pieceUpdates++
                 actor.piece.rootObj3D.updateMatrixWorld();
                 actor.piece.updateGamePiece(tpf, time, this);
@@ -570,12 +572,12 @@ define([
                     //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
                 }
             } else {
-            //    actor.setActive(false);
+                actor.setActive(false);
             }
         };
 
         var pieceUpdates;
-        var activateRange = 15;
+        var activateRange = 125;
         var playerPos = new THREE.Vector3();
 
         SimulationState.prototype.updateState = function(tpf) {
@@ -598,13 +600,13 @@ define([
 
                 for ( i = 0; i < actors.length; i++) {
 
-                    if (actors[i].isActive() === false) {
+                //    if (actors[i].isActive() === false) {
 
-                    } else {
+                //    } else {
 
                         this.updateActorFrame(actors[i], tpf);
 
-                    }
+                //    }
                 }
             }
 

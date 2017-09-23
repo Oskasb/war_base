@@ -108,21 +108,21 @@ define([
 
             if (value) {
 
-                console.log("activate be enabled here...")
+             //   console.log("activate be enabled here...")
 
                 piece = enable();
                 if (!piece) {
                     enable(true);
                     piece = enable();
-                    piece.setRendereable(true);
-                    piece.setDirtyCount(5);
+            //        piece.setDirtyCount(5);
 
                 }
                 if (piece.updateKey !== value) {
-                    piece.updatePieceStates(0.01);
-                    piece.updatePieceSlots(0.01, simulate);
+                    piece.updatePieceStates(0.0);
+                //    piece.updatePieceSlots(0.01, false);
+                    piece.determineVisibility();
                     piece.updatePieceVisuals(0.01);
-                    piece.setDirtyCount(4);
+                    piece.setDirtyCount(1);
                 }
                 piece.updateKey = value;
 

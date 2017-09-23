@@ -300,12 +300,19 @@ define([
 
         GamePiece.prototype.testStatesDirtyStates = function () {
             var activeState = this.getPieceStateByStateId('state_active');
-            return true;
+        //    return true;
             if (activeState) {
+
+                if (activeState.getValue()) {
+                    if (Math.random() < 0.1) {
+                        return true;
+                    }
+                }
+
                 if (this.getDirtyCount()) {
+                    this.dirtyCount--;
                     return true;
                 }
-                this.dirtyCount--;
 
                 for (var i = 0; i < this.pieceStates.length; i++) {
                     var state = this.pieceStates[i];
@@ -320,8 +327,10 @@ define([
             }
 
             if (Math.random() < 0.1) {
-                return true
+
             }
+        //        return true
+
 
         };
 
