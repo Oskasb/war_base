@@ -2,6 +2,12 @@
   "CHANNEL_TARGETS":{
     "TARGETS":[
       {
+        "id":"target_actor_active",
+        "data":{
+          "callback":"call_notify_actor_active"
+        }
+      },
+      {
         "id":"target_transform",
         "data":{
           "callback":"apply_transform_state"
@@ -266,6 +272,13 @@
       },
 
       {
+        "id":"target_visual_module_wall_rock_50",
+        "data":{
+          "callback":"module_geometry_static_effect",
+          "module_effect":"model_geometry_wall_rock_50_fx",
+          "scale":0.01
+        }
+      },      {
         "id":"target_visual_module_shrub_medium",
         "data":{
           "callback":"module_geometry_static_effect",

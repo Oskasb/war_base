@@ -105,8 +105,8 @@
             "state":"WANTS_DEACTIVATION",
             "angular_factor":[1,  1, 1],
             "linear_factor":[1, 1, 1],
-            "friction":0.15,
-            "restitution":0.75,
+            "friction":0.015,
+            "restitution":0.25,
             "damping":0.72,
             "mass":0
           },
@@ -133,13 +133,13 @@
           "rigid_body":{
             "shape":"Box",
             "state":"WANTS_DEACTIVATION",
-            "args":[1.6, 5, 1.6],
+            "args":[2.9, 5, 2.9],
             "angular_factor":[1,  1, 1],
             "linear_factor":[1, 1, 1],
             "friction":3.95,
             "restitution":0.65,
-            "damping":0.32,
-            "mass":32000
+            "damping":0.25,
+            "mass":12000
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
@@ -167,8 +167,8 @@
             "state":"WANTS_DEACTIVATION",
             "angular_factor":[1,  1, 1],
             "linear_factor":[1, 1, 1],
-            "friction":0.15,
-            "restitution":0.75,
+            "friction":0.015,
+            "restitution":0.25,
             "damping":0.72,
             "mass":0
           },

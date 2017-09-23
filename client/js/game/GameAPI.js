@@ -226,7 +226,7 @@ define([
             guiRenderer.updateGuiRenderer();
 
             if (controlledActor) {
-        //        controlledActor.piece.determineVisibility();
+                controlledActor.piece.determineVisibility();
                 controlledActor.piece.updateGamePiece(tpf, time);
                 controlledActor.piece.setRendereable(true);
             }

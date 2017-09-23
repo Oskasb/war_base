@@ -13,6 +13,7 @@
           "model":"box_crate",
 
           "channels":[
+            {"channelid":"channel_actor_active",   "stateid": "state_active"},
             {"channelid":"channel_pos_x",  "stateid": "state_pos_x"},
             {"channelid":"channel_pos_y",  "stateid": "state_pos_z"},
             {"channelid":"channel_pos_z",  "stateid": "state_pos_y"},
@@ -42,6 +43,7 @@
             "size": [2.0,    4,    2]
           },
           "channels":[
+            {"channelid":"channel_actor_active",   "stateid": "state_active"},
             {"channelid":"channel_pos_x",  "stateid": "state_pos_x"},
             {"channelid":"channel_pos_y",  "stateid": "state_pos_z"},
             {"channelid":"channel_pos_z",  "stateid": "state_pos_y"},
@@ -50,7 +52,7 @@
             {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
             {"channelid":"fire_channel",   "stateid": "fire_state"},
-            {"channelid":"channel_visual_creative_crate_medium",     "stateid": "state_pos_z"}
+            {"channelid":"channel_visual_creative_crate_medium",     "stateid": "state_pos_y"}
           ],
           "attachment_points":[
             {"id":"ap_combat",
@@ -74,6 +76,7 @@
           "model":"oil_drum",
 
           "channels":[
+            {"channelid":"channel_actor_active",   "stateid": "state_active"},
             {"channelid":"channel_pos_x",  "stateid": "state_pos_x"},
             {"channelid":"channel_pos_y",  "stateid": "state_pos_z"},
             {"channelid":"channel_pos_z",  "stateid": "state_pos_y"},
@@ -103,6 +106,7 @@
           },
           "model":"model_giant_skateramp",
           "channels":[
+            {"channelid":"channel_actor_active",   "stateid": "state_active"},
             {"channelid":"channel_pos_x",  "stateid": "state_pos_x"},
             {"channelid":"channel_pos_y",  "stateid": "state_pos_z"},
             {"channelid":"channel_pos_z",  "stateid": "state_pos_y"},
@@ -113,7 +117,28 @@
           ]
         }
       },
-
+      {
+        "id":"module_wall_rock_50",
+        "data":{
+          "transform":{
+            "rot":  [0,     0,    0],
+            "pos":  [0,     0,    0],
+            "size": [50,   40,   20]
+          },
+          "channels":[
+            {"channelid":"channel_actor_active",   "stateid": "state_active"},
+            {"channelid":"channel_pos_x",  "stateid": "state_pos_x"},
+            {"channelid":"channel_pos_y",  "stateid": "state_pos_z"},
+            {"channelid":"channel_pos_z",  "stateid": "state_pos_y"},
+            {"channelid":"channel_quat_x", "stateid": "quat_state_x"},
+            {"channelid":"channel_quat_y", "stateid": "quat_state_y"},
+            {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
+            {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
+            {"channelid":"fire_channel",   "stateid": "fire_state"},
+            {"channelid":"channel_visual_wall_rock_50", "stateid": "state_pos_y"}
+          ]
+        }
+      },
       {
         "id":"module_platform_10x6",
         "data":{
@@ -124,6 +149,7 @@
           },
           "model":"platform_base_10x6",
           "channels":[
+            {"channelid":"channel_actor_active",   "stateid": "state_active"},
             {"channelid":"channel_pos_x",  "stateid": "state_pos_x"},
             {"channelid":"channel_pos_y",  "stateid": "state_pos_z"},
             {"channelid":"channel_pos_z",  "stateid": "state_pos_y"},
@@ -145,6 +171,7 @@
           },
           "model":"platform_base_35x25",
           "channels":[
+            {"channelid":"channel_actor_active",   "stateid": "state_active"},
             {"channelid":"channel_pos_x",  "stateid": "state_pos_x"},
             {"channelid":"channel_pos_y",  "stateid": "state_pos_z"},
             {"channelid":"channel_pos_z",  "stateid": "state_pos_y"},

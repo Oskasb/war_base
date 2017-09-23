@@ -102,6 +102,43 @@ define([
         };
 
 
+        ModuleCallbacks.call_notify_actor_active = function(module, target, enable) {
+            var value = target.state.buffer[0];
+            var piece;
+
+            if (value) {
+
+                console.log("activate be enabled here...")
+
+                piece = enable();
+                if (!piece) {
+                    enable(true);
+                    piece = enable();
+                    piece.setRendereable(true);
+                    piece.setDirtyCount(5);
+
+                }
+                if (piece.updateKey !== value) {
+                    piece.updatePieceStates(0.01);
+                    piece.updatePieceSlots(0.01, simulate);
+                    piece.updatePieceVisuals(0.01);
+                    piece.setDirtyCount(4);
+                }
+                piece.updateKey = value;
+
+            } else {
+                piece = enable();
+                if (piece) {
+                //    piece.setRendereable(false);
+                //    enable(false);
+                } else {
+                    console.log("should be enabled here...")
+                }
+
+            }
+
+        };
+
         ModuleCallbacks.call_enable_target_controls = function(module, target, enable) {
 
 

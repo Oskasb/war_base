@@ -11,6 +11,7 @@
           },
           "model":"sherman_hull",
           "channels":[
+            {"channelid":"channel_actor_active",   "stateid": "state_active"},
             {"channelid":"channel_pos_x",     "stateid": "state_pos_x"},
             {"channelid":"channel_pos_y",     "stateid": "state_pos_z"},
             {"channelid":"channel_pos_z",     "stateid": "state_pos_y"},

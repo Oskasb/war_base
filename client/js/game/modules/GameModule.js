@@ -270,7 +270,7 @@ define([
         };
 
         GameModule.prototype.updateVisualState = function (tpf) {
-            if (this.hidden) return;
+        //    if (this.hidden) return;
             this.visualModule.updateVisualModule(tpf);
         };
 

@@ -23,6 +23,15 @@
           }
         },
         {
+          "id":"model_geometry_wall_rock_50_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_spatial_wall_rock_50_renderer",
+            "particle_id":"instanced_model_particle_no_random",
+            "count":1,
+            "simulation_id":"gpu_spatial_simulation"
+          }
+        },        {
           "id":"model_geometry_tree_3_combined_effect",
           "data":{
             "system_key":"THREE",

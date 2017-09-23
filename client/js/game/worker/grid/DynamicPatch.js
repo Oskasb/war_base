@@ -24,6 +24,7 @@ define([
         };
 
 
+        var outside = -9999;
 
         var DynamicPatch = function(simState, sysIndex, config, gridSysData, actorCache) {
 
@@ -223,10 +224,12 @@ define([
             for (var i = 0; i < count; i++) {
 
                 tempVec.x = this.posX + this.size() * Math.random() - 0.5;
-                tempVec.y = 1;
+                tempVec.y = outside;
                 tempVec.z = this.posZ + this.size() * Math.random() - 0.5;
                 tempVec.y = this.simulationState.getTerrainHeightAtPos(tempVec, tempVec3);
-                this.spawnPatchActor(tempVec, plantData)
+                if (tempVec.y !== outside) {
+                    this.spawnPatchActor(tempVec, plantData)
+                }
             }
 
         };

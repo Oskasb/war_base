@@ -539,9 +539,25 @@ define([
                 return;
             }
 
-            this.activityFilter.notifyActorActiveState(actor, physicsApi.isPhysicallyActive(actor));
+
+
+            var range = this.checkActorInRangeFromPosition(actor, activateRange + actor.piece.boundingSize, playerPos);
+
+            if (range === actor) {
+                this.activityFilter.notifyActorActiveState(actor, true);
+                if (actor.getPhysicsBody()) {
+                    physicsApi.triggerPhysicallyActive(actor)
+                }
+
+            } else {
+                this.activityFilter.notifyActorActiveState(actor, physicsApi.isPhysicallyActive(actor));
+            }
+
+
 
             if (this.activityFilter.getActorExpectActive(actor)) {
+
+                actor.setActive(true);
                 pieceUpdates++
                 actor.piece.rootObj3D.updateMatrixWorld();
                 actor.piece.updateGamePiece(tpf, time, this);
@@ -553,10 +569,14 @@ define([
                 if (!integrity) {
                     //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
                 }
+            } else {
+                actor.setActive(false);
             }
         };
 
         var pieceUpdates;
+        var activateRange = 15;
+        var playerPos = new THREE.Vector3();
 
         SimulationState.prototype.updateState = function(tpf) {
 
@@ -568,6 +588,9 @@ define([
                 time += tpf;
                 physicsApi.updatePhysicsSimulation(time);
 
+                if (this.controlledActorId) {
+                    playerPos.copy(this.getActorById(this.controlledActorId).piece.getPos());
+                }
 
                 for (var i = 0; i < attacks.length; i++) {
                     this.updateAttackFrame(attacks[i], tpf);

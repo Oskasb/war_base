@@ -1,7 +1,14 @@
 [{
   "MODULE_CHANNELS":{
     "CHANNELS":[
-
+      {
+        "id":"channel_actor_active",
+        "data":{
+          "targets":[
+            {"targetid":"target_actor_active"}
+          ]
+        }
+      },
       {
         "id":"channel_follow_target",
         "data":{

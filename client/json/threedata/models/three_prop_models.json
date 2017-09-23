@@ -74,7 +74,18 @@
             "scale": [1, 1, 1]
           }
         },
-
+        {
+          "id": "model_wall_section_rock_50",
+          "material": "main_atlas",
+          "format":"obj",
+          "url": "./client/assets/models/shapes/wall_section_rock_50x40x20",
+          "pool": 1,
+          "transform": {
+            "pos":   [0, 0, 0],
+            "rot":   [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        },
         {
           "id": "platform_base_10x6",
           "material": "main_atlas",

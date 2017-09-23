@@ -59,7 +59,18 @@ define([
             }.bind(this);
 
             this.pipeObj = new PipelineObject('PIECE_DATA', 'PIECES', applyPieceData, dataKey);
+            this.updateKey = 0.1;
         };
+
+        GamePiece.prototype.setDirtyCount = function(count) {
+            this.dirtyCount = count;
+
+        };
+
+        GamePiece.prototype.getDirtyCount = function() {
+            return Math.clamp(this.dirtyCount, 0, 9999999);
+        };
+
 
 
 
@@ -287,9 +298,36 @@ define([
         };
 
 
-        GamePiece.prototype.updatePieceStates = function (tpf, time) {
+        GamePiece.prototype.testStatesDirtyStates = function () {
+            var activeState = this.getPieceStateByStateId('state_active');
+            return true;
+            if (activeState) {
+                if (this.getDirtyCount()) {
+                    return true;
+                }
+                this.dirtyCount--;
+
+                for (var i = 0; i < this.pieceStates.length; i++) {
+                    var state = this.pieceStates[i];
+                    if (state.getValue() !== state.buffer[0]) {
+                        return true;
+                    }
+                }
+
+
+            } else {
+                return true;
+            }
+
+            if (Math.random() < 0.1) {
+                return true
+            }
+
+        };
+
+        GamePiece.prototype.updatePieceStates = function (tpf) {
             for (var i = 0; i < this.pieceStates.length; i++) {
-                this.pieceStates[i].updateStateFrame(tpf, time)
+                this.pieceStates[i].updateStateFrame(tpf)
             }
         };
 
@@ -307,9 +345,14 @@ define([
 
         GamePiece.prototype.updateGamePiece = function(tpf, time, simulate) {
 
-            this.updatePieceStates(tpf, time);
-            this.updatePieceSlots(tpf, simulate);
-            this.updatePieceVisuals(tpf);
+            var dirtyState = this.testStatesDirtyStates();
+
+            if (dirtyState) {
+                this.updatePieceStates(tpf);
+                this.updatePieceSlots(tpf, simulate);
+                this.updatePieceVisuals(tpf);
+            }
+
 
         };
 

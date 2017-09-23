@@ -118,6 +118,10 @@ define(['worker/physics/AmmoFunctions'],
             ammoFunctions.applyForceToBodyWithMass(forceVec3, actor.getPhysicsBody(), actor.physicalPiece.getPhysicsPieceMass(), randomize)
         };
 
+        AmmoAPI.prototype.triggerPhysicallyActive = function(actor) {
+            actor.getPhysicsBody().activate();
+        };
+
         AmmoAPI.prototype.isPhysicallyActive = function(actor) {
             return ammoFunctions.getBodyActiveState(actor.getPhysicsBody());
         };

@@ -285,6 +285,8 @@ define([
                     actor.id = id;
                     gameWorker.registerActorPieceStates(actor);
                     GameAPI.addActor(actor);
+                    actor.piece.render = false;
+                    actor.piece.enable = true;
                     ThreeAPI.addToScene(actor.piece.rootObj3D);
                     cb(actor);
                 };

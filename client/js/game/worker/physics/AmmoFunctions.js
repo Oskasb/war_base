@@ -190,6 +190,7 @@ define([
         AmmoFunctions.prototype.enableBodySimulation = function(body) {
 
             body.activate();
+        //    body.forceActivationState(STATE.ACTIVE);
         };
 
         AmmoFunctions.prototype.disableBodySimulation = function(body) {

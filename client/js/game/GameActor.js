@@ -74,7 +74,21 @@ define([
             return this.body;
         };
 
+        var activateStateId = 'state_active';
         GameActor.prototype.setActive = function (bool) {
+
+            var actorActiveState = this.piece.getPieceStateByStateId(activateStateId);
+
+            if (actorActiveState) {
+                var value = 0;
+
+                if (bool) {
+                    value = 1 + Math.random();
+                }
+
+                actorActiveState.setValue(value);
+            }
+
             this.active = bool;
         };
 

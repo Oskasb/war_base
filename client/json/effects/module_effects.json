@@ -140,7 +140,13 @@
         ]
       }
     ],
-    "model_geometry_tree_3_small_module_fx":[
+    "model_geometry_wall_rock_50_fx":[
+      {
+        "particle_effects":[
+          {"id":"model_geometry_wall_rock_50_effect"}
+        ]
+      }
+    ],    "model_geometry_tree_3_small_module_fx":[
       {
         "particle_effects":[
           {"id":"model_geometry_tree_3_small_effect"}

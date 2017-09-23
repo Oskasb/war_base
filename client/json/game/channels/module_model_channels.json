@@ -2,6 +2,15 @@
   "MODULE_CHANNELS":{
     "CHANNELS":[
       {
+        "id":"channel_visual_wall_rock_50",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_wall_rock_50"}
+          ]
+        }
+      },
+
+      {
         "id":"channel_visual_shrub_medium",
         "data":{
           "targets":[
@@ -9,6 +18,7 @@
           ]
         }
       },
+
       {
         "id":"channel_visual_creative_crate_medium",
         "data":{

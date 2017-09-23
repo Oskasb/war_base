@@ -128,7 +128,6 @@ define([
         };
 
 
-
         CombatStatusUiProcessor.prototype.show_combat_status = function(guiElement) {
 
             var activeSelection = guiElement.getTarget();
@@ -149,23 +148,16 @@ define([
                     return;
                 }
 
-                if (combatStatus.getDynamic('combat_state') === ENUMS.CombatStates.NONE) {
-                    guiElement.setTarget(null);
-                    guiElement.disableGuiElement();
-                    return;
-                }
+                var combatState = combatStatus.getDynamic('combat_state');
 
-                if (combatStatus.getDynamic('combat_state') === ENUMS.CombatStates.REMOVED) {
+                if (!combatState || combatState === ENUMS.CombatStates.NONE || combatState === ENUMS.CombatStates.REMOVED) {
                     guiElement.setTarget(null);
                     guiElement.disableGuiElement();
                     return;
                 }
 
                 var factor = guiElement.options.offset_y;
-
                 var displayName = activeSelection.id;
-
-                var combatState = combatStatus.getDynamic('combat_state');
 
                 var maxHealth = combatStatus.getDynamic('max_health');
                 var health = combatStatus.getDynamic('health');
@@ -209,7 +201,7 @@ define([
                 if (guiElement.children[healthElementId]) {
                     var spaceNeeded = 0;
                     if (guiElement.children[healthElementId].length) {
-                        width = guiElement.children[healthElementId][0].options.step_x
+                        width = guiElement.children[healthElementId][0].options.step_x;
                         spaceNeeded += (maxHealth * width);
                         rowHeight = guiElement.children[healthElementId][0].options.step_y;
                     }

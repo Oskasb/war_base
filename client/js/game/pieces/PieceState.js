@@ -15,12 +15,13 @@ define([],
 
             this.readCount = 0;
 
+            this.timeSinceUpdate = 0;
+
             this.sampler = null;
             this.callbacks = [];
 
             this.targetTime = 0;
             this.targetValue = value;
-            this.lastUpdate = 0;
             this.stateProgress = 0;
             this.progressDelta = 0;
 
@@ -97,7 +98,7 @@ define([],
                 }
             }
 
-            if (Math.random() < 0.02) {
+            if (Math.random() < 0.01) {
                 this.dirty = true;
             }
 
@@ -133,19 +134,20 @@ define([],
                 this.progressDelta = MATH.calcFraction(0, this.targetTime, tpf);
                 this.setValue(MATH.interpolateFromTo(this.startValue, this.targetValue, frac));
                 this.readCount = 0;
+                this.timeSinceUpdate = 0;
             } else {
                 this.setValue(this.targetValue);
                 this.progressDelta = 0;
+                this.timeSinceUpdate += tpf;
             }
         };
 
-        PieceState.prototype.updateStateFrame = function (tpf, time) {
+        PieceState.prototype.updateStateFrame = function (tpf) {
 
             if (this.value === this.buffer[0]) {
                 return;
             }
 
-            this.lastUpdate = time;
 
             if (this.targetValue !== this.buffer[0]) {
                 this.updateTargetValues()

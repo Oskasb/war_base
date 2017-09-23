@@ -53,6 +53,17 @@
         }
       },
       {
+        "id":"piece_wall_50_rock",
+        "data":{
+          "root_slot":"piece_root",
+          "slots":[
+            {"slot":"piece_root",         "module":"module_wall_rock_50"}
+          ],
+          "attachments":[]
+        }
+      },
+
+      {
         "id":"piece_giant_skateramp",
         "data":{
           "root_slot":"piece_root",
