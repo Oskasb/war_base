@@ -570,7 +570,7 @@ define([
                     //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
                 }
             } else {
-                actor.setActive(false);
+            //    actor.setActive(false);
             }
         };
 
