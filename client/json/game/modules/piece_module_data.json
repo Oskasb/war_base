@@ -47,7 +47,7 @@
             "size": [4.0,    2,    4]
           },
           "turrets":["turret_swivel_gun"],
-          "weapons":["weapon_swivel_gun"],
+          "weapons":["weapon_20mm_swivel_gun"],
           "channels":[
             {"channelid":"channel_trigger",             "stateid": "command_swivel_trigger"},
             {"channelid":"channel_aim_yaw",             "stateid": "aim_swivel_yaw"},
@@ -220,9 +220,7 @@
             {"channelid":"channel_quat_x",              "stateid": "quat_swivel_x"},
             {"channelid":"channel_quat_y",              "stateid": "quat_swivel_y"},
             {"channelid":"channel_quat_w",              "stateid": "quat_swivel_w"},
-            {"channelid":"channel_bullet_activate",     "stateid": "command_bullet_activate" },
-            {"channelid":"channel_visual_module_swivel_cannon_20mm",     "stateid": "state_active"}
-
+            {"channelid":"channel_bullet_activate",     "stateid": "command_bullet_activate" }
           ],
           "attachment_points":[
             {"id":"ap_muzzle",

@@ -66,7 +66,7 @@
           "data":{
             "system_key":"THREE",
             "renderer_id":"gpu_spatial_enemy_oomba_renderer",
-            "particle_id":"instanced_model_particle",
+            "particle_id":"instanced_model_particle_no_random",
             "count":1,
             "simulation_id":"gpu_spatial_simulation"
           }
@@ -76,7 +76,7 @@
           "data":{
             "system_key":"THREE",
             "renderer_id":"gpu_spatial_swivel_cannon_20mm_renderer",
-            "particle_id":"instanced_model_particle",
+            "particle_id":"instanced_model_particle_no_random",
             "count":1,
             "simulation_id":"gpu_spatial_simulation"
           }

@@ -756,6 +756,27 @@
         },
 
         {
+          "id":"cannon_20mm_trail_effect_particle",
+          "sprite_key":"ATLAS",
+          "sprite_id":"explosion",
+          "config":{
+            "gravity":-9.81,
+            "drag":0.0001,
+            "spinDrag":1,
+            "lifeTime":{"min":10,"max":10},
+            "colorCurve":"steadyRed",
+            "alphaCurve":"fullWhite",
+            "diffusionCurve":"fullWhite",
+            "scaleCurve":"dampen",
+            "size":{"value":0.435,     "min":-0.1, "max":0.1},
+            "spin":{"value":0.00001, "min":-0.000005, "max":0.000005},
+            "velocityDiffusion":0.00001,
+            "accelerationDiffusion":0.00001,
+            "colorDiffusion":0.05,
+            "velocityFactor":1
+          }
+        },
+        {
           "id":"cannon_trail_effect_particle",
           "sprite_key":"ATLAS",
           "sprite_id":"explosion",

@@ -121,11 +121,11 @@
           "rigid_body":{
             "state":"WANTS_DEACTIVATION",
             "shape":"Cylinder",
-            "args":[1.5, 0.5, 1.5],
+            "args":[5.5, 1.5, 1.5],
             "friction":0.3,
             "restitution":0.6,
             "damping":0.35,
-            "mass":25000
+            "mass":45000
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
