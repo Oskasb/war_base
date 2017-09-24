@@ -118,6 +118,15 @@ define(['worker/physics/AmmoFunctions'],
             ammoFunctions.applyForceToBodyWithMass(forceVec3, actor.getPhysicsBody(), actor.physicalPiece.getPhysicsPieceMass(), randomize)
         };
 
+        AmmoAPI.prototype.triggerPhysicallyRelaxed = function(actor) {
+            if (actor.framesAtState > 3) {
+                ammoFunctions.relaxBodySimulation(actor.getPhysicsBody());
+            }
+
+            //  actor.getPhysicsBody().activate();
+        };
+
+
         AmmoAPI.prototype.triggerPhysicallyActive = function(actor) {
                return ammoFunctions.enableBodySimulation(actor.getPhysicsBody());
             //  actor.getPhysicsBody().activate();

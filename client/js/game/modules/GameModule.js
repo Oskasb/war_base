@@ -269,9 +269,9 @@ define([
 
         };
 
-        GameModule.prototype.updateVisualState = function (tpf) {
+        GameModule.prototype.updateVisualState = function (render, tpf) {
         //    if (this.hidden) return;
-            this.visualModule.updateVisualModule(tpf);
+            this.visualModule.updateVisualModule(render, tpf);
         };
 
         GameModule.prototype.removeClientModule = function () {

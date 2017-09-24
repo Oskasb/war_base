@@ -52,7 +52,7 @@
             {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
             {"channelid":"fire_channel",   "stateid": "fire_state"},
-            {"channelid":"channel_visual_creative_crate_medium",     "stateid": "state_pos_y"}
+            {"channelid":"channel_visual_creative_crate_medium",     "stateid": "state_active"}
           ],
           "attachment_points":[
             {"id":"ap_combat",
@@ -135,7 +135,7 @@
             {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
             {"channelid":"fire_channel",   "stateid": "fire_state"},
-            {"channelid":"channel_visual_wall_rock_50", "stateid": "state_pos_y"}
+            {"channelid":"channel_visual_wall_rock_50", "stateid": "state_active"}
           ]
         }
       },

@@ -64,7 +64,7 @@ define([], function() {
                     var diff = Math.abs(prot[targetChannel+1] - actor.piece.pieceStates[i].getValue());
                     if (diff) {
 
-                        if (diff < 10) {
+                        if (diff < 5) {
                             targetTime =  tpf * 2;
                         } else {
                             targetTime = 0;

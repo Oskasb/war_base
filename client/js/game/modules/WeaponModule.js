@@ -111,11 +111,13 @@ define([
         };
 
         WeaponModule.prototype.getMuzzlePosition = function (module, vec3) {
-            module.getObjec3D().updateMatrixWorld();
+        //    module.getObjec3D().updateMatrixWorld();
             var ap = module.getAttachmentPointById(this.weaponOptions.muzzle_attachment_point_id);
             var muzzleModule = ap.getAttachedModule();
 
-            vec3.setFromMatrixPosition( muzzleModule.getObjec3D().matrixWorld );
+            muzzleModule.getObjec3D().getWorldPosition(vec3);
+
+        //    vec3.setFromMatrixPosition( muzzleModule.getObjec3D().matrixWorld );
         };
 
         var distance;

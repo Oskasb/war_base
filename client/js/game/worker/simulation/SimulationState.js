@@ -79,13 +79,11 @@ define([
 
 
         SimulationState.prototype.attachActorRigidBody = function(actor) {
-            this.activityFilter.notifyActorActiveState(actor, true);
             physicsApi.setupPhysicalActor(actor);
         };
 
         SimulationState.prototype.detatchActor = function(actor) {
             actors.splice(actors.indexOf(actor), 1)
-            // actors.push(actor);
         };
 
 
@@ -96,14 +94,15 @@ define([
 
             if (actor.body) {
                 physicsApi.includeBody(actor.body);
+                physicsApi.triggerPhysicallyActive(actor)
             }
 
-            actor.setActivationState(ENUMS.PieceActivationStates.VISIBLE);
+            actor.setActivationState(ENUMS.PieceActivationStates.HIDDEN);
 
             if (actors.indexOf(actor) === -1) {
                 actors.push(actor);
             }
-            this.activityFilter.notifyActorActiveState(actor, true);
+
             var res = {dataKey:actor.dataKey, actorId:actor.id};
             postMessage(['executeDeployActor', res]);
 
@@ -228,6 +227,7 @@ define([
                     console.log("Double add actor fail");
                 } else {
                     this.attachActorRigidBody(actor);
+                //    physicsApi.triggerPhysicallyActive(actor)
                 }
 
                 ThreeAPI.addToScene(actor.piece.rootObj3D);
@@ -325,7 +325,8 @@ define([
                 physicsApi.disableActorPhysics(actor);
             }
 
-            actor.setActivationState(ENUMS.PieceActivationStates.INACTIVE);
+            actor.setActivationState(ENUMS.PieceActivationStates.HIDDEN);
+            this.updateActorFrame(actor, 0);
             ThreeAPI.removeFromScene(actor.piece.rootObj3D);
 
             this.detatchActor(actor);
@@ -417,7 +418,7 @@ define([
 
             for (var i = 0; i < actors.length; i++) {
 
-                if (actors[i].config.alignment === 'hostile' && actors[i].isActive()) {
+                if (actors[i].config.alignment === 'hostile' && actors[i].isVisible()) {
 
                     distance = Math.sqrt(actors[i].piece.getPos().distanceToSquared(position));
                     if (distance < nearestDistance) {
@@ -525,7 +526,19 @@ define([
 
         SimulationState.prototype.updateActorFrame = function(actor, tpf) {
 
+            var initState = actor.piece.getPieceActivationState();
             this.protocolSystem.applyProtocolToActorState(actor, tpf);
+
+            if (!actor.body) {
+                return;
+            }
+
+            if (initState === ENUMS.PieceActivationStates.INACTIVE) {
+                actor.piece.updatePieceStates(tpf);
+                actor.piece.updatePieceSlots(tpf, this);
+                this.protocolSystem.updateActorSendProtocol(actor, tpf);
+                return;
+            }
 
             var combatStatus = actor.piece.getCombatStatus();
 
@@ -533,40 +546,48 @@ define([
                 combatStatus.tickCombatStatus();
                 if (combatStatus.getCombatState()) {
                     actor.escalateActivationState();
+                    physicsApi.triggerPhysicallyActive(actor);
                     this.activityFilter.notifyActorActiveState(actor, true);
+
+                    if (initState < ENUMS.PieceActivationStates.ACTIVE) {
+                        actor.escalateActivationState();
+                    }
                 } else {
+
                     if (actor.isEngaged()) {
                         actor.deescalateActivationState();
                         this.activityFilter.notifyActorActiveState(actor, true);
+                    } else {
+
+                        var range = this.checkActorInRangeFromPosition(actor, activateRange + actor.piece.boundingSize, playerPos);
+
+                        if (range === actor) {
+                            this.activityFilter.notifyActorActiveState(actor, true);
+                            physicsApi.triggerPhysicallyActive(actor)
+                            if (initState < ENUMS.PieceActivationStates.VISIBLE) {
+                                actor.escalateActivationState();
+                            }
+                        } else {
+                            this.activityFilter.notifyActorActiveState(actor, physicsApi.isPhysicallyActive(actor));
+                            physicsApi.triggerPhysicallyRelaxed(actor)
+                        }
+
                     }
                 }
-            }
-
-            if (!actor.body) {
-                return;
-            }
-
-
-            var range = this.checkActorInRangeFromPosition(actor, activateRange + actor.piece.boundingSize, playerPos);
-
-            if (range === actor) {
-                this.activityFilter.notifyActorActiveState(actor, true);
-                if (actor.getPhysicsBody()) {
-                    physicsApi.triggerPhysicallyActive(actor)
-                }
-            } else {
-                this.activityFilter.notifyActorActiveState(actor, physicsApi.isPhysicallyActive(actor));
             }
 
 
             if (this.activityFilter.getActorExpectActive(actor)) {
 
-                if (!actor.isActive()) {
-                    actor.escalateActivationState();
-                };
                 pieceUpdates++;
                 actor.piece.rootObj3D.updateMatrixWorld();
-                actor.piece.updateGamePiece(tpf, time, this);
+
+                actor.piece.updatePieceStates(tpf);
+                actor.piece.updatePieceSlots(tpf, this);
+           //     actor.piece.updatePieceVisuals(tpf);
+
+
+            //    actor.piece.updateGamePiece(tpf, time, this);
                 actor.samplePhysicsState();
                 this.protocolSystem.updateActorSendProtocol(actor, tpf);
 
@@ -580,27 +601,56 @@ define([
                 var range = this.checkActorInRangeFromPosition(actor, visibleRange + actor.piece.boundingSize, playerPos);
 
                 if (range === actor) {
-                    if (!actor.isVisible()) {
-                        actor.escalateActivationState();
+                    if (initState !== ENUMS.PieceActivationStates.VISIBLE) {
+                        actor.piece.setPieceActivationState(ENUMS.PieceActivationStates.VISIBLE);
+
+                        if (initState !== actor.piece.getPieceActivationState()) {
+                        //    physicsApi.triggerPhysicallyActive(actor)
+                            actor.piece.updatePieceStates(tpf);
+                            actor.piece.updatePieceSlots(tpf, this);
+                            pieceUpdates++;
+                        } else {
+
+                        }
+                        actor.samplePhysicsState();
+                        physicsApi.triggerPhysicallyRelaxed(actor);
+                        this.protocolSystem.updateActorSendProtocol(actor, tpf);
                     }
                 } else {
-                    if (!actor.isHidden()) {
-                        actor.deescalateActivationState();
+                    if (actor.isHidden()) {
+                    //    actor.deescalateActivationState();
+                        if (initState !== actor.piece.getPieceActivationState()) {
+                        //    physicsApi.triggerPhysicallyActive(actor);
+                            actor.piece.updatePieceStates(tpf);
+                            actor.piece.updatePieceSlots(tpf, this);
+                            actor.samplePhysicsState();
+                            pieceUpdates++;
+                        }
+                        this.protocolSystem.updateActorSendProtocol(actor, tpf);
+                        physicsApi.triggerPhysicallyRelaxed(actor)
                     }
                 }
+
             }
+
+            if (initState === actor.piece.getPieceActivationState()) {
+                actor.piece.framesAtState ++;
+            } else {
+                actor.piece.framesAtState = 0;
+            }
+
         };
 
-        var activationStates = new Array(ENUMS.PieceActivationStates.ENGAGED + 1);
+        var activationStates = new Array(ENUMS.PieceActivationStates.ENGAGED + 3);
 
         var pieceUpdates;
-        var activateRange = 40;
-        var visibleRange = 250;
+        var activateRange = 20;
+        var visibleRange = 1650;
         var playerPos = new THREE.Vector3();
 
         SimulationState.prototype.updateState = function(tpf) {
 
-            for (var i = 0; i < activationStates.length; i++) {
+            for (var i = -2; i < activationStates.length-2; i++) {
                 activationStates[i] = 0;
             }
 
@@ -645,10 +695,10 @@ define([
             this.simulationMonitor.monitorKeyValue('FILTRD_OUT', this.activityFilter.countFilteredActors());
             this.simulationMonitor.monitorKeyValue('ACTORS', actors.length);
             this.simulationMonitor.monitorKeyValue('BODIES', status.bodyCount);
-            this.simulationMonitor.monitorKeyValue('ACTIVES', pieceUpdates);
+            this.simulationMonitor.monitorKeyValue('UPDATED', pieceUpdates);
             this.simulationMonitor.monitorKeyValue('ATTACKS', attacks.length);
 
-            for (var i = 0; i < activationStates.length; i++) {
+            for (var i = -2; i < activationStates.length-2; i++) {
                 this.simulationMonitor.monitorKeyValue('STATE_'+i, activationStates[i]);
             }
 

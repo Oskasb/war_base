@@ -352,12 +352,10 @@ define([
 
             aggDiff += tpf-exactTpf;
 
+
             GameAPI.tickControls(tpf, gameTime);
 
             this.pointerCursor.tick();
-
-            GameAPI.tickPlayerPiece(tpf, gameTime);
-
             sceneController.tickEffectPlayers(tpf);
 
             clearTimeout(tickTimeout);
@@ -365,8 +363,11 @@ define([
 
                 tickEvent.frame = frame;
                 tickEvent.tpf = tpf;
-
+                GameAPI.tickPlayerPiece(tpf, gameTime);
                 GameAPI.tickGame(tpf, gameTime);
+
+
+
 
             }, 0);
 

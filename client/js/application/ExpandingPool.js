@@ -28,7 +28,9 @@ define([],
         };
 
         ExpandingPool.prototype.getFromExpandingPool = function(callback) {
-            if (this.poolEntryCount()) {
+
+
+            if (this.poolEntryCount() > 3) {
                 callback(this.shiftEP());
             } else {
                 this.generatePoolEntry(callback)

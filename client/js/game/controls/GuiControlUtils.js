@@ -95,7 +95,7 @@ define([
 
             var piece = actors[i].piece;
 
-            if (piece.render && piece.getCombatStatus()) {
+            if (piece.getPieceActivationState() > ENUMS.PieceActivationStates.HIDDEN && piece.getCombatStatus()) {
                 calcVec.setFromMatrixPosition(actors[i].piece.rootObj3D.matrixWorld);
                 ThreeAPI.toScreenPosition(calcVec, calcVec2);
                 distsq = ThreeAPI.getSpatialFunctions().getHoverDistanceToPos(calcVec2, mouseState);
@@ -313,7 +313,12 @@ define([
 
         var activatedActor = guiControlState.getActivatedSelectionTarget();
 
+
         if (!activatedActor) return;
+
+        if (activatedActor.piece.getPieceActivationState() < ENUMS.PieceActivationStates.VISIBLE) {
+            guiControlState.setActivatedSelectionTarget(null);
+        }
 
         var config = target.config;
         var time = config.time;
@@ -330,7 +335,14 @@ define([
 
         var selectedActor = guiControlState.getSelectedTargetActor();
 
+
         if (!selectedActor) return;
+
+
+        if (selectedActor.piece.getPieceActivationState() < ENUMS.PieceActivationStates.VISIBLE) {
+            guiControlState.setSelectedTargetActor(null);
+        }
+
 
         var config = target.config;
         var time = config.time;
@@ -389,6 +401,13 @@ define([
             return;
         }
 
+        if (selectedActor.piece.getPieceActivationState() < ENUMS.PieceActivationStates.VISIBLE) {
+            guiControlState.setSelectedTargetActor(null);
+            state.setValueAtTime(0, config.release_time);
+            return;
+        }
+
+
         if (state.targetValue !== 1) {
             state.setValueAtTime(1, time);
 
@@ -405,6 +424,12 @@ define([
         var activatedActor = guiControlState.getActivatedSelectionTarget();
 
         if (!activatedActor) {
+            state.setValueAtTime(0, config.release_time);
+            return;
+        }
+
+        if (activatedActor.piece.getPieceActivationState() < ENUMS.PieceActivationStates.VISIBLE) {
+            guiControlState.setActivatedSelectionTarget(null);
             state.setValueAtTime(0, config.release_time);
             return;
         }

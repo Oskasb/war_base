@@ -134,6 +134,12 @@ define([
 
             if (activeSelection) {
 
+                if (activeSelection.piece.getPieceActivationState() < ENUMS.PieceActivationStates.ENGAGED) {
+                    guiElement.setTarget(null);
+                    guiElement.disableGuiElement();
+                    return;
+                }
+
                 if (!activeSelection.piece.render) {
                     guiElement.setTarget(null);
                     guiElement.disableGuiElement();

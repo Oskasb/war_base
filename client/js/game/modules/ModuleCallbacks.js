@@ -104,38 +104,27 @@ define([
 
         ModuleCallbacks.call_notify_actor_active = function(module, target, enable) {
             var value = target.state.buffer[0];
-            var piece;
-
-            if (value) {
-
-             //   console.log("activate be enabled here...")
-
-                piece = enable();
+            var piece = enable();
                 if (!piece) {
                     enable(true);
                     piece = enable();
-            //        piece.setDirtyCount(5);
-
                 }
-                if (piece.updateKey !== value) {
-                    piece.updatePieceStates(0.0);
-                //    piece.updatePieceSlots(0.0, false);
-                    piece.determineVisibility();
-                    piece.updatePieceVisuals(0.0);
+
+                piece.setPieceActivationState(value);
+
+                if (piece.getPieceActivationState() !== value) {
+
+
+                    if (value < ENUMS.PieceActivationStates.VISIBLE) {
+
+                    //    piece.setRendereable(true);
+                    //    piece.updateGamePiece(0);
+                    //    piece.setRendereable(false);
+                    }
+
                     piece.setDirtyCount(2);
                 }
-                piece.updateKey = value;
 
-            } else {
-                piece = enable();
-                if (piece) {
-                //    piece.setRendereable(false);
-                //    enable(false);
-                } else {
-                    console.log("should be enabled here...")
-                }
-
-            }
 
         };
 

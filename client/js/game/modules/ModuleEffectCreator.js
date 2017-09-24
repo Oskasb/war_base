@@ -109,9 +109,10 @@ define([
                 var fx = PipelineAPI.readCachedConfigKey('MODULE_EFFECTS', remove_effect);
             }
 
-            calcVec.setFromMatrixPosition( model.matrixWorld );
-        //    model.getWorldQuaternion(calcQuat);
-            calcQuat.setFromRotationMatrix(model.matrixWorld);
+        //    calcVec.setFromMatrixPosition( model.matrixWorld );
+            model.getWorldPosition(calcVec);
+            model.getWorldQuaternion(calcQuat);
+        //    calcQuat.setFromRotationMatrix(model.matrixWorld);
 
 
             if (!calcVec.x) return;
@@ -159,8 +160,11 @@ define([
                 return;
             }
 
-            calcVec.setFromMatrixPosition( model.matrixWorld );
-            calcQuat.setFromRotationMatrix(model.matrixWorld);
+        //    calcVec.setFromMatrixPosition( model.matrixWorld );
+        //    calcQuat.setFromRotationMatrix(model.matrixWorld);
+
+            model.getWorldPosition(calcVec);
+            model.getWorldQuaternion(calcQuat);
 
 
             for (var i = 0; i < fx.length; i++) {
@@ -193,8 +197,11 @@ define([
             var fx = PipelineAPI.readCachedConfigKey('MODULE_EFFECTS', emit_effect);
 
 
-            calcVec.setFromMatrixPosition( model.matrixWorld );
-            calcQuat.setFromRotationMatrix(model.matrixWorld);
+        //    calcVec.setFromMatrixPosition( model.matrixWorld );
+        //    calcQuat.setFromRotationMatrix(model.matrixWorld);
+
+            model.getWorldPosition(calcVec);
+            model.getWorldQuaternion(calcQuat);
 
             if (!calcVec.x) return;
 
@@ -268,7 +275,10 @@ define([
             //    posFromTransform(pos, transform, calcVec);
             sizeFromTransform(transform, calcVec2);
 
-            calcVec.setFromMatrixPosition( model.matrixWorld );
+        //    calcVec.setFromMatrixPosition( model.matrixWorld );
+
+            model.getWorldPosition(calcVec);
+        //    model.getWorldQuaternion(calcQuat);
 
             var fx = PipelineAPI.readCachedConfigKey('MODULE_EFFECTS', effectId);
 
@@ -464,10 +474,13 @@ define([
 
         ModuleEffectCreator.updateGeometryEffect = function(fxArray, model, state, tpf) {
 
-            model.updateMatrixWorld(true);
-            calcVec.setFromMatrixPosition( model.matrixWorld);
+        //    model.updateMatrixWorld(true);
+        //    calcVec.setFromMatrixPosition( model.matrixWorld);
 
-            calcQuat.setFromRotationMatrix(model.matrixWorld);
+        //    calcQuat.setFromRotationMatrix(model.matrixWorld);
+
+            model.getWorldPosition(calcVec);
+            model.getWorldQuaternion(calcQuat);
 
             for (var i = 0; i < fxArray.length; i++) {
                 EffectsAPI.updateEffectPosition(fxArray[i], calcVec, state, 0);
@@ -478,8 +491,11 @@ define([
 
         ModuleEffectCreator.updateEffect = function(fxArray, model, state, tpf) {
 
-            model.updateMatrixWorld(true);
-            calcVec.setFromMatrixPosition( model.matrixWorld );
+        //    model.updateMatrixWorld(true);
+         //   calcVec.setFromMatrixPosition( model.matrixWorld );
+
+            model.getWorldPosition(calcVec);
+        //    model.getWorldQuaternion(calcQuat);
 
             for (var i = 0; i < fxArray.length; i++) {
                 EffectsAPI.updateEffectPosition(fxArray[i], calcVec, state, 0);

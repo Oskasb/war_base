@@ -19,13 +19,13 @@ if(typeof(ENUMS) === "undefined"){
     };
 
     ENUMS.PieceActivationStates = {
-        RELEASE:        0,
-        INACTIVE:       1,
-        HIDDEN:         2,
-        VISIBLE:        3,
-        RELEVANT:       4,
-        ACTIVE:         5,
-        ENGAGED:        6
+        RELEASE:        -2,
+        INACTIVE:       -1,
+        HIDDEN:         0,
+        VISIBLE:        1,
+        BRINKSMAN:      2,
+        ACTIVE:         3,
+        ENGAGED:        4
     };
 
     ENUMS.CombatStates = {

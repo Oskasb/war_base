@@ -160,6 +160,8 @@ define([
         }
 
         AmmoFunctions.prototype.applyForceToBodyWithMass = function(forceVec3, body, mass, randomize) {
+            body.activate();
+            body.forceActivationState(STATE.ACTIVE);
 
             var randomFactor = randomize || 0.01;
 
@@ -188,14 +190,40 @@ define([
         };
 
         AmmoFunctions.prototype.enableBodySimulation = function(body) {
-//
-        body.activate();
-            //           body.forceActivationState(STATE.ACTIVE);
+            body.activate();
+            body.forceActivationState(STATE.ACTIVE);
+        };
+
+
+        AmmoFunctions.prototype.relaxBodySimulation = function(body) {
+        //    body.deactivate();
+
+            if (!this.getBodyActiveState(body)) {
+            //    this.disableBodySimulation(body);
+                return;
+            }
+
+            body.forceActivationState(STATE.WANTS_DEACTIVATION);
+
+        //    return;
+            body.getLinearVelocity(VECTOR_AUX);
+
+            var speed = Math.abs(VECTOR_AUX.x()) + Math.abs(VECTOR_AUX.y()) + Math.abs(VECTOR_AUX.z());
+
+            if (speed > 2) return;
+
+            body.getAngularVelocity(VECTOR_AUX);
+
+            var spin = Math.abs(VECTOR_AUX.x()) + Math.abs(VECTOR_AUX.y()) + Math.abs(VECTOR_AUX.z());
+
+            if (spin+speed < 0.5) {
+                this.disableBodySimulation(body);
+            }
+
         };
 
         AmmoFunctions.prototype.disableBodySimulation = function(body) {
-
-                body.forceActivationState(STATE.DISABLE_SIMULATION);
+            body.forceActivationState(STATE.DISABLE_SIMULATION);
         };
 
         var hit = {
@@ -553,8 +581,8 @@ define([
             var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, geometry, localInertia);
 
             if (mass) {
-                rbInfo.set_m_linearSleepingThreshold(1.5);
-                rbInfo.set_m_angularSleepingThreshold(0.5);
+                rbInfo.set_m_linearSleepingThreshold(1.0);
+                rbInfo.set_m_angularSleepingThreshold(0.40);
             }
 
 

@@ -35,6 +35,8 @@ define([
 
             this.enable = true;
 
+            this.framesAtState = 0;
+
             this.combatStatus = null;
 
             var controlsEnable = function(bool) {
@@ -60,7 +62,6 @@ define([
             }.bind(this);
 
             this.pipeObj = new PipelineObject('PIECE_DATA', 'PIECES', applyPieceData, dataKey);
-            this.updateKey = 0.1;
         };
 
         GamePiece.prototype.setDirtyCount = function(count) {
@@ -282,6 +283,14 @@ define([
 
         GamePiece.prototype.determineVisibility = function() {
             if (!this.enable) return;
+
+            activationState = this.getPieceActivationState();
+
+            if (activationState < ENUMS.PieceActivationStates.VISIBLE) {
+                this.setRendereable(false);
+                return;
+            }
+
             var distance = ThreeAPI.distanceToCamera(this.rootObj3D.position);
 
             this.cameraDistance = distance;
@@ -366,20 +375,23 @@ define([
 
         GamePiece.prototype.updatePieceVisuals = function (tpf) {
             for (var i = 0; i < this.pieceSlots.length;i++) {
-                this.pieceSlots[i].updatePieceVisuals(tpf);
+                this.pieceSlots[i].updatePieceVisuals(this.render, tpf);
             }
         };
 
-        GamePiece.prototype.updateGamePiece = function(tpf, time, simulate) {
+        var activationState;
+        var dirtyState;
 
-            var dirtyState = this.testStatesDirtyStates();
+        GamePiece.prototype.updateGamePiece = function(tpf) {
+
+            activationState = this.getPieceActivationState();
+            dirtyState = this.testStatesDirtyStates();
 
             if (dirtyState) {
                 this.updatePieceStates(tpf);
-                this.updatePieceSlots(tpf, simulate);
+                this.updatePieceSlots(tpf);
                 this.updatePieceVisuals(tpf);
             }
-
 
         };
 

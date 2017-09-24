@@ -70,8 +70,8 @@ define([
             this.module.sampleModuleFrame(render, enable, tpf, simulate);
         };
 
-        PieceSlot.prototype.updatePieceVisuals = function (tpf) {
-            this.module.updateVisualState(tpf);
+        PieceSlot.prototype.updatePieceVisuals = function (render, tpf) {
+            this.module.updateVisualState(render, tpf);
         };
 
         PieceSlot.prototype.removePieceSlot = function () {

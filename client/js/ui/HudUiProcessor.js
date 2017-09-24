@@ -168,6 +168,12 @@ define([
                     return;
                 }
 
+                if (activeSelection.piece.getPieceActivationState() < ENUMS.PieceActivationStates.VISIBLE) {
+                    guiElement.setTarget(null);
+                    guiElement.disableGuiElement();
+                    return;
+                }
+
                 if (!guiElement.enabled) {
                     guiElement.enableGuiElement();
                 }

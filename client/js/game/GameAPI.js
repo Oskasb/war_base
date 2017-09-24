@@ -212,12 +212,10 @@ define([
             if (activeCameraControl && activeControl) {
                 activeCameraControl.updateCameraCopntrol(activeControl, controlledActor, tpf);
             }
-
+            guiRenderer.requestCameraMatrixUpdate();
         };
 
-        GameAPI.tickPlayerPiece = function(tpf, time) {
-
-            guiRenderer.requestCameraMatrixUpdate();
+        GameAPI.tickPlayerPiece = function(tpf) {
 
             for (var i = 0; i < pieces.length; i++) {
                 pieces[i].determineVisibility();
@@ -226,9 +224,13 @@ define([
             guiRenderer.updateGuiRenderer();
 
             if (controlledActor) {
-                controlledActor.piece.determineVisibility();
-                controlledActor.piece.updateGamePiece(tpf, time);
                 controlledActor.piece.setRendereable(true);
+            //    controlledActor.piece.determineVisibility();
+
+            //    controlledActor.piece.updateGamePiece(tpf);
+                controlledActor.piece.updatePieceStates(tpf);
+                controlledActor.piece.updatePieceSlots(tpf);
+                controlledActor.piece.updatePieceVisuals(tpf);
             }
         };
 

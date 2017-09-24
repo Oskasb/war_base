@@ -159,7 +159,7 @@ define([
                     return false;
                 }
             }
-            return this.isVisible;
+            return true;
         };
 
         VisualModule.prototype.addModuleDebugBox = function() {
@@ -221,15 +221,19 @@ define([
             this.parentObject3d = parentObject3d;
         };
 
-        VisualModule.prototype.removeVisualModule = function() {
+        VisualModule.prototype.removeVisualEffects = function() {
             for (var i = 0; i < this.effectTargets.length; i++) {
                 this.effectTargets[i].removeEffectTarget();
                 if (this.effectTargets[i].effectArray.length) {
                     cbs.remove_module_static_effect(this.effectTargets[i].effectArray)
                 }
 
-            //    this.processVisualEffect(this.effectTargets[i], 0);
+                //    this.processVisualEffect(this.effectTargets[i], 0);
             };
+        };
+
+        VisualModule.prototype.removeVisualModule = function() {
+            this.removeVisualEffects();
 
             if (this.model) {
              //   this.rootObj.remove(this.model);
@@ -248,8 +252,14 @@ define([
             cbs[target.config.callback](this, target, tpf);
         };
 
-        VisualModule.prototype.updateVisualModule = function(tpf) {
-            if (!this.checkVisibility()) return;
+        VisualModule.prototype.updateVisualModule = function(render, tpf) {
+            if (!render) {
+            //    return;
+            }
+
+            if (!this.checkVisibility()) {
+                return;
+            }
             for (var i = 0; i < this.effectTargets.length; i++) {
                 this.processVisualEffect(this.effectTargets[i], tpf);
             }

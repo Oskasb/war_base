@@ -129,7 +129,7 @@ define([],
         PieceState.prototype.updateStateProgress = function (tpf) {
             this.stateProgress += tpf;
 
-            if (this.stateProgress < this.targetTime) {
+            if (this.stateProgress < this.targetTime && Math.abs(this.startValue-this.targetValue) < 10) {
                 var frac = MATH.calcFraction(0, this.targetTime, this.stateProgress);
                 this.progressDelta = MATH.calcFraction(0, this.targetTime, tpf);
                 this.setValue(MATH.interpolateFromTo(this.startValue, this.targetValue, frac));
