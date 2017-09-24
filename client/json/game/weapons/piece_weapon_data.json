@@ -111,7 +111,7 @@
                 "armor_penetration":5,
                 "armor_shred":1,
                 "armor_shred_probability":0.01,
-                "impact_force":0.15,
+                "impact_force":0.17,
                 "area_damage_range":0,
                 "area_damage_factor":0
               }

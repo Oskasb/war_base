@@ -32,11 +32,11 @@
             {
               "patch_content":[
 
-                {"id":"actor_enemy_oomba",                "probability":1.0 , "slope":{"min":0.0,   "max":0.214} , "elevation":{"min": 2,    "max":55}},
-                {"id":"actor_prop_creative_crate_medium", "probability":1.0 , "slope":{"min":0.0,   "max":0.014} , "elevation":{"min": 2,    "max":55}},
+                {"id":"actor_enemy_oomba",                "probability":0.4 , "slope":{"min":0.0,   "max":0.214} , "elevation":{"min": 2,    "max":55}},
+                {"id":"actor_prop_creative_crate_medium", "probability":0.6 , "slope":{"min":0.0,   "max":0.014} , "elevation":{"min": 2,    "max":55}},
                 {"id":"actor_shrub_medium",               "probability":0.4 , "slope":{"min":-0.001,"max":0.001} , "elevation":{"min": 6,    "max":38}},
-                {"id":"actor_prop_oil_drum",              "probability":0.3,  "slope":{"min":0.001, "max":0.01} , "elevation":{"min":6,    "max":35}},
-                {"id":"actor_prop_wooden_crate_large",    "probability":0.5 , "slope":{"min":0.001, "max":0.12} , "elevation":{"min":4,    "max":35}},
+                {"id":"actor_prop_oil_drum",              "probability":0.1,  "slope":{"min":0.001, "max":0.01} , "elevation":{"min":6,    "max":35}},
+                {"id":"actor_prop_wooden_crate_large",    "probability":0.2 , "slope":{"min":0.001, "max":0.12} , "elevation":{"min":4,    "max":35}},
                 {"id":"actor_tree_3_small_instanced",     "probability":0.3 , "slope":{"min":-0.001,"max":0.34} , "elevation":{"min": 6,    "max":38}}
               ]
             }

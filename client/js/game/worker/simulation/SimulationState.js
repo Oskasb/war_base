@@ -627,7 +627,7 @@ define([
         var activationStates = new Array(ENUMS.PieceActivationStates.ENGAGED + 3);
 
         var pieceUpdates;
-        var activateRange = 20;
+        var activateRange = 45;
         var visibleRange = 1650;
         var playerPos = new THREE.Vector3();
 
