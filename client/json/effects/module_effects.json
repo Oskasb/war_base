@@ -132,7 +132,13 @@
         ]
       }
     ],
-
+    "wooden_crate_module_fx":[
+      {
+        "particle_effects":[
+          {"id":"crate_wood_geometry_effect"}
+        ]
+      }
+    ],
     "creative_crate_module_fx":[
       {
         "particle_effects":[
@@ -150,6 +156,18 @@
       {
         "particle_effects":[
           {"id":"model_geometry_tree_3_small_effect"}
+        ]
+      }
+    ],     "model_geometry_enemy_oomba_module_fx":[
+      {
+        "particle_effects":[
+          {"id":"model_geometry_enemy_oomba_effect"}
+        ]
+      }
+    ],    "model_geometry_swivel_cannon_20mm_module_fx":[
+      {
+        "particle_effects":[
+          {"id":"model_geometry_swivel_cannon_20mm_effect"}
         ]
       }
     ],     "model_geometry_tree_3_combined_module_fx":[

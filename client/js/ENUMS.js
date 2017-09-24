@@ -18,6 +18,13 @@ if(typeof(ENUMS) === "undefined"){
         PLAYER_REQUESTED:'PLAYER_REQUESTED'
     };
 
+
+    ENUMS.PieceAlignments = {
+        NEUTRAL:        0,
+        GOOD:           1,
+        EVIL:           2
+    };
+
     ENUMS.PieceActivationStates = {
         RELEASE:        -2,
         INACTIVE:       -1,

@@ -1,0 +1,15 @@
+[{
+  "PIECE_DATA":{
+    "ACTORS":[
+      {
+        "id":"actor_enemy_oomba",
+        "data":{
+          "piece":"piece_enemy_oomba",
+          "physics":"physical_oomba",
+          "alignment":"EVIL",
+          "state_map":[]
+        }
+      }
+    ]
+  }
+}]

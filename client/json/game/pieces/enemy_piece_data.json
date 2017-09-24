@@ -1,0 +1,27 @@
+[{
+  "PIECE_DATA":{
+    "PIECES":[
+      {
+        "id":"piece_enemy_oomba",
+        "data":{
+          "root_slot":"piece_root",
+          "combat_stats":{
+            "health":12,
+            "armor":4
+          },
+          "slots":[
+            {"slot":"piece_root",   "module":"module_enemy_oomba"   },
+            {"slot":"combat",       "module":"combat_module"         },
+            {"slot":"turret",       "module":"module_swivel_cannon_20mm" },
+            {"slot":"muzzle",       "module":"module_muzzle"}
+          ],
+          "attachments":[
+            {"slot":"piece_root",   "ap":"ap_turret",     "child":"turret" },
+            {"slot":"piece_root",   "ap":"ap_combat",     "child":"combat" },
+            {"slot":"turret",       "ap":"ap_muzzle",     "child":"muzzle"}
+          ]
+        }
+      }
+    ]
+  }
+}]

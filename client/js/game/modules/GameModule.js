@@ -248,19 +248,18 @@ define([
 
 
             if (simState) {
+                enable(true);
                 var target;
                 for (i = 0; i < this.turrets.length; i++) {
-                    target = this.turrets[i].
-                    updateTurretState(simState, this, tpf)
+                    target = this.turrets[i].updateTurretState(enable(), simState, this, tpf)
                 }
 
                 for (i = 0; i < this.weapons.length; i++) {
-                    enable(true);
+
                     this.weapons[i].updateWeaponState(enable(), target, simState, this, tpf)
                 }
 
                 for (i = 0; i < this.combatModules.length; i++) {
-                    enable(true);
                     this.combatModules[i].updateCombatState(enable(), simState, this, tpf)
                 }
 

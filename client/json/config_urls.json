@@ -34,21 +34,25 @@
       "game/levels/level_data.json",
       "game/levels/level_population_data.json",
 
-
+      "game/actors/actor_compounds_data.json",
+      "game/actors/enemy_actor_data.json",
       "game/actors/player_actor_data.json",
       "game/actors/prop_actor_data.json",
       "game/actors/nature_actor_data.json",
-      "game/actors/actor_compounds_data.json",
+
       "game/actors/prop_actor_static_data.json",
       "game/actors/terrain_actor_data.json",
 
       "game/controls/gui_control_data.json",
 
-      "game/pieces/terrain_piece_data.json",
+
+      "game/pieces/control_piece_data.json",
+      "game/pieces/enemy_piece_data.json",
+      "game/pieces/nature_piece_data.json",
       "game/pieces/player_piece_data.json",
       "game/pieces/prop_piece_data.json",
-      "game/pieces/control_piece_data.json",
-      "game/pieces/nature_piece_data.json",
+      "game/pieces/terrain_piece_data.json",
+
 
       "game/physics/grid_data.json",
       "game/physics/terrain_physics_data.json",

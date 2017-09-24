@@ -20,6 +20,13 @@
       },
 
       {
+        "id":"channel_visual_module_wooden_crate_2m",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_wooden_crate_2m"}
+          ]
+        }
+      },      {
         "id":"channel_visual_creative_crate_medium",
         "data":{
           "targets":[
@@ -48,6 +55,22 @@
         "data":{
           "targets":[
             {"targetid":"target_visual_module_tree_2_trunk"}
+          ]
+        }
+      },
+      {
+        "id":"channel_visual_module_enemy_oomba",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_enemy_oomba"}
+          ]
+        }
+      },
+      {
+        "id":"channel_visual_module_swivel_cannon_20mm",
+        "data":{
+          "targets":[
+            {"targetid":"target_visual_module_swivel_cannon_20mm"}
           ]
         }
       }

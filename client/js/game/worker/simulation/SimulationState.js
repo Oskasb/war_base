@@ -3,6 +3,7 @@
 define([
         'PipelineAPI',
         'worker/simulation/SimulationOperations',
+        'worker/simulation/AggroProcessor',
         'ThreeAPI',
         'worker/physics/AmmoAPI',
         'worker/terrain/TerrainFunctions',
@@ -13,6 +14,7 @@ define([
     function(
         PipelineAPI,
         SimulationOperations,
+        AggroProcessor,
         ThreeAPI,
         AmmoAPI,
         TerrainFunctions,
@@ -39,6 +41,7 @@ define([
             physicsApi = new AmmoAPI();
             this.terrainFunctions = new TerrainFunctions(physicsApi);
             this.simulationOperations = new SimulationOperations(this.terrainFunctions);
+            this.aggroProcessor = new AggroProcessor();
 
             this.activityFilter = new ActivityFilter();
 
@@ -407,28 +410,8 @@ define([
         };
 
 
-        SimulationState.prototype.selectNearbyHostileActor = function(position) {
-
-            var outOfRange = 999;
-
-            var nearestDistance = outOfRange;
-            var distance = nearestDistance;
-
-            var selectedTarget = null;
-
-            for (var i = 0; i < actors.length; i++) {
-
-                if (actors[i].config.alignment === 'hostile' && actors[i].isVisible()) {
-
-                    distance = Math.sqrt(actors[i].piece.getPos().distanceToSquared(position));
-                    if (distance < nearestDistance) {
-                        nearestDistance = distance;
-                        selectedTarget = actors[i];
-                    }
-                }
-            }
-
-            return selectedTarget;
+        SimulationState.prototype.selectNearbyHostileActor = function(piece, position) {
+            return this.aggroProcessor.selectNearbyOpponent(piece, actors, position)
         };
 
 

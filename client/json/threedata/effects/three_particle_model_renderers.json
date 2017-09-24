@@ -71,6 +71,36 @@
             "depthWrite":true,
             "depthTest":true
           }
+        },
+        {
+          "id":"gpu_spatial_enemy_oomba_renderer",
+          "material_id":"gpu_main_atlas_spatial_material",
+          "particle_pool":25,
+          "particle_geometry":{
+            "model_id":"model_enemy_oomba"
+          },
+          "material_options":{
+            "blending":"NoBlending",
+            "transparent":false,
+            "alphaTest":0.95,
+            "depthWrite":true,
+            "depthTest":true
+          }
+        },
+        {
+          "id":"gpu_spatial_swivel_cannon_20mm_renderer",
+          "material_id":"gpu_main_atlas_spatial_material",
+          "particle_pool":25,
+          "particle_geometry":{
+            "model_id":"model_swivel_cannon_20mm"
+          },
+          "material_options":{
+            "blending":"NoBlending",
+            "transparent":false,
+            "alphaTest":0.95,
+            "depthWrite":true,
+            "depthTest":true
+          }
         }
       ]
     }

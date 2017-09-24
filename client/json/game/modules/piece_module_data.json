@@ -1,6 +1,75 @@
 [{
   "MODULE_DATA":{
     "MODULES":[
+
+      {
+        "id":"module_enemy_oomba",
+        "data":{
+          "transform":{
+            "rot":  [0,      0,    0],
+            "pos":  [0,      0,    0],
+            "size": [2.0,    2,    2]
+          },
+          "channels":[
+            {"channelid":"channel_actor_active",   "stateid": "state_active"},
+            {"channelid":"channel_pos_x",  "stateid": "state_pos_x"},
+            {"channelid":"channel_pos_y",  "stateid": "state_pos_y"},
+            {"channelid":"channel_pos_z",  "stateid": "state_pos_z"},
+            {"channelid":"channel_quat_x", "stateid": "quat_state_x"},
+            {"channelid":"channel_quat_y", "stateid": "quat_state_y"},
+            {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
+            {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
+            {"channelid":"fire_channel",   "stateid": "fire_state"},
+            {"channelid":"channel_visual_module_enemy_oomba",   "stateid": "state_active"}
+          ],
+          "attachment_points":[
+            {"id":"ap_combat",
+              "transform":{
+                "rot":[  0,    0,    0],
+                "pos":[  0,    0,    0]
+              }
+            },
+            {"id":"ap_turret",
+              "transform":{
+                "rot":[  0,    0,    0],
+                "pos":[ -0.44,  1.55,    0]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id":"module_swivel_cannon_20mm",
+        "data":{
+          "transform":{
+            "rot":  [0,      0,    0],
+            "pos":  [0,      0,    0],
+            "size": [4.0,    2,    4]
+          },
+          "turrets":["turret_swivel_gun"],
+          "weapons":["weapon_swivel_gun"],
+          "channels":[
+            {"channelid":"channel_trigger",             "stateid": "command_swivel_trigger"},
+            {"channelid":"channel_aim_yaw",             "stateid": "aim_swivel_yaw"},
+            {"channelid":"channel_aim_pitch",           "stateid": "aim_swivel_pitch"},
+            {"channelid":"channel_quat_x",              "stateid": "quat_swivel_x"},
+            {"channelid":"channel_quat_y",              "stateid": "quat_swivel_y"},
+            {"channelid":"channel_quat_w",              "stateid": "quat_swivel_w"},
+            {"channelid":"channel_bullet_activate",     "stateid": "command_bullet_activate" },
+            {"channelid":"channel_visual_module_swivel_cannon_20mm",     "stateid": "state_active"}
+
+          ],
+          "attachment_points":[
+            {"id":"ap_muzzle",
+              "transform":{
+                "rot":[0,    0,    0],
+                "pos":[0,  0.32, 2.8]
+              }
+            }
+          ]
+        }
+      },
+
       {
         "id":"sherman_hull_module",
         "data":{
@@ -151,7 +220,8 @@
             {"channelid":"channel_quat_x",              "stateid": "quat_swivel_x"},
             {"channelid":"channel_quat_y",              "stateid": "quat_swivel_y"},
             {"channelid":"channel_quat_w",              "stateid": "quat_swivel_w"},
-            {"channelid":"channel_bullet_activate",     "stateid": "command_bullet_activate" }
+            {"channelid":"channel_bullet_activate",     "stateid": "command_bullet_activate" },
+            {"channelid":"channel_visual_module_swivel_cannon_20mm",     "stateid": "state_active"}
 
           ],
           "attachment_points":[

@@ -4,6 +4,8 @@
 
       "THREE":[
 
+
+
         {
           "id":"creative_crate_particle",
           "sprite_key":"ATLAS",
@@ -16,6 +18,24 @@
             "diffusionCurve":"zeroOneZero",
             "scaleCurve":"fullWhite",
             "size":{"value":2.5, "min":0, "max":0.0001},
+            "velocityDiffusion":0.00001,
+            "accelerationDiffusion":0.00001,
+            "colorDiffusion":0.05,
+            "velocityFactor":1
+          }
+        },
+        {
+          "id":"wooden_crate_particle",
+          "sprite_key":"ATLAS",
+          "sprite_id":"crate_wood",
+          "config":{
+            "lifeTime":{"min":1,"max":1},
+            "positionSpread":{"x":0.001, "y":0.001, "z":0.001},
+            "colorCurve":"fullWhite",
+            "alphaCurve":"quickIn",
+            "diffusionCurve":"zeroOneZero",
+            "scaleCurve":"fullWhite",
+            "size":{"value":5.0, "min":0, "max":0.0001},
             "velocityDiffusion":0.00001,
             "accelerationDiffusion":0.00001,
             "colorDiffusion":0.05,

@@ -26,6 +26,35 @@
         }
       },
       {
+        "id":"physical_wooden_crate_2m",
+        "data":{
+          "shape":"primitive",
+          "ground_influence":{
+            "elevation":0,
+            "normal_factor":1
+          },
+          "rigid_body":{
+            "shape":"Box",
+            "state":"WANTS_DEACTIVATION",
+            "args":[5, 5, 5],
+            "angular_factor":[1,  1, 1],
+            "linear_factor":[1, 1, 1],
+            "friction":0.45,
+            "restitution":0.5,
+            "damping":0.52,
+            "mass":2000
+          },
+          "state_map":[
+            {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
+            {"param":"position",  "axis":"y",   "stateid": "state_pos_y"},
+            {"param":"position",  "axis":"z",   "stateid": "state_pos_z"},
+            {"param":"quaternion","axis":"x",   "stateid": "quat_state_x"},
+            {"param":"quaternion","axis":"y",   "stateid": "quat_state_y"},
+            {"param":"quaternion","axis":"z",   "stateid": "quat_state_z"},
+            {"param":"quaternion","axis":"w",   "stateid": "quat_state_w"}
+          ]
+        }
+      },      {
         "id":"physical_creative_crate_medium",
         "data":{
           "shape":"primitive",
@@ -73,6 +102,30 @@
             "restitution":0.5,
             "damping":2.22,
             "mass":0
+          },
+          "state_map":[
+            {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},
+            {"param":"position",  "axis":"y",   "stateid": "state_pos_y"},
+            {"param":"position",  "axis":"z",   "stateid": "state_pos_z"},
+            {"param":"quaternion","axis":"x",   "stateid": "quat_state_x"},
+            {"param":"quaternion","axis":"y",   "stateid": "quat_state_y"},
+            {"param":"quaternion","axis":"z",   "stateid": "quat_state_z"},
+            {"param":"quaternion","axis":"w",   "stateid": "quat_state_w"}
+          ]
+        }
+      },
+      {
+        "id":"physical_oomba",
+        "data":{
+          "shape":"primitive",
+          "rigid_body":{
+            "state":"WANTS_DEACTIVATION",
+            "shape":"Cylinder",
+            "args":[1.5, 0.5, 1.5],
+            "friction":0.3,
+            "restitution":0.6,
+            "damping":0.35,
+            "mass":25000
           },
           "state_map":[
             {"param":"position",  "axis":"x",   "stateid": "state_pos_x"},

@@ -178,15 +178,15 @@ define([
 
 
 
-        TurretModule.prototype.callTarget = function(callKey, simulationState, module) {
+        TurretModule.prototype.callTarget = function(sourcePiece, callKey, simulationState, module) {
             simState = simulationState;
 
-            var selectNearbyHostileActor = function(module) {
+            var selectNearbyHostileActor = function(piece, module) {
                 module.getObjec3D().getWorldPosition(tempObj3D.position);
-                return simState.selectNearbyHostileActor(tempObj3D.position)
+                return simState.selectNearbyHostileActor(piece, tempObj3D.position)
             };
 
-            var getSelectionActivatedActor = function( module) {
+            var getSelectionActivatedActor = function(piece,  module) {
                 return simState.getSelectionActivatedActor(tempObj3D.position)
             };
 
@@ -195,20 +195,20 @@ define([
                 nearest_hostile:selectNearbyHostileActor
             };
 
-            return calls[callKey](module)
+            return calls[callKey](sourcePiece, module)
         };
 
-        TurretModule.prototype.processTargetting = function(simulationState, module) {
+        TurretModule.prototype.processTargetting = function(sourcePiece, simulationState, module) {
 
-             return this.callTarget(this.targetting, simulationState, module);
+             return this.callTarget(sourcePiece, this.targetting, simulationState, module);
 
         };
 
 
-        TurretModule.prototype.updateTurretState = function(simulationState, module, tpf) {
+        TurretModule.prototype.updateTurretState = function(sourcePiece, simulationState, module, tpf) {
             if (!this.config) return;
 
-            var target = this.processTargetting(simulationState, module);
+            var target = this.processTargetting(sourcePiece, simulationState, module);
 
             g = simulationState.getGravityConstant();
 

@@ -307,7 +307,21 @@
           "scale":0.01
         }
       },
-
+      {
+        "id":"target_visual_module_enemy_oomba",
+        "data":{
+          "callback":"module_geometry_static_effect",
+          "module_effect":"model_geometry_enemy_oomba_module_fx",
+          "scale":0.01
+        }
+      },      {
+        "id":"target_visual_module_swivel_cannon_20mm",
+        "data":{
+          "callback":"module_geometry_static_effect",
+          "module_effect":"model_geometry_swivel_cannon_20mm_module_fx",
+          "scale":0.01
+        }
+      },
       {
         "id":"target_visual_module_tree_2_trunk",
         "data":{
@@ -316,7 +330,14 @@
           "scale":0.01
         }
       },
-
+      {
+        "id":"target_visual_module_wooden_crate_2m",
+        "data":{
+          "callback":"module_geometry_static_effect",
+          "module_effect":"wooden_crate_module_fx",
+          "scale":0.01
+        }
+      },
       {
         "id":"target_visual_module_creative_crate_medium",
         "data":{
