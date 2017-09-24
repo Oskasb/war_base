@@ -188,9 +188,9 @@ define([
         };
 
         AmmoFunctions.prototype.enableBodySimulation = function(body) {
-
-            body.activate();
-        //    body.forceActivationState(STATE.ACTIVE);
+//
+        body.activate();
+            //           body.forceActivationState(STATE.ACTIVE);
         };
 
         AmmoFunctions.prototype.disableBodySimulation = function(body) {
@@ -553,8 +553,8 @@ define([
             var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, geometry, localInertia);
 
             if (mass) {
-                rbInfo.set_m_linearSleepingThreshold(1.2);
-                rbInfo.set_m_angularSleepingThreshold(0.7);
+                rbInfo.set_m_linearSleepingThreshold(1.5);
+                rbInfo.set_m_angularSleepingThreshold(0.5);
             }
 
 

@@ -30,6 +30,7 @@ define([
             this.frustumCoords = new THREE.Vector3();
             this.cameraDistance = 0;
             this.pieceStates = [];
+            this.pieceActivationState = ENUMS.PieceActivationStates.VISIBLE;
             this.rootObj3D = ThreeAPI.createRootObject();
 
             this.enable = true;
@@ -232,6 +233,23 @@ define([
 
         GamePiece.prototype.getPos = function() {
             return this.rootObj3D.position;
+        };
+
+        GamePiece.prototype.getPieceActivationState = function() {
+            return this.pieceActivationState;
+        };
+
+        var activateStateId = 'state_active';
+
+        GamePiece.prototype.setPieceActivationState = function(pieceActivationState) {
+
+            var actorActiveState = this.getPieceStateByStateId(activateStateId);
+
+            if (actorActiveState) {
+                actorActiveState.setBufferValue(pieceActivationState);
+            }
+
+            this.pieceActivationState = pieceActivationState;
         };
 
         GamePiece.prototype.getQuat = function () {

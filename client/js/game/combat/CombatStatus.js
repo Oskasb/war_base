@@ -173,7 +173,7 @@ define([],
 
         CombatStatus.prototype.tickCombatStatus = function() {
 
-            if (this.ticksAtState > 120) {
+            if (this.ticksAtState > 40) {
 
                 if (this.combatState < ENUMS.CombatStates.DISABLED) {
                     this.deescalateCombatState();

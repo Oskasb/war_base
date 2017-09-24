@@ -92,8 +92,8 @@ define([
             //    console.log("hit: ", this.hitNormal.data[0], this.hitNormal.data[1], this.hitNormal.data[2]);
 
 
-            //    playerPiece.setState(GAME.ENUMS.PieceStates.BURST);
-            //    piece.setState(GAME.ENUMS.PieceStates.EXPLODE);
+            //    playerPiece.setState(GAME.ENUMS.PieceActivationStates.BURST);
+            //    piece.setState(GAME.ENUMS.PieceActivationStates.EXPLODE);
 
             //    piece.spatial.pos.setVec(this.hitPoint);
             //    piece.spatial.vel.setXYZ(0, 0, 0);
@@ -112,8 +112,8 @@ define([
 
             //   this.callbacks.broadcast(piece);
             //     this.callbacks.broadcast(playerPiece);
-            //     playerPiece.setState(GAME.ENUMS.PieceStates.MOVING);
-            piece.setState(ENUMS.PieceStates.TIME_OUT);
+            //     playerPiece.setState(GAME.ENUMS.PieceActivationStates.MOVING);
+            piece.setState(ENUMS.PieceActivationStates.TIME_OUT);
             piece.networkDirty = true;
         }
     };
@@ -142,8 +142,8 @@ define([
             }
             this.collissions.push(pieceA);
             this.collissions.push(pieceB);
-            pieceA.setState(ENUMS.PieceStates.BURST);
-            pieceB.setState(ENUMS.PieceStates.BURST);
+            pieceA.setState(ENUMS.PieceActivationStates.BURST);
+            pieceB.setState(ENUMS.PieceActivationStates.BURST);
 
 
             if (pieceA.spatial.getVelVec().getLength() > pieceB.spatial.getVelVec().getLength()) {
@@ -158,8 +158,8 @@ define([
 
             this.callbacks.broadcast(pieceA);
             this.callbacks.broadcast(pieceB);
-            pieceA.setState(ENUMS.PieceStates.TIME_OUT);
-            pieceB.setState(ENUMS.PieceStates.TIME_OUT);
+            pieceA.setState(ENUMS.PieceActivationStates.TIME_OUT);
+            pieceB.setState(ENUMS.PieceActivationStates.TIME_OUT);
         }
     };
 

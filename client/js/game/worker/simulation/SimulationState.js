@@ -98,7 +98,7 @@ define([
                 physicsApi.includeBody(actor.body);
             }
 
-            actor.setActive(true);
+            actor.setActivationState(ENUMS.PieceActivationStates.VISIBLE);
 
             if (actors.indexOf(actor) === -1) {
                 actors.push(actor);
@@ -236,7 +236,7 @@ define([
                     physicsApi.includeBody(actor.body);
                 }
 
-                actor.setActive(true);
+                actor.setActivationState(ENUMS.PieceActivationStates.VISIBLE);
 
                 if (actors.indexOf(actor) === -1) {
                     actors.push(actor);
@@ -325,7 +325,7 @@ define([
                 physicsApi.disableActorPhysics(actor);
             }
 
-            actor.setActive(false);
+            actor.setActivationState(ENUMS.PieceActivationStates.INACTIVE);
             ThreeAPI.removeFromScene(actor.piece.rootObj3D);
 
             this.detatchActor(actor);
@@ -531,14 +531,20 @@ define([
 
             if (combatStatus) {
                 combatStatus.tickCombatStatus();
-                this.activityFilter.notifyActorActiveState(actor, combatStatus.getCombatState());
+                if (combatStatus.getCombatState()) {
+                    actor.escalateActivationState();
+                    this.activityFilter.notifyActorActiveState(actor, true);
+                } else {
+                    if (actor.isEngaged()) {
+                        actor.deescalateActivationState();
+                        this.activityFilter.notifyActorActiveState(actor, true);
+                    }
+                }
             }
-
 
             if (!actor.body) {
                 return;
             }
-
 
 
             var range = this.checkActorInRangeFromPosition(actor, activateRange + actor.piece.boundingSize, playerPos);
@@ -548,19 +554,17 @@ define([
                 if (actor.getPhysicsBody()) {
                     physicsApi.triggerPhysicallyActive(actor)
                 }
-
             } else {
                 this.activityFilter.notifyActorActiveState(actor, physicsApi.isPhysicallyActive(actor));
             }
 
 
-
             if (this.activityFilter.getActorExpectActive(actor)) {
 
                 if (!actor.isActive()) {
-                    actor.setActive(true);
+                    actor.escalateActivationState();
                 };
-                pieceUpdates++
+                pieceUpdates++;
                 actor.piece.rootObj3D.updateMatrixWorld();
                 actor.piece.updateGamePiece(tpf, time, this);
                 actor.samplePhysicsState();
@@ -572,22 +576,41 @@ define([
                     //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
                 }
             } else {
-                actor.setActive(false);
+
+                var range = this.checkActorInRangeFromPosition(actor, visibleRange + actor.piece.boundingSize, playerPos);
+
+                if (range === actor) {
+                    if (!actor.isVisible()) {
+                        actor.escalateActivationState();
+                    }
+                } else {
+                    if (!actor.isHidden()) {
+                        actor.deescalateActivationState();
+                    }
+                }
             }
         };
 
+        var activationStates = new Array(ENUMS.PieceActivationStates.ENGAGED + 1);
+
         var pieceUpdates;
-        var activateRange = 125;
+        var activateRange = 40;
+        var visibleRange = 250;
         var playerPos = new THREE.Vector3();
 
         SimulationState.prototype.updateState = function(tpf) {
 
-            ThreeAPI.getScene().updateMatrixWorld();
+            for (var i = 0; i < activationStates.length; i++) {
+                activationStates[i] = 0;
+            }
 
             pieceUpdates = 0;
 
             if (levels.length) {
+
+                ThreeAPI.getScene().updateMatrixWorld();
                 time += tpf;
+
                 physicsApi.updatePhysicsSimulation(time);
 
                 if (this.controlledActorId) {
@@ -600,29 +623,38 @@ define([
 
                 for ( i = 0; i < actors.length; i++) {
 
-                //    if (actors[i].isActive() === false) {
+                    activationStates[actors[i].piece.pieceActivationState] ++;
 
-                //    } else {
-
+                    if (!actors[i].isInactive()) {
                         this.updateActorFrame(actors[i], tpf);
-
-                //    }
+                    }
                 }
             }
 
+            this.monitorWorkerStatus();
 
+            this.activityFilter.updateFramesInactive();
+
+        };
+
+
+        SimulationState.prototype.monitorWorkerStatus = function() {
 
             var status = physicsApi.fetchPhysicsStatus();
 
-            this.simulationMonitor.monitorKeyValue('FILTERED', this.activityFilter.countActiveActors());
+            this.simulationMonitor.monitorKeyValue('FILTRD_OUT', this.activityFilter.countFilteredActors());
             this.simulationMonitor.monitorKeyValue('ACTORS', actors.length);
             this.simulationMonitor.monitorKeyValue('BODIES', status.bodyCount);
             this.simulationMonitor.monitorKeyValue('ACTIVES', pieceUpdates);
             this.simulationMonitor.monitorKeyValue('ATTACKS', attacks.length);
 
-            postMessage(['executeMonitorWorker',  this.simulationMonitor.getMonitorValues()]);
+            for (var i = 0; i < activationStates.length; i++) {
+                this.simulationMonitor.monitorKeyValue('STATE_'+i, activationStates[i]);
+            }
 
+            postMessage(['executeMonitorWorker',  this.simulationMonitor.getMonitorValues()]);
         };
+
 
         return SimulationState;
 

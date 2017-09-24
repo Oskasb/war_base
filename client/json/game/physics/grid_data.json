@@ -8,14 +8,14 @@
           "visible_range":1000,
           "sector_size":200,
           "rows_n_columns":10,
-          "actor_count":8
+          "actor_count":1
         },
         {
           "name":"big",
           "visible_range":255,
-          "sector_size":55,
-          "rows_n_columns":7,
-          "actor_count":4
+          "sector_size":45,
+          "rows_n_columns":3,
+          "actor_count":1
         }
       ],
       "GRID_SYSTEMS":[
@@ -31,7 +31,12 @@
             },
             {
               "patch_content":[
-                {"id":"actor_prop_creative_crate_medium", "probability":0.5 , "slope":{"min":0.0,   "max":0.014} , "elevation":{"min": 2,    "max":55}},
+                {"id":"actor_prop_creative_crate_medium", "probability":1.0 , "slope":{"min":0.0,   "max":0.014} , "elevation":{"min": 2,    "max":55}}
+              ]
+            },
+            {
+              "patch_content":[
+                {"id":"actor_prop_creative_crate_medium", "probability":1.0 , "slope":{"min":0.0,   "max":0.014} , "elevation":{"min": 2,    "max":55}},
                 {"id":"actor_shrub_medium",               "probability":0.4 , "slope":{"min":-0.001, "max":0.001} , "elevation":{"min": 6,    "max":38}},
                 {"id":"actor_prop_oil_drum",              "probability":0.2,  "slope":{"min":0.001, "max":0.01} , "elevation":{"min":6,    "max":35}},
                 {"id":"actor_prop_box_crate",             "probability":0.01 ,"slope":{"min":0.001, "max":0.12} , "elevation":{"min":4,    "max":35}},

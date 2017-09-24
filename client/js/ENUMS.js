@@ -18,18 +18,14 @@ if(typeof(ENUMS) === "undefined"){
         PLAYER_REQUESTED:'PLAYER_REQUESTED'
     };
 
-    ENUMS.PieceStates = {
-        TIME_OUT:'TIME_OUT',
-        MOVING:'MOVING',
-        STATIC:'STATIC',
-        TELEPORT:'TELEPORT',
-        SPAWN:'SPAWN',
-        KILLED:'KILLED',
-        BURST:'BURST',
-        EXPLODE:'EXPLODE',
-        REMOVED:'REMOVED',
-        APPEAR:'APPEAR',
-        HIDE:'HIDE'
+    ENUMS.PieceActivationStates = {
+        RELEASE:        0,
+        INACTIVE:       1,
+        HIDDEN:         2,
+        VISIBLE:        3,
+        RELEVANT:       4,
+        ACTIVE:         5,
+        ENGAGED:        6
     };
 
     ENUMS.CombatStates = {

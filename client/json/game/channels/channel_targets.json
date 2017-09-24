@@ -57,7 +57,9 @@
         "data":{
           "callback":"call_inherit_activated_actor_states",
           "inherit_states":[
-            "state_pos_x", "state_pos_z", "state_pos_y"
+            "state_pos_x",
+            "state_pos_y",
+            "state_pos_z"
           ],
           "time":0.08
         }
@@ -67,7 +69,9 @@
         "data":{
           "callback":"call_inherit_selected_actor_states",
           "inherit_states":[
-            "state_pos_x", "state_pos_z", "state_pos_y"
+            "state_pos_x",
+            "state_pos_y",
+            "state_pos_z"
           ],
           "time":0.08
         }
@@ -77,7 +81,9 @@
         "data":{
           "callback":"call_inherit_hover_actor_states",
           "inherit_states":[
-            "state_pos_x", "state_pos_z", "state_pos_y"
+            "state_pos_x",
+            "state_pos_y",
+            "state_pos_z"
           ],
           "time":0.08
         }

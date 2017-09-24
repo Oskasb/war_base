@@ -119,10 +119,10 @@ define([
                 }
                 if (piece.updateKey !== value) {
                     piece.updatePieceStates(0.0);
-                //    piece.updatePieceSlots(0.01, false);
+                //    piece.updatePieceSlots(0.0, false);
                     piece.determineVisibility();
-                    piece.updatePieceVisuals(0.01);
-                    piece.setDirtyCount(1);
+                    piece.updatePieceVisuals(0.0);
+                    piece.setDirtyCount(2);
                 }
                 piece.updateKey = value;
 

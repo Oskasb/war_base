@@ -119,7 +119,8 @@ define(['worker/physics/AmmoFunctions'],
         };
 
         AmmoAPI.prototype.triggerPhysicallyActive = function(actor) {
-            actor.getPhysicsBody().activate();
+               return ammoFunctions.enableBodySimulation(actor.getPhysicsBody());
+            //  actor.getPhysicsBody().activate();
         };
 
         AmmoAPI.prototype.isPhysicallyActive = function(actor) {

@@ -55,11 +55,10 @@ define([
          }
 
          return true;
-
      };
 
 
-     ActivityFilter.prototype.countActiveActors = function() {
+     ActivityFilter.prototype.countFilteredActors = function() {
 
         var count = 0;
 
@@ -67,12 +66,17 @@ define([
             if (this.entries[key].framesInactive) {
                 count++;
             }
-
-            this.entries[key].framesInactive++
-
         }
 
         return count;
+     };
+
+     ActivityFilter.prototype.updateFramesInactive = function() {
+
+         for (var key in this.entries) {
+             this.entries[key].framesInactive++
+         }
+
      };
 
      return ActivityFilter;

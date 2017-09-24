@@ -17,7 +17,7 @@ define([
         PhysicalPiece
     ) {
 
-    var count = 0;
+        var count = 0;
 
         var GameActor = function(actorId, dataKey, ready) {
 
@@ -74,28 +74,67 @@ define([
             return this.body;
         };
 
-        var activateStateId = 'state_active';
+
         GameActor.prototype.setActive = function (bool) {
 
-            var actorActiveState = this.piece.getPieceStateByStateId(activateStateId);
-
-            if (actorActiveState) {
-                var value = 0;
-
-                if (bool) {
-                    value = 1 + Math.random();
+            if (bool) {
+                if (!this.isActive()) {
+                    this.piece.setPieceActivationState(ENUMS.PieceActivationStates.ACTIVE)
                 }
-
-                actorActiveState.setBufferValue(value);
             }
 
             this.active = bool;
         };
 
+        GameActor.prototype.setActivationState = function (pieceActivationState) {
+            this.piece.setPieceActivationState(pieceActivationState);
+        };
+
+        GameActor.prototype.escalateActivationState = function () {
+            this.piece.setPieceActivationState(
+                MATH.clamp(
+                    this.piece.getPieceActivationState() + 1,
+                    ENUMS.PieceActivationStates.RELEASE,
+                    ENUMS.PieceActivationStates.ENGAGED
+                )
+            );
+        };
+
+        GameActor.prototype.deescalateActivationState = function () {
+            this.piece.setPieceActivationState(
+                MATH.clamp(
+                    this.piece.getPieceActivationState() - 1,
+                    ENUMS.PieceActivationStates.RELEASE,
+                    ENUMS.PieceActivationStates.ENGAGED
+                )
+            );
+        };
+
+        GameActor.prototype.isReleased = function() {
+            return this.piece.getPieceActivationState() === ENUMS.PieceActivationStates.RELEASE;
+        };
+
+        GameActor.prototype.isInactive = function() {
+            return this.piece.getPieceActivationState() === ENUMS.PieceActivationStates.INACTIVE;
+        };
+
+        GameActor.prototype.isHidden = function() {
+            return this.piece.getPieceActivationState() === ENUMS.PieceActivationStates.HIDDEN;
+        };
+
+        GameActor.prototype.isVisible = function() {
+            return ENUMS.PieceActivationStates.VISIBLE < this.piece.getPieceActivationState() +1;
+        };
 
         GameActor.prototype.isActive = function() {
-            return this.active;
+            return ENUMS.PieceActivationStates.ACTIVE < this.piece.getPieceActivationState() +1;
         };
+
+        GameActor.prototype.isEngaged = function() {
+            return ENUMS.PieceActivationStates.ENGAGED  < this.piece.getPieceActivationState() +1;
+        };
+
+
 
         GameActor.prototype.addControlState = function (ctrlSys, controlStateId, targetStateId) {
             this.controlStateMap.addControlState(ctrlSys.piece.getPieceStateByStateId(controlStateId), this.piece.getPieceStateByStateId(targetStateId))
