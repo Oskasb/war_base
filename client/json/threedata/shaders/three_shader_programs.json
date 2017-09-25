@@ -405,17 +405,18 @@
 
 
           "vec3 sunTurned = sunLightDirection;",
-          "sunTurned.x = -sunLightDirection.x;",
-          "sunTurned.z = -sunLightDirection.z;",
+          "sunTurned.x = -sunLightDirection.z;",
+          "sunTurned.z = -sunLightDirection.x;",
           "vec3 lightNormal = sunTurned + 2.0 * cross( cross( sunTurned, orientation.xyz ) + orientation.w * sunTurned, orientation.xyz );",
-          "sunDir = sunLightColor * (0.5 + dot(normal, lightNormal ) * 0.4);",
+          "float intensity = 0.5 + dot(normal, lightNormal ) * 0.5;",
+          "sunDir = (sunLightColor * intensity * 0.5) + (sunLightColor * intensity * intensity * intensity * 0.5);",
 
-          "vColor.r = ambientLightColor.r*1.0 + sunLightColor.r*0.3 ;",
-          "vColor.g = ambientLightColor.g*1.0 + sunLightColor.g*0.3 ;",
-          "vColor.b = ambientLightColor.b*1.0 + sunLightColor.b*0.3 ;"
+          "vColor.r = ambientLightColor.r*(1.0 - intensity * 0.7) + sunDir.r * 0.05 * intensity * intensity * intensity * intensity * intensity * intensity ;",
+          "vColor.g = ambientLightColor.g*(1.0 - intensity * 0.7) + sunDir.g * 0.05 * intensity * intensity * intensity * intensity * intensity * intensity ;",
+          "vColor.b = ambientLightColor.b*(1.0 - intensity * 0.7) + sunDir.b * 0.05 * intensity * intensity * intensity * intensity * intensity * intensity ;"
         ],
-        "vertexFogExp2Verts":[
 
+        "vertexFogExp2Verts":[
           "fogDepth = -gl_Position.z*1.0;"
         ],
 
