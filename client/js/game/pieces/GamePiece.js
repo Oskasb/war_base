@@ -385,6 +385,11 @@ define([
         GamePiece.prototype.updateGamePiece = function(tpf) {
 
             activationState = this.getPieceActivationState();
+
+            if (!activationState) {
+
+            }
+
             dirtyState = this.testStatesDirtyStates();
 
             if (dirtyState) {

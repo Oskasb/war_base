@@ -242,9 +242,11 @@ define([
         };
 
 
-        ModuleEffectCreator.createModuleStaticEffect = function(fxArray, effectId, transform, scale) {
+        ModuleEffectCreator.createModuleStaticEffect = function(fxArray, effectId, transform, rootObj, scale) {
 
             sizeFromTransform(transform, calcVec2);
+
+            rootObj.getWorldPosition(calcVec);
 
             if (scale) {
                 calcVec2.multiplyScalar(scale);
@@ -376,7 +378,7 @@ define([
 
         ModuleEffectCreator.module_geometry_static_effect = function(visualModule, target, tpf) {
 
-            if (target.effectArray.length) {
+            if (target.effectArray.length && visualModule.render) {
                 ModuleEffectCreator.updateGeometryEffect(
                     target.effectArray,
                     visualModule.model || visualModule.rootObj,
@@ -384,12 +386,13 @@ define([
                     tpf
                 )
             } else {
-                if (target.state.getValue() !== 0) {
+                if (target.state.getValue() !== 0 && visualModule.render) {
 
                     target.effectArray =  ModuleEffectCreator.createModuleStaticEffect(
                         target.effectArray,
                         target.config.module_effect,
                         visualModule.module.transform,
+                        visualModule.model || visualModule.rootObj,
                         target.config.scale
                     )
 
@@ -397,7 +400,7 @@ define([
             }
 
             if (target.effectArray) {
-                if (target.state.getValue() === 0 || target.remove) {
+                if (target.state.getValue() === 0 || target.remove || !visualModule.render) {
                     ModuleEffectCreator.removeModuleStaticEffect(target.effectArray)
                 }
             }
@@ -407,7 +410,7 @@ define([
 
         ModuleEffectCreator.module_static_state_effect = function(visualModule, target, tpf) {
 
-            if (target.effectArray.length) {
+            if (target.effectArray.length && visualModule.render) {
                 ModuleEffectCreator.updateEffect(
                     target.effectArray,
                     visualModule.model || visualModule.rootObj,
@@ -415,12 +418,13 @@ define([
                     tpf
                 )
             } else {
-                if (target.state.getValue() !== 0) {
+                if (target.state.getValue() !== 0 && visualModule.render) {
 
                     target.effectArray =  ModuleEffectCreator.createModuleStaticEffect(
                         target.effectArray,
                         target.config.module_effect,
                         visualModule.module.transform,
+                        visualModule.model || visualModule.rootObj,
                         target.config.scale
                     )
 
@@ -428,7 +432,7 @@ define([
             }
 
             if (target.effectArray) {
-                if (target.state.getValue() === 0 || target.remove) {
+                if (target.state.getValue() === 0 || target.remove || !visualModule.render) {
                     ModuleEffectCreator.removeModuleStaticEffect(target.effectArray)
                 }
             }

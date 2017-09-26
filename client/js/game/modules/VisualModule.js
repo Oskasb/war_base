@@ -253,6 +253,10 @@ define([
         };
 
         VisualModule.prototype.updateVisualModule = function(render, tpf) {
+
+        //    if (Math.random() < 0.1) render = false;
+
+            this.render = render;
             if (!render) {
             //    return;
             }

@@ -187,7 +187,11 @@ define([
 
 
         ParticleRenderer.prototype.computerHighestRenderingIndex = function() {
-            this.renderHighestIndex = this.particles.length;
+            this.renderHighestIndex = this.poolSize;
+
+            if (!this.particles.length) {
+                return this.poolSize;
+            }
 
             for (var i = 0; i < this.particles.length; i++) {
                 if (this.particles[this.particles.length -i -1].particleIndex === this.renderHighestIndex) {
@@ -200,12 +204,12 @@ define([
 
 
         ParticleRenderer.prototype.returnParticle = function(particle) {
-            if (particle.particleIndex === this.renderHighestIndex) {
+        //    if (particle.particleIndex === this.renderHighestIndex) {
 
                 this.renderHighestIndex = this.computerHighestRenderingIndex();
 
                 this.particleBuffer.setInstancedCount( this.renderHighestIndex)
-            }
+        //    }
             this.particles.unshift(particle);
         };
 
