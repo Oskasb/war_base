@@ -17,7 +17,7 @@
           "id": "model_tree_1",
           "material": "main_atlas",
           "url": "./client/assets/models/trees/tree_1_combined",
-          "pool": 5,
+          "pool": 1,
           "transform": {
             "pos": [0, -8, 0],
             "rot": [0, 0, 0],
@@ -28,7 +28,7 @@
           "id": "model_tree_2_rooted",
           "material": "main_atlas",
           "url": "./client/assets/models/trees/tree_2_rooted",
-          "pool": 5,
+          "pool": 1,
           "transform": {
             "pos": [0, 0, 0],
             "rot": [0, 0, 0],
@@ -40,7 +40,7 @@
           "id": "model_tree_2_trunk",
           "material": "main_atlas",
           "url": "./client/assets/models/trees/tree_2_trunk",
-          "pool": 5,
+          "pool": 1,
           "transform": {
             "pos": [0,-5, 0],
             "rot": [0, 0, 0],
@@ -51,7 +51,7 @@
           "id": "model_tree_2_stump",
           "material": "main_atlas",
           "url": "./client/assets/models/trees/tree_2_stump",
-          "pool": 5,
+          "pool": 1,
           "transform": {
             "pos": [0, 0.5, 0],
             "rot": [0, 0, 0],
@@ -62,7 +62,7 @@
           "id": "model_tree_3_combined",
           "material": "main_atlas",
           "url": "./client/assets/models/trees/tree_3_combined",
-          "pool": 5,
+          "pool": 1,
           "transform": {
             "pos": [0, 0, 0],
             "rot": [0, 0, 0],
@@ -74,7 +74,7 @@
           "id": "tree_model_4",
           "material": "main_atlas",
           "url": "./client/assets/models/trees/tree_4_combined",
-          "pool": 5,
+          "pool": 1,
           "transform": {
             "pos": [0, -5, 0],
             "rot": [0, 0, 0],

@@ -45,27 +45,43 @@ define([
 
     CombatFeedbackFunctions.prototype.registerAttackStart = function(attackId, piece, slotIdx, weaponIdx, posVec, normalVec, moduleEffectId, bulletFxId) {
 
-        var slot = piece.getSlotByIndex(slotIdx);
-
-        var module = slot.getModule();
-
-        var weapons = module.weapons;
-
-        var weapon = weapons[weaponIdx];
-
-    //  var state = target.state;
-
-        weapon.getMuzzlePosition(module, calcVec);
-
-
-    //    weapon.applyWeaponTrigger(state, module, callFireWeapon);
-        ModuleEffectCreator.createTemporaryPassiveEffect(moduleEffectId, calcVec, normalVec);
-
         if (!activeAttacks[attackId]) {
             activeAttacks[attackId] = [];
         }
 
-        generateBullet(weapon, calcVec, normalVec, bulletFxId, activeAttacks[attackId]);
+        if (piece) {
+            var slot = piece.getSlotByIndex(slotIdx);
+
+            var module = slot.getModule();
+
+            var weapons = module.weapons;
+
+            var weapon = weapons[weaponIdx];
+
+            //  var state = target.state;
+
+            weapon.getMuzzlePosition(module, calcVec);
+
+            //    weapon.applyWeaponTrigger(state, module, callFireWeapon);
+            ModuleEffectCreator.createTemporaryPassiveEffect(moduleEffectId, calcVec, normalVec);
+
+
+
+            generateBullet(weapon, calcVec, normalVec, bulletFxId, activeAttacks[attackId]);
+        } else {
+            calcObj.lookAt(normalVec);
+
+            return ModuleEffectCreator.createPassiveEffect(
+                bulletFxId,
+                posVec,
+                normalVec,
+                0,
+                calcObj.quaternion,
+                activeAttacks[attackId]
+            );
+
+        }
+
     };
 
     CombatFeedbackFunctions.prototype.registerAttackHit = function(attackId, actor, posVec, normalVec, damage, moduleEffectId) {

@@ -5,15 +5,15 @@
 
         {
           "name":"static",
-          "visible_range":1000,
-          "sector_size":200,
+          "visible_range":500,
+          "sector_size":80,
           "rows_n_columns":5,
-          "actor_count":6
+          "actor_count":4
         },
         {
           "name":"big",
           "visible_range":400,
-          "sector_size":65,
+          "sector_size":55,
           "rows_n_columns":5,
           "actor_count":2
         }

@@ -44,6 +44,8 @@ define([
 
             this.systemTime = 0;
 
+            this.renderHighestIndex = 0;
+
             var particleMaterialData = function(src, data) {
     //            console.log("particleMaterialData", src, data);
                 this.applyRendererMaterialData(data, rendererReady)
@@ -166,19 +168,45 @@ define([
 
                     return 1;
                 }
-                console.log("zero particles.. ", requestSize)
+                console.log("zero particles.. ", requestSize);
                 return null;
             }
         };
 
         ParticleRenderer.prototype.requestParticle = function() {
             var particle = this.particles.shift();
+
+            if (particle.particleIndex > this.renderHighestIndex) {
+                this.renderHighestIndex = particle.particleIndex;
+                this.particleBuffer.setInstancedCount( this.renderHighestIndex)
+            }
+
             particle.dead = false;
             return particle;
         };
 
+
+        ParticleRenderer.prototype.computerHighestRenderingIndex = function() {
+            this.renderHighestIndex = this.particles.length;
+
+            for (var i = 0; i < this.particles.length; i++) {
+                if (this.particles[this.particles.length -i -1].particleIndex === this.renderHighestIndex) {
+                    this.renderHighestIndex = this.particles[this.particles.length -i].particleIndex
+                } else {
+                    return this.particles[this.particles.length -i -1].particleIndex
+                }
+            }
+        };
+
+
         ParticleRenderer.prototype.returnParticle = function(particle) {
-            this.particles.push(particle);
+            if (particle.particleIndex === this.renderHighestIndex) {
+
+                this.renderHighestIndex = this.computerHighestRenderingIndex();
+
+                this.particleBuffer.setInstancedCount( this.renderHighestIndex)
+            }
+            this.particles.unshift(particle);
         };
 
 

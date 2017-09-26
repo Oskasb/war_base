@@ -7,7 +7,7 @@
           "material": "main_atlas",
           "format":"obj",
           "url": "./client/assets/models/shapes/plank_6x2m",
-          "pool": 2,
+          "pool": 1,
           "transform": {
             "pos": [0, 0, 0],
             "rot": [0, -1, 0],
@@ -19,7 +19,7 @@
           "material": "main_atlas",
           "format":"obj",
           "url": "./client/assets/models/shapes/plank_6x2m",
-          "pool": 2,
+          "pool": 1,
           "transform": {
             "pos": [0, 0, 0],
             "rot": [0, -1, 0],
@@ -31,7 +31,7 @@
           "material": "main_atlas",
           "format":"obj",
           "url": "./client/assets/models/shapes/square_1x1m",
-          "pool": 2,
+          "pool": 1,
           "transform": {
             "pos": [0, 0, 0],
             "rot": [0, -1, 0],
@@ -43,7 +43,7 @@
           "material": "main_atlas",
           "format":"obj",
           "url": "./client/assets/models/shapes/crate",
-          "pool": 4,
+          "pool": 1,
           "transform": {
             "pos": [0, 0, 0],
             "rot": [0, -1, 0],
@@ -55,7 +55,7 @@
           "material": "main_atlas",
           "format":"obj",
           "url": "./client/assets/models/props/oil_drum",
-          "pool": 10,
+          "pool": 3,
           "transform": {
             "pos":   [0, 0, 0],
             "rot":   [0, 0, 0],
@@ -91,7 +91,7 @@
           "material": "main_atlas",
           "format":"obj",
           "url": "./client/assets/models/props/platform_base_10x6",
-          "pool": 3,
+          "pool": 1,
           "transform": {
             "pos":   [0, 0, 0],
             "rot":   [0, 0, 0],
@@ -103,7 +103,7 @@
           "material": "main_atlas",
           "format":"obj",
           "url": "./client/assets/models/props/platform_base_35x25",
-          "pool": 3,
+          "pool": 1,
           "transform": {
             "pos":   [0, 0, 0],
             "rot":   [0, 0, 0],

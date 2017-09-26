@@ -10,7 +10,6 @@ define([
 
 
         var ParticleBuffer = function(verts, uvs, indices, normals) {
-
             this.buildGeometry(verts, uvs, indices, normals);
         };
 
@@ -64,6 +63,10 @@ define([
 
         ParticleBuffer.prototype.applyMesh = function(mesh) {
             this.mesh = mesh;
+        };
+
+        ParticleBuffer.prototype.setInstancedCount = function(count) {
+            this.mesh.geometry.maxInstancedCount = count;
         };
 
         ParticleBuffer.prototype.dispose = function() {

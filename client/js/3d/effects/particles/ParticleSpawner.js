@@ -406,6 +406,7 @@ define([
                         if (!renderers[key][i].isRendering) {
                             renderers[key][i].enableParticleRenderer();
                         }
+                        count += renderers[key][i].renderHighestIndex;
                         activeRenderes++;
                     } else {
                         if (renderers[key][i].isRendering) {
