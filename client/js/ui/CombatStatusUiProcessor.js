@@ -194,6 +194,7 @@ define([
                         guiElement.spawnChildElement(textElementId);
                     }
 
+                    return;
                 }
 
                 guiElement.origin.copy(activeSelection.piece.frustumCoords);

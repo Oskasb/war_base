@@ -4,13 +4,15 @@ define([
 
         'io/GuiFeedbackFunctions',
     'ui/CombatStatusUiProcessor',
-        'ui/HudUiProcessor'
+        'ui/HudUiProcessor',
+        'ui/HudMapProcessor'
     ],
     function(
 
         GuiFeedbackFunctions,
         CombatStatusUiProcessor,
-        HudUiProcessor
+        HudUiProcessor,
+        HudMapProcessor
     ) {
 
         var GameAPI;
@@ -23,7 +25,8 @@ define([
             this.guiFeedbackFunctions = new GuiFeedbackFunctions();
             this.cursorElement = null;
             this.combatStatusUiProcessor = new CombatStatusUiProcessor(gRenderer, gameApi);
-            this.hudUiProcessor = new HudUiProcessor(gRenderer, gameApi)
+            this.hudUiProcessor = new HudUiProcessor(gRenderer, gameApi);
+                this.hudMapProcessor = new HudMapProcessor(gRenderer, gameApi)
         };
 
 
@@ -54,6 +57,14 @@ define([
         GuiRendererCallbacks.prototype.removeChildElement = function(guiElement) {
             guiRenderer.removeGuiElement(guiElement)
 
+        };
+
+        GuiRendererCallbacks.prototype.show_map_corners = function(guiElement) {
+            this.hudMapProcessor.show_map_corners(guiElement);
+        };
+
+        GuiRendererCallbacks.prototype.draw_local_map = function(guiElement) {
+            this.hudMapProcessor.draw_local_map(guiElement);
         };
 
         GuiRendererCallbacks.prototype.updateElementsSpriteKey = function(fxElements, spriteKey) {
