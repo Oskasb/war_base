@@ -42,7 +42,9 @@ define([
         var count;
         var adds;
         var effect;
-        var renderer;
+
+        var activateRenderer;
+        var activateEffect;
 
         var fxConf;
         var particleConf;
@@ -224,37 +226,38 @@ define([
 
 
 
+
         ParticleSpawner.prototype.activateEffect = function(effect) {
             effect.setEffectData(this.particleEffectData.buildEffect(effect.effectData, sysKey, effect.getEffectId()));
 
-            renderer = this.getRenderersById(effect.effectData.effect.renderer_id);
+            activateRenderer = this.getRenderersById(effect.effectData.effect.renderer_id);
 
-            if (!renderer) {
+            if (!activateRenderer) {
                 console.log("Renderer not yet ready...", effect.effectData.effect.renderer_id);
                 return;
             }
 
-            for (i = 0; i < renderer.length; i++) {
-                if (renderer[i].particles.length > renderer[i].biggestRequest * 2) {
-                    return this.renderEffect(renderer[i], effect);
+            for (i = 0; i < activateRenderer.length; i++) {
+                if (activateRenderer[i].particles.length > activateRenderer[i].biggestRequest * 2) {
+                    return this.renderEffect(activateRenderer[i], effect);
                 }
             }
 
-            return this.duplicateRenderer(renderer[0], effect);
+            return this.duplicateRenderer(activateRenderer[0], effect);
         };
 
 
         ParticleSpawner.prototype.spawnActiveParticleEffect = function(id, pos, vel) {
 
 
-            effect = this.buildEffect(id, pos, vel);
+            activateEffect = this.buildEffect(id, pos, vel);
 
-            if (typeof(effect) === 'undefined') {
+            if (typeof(activateEffect) === 'undefined') {
                 console.log("Undefined effect created...", id, pos, vel);
                 return;
             }
             fxAdds++;
-            activeEffects.push(effect);
+            activeEffects.push(activateEffect);
         };
 
         ParticleSpawner.prototype.updateActiveParticleEffect = function(effect, pos, state, tpf) {
@@ -287,17 +290,17 @@ define([
 
         ParticleSpawner.prototype.spawnTemporaryPassiveEffect = function(id, pos, vel, size, quat, duration) {
 
-            effect = this.buildEffect(id, pos, vel, size, quat, duration);
+            activateEffect = this.buildEffect(id, pos, vel, size, quat, duration);
 
             if (!duration) {
                 duration = 0;
             }
 
-            effect.setEffectTemporary(systemTime, systemTime+duration);
+            activateEffect.setEffectTemporary(systemTime, systemTime+duration);
 
-            temporaryEffects.push(effect);
+            temporaryEffects.push(activateEffect);
 
-            return effect;
+            return activateEffect;
         };
 
         ParticleSpawner.prototype.spawnPassiveEffect = function(id, pos, vel, size, quat) {

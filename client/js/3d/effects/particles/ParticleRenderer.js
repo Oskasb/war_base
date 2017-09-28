@@ -43,7 +43,7 @@ define([
             this.isScreenspace = rendererConfig.is_screenspace || false;
             this.renderOrder = rendererConfig.render_order || null;
 
-            this.biggestRequest = 1;
+            this.biggestRequest = 5;
 
             this.material = {uniforms:{}};
             this.particles = [];
@@ -187,7 +187,7 @@ define([
 
         ParticleRenderer.prototype.requestParticle = function() {
             if (!this.particles.length) {
-                console.log("Particles ran out...")
+                console.log("Particles ran out...", this)
                 return;
             }
 
