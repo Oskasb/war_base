@@ -23,6 +23,15 @@ define([
 
         var g;
 
+        var dynamicKeys = {
+            aimPitch:'aimPitch',
+            aimYaw:'aimYaw',
+            quatX:'quatX',
+            quatY:'quatY',
+            quatZ:'quatZ',
+            quatW:'quatW'
+        };
+
         var calcElevationForTrajectory = function(vel, distance, gravity) {
             var elevation = 0.5*Math.asin(gravity*distance / (vel*vel));
             if (isNaN(elevation)) {
@@ -37,6 +46,8 @@ define([
             this.turretIndex = index;
 
             this.dataKey = dataKey;
+
+
 
             this.dynamic = {
                 aimPitch:        {state:0},
@@ -67,9 +78,43 @@ define([
             this.feedbackMap = config.feedback_map;
             this.turretOptions = config.turret.options;
             this.turnSpeed = this.turretOptions.turn_speed;
-            this.axisFactors = this.turretOptions.axis_factors;
-            this.defaultQuat = this.turretOptions.default_quat;
+
+            this.axisFactors = [];
+
+            this.axisFactors[0] = this.turretOptions.axis_factors[0] || 1;
+            this.axisFactors[1] = this.turretOptions.axis_factors[1] || 1;
+            this.axisFactors[2] = this.turretOptions.axis_factors[2] || 1;
+            this.axisFactors[3] = this.turretOptions.axis_factors[3] || 1;
+
+            this.defaultQuat = [];
+
+            this.defaultQuat[0] = this.turretOptions.default_quat[0] || 0;
+            this.defaultQuat[1] = this.turretOptions.default_quat[1] || 1;
+            this.defaultQuat[2] = this.turretOptions.default_quat[2] || 0;
+            this.defaultQuat[3] = this.turretOptions.default_quat[3] || 0;
+
             this.targetting = this.turretOptions.targetting;
+        };
+
+        TurretModule.prototype.setDynamic = function (key, value) {
+
+            if (isNaN(value)) {
+                console.log("Trying to setNaN dynamic", this);
+                return;
+            }
+
+            this.dynamic[key].state = value;
+
+        };
+
+
+        TurretModule.prototype.setDynamicModuleQuat = function (module) {
+
+            this.setDynamic(dynamicKeys.quatX, module.getObjec3D().quaternion.x);
+            this.setDynamic(dynamicKeys.quatY, module.getObjec3D().quaternion.y);
+            this.setDynamic(dynamicKeys.quatZ, module.getObjec3D().quaternion.z);
+            this.setDynamic(dynamicKeys.quatW, module.getObjec3D().quaternion.w);
+
         };
 
 
@@ -79,10 +124,8 @@ define([
 
             module.getObjec3D().quaternion.slerp(tempObj3D.quaternion, this.turnSpeed / tpf);
 
-            this.dynamic.quatX.state = module.getObjec3D().quaternion.x;
-            this.dynamic.quatY.state = module.getObjec3D().quaternion.y;
-            this.dynamic.quatZ.state = module.getObjec3D().quaternion.z;
-            this.dynamic.quatW.state = module.getObjec3D().quaternion.w;
+            this.setDynamicModuleQuat(module);
+
 
         };
 
@@ -116,19 +159,15 @@ define([
                 module.getObjec3D().rotateX(this.axisFactors[0] * elevate);
             }
 
+            this.setDynamic(dynamicKeys.aimPitch, MATH.subAngles(module.getObjec3D().rotation.x, tempObj3D.rotation.x));
+            this.setDynamic(dynamicKeys.aimYaw, MATH.subAngles(module.getObjec3D().rotation.y, tempObj3D.rotation.y));
 
-            this.dynamic.aimPitch.state = MATH.subAngles(module.getObjec3D().rotation.x, tempObj3D.rotation.x);
-            this.dynamic.aimYaw.state = MATH.subAngles(module.getObjec3D().rotation.y, tempObj3D.rotation.y);
 
             tempObj3D.quaternion.slerp(module.getObjec3D().quaternion, this.turnSpeed / tpf);
 
             module.getObjec3D().quaternion.copy(tempObj3D.quaternion);
 
-            this.dynamic.quatX.state = module.getObjec3D().quaternion.x;
-            this.dynamic.quatY.state = module.getObjec3D().quaternion.y;
-            this.dynamic.quatZ.state = module.getObjec3D().quaternion.z;
-            this.dynamic.quatW.state = module.getObjec3D().quaternion.w;
-
+            this.setDynamicModuleQuat(module);
 
         };
 
@@ -215,6 +254,8 @@ define([
             if (target) {
 
                 this.aimAtTargetActor(target, module, tpf);
+
+                sourcePiece.getCombatStatus().notifyOpponentDetected();
 
             } else {
                 this.dynamic.aimYaw.state = 1;

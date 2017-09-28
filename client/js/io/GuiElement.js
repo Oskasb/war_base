@@ -124,6 +124,11 @@ define([
                 for (i = 0; i < this.children[txElemId].length; i++) {
                     letter = this.text[i];
 
+                    if (!letter) {
+                        this.generateChildrenForText(this.text);
+                        return;
+                    }
+
                     child = this.children[txElemId][i];
                     child.origin.copy(this.position);
 
@@ -151,6 +156,11 @@ define([
 
         GuiElement.prototype.setSpriteKey = function(spriteKey) {
 
+            if (!spriteKey) {
+                console.log("set null sprite", this);
+                return;
+            }
+
             if (this.spriteKey !== spriteKey) {
                 if (!this.fxElements.length) return;
                 this.updateRenderingSpriteKey(spriteKey);
@@ -167,6 +177,12 @@ define([
         };
 
         GuiElement.prototype.updateRenderingSpriteKey = function(spriteKey) {
+
+            if (!spriteKey) {
+                console.log("Bad sprite key in gui elem:", this.letter, this)
+                return;
+            }
+
             guiRendererCallbacks.updateElementsSpriteKey(this.fxElements, spriteKey)
         };
 

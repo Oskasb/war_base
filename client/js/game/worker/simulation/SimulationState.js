@@ -328,11 +328,20 @@ define([
                 physicsApi.disableActorPhysics(actor);
             }
 
-            actor.setActivationState(ENUMS.PieceActivationStates.HIDDEN);
-            this.updateActorFrame(actor, 0);
+            var combatStatus = actor.piece.getCombatStatus();
+            if (combatStatus) {
+                combatStatus.notifyCancelCombat();
+            }
+
+
+            actor.setActivationState(ENUMS.PieceActivationStates.INACTIVE);
+            this.updateActorFrame(actor, 0.1);
             ThreeAPI.removeFromScene(actor.piece.rootObj3D);
 
             this.detatchActor(actor);
+
+
+
 
             if (typeof(cb) === 'function') {
                 cb(actorId);
@@ -602,18 +611,15 @@ define([
 
 
                 } else {
-                    if (actor.isHidden()) {
+                    actor.piece.setPieceActivationState(ENUMS.PieceActivationStates.HIDDEN);
+
                     //    actor.deescalateActivationState();
                         if (initState !== actor.piece.getPieceActivationState()) {
-                        //    physicsApi.triggerPhysicallyActive(actor);
-                            actor.piece.updatePieceStates(tpf);
-                            actor.piece.updatePieceSlots(tpf, this);
-                            actor.samplePhysicsState();
-                            pieceUpdates++;
+                            this.updateActiveActor(actor, tpf);
                         }
                         this.protocolSystem.updateActorSendProtocol(actor, tpf);
                         physicsApi.triggerPhysicallyRelaxed(actor)
-                    }
+
                 }
 
             }
@@ -630,7 +636,7 @@ define([
 
         var pieceUpdates;
         var activateRange = 15;
-        var visibleRange = 550;
+        var visibleRange = 75;
         var playerPos = new THREE.Vector3();
 
         SimulationState.prototype.updateState = function(tpf) {

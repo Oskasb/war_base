@@ -99,6 +99,18 @@ define([],
             this.ticksAtState = 0;
         };
 
+        CombatStatus.prototype.notifyCancelCombat = function() {
+            this.setCombatState(ENUMS.CombatStates.NONE3);
+            this.ticksAtState = 0;
+        };
+
+        CombatStatus.prototype.notifySelectedActivation = function() {
+            this.dirty = true;
+            if (this.getCombatState() < ENUMS.CombatStates.THREATENED) {
+                this.setCombatState(ENUMS.CombatStates.THREATENED);
+                this.ticksAtState = 0;
+            }
+        };
 
         CombatStatus.prototype.notifySelectedActivation = function() {
             this.dirty = true;
@@ -111,6 +123,20 @@ define([],
         CombatStatus.prototype.notifyAttackMitigated = function() {
             if (this.getCombatState() < ENUMS.CombatStates.ENGAGING) {
                 this.setCombatState(ENUMS.CombatStates.ENGAGING);
+                this.ticksAtState = 0;
+            }
+        };
+
+        CombatStatus.prototype.notifyOpponentDetected = function() {
+            if (this.getCombatState() < ENUMS.CombatStates.THREATENED) {
+                this.setCombatState(ENUMS.CombatStates.THREATENED);
+                this.ticksAtState = 0;
+            }
+        };
+
+        CombatStatus.prototype.notifyEngagingOpponent = function() {
+            if (this.getCombatState() < ENUMS.CombatStates.ENGAGED) {
+                this.setCombatState(ENUMS.CombatStates.ENGAGED);
                 this.ticksAtState = 0;
             }
         };

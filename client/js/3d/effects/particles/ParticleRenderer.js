@@ -45,6 +45,8 @@ define([
 
             this.biggestRequest = 5;
 
+            this.needsUpdate = true;
+
             this.material = {uniforms:{}};
             this.particles = [];
             this.drawingParticles = [];
@@ -195,7 +197,7 @@ define([
 
             if (reqParticle.particleIndex > this.renderHighestIndex) {
                 this.renderHighestIndex = reqParticle.particleIndex;
-                this.particleBuffer.setInstancedCount( this.renderHighestIndex)
+                this.particleBuffer.setInstancedCount( this.renderHighestIndex +1)
             }
 
             reqParticle.dead = false;
@@ -227,10 +229,10 @@ define([
 
         //    if (particle.particleIndex === this.renderHighestIndex) {
 
-                this.renderHighestIndex = this.computerHighestRenderingIndex();
 
-                this.particleBuffer.setInstancedCount( this.renderHighestIndex + 2);
         //    }
+            this.needsUpdate = true;
+
             this.particles.unshift(retParticle);
         };
 
@@ -257,6 +259,13 @@ define([
         ParticleRenderer.prototype.updateParticleRenderer = function(systemTime) {
 
             this.systemTime = systemTime;
+
+            if (this.needsUpdate) {
+                this.renderHighestIndex = this.computerHighestRenderingIndex();
+                this.particleBuffer.setInstancedCount( this.renderHighestIndex + 1);
+                this.needsUpdate = false;
+            };
+
 
             if (this.material.uniforms.systemTime) {
                 this.material.uniforms.systemTime.value = this.systemTime;

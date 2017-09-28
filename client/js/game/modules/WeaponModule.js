@@ -293,6 +293,10 @@ define([
             //    this.aimAtTargetActor(target);
                 this.determineTriggerState(sourcePiece, target, module, simulationState);
 
+                if (distance < this.weaponOptions.range) {
+                    sourcePiece.getCombatStatus().notifyEngagingOpponent();
+                }
+
             }
 
             this.cooldownCountdown -= tpf;

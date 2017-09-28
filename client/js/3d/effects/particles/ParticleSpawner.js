@@ -166,7 +166,7 @@ define([
 
             var onReady = function(rndr) {
                 rendererReady(rndr);
-                console.log("add renderer for particle group");
+                console.log("add renderer for particle group", rndr);
                 renderer.adding = false;
             }
 
@@ -273,6 +273,13 @@ define([
             fxConf       = this.particleEffectData.fetchEffect(sysKey,  effect.id);
             particleConf = this.particleEffectData.fetchParticle(fxConf.system_key, fxConf.particle_id);
             sprite       = this.particleEffectData.fetchSprite(particleConf.sprite_key, spriteKey);
+
+            if (!sprite) {
+                console.log("No sprite for spriteKey", spriteKey);
+                return;
+
+            }
+
             effect.updateEffectSpriteSimulator(sprite, spriteKey);
         };
 

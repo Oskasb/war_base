@@ -252,7 +252,14 @@ define([
 
                         child.origin.copy(guiElement.position);
                         child.setColorCurveKey(stateMap[combatState].color_curve);
-                        child.setSpriteKey(stateMap[combatState].sprite_id);
+
+                        var stateSprite = stateMap[combatState].sprite_id;
+
+                        if (!stateSprite) {
+                            console.log("Missing sprite for state: ", combatState, stateMap);
+                        }
+
+                        child.setSpriteKey(stateSprite);
                         child.applyElementPosition(null, calcVec2);
                     }
                 }

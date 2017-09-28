@@ -31,6 +31,7 @@ define([
         var workerEntrie = [];
 
         var execCalls = 0;
+        var fetchMisses = 0;
 
         var GameCommander = function(gameApi, gWorker, lvlBuilder) {
             GameAPI = gameApi;
@@ -93,7 +94,9 @@ define([
                 }
             }
 
-            console.log("No entry by id:", id, array);
+            fetchMisses++
+
+        //    console.log("No entry by id:", id, array);
         };
 
         GameCommander.prototype.removeArrayEntry = function(array, entry) {
@@ -429,7 +432,9 @@ define([
             return execCalls;
         };
 
-
+        GameCommander.prototype.getFetchMisses = function() {
+            return fetchMisses;
+        };
         return GameCommander;
     });
 
