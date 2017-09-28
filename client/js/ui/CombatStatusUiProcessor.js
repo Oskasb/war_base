@@ -251,6 +251,12 @@ define([
                         var stateMap = child.options.state_map;
 
                         child.origin.copy(guiElement.position);
+
+                        if (!stateMap[combatState]) {
+                            console.log("No stateMap for Combat State", child, combatState, stateMap);
+                            return;
+                        }
+
                         child.setColorCurveKey(stateMap[combatState].color_curve);
 
                         var stateSprite = stateMap[combatState].sprite_id;

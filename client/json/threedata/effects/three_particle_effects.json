@@ -229,6 +229,17 @@
         },
 
         {
+          "id":"thruster_smoke_effect",
+          "data":{
+            "system_key":"THREE",
+            "renderer_id":"gpu_additive_atlas_renderer",
+            "particle_id":"thruster_smoke_particles",
+            "count":2,
+            "simulation_id":"gpu_predictive_simulation"
+          }
+        },
+
+        {
           "id":"thruster_flame_effect",
           "data":{
             "system_key":"THREE",

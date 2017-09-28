@@ -3,7 +3,6 @@
     "VEGETATION": {
       "MASTER_CONFIG":[
 
-
         {
           "name":"small",
           "vegetationSectorSize":39,
@@ -13,12 +12,13 @@
         },
         {
           "name":"big",
-          "vegetationSectorSize":44,
-          "rowsNColumns":5,
-          "spawnFrames":10,
-          "plantCount":150
+          "vegetationSectorSize":28,
+          "rowsNColumns":9,
+          "spawnFrames":4,
+          "plantCount":40
         }
       ],
+
       "SYSTEMS":[
         {
           "id":"basic_grassland",

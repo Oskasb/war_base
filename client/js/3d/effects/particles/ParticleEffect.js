@@ -228,6 +228,20 @@ define(['3d/effects/particles/EffectSimulators',
             this.lastTpf = tpf;
         };
 
+        ParticleEffect.prototype.popDeadIndex = function() {
+            return this.aliveParticles.indexOf(this.deadParticles.pop())
+        };
+
+        ParticleEffect.prototype.getDeadParticle = function() {
+            return this.aliveParticles.splice(this.popDeadIndex(), 1)[0]
+        };
+
+        ParticleEffect.prototype.returnDeadParticles = function() {
+            while (this.deadParticles.length) {
+                this.renderer.returnParticle(this.getDeadParticle());
+            }
+        };
+
         ParticleEffect.prototype.updateEffect = function(tpf, systemTime) {
 
             this.updateEffectAge(tpf);
@@ -260,9 +274,7 @@ define(['3d/effects/particles/EffectSimulators',
                 }
             }
 
-            while (this.deadParticles.length) {
-                this.renderer.returnParticle(this.aliveParticles.splice(this.aliveParticles.indexOf(this.deadParticles.pop()), 1)[0]);
-            }
+            this.returnDeadParticles()
         };
 
         return ParticleEffect;

@@ -92,7 +92,13 @@
         ]
       }
     ],
-
+    "thruster_module_smoke_effect":[
+      {
+        "particle_effects":[
+          {"id":"thruster_smoke_effect"}
+        ]
+      }
+    ],
     "thruster_module_effect":[
       {
         "particle_effects":[

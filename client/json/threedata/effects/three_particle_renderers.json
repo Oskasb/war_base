@@ -5,7 +5,7 @@
         {
           "id":"gpu_additive_gui_renderer",
           "material_id":"gpu_gui_sprite_atlas_material",
-          "particle_pool":1950,
+          "particle_pool":2950,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":2,
@@ -20,7 +20,7 @@
         {
           "id":"gpu_normal_gui_renderer",
           "material_id":"gpu_gui_sprite_atlas_material",
-          "particle_pool":1950,
+          "particle_pool":2950,
           "particle_geometry":"quad",
           "is_screenspace":true,
           "render_order":1,
@@ -50,7 +50,7 @@
         {
           "id":"gpu_additive_atlas_renderer",
           "material_id":"gpu_sprite_atlas_material",
-          "particle_pool":1650,
+          "particle_pool":2650,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"AdditiveBlending",
@@ -64,7 +64,7 @@
         {
           "id":"gpu_additive_atlas_trail_renderer",
           "material_id":"gpu_sprite_atlas_trail_material",
-          "particle_pool":500,
+          "particle_pool":1500,
           "particle_geometry":{
             "model_id":"model_bullet"
           },
@@ -79,7 +79,7 @@
         {
           "id":"gpu_normal_atlas_renderer",
           "material_id":"gpu_fogged_sprite_atlas_material",
-          "particle_pool":1800,
+          "particle_pool":2800,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"NormalBlending",
@@ -92,7 +92,7 @@
         {
           "id":"gpu_opaque_atlas_renderer",
           "material_id":"gpu_fogged_sprite_atlas_material",
-          "particle_pool":800,
+          "particle_pool":1400,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"NoBlending",
@@ -105,7 +105,7 @@
         {
           "id":"gpu_opaque_vegetation_renderer",
           "material_id":"gpu_vegetation_sprite_material",
-          "particle_pool":2500,
+          "particle_pool":5500,
           "particle_geometry":"plant3d",
           "material_options":{
             "blending":"NoBlending",

@@ -47,7 +47,8 @@
         "id":"engine_thrust_channel",
         "data":{
           "targets":[
-            {"targetid":"channel_thruster_power"}
+            {"targetid":"target_thruster_fumes"},
+            {"targetid":"target_thruster_power"}
           ]
         }
       },

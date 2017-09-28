@@ -221,19 +221,15 @@ define([
             return this.renderHighestIndex;
         };
 
+        ParticleRenderer.prototype.discountDrawingParticle = function(particle) {
+            this.drawingParticles.splice(this.drawingParticles.indexOf(particle), 1);
+        };
+
         ParticleRenderer.prototype.returnParticle = function(prtcl) {
 
-            retParticle = prtcl;
-
-                this.drawingParticles.splice(this.drawingParticles.indexOf(retParticle), 1);
-
-        //    if (particle.particleIndex === this.renderHighestIndex) {
-
-
-        //    }
+            this.discountDrawingParticle(prtcl)
             this.needsUpdate = true;
-
-            this.particles.unshift(retParticle);
+            this.particles.unshift(prtcl);
         };
 
 

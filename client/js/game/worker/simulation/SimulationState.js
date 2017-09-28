@@ -635,8 +635,8 @@ define([
         var activationStates = new Array(ENUMS.PieceActivationStates.ENGAGED + 3);
 
         var pieceUpdates;
-        var activateRange = 15;
-        var visibleRange = 75;
+        var activateRange = 25;
+        var visibleRange = 325;
         var playerPos = new THREE.Vector3();
 
         SimulationState.prototype.updateState = function(tpf) {

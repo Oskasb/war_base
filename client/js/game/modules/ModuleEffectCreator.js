@@ -71,7 +71,7 @@ define([
 
         var pre = 0;
 
-        ModuleEffectCreator.setupModuleTransform = function(calcVec, transform, calcQuat, stateValue, velStore, posStore) {
+        ModuleEffectCreator.setupModuleTransform = function(transform, calcQuat, posStore) {
 
             posStore.x = transform.size[0]*Math.random() - transform.size[0]*0.5;
             posStore.y = transform.size[1]*Math.random() - transform.size[1]*0.5;
@@ -79,14 +79,14 @@ define([
 
             posStore.applyQuaternion(calcQuat);
 
-            velStore.addVectors(calcVec, posStore);
+        //    velStore.addVectors(calcVec, posStore);
 
             //    posStore.x = piece.spatial.vel.getX() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
             //    posStore.y = piece.spatial.vel.getY() + Math.abs(stateValue);
             //    posStore.z = piece.spatial.vel.getZ() * - stateValue*0.15 + Math.random()*0.02 - 0.01;
 
-            velStore.x += posStore.x*0.02;
-            velStore.z += posStore.z*0.02;
+        //    velStore.x += posStore.x*0.02;
+        //    velStore.z += posStore.z*0.02;
 
         };
 
@@ -111,16 +111,24 @@ define([
 
         //    calcVec.setFromMatrixPosition( model.matrixWorld );
             model.getWorldPosition(calcVec);
+
+
+
             model.getWorldQuaternion(calcQuat);
         //    calcQuat.setFromRotationMatrix(model.matrixWorld);
-
+            calcVec3.set(0, 0, 1);
+            calcVec3.applyQuaternion(calcQuat);
 
             if (!calcVec.x) return;
             if (!piece.spatial.pos.data) return;
 
             for (var i = 0; i < fx.length; i++) {
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
-                    ModuleEffectCreator.setupModuleTransform(piece, calcVec, transform, calcQuat, 1, calcVec2, calcVec3);
+                    ModuleEffectCreator.setupModuleTransform(transform, calcQuat, calcVec2);
+
+                    calcVec2.x += calcVec.x;
+                    calcVec2.y += calcVec.y;
+                    calcVec2.z += calcVec.z;
 
                     ModuleEffectCreator.createPassiveTemporalEffect(fx[i].particle_effects[j].id, calcVec2, calcVec3)
                 }
@@ -165,6 +173,8 @@ define([
 
             model.getWorldPosition(calcVec);
             model.getWorldQuaternion(calcQuat);
+            calcVec3.set(0, 0, stateValue);
+            calcVec3.applyQuaternion(calcQuat);
 
 
             for (var i = 0; i < fx.length; i++) {
@@ -175,7 +185,11 @@ define([
                 }
 
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
-                    ModuleEffectCreator.setupModuleTransform(calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
+                    ModuleEffectCreator.setupModuleTransform(transform, calcQuat, calcVec2);
+
+                    calcVec2.x += calcVec.x;
+                    calcVec2.y += calcVec.y;
+                    calcVec2.z += calcVec.z;
 
                     if (glueToGround) {
                         pre = calcVec2.y;
@@ -205,6 +219,10 @@ define([
 
             if (!calcVec.x) return;
 
+
+            calcVec3.set(0, 0, 1);
+            calcVec3.applyQuaternion(calcQuat);
+
             for (var i = 0; i < fx.length; i++) {
 
                 if (!fx[i].particle_effects) {
@@ -213,7 +231,11 @@ define([
                 }
 
                 for (var j = 0; j < fx[i].particle_effects.length; j++) {
-                    ModuleEffectCreator.setupModuleTransform(calcVec, transform, calcQuat, stateValue, calcVec2, calcVec3);
+                    ModuleEffectCreator.setupModuleTransform(transform, calcQuat, calcVec2);
+
+                    calcVec2.x += calcVec.x;
+                    calcVec2.y += calcVec.y;
+                    calcVec2.z += calcVec.z;
 
                     if (glueToGround) {
                         pre = calcVec2.y;
@@ -347,7 +369,7 @@ define([
         };
 
         ModuleEffectCreator.module_emit_effect = function(visualModule, target) {
-            if (Math.random() < target.state.getValue()) {
+            if (Math.random() < Math.abs(target.state.getValue()) * 2) {
                 ModuleEffectCreator.createModuleApplyEmitEffect(
                     visualModule.model || visualModule.rootObj,
                     target.config.module_effect,

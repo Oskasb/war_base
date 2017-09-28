@@ -180,6 +180,7 @@ define([
 
         HudMapProcessor.prototype.process_local_map = function(guiElement) {
 
+            return;
 
             var controlledActor = GameAPI.getControlledActor();
             if (controlledActor) {
