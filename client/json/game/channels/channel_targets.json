@@ -352,6 +352,13 @@
           "callback":"module_emit_effect",
           "module_effect":"module_on_fire_fx"
         }
+      },      {
+        "id":"channel_thruster_power",
+        "data":{
+          "callback":"module_static_velocity_effect",
+          "module_effect":"thruster_module_effect",
+          "scale":0.1
+        }
       },
       {
         "id":"channel_engine_power",

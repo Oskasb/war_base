@@ -196,6 +196,16 @@ define(['3d/effects/particles/EffectSimulators',
             }
         };
 
+        ParticleEffect.prototype.updateEffectVelocitySimulator = function(vel, tpf) {
+
+            for (i = 0; i < this.aliveParticles.length; i++) {
+
+                this.aliveParticles[i].setVelocity(vel);
+
+                this.applyParticleSimulator(EffectSimulators.simulators.velocity, this.aliveParticles[i], tpf)
+            }
+        };
+
         ParticleEffect.prototype.updateEffectQuaternionSimulator = function(quat, tpf) {
 
             for (i = 0; i < this.aliveParticles.length; i++) {

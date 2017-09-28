@@ -435,6 +435,13 @@ define([
         GameCommander.prototype.getFetchMisses = function() {
             return fetchMisses;
         };
+
+        GameCommander.prototype.commandSetPieceState = function(piece) {
+
+        };
+
+
+
         return GameCommander;
     });
 

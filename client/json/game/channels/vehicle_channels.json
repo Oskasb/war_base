@@ -36,6 +36,22 @@
         }
       },
       {
+        "id":"engine_power_channel",
+        "data":{
+          "targets":[
+            {"targetid":"module_channel_engine_smoke"}
+          ]
+        }
+      },
+      {
+        "id":"engine_thrust_channel",
+        "data":{
+          "targets":[
+            {"targetid":"channel_thruster_power"}
+          ]
+        }
+      },
+      {
         "id":"engine_channel",
         "data":{
           "targets":[

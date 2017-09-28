@@ -60,6 +60,8 @@ define(['worker/physics/AmmoFunctions'],
 
         AmmoAPI.prototype.setupPhysicalActor = function(actor) {
 
+            if (!world) return;
+
             if (actor.getPhysicsBody()) {
                 console.log("Actor already has a body...");
                 return actor;
@@ -72,6 +74,9 @@ define(['worker/physics/AmmoFunctions'],
         };
 
         AmmoAPI.prototype.includeBody = function(body) {
+
+            if (!world) return;
+
             if (!body) {
                 console.log("Cant add !body", body);
                 return;

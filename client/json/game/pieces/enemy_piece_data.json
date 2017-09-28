@@ -10,14 +10,28 @@
             "armor":4
           },
           "slots":[
-            {"slot":"piece_root",   "module":"module_enemy_oomba"   },
-            {"slot":"combat",       "module":"combat_module"         },
-            {"slot":"turret",       "module":"module_swivel_cannon_20mm" },
-            {"slot":"muzzle",       "module":"module_muzzle"}
+            {"slot":"piece_root",   "module":"module_enemy_oomba"           },
+            {"slot":"combat",       "module":"combat_module"                },
+            {"slot":"power",       "module":"oomba_power_module"            },
+
+            {"slot":"thrust_0",       "module":"oomba_thrust_module"        },
+            {"slot":"thrust_1",       "module":"oomba_thrust_module"        },
+            {"slot":"thrust_2",       "module":"oomba_thrust_module"        },
+            {"slot":"thrust_3",       "module":"oomba_thrust_module"        },
+
+            {"slot":"turret",       "module":"module_swivel_cannon_20mm"    },
+            {"slot":"muzzle",       "module":"module_muzzle"                }
           ],
           "attachments":[
-            {"slot":"piece_root",   "ap":"ap_turret",     "child":"turret" },
-            {"slot":"piece_root",   "ap":"ap_combat",     "child":"combat" },
+            {"slot":"piece_root",   "ap":"ap_turret",     "child":"turret"  },
+            {"slot":"piece_root",   "ap":"ap_combat",     "child":"combat"  },
+            {"slot":"piece_root",   "ap":"ap_engine",     "child":"power"   },
+
+            {"slot":"piece_root",   "ap":"ap_thrust_0",     "child":"thrust_0"  },
+            {"slot":"piece_root",   "ap":"ap_thrust_1",     "child":"thrust_1"  },
+            {"slot":"piece_root",   "ap":"ap_thrust_2",     "child":"thrust_2"  },
+            {"slot":"piece_root",   "ap":"ap_thrust_3",     "child":"thrust_3"  },
+
             {"slot":"turret",       "ap":"ap_muzzle",     "child":"muzzle"}
           ]
         }

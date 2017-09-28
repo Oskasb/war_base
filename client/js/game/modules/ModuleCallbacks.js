@@ -115,14 +115,14 @@ define([
                 if (piece.getPieceActivationState() !== value) {
 
 
-                    if (value < ENUMS.PieceActivationStates.VISIBLE) {
+                    if (value > ENUMS.PieceActivationStates.HIDDEN) {
 
-                    //    piece.setRendereable(true);
+                        piece.setRendereable(true);
                     //    piece.updateGamePiece(0);
                     //    piece.setRendereable(false);
                     }
 
-                    piece.setDirtyCount(2);
+                    piece.setDirtyCount(1);
                 }
 
 
@@ -240,11 +240,16 @@ define([
         };
 
 
+
         ModuleCallbacks.module_weapon_emit_bullet_effect = function(module, target) {
             module.visualModule.addEffectTarget(target);
         };
 
         ModuleCallbacks.module_ground_print_effect = function(module, target) {
+            module.visualModule.addEffectTarget(target);
+        };
+
+        ModuleCallbacks.module_static_velocity_effect = function(module, target) {
             module.visualModule.addEffectTarget(target);
         };
 
@@ -257,6 +262,9 @@ define([
         ModuleCallbacks.remove_module_static_effect = function(module, target) {
             module.visualModule.addEffectTarget(target);
         };
+
+
+
 
         return ModuleCallbacks;
 

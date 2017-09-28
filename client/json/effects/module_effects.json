@@ -93,6 +93,13 @@
       }
     ],
 
+    "thruster_module_effect":[
+      {
+        "particle_effects":[
+          {"id":"thruster_flame_effect"}
+        ]
+      }
+    ],
     "hyper_module_effect":[
       {
         "particle_effects":[
@@ -100,7 +107,6 @@
         ]
       }
     ],
-
     "sparkly_stars_module_effect":[
       {
         "particle_effects":[

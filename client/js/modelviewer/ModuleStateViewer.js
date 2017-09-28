@@ -74,10 +74,10 @@ define([
 
                     if (mouseState.action[0] && mouseState.action[1]) {
                         clear = 0;
-                    }3
+                    }
 
                     for (var i = 0; i < tweakStates.length; i++) {
-                        tweakStates[i].setValue((tweakStates[i].getValue() + val) * clear);
+                        tweakStates[i].setBufferValue((tweakStates[i].getValue() + val) * clear);
                     }
 
                 }

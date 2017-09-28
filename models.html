@@ -50,6 +50,7 @@
         'application/FullScreenConfigurator',
         'modelviewer/ModelViewer',
         'modelviewer/EnvironmentLoader',
+        'modelviewer/LabLoader',
         'modelviewer/PieceLoader',
         'modelviewer/ModelLoader',
         'modelviewer/ModuleLoader',
@@ -65,6 +66,7 @@
         FullScreenConfigurator,
         ModelViewer,
         EnvironmentLoader,
+        LabLoader,
         PieceLoader,
         ModelLoader,
         ModuleLoader,
@@ -75,9 +77,17 @@
         ViewerPointer
     ) {
 
+
+        var modelViewer;
+        var onReady = function(client) {
+            modelViewer = client;
+        };
+
         var playerReady = function() {
             new DevConfigurator();
             new FullScreenConfigurator();
+            new LabLoader(modelViewer);
+
             new EnvironmentLoader();
 
             new ModelLoader();
@@ -92,7 +102,7 @@
 
         evt.on(evt.list().PLAYER_READY, playerReady);
 
-        Setup.init(ModelViewer)
+        Setup.init(ModelViewer, onReady)
 
     });
 

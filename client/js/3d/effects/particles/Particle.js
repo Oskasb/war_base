@@ -89,7 +89,13 @@ define([],
             this.params.quaternion.z = quat.z;
             this.params.quaternion.w = quat.w;
         };
-        
+
+        Particle.prototype.setVelocity = function(vel) {
+            this.params.velocity.x = vel.x;
+            this.params.velocity.y = vel.y;
+            this.params.velocity.z = vel.z;
+        };
+
         Particle.prototype.addVelocity = function(vel) {
             this.params.velocity.x += vel.x;
             this.params.velocity.y += vel.y;

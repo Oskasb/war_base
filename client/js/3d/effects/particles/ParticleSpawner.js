@@ -264,6 +264,10 @@ define([
             effect.updateEffectPositionSimulator(pos, tpf);
         };
 
+        ParticleSpawner.prototype.updateActiveParticleVelocity = function(effect, vel, state, tpf) {
+            effect.updateEffectVelocitySimulator(vel, tpf);
+        };
+
         ParticleSpawner.prototype.updateActiveEffectQuaternion = function(effect, quat, state, tpf) {
             effect.updateEffectQuaternionSimulator(quat, tpf);
         };

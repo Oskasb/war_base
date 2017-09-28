@@ -254,7 +254,9 @@ define([
 
             var fx = PipelineAPI.readCachedConfigKey('MODULE_EFFECTS', effectId);
 
-            calcVec3.set(0, 0, 0);
+            calcVec3.set(0, 0, 1);
+            rootObj.getWorldQuaternion(calcQuat);
+            calcVec3.applyQuaternion(calcQuat);
 
             for (var i = 0; i < fx.length; i++) {
 
@@ -408,6 +410,46 @@ define([
         };
 
 
+        ModuleEffectCreator.module_static_velocity_effect = function(visualModule, target, tpf) {
+
+            if (target.effectArray.length && visualModule.render) {
+
+                ModuleEffectCreator.updateEffect(
+                    target.effectArray,
+                    visualModule.model || visualModule.rootObj,
+                    target.state.getValue(),
+                    tpf
+                );
+
+                ModuleEffectCreator.updateEffectVelocity(
+                    target.effectArray,
+                    visualModule.model || visualModule.rootObj,
+                    target.state.getValue(),
+                    tpf
+                )
+
+            } else {
+                if (target.state.getValue() !== 0 && visualModule.render) {
+
+                    target.effectArray =  ModuleEffectCreator.createModuleStaticEffect(
+                        target.effectArray,
+                        target.config.module_effect,
+                        visualModule.module.transform,
+                        visualModule.model || visualModule.rootObj,
+                        target.config.scale
+                    )
+
+                }
+            }
+
+            if (target.effectArray) {
+                if (target.state.getValue() === 0 || target.remove || !visualModule.render) {
+                    ModuleEffectCreator.removeModuleStaticEffect(target.effectArray)
+                }
+            }
+
+        };
+
         ModuleEffectCreator.module_static_state_effect = function(visualModule, target, tpf) {
 
             if (target.effectArray.length && visualModule.render) {
@@ -503,6 +545,24 @@ define([
 
             for (var i = 0; i < fxArray.length; i++) {
                 EffectsAPI.updateEffectPosition(fxArray[i], calcVec, state, 0);
+            }
+        };
+
+        ModuleEffectCreator.updateEffectVelocity = function(fxArray, model, state, tpf) {
+
+            //    model.updateMatrixWorld(true);
+         //      calcVec.setFromMatrixPosition( model.matrixWorld );
+
+        //    model.getWorldPosition(calcVec);
+              model.getWorldQuaternion(calcQuat);
+
+            calcVec.set(0, 0, state);
+            calcVec.applyQuaternion(calcQuat);
+
+            // calcVec.multiplyScalar(state * 10);
+
+            for (var i = 0; i < fxArray.length; i++) {
+                EffectsAPI.updateEffectVelocity(fxArray[i], calcVec, state, tpf);
             }
         };
 

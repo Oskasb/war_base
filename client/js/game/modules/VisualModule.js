@@ -21,6 +21,7 @@ define([
         };
 
         VisualModule.prototype.setModuleData = function(data) {
+            cbs = ThreeAPI.getEffectCallbacks();
             this.data = data;
             if (this.data.model) {
                 if (this.model) {
@@ -85,7 +86,7 @@ define([
 
         VisualModule.prototype.showVisualModule = function() {
     //        console.log("show")
-            cbs = ThreeAPI.getEffectCallbacks();
+
             if (this.model) {
                 ThreeAPI.showModel(this.model);
                 this.rootObj.add(this.model);
