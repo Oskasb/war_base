@@ -415,6 +415,10 @@ define([
             executorOkResponse(workerEntrie.length);
         };
 
+        GameCommander.prototype.getActiveCombatAttacks = function() {
+            return combatFeedbackFunctions.getActiveAttacks();
+        };
+
         GameCommander.prototype.countActiveAttacks = function() {
             return combatFeedbackFunctions.getActiveAttackCount();
         };

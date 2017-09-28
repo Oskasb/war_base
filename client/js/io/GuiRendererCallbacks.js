@@ -64,7 +64,7 @@ define([
         };
 
         GuiRendererCallbacks.prototype.draw_local_map = function(guiElement) {
-            this.hudMapProcessor.draw_local_map(guiElement);
+            this.hudMapProcessor.process_local_map(guiElement);
         };
 
         GuiRendererCallbacks.prototype.updateElementsSpriteKey = function(fxElements, spriteKey) {

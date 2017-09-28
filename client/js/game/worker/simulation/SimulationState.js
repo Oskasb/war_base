@@ -506,6 +506,29 @@ define([
             return physicsApi.getYGravity()
         };
 
+        SimulationState.prototype.updateActiveActor = function(actor, tpf) {
+
+
+            pieceUpdates++;
+            actor.piece.rootObj3D.updateMatrixWorld();
+
+            actor.piece.updatePieceStates(tpf);
+            actor.piece.updatePieceSlots(tpf, this);
+            //     actor.piece.updatePieceVisuals(tpf);
+
+
+            //    actor.piece.updateGamePiece(tpf, time, this);
+            actor.samplePhysicsState();
+            this.protocolSystem.updateActorSendProtocol(actor, tpf);
+
+            var integrity = this.simulationOperations.checkActorIntegrity(actor, levels);
+
+            if (!integrity) {
+                //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
+            }
+
+        };
+
 
         SimulationState.prototype.updateActorFrame = function(actor, tpf) {
 
@@ -527,14 +550,13 @@ define([
 
             if (combatStatus) {
                 combatStatus.tickCombatStatus();
+
                 if (combatStatus.getCombatState()) {
-                    actor.escalateActivationState();
+
+                    actor.setActivationState(ENUMS.PieceActivationStates.ENGAGED);
                     physicsApi.triggerPhysicallyActive(actor);
                     this.activityFilter.notifyActorActiveState(actor, true);
 
-                    if (initState < ENUMS.PieceActivationStates.ACTIVE) {
-                        actor.escalateActivationState();
-                    }
                 } else {
 
                     if (actor.isEngaged()) {
@@ -552,7 +574,7 @@ define([
                             }
                         } else {
                             this.activityFilter.notifyActorActiveState(actor, physicsApi.isPhysicallyActive(actor));
-                            physicsApi.triggerPhysicallyRelaxed(actor)
+                        //    physicsApi.triggerPhysicallyRelaxed(actor)
                         }
 
                     }
@@ -561,44 +583,24 @@ define([
 
 
             if (this.activityFilter.getActorExpectActive(actor)) {
-
-                pieceUpdates++;
-                actor.piece.rootObj3D.updateMatrixWorld();
-
-                actor.piece.updatePieceStates(tpf);
-                actor.piece.updatePieceSlots(tpf, this);
-           //     actor.piece.updatePieceVisuals(tpf);
-
-
-            //    actor.piece.updateGamePiece(tpf, time, this);
-                actor.samplePhysicsState();
-                this.protocolSystem.updateActorSendProtocol(actor, tpf);
-
-                var integrity = this.simulationOperations.checkActorIntegrity(actor, levels);
-
-                if (!integrity) {
-                    //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
-                }
+                this.updateActiveActor(actor, tpf);
             } else {
 
                 var range = this.checkActorInRangeFromPosition(actor, visibleRange + actor.piece.boundingSize, playerPos);
 
                 if (range === actor) {
-                    if (initState !== ENUMS.PieceActivationStates.VISIBLE) {
-                        actor.piece.setPieceActivationState(ENUMS.PieceActivationStates.VISIBLE);
 
-                        if (initState !== actor.piece.getPieceActivationState()) {
-                        //    physicsApi.triggerPhysicallyActive(actor)
-                            actor.piece.updatePieceStates(tpf);
-                            actor.piece.updatePieceSlots(tpf, this);
-                            pieceUpdates++;
-                        } else {
+                    actor.piece.setPieceActivationState(ENUMS.PieceActivationStates.VISIBLE);
 
-                        }
-                        actor.samplePhysicsState();
-                        physicsApi.triggerPhysicallyRelaxed(actor);
-                        this.protocolSystem.updateActorSendProtocol(actor, tpf);
-                    }
+
+                //    if (initState !== actor.piece.getPieceActivationState()) {
+                        //    physicsApi.triggerPhysicallyActive(act
+                        // or);
+                        physicsApi.triggerPhysicallyActive(actor);
+                        this.updateActiveActor(actor, tpf);
+                //    }
+
+
                 } else {
                     if (actor.isHidden()) {
                     //    actor.deescalateActivationState();
@@ -627,8 +629,8 @@ define([
         var activationStates = new Array(ENUMS.PieceActivationStates.ENGAGED + 3);
 
         var pieceUpdates;
-        var activateRange = 45;
-        var visibleRange = 1650;
+        var activateRange = 15;
+        var visibleRange = 550;
         var playerPos = new THREE.Vector3();
 
         SimulationState.prototype.updateState = function(tpf) {

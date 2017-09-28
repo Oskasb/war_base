@@ -79,9 +79,7 @@ define([
                 calcObj.quaternion,
                 activeAttacks[attackId]
             );
-
         }
-
     };
 
     CombatFeedbackFunctions.prototype.registerAttackHit = function(attackId, actor, posVec, normalVec, damage, moduleEffectId) {
@@ -92,6 +90,11 @@ define([
 
     CombatFeedbackFunctions.prototype.registerAttackEnd = function(attackId) {
         ModuleEffectCreator.removeModuleStaticEffect(activeAttacks[attackId])
+    };
+
+
+    CombatFeedbackFunctions.prototype.getActiveAttacks = function() {
+        return activeAttacks;
     };
 
     CombatFeedbackFunctions.prototype.getActiveAttackCount = function() {

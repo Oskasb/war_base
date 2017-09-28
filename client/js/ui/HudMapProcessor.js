@@ -12,6 +12,18 @@ define([
         var GameAPI;
         var guiRenderer;
 
+        var piece;
+        var dirtyState;
+        var activationState;
+        var text;
+        var i;
+        var actors;
+        var elem;
+
+        var size;
+        var axis;
+        var factor;
+        var corner;
 
 
         var calcVec = new THREE.Vector3();
@@ -36,9 +48,9 @@ define([
                 return;
             }
 
-            var corner = -0.28;
+            corner = -0.28;
 
-            var size = 0.47;
+            size = 0.47;
 
             guiElement.origin.set(corner, corner, -1); // (activeSelection.piece.frustumCoords);
             GameScreen.fitView(guiElement.origin);
@@ -50,12 +62,12 @@ define([
             this.mapCenter.copy(guiElement.origin);
 
 
-            var axis = guiElement.origin.x;
+            axis = guiElement.origin.x;
             if (Math.abs(guiElement.origin.y) < Math.abs(guiElement.origin.x)) {
                 axis = guiElement.origin.y;
             }
 
-            var factor = Math.abs(corner) * axis + size*axis;
+            factor = Math.abs(corner) * axis + size*axis;
 
             this.size = Math.abs(factor*2);
 
@@ -92,13 +104,14 @@ define([
 
         HudMapProcessor.prototype.drawActorOnMap = function(actor, guiElement, index) {
 
+
             calcVec.subVectors(actor.piece.getPos()  , this.playerPos);
 
             calcVec.multiplyScalar(1 / 1000);
 
 
-            calcVec.y = calcVec.z - this.size;
-            calcVec.x = calcVec.x - this.size;
+            calcVec.y = -calcVec.z - 0.25;
+            calcVec.x = calcVec.x - 0.25;
 
         //    calcVec.multiplyScalar(this.size);
 
@@ -110,16 +123,62 @@ define([
 
             guiElement.applyElementPosition(0, calcVec);
 
-            guiElement.setText(''+index);
+            piece = actor.piece;
 
-            calcVec2.set(0, 0, 0);
+            text = '_';
+            if (piece.render) {
+                text = 'R'
+            }
+
+
+            activationState = piece.getPieceActivationState();
+
+        //    if (activationState) {
+                text += activationState;
+        //    }
+
+            dirtyState = piece.testStatesDirtyStates();
+
+
+            if (dirtyState) {
+                text += '_D'
+            } else {
+                text += '__'
+            }
+
+            guiElement.setText(text);
+
+            calcVec2.set(guiElement.options.offset_x, guiElement.options.offset_y, 0);
 
             guiElement.renderText(calcVec2);
 
         };
 
 
-        HudMapProcessor.prototype.draw_local_map = function(guiElement) {
+
+        HudMapProcessor.prototype.drawActors = function(actors, guiElement) {
+            for (i = 0; i < actors.length; i++) {
+
+                if (guiElement.children[guiElement.options.map_actor_element_id][i]) {
+                    this.drawActorOnMap(actors[i], guiElement.children[guiElement.options.map_actor_element_id][i], i)
+                } else {
+                    guiElement.spawnChildElement(guiElement.options.map_actor_element_id)
+                }
+            }
+
+            calcVec.z = 99;
+
+            for (0; i < guiElement.children[guiElement.options.map_actor_element_id].length; i++) {
+                elem = guiElement.children[guiElement.options.map_actor_element_id][i];
+                elem.applyElementPosition(null, calcVec);
+                elem.setText('xxxx');
+                elem.renderText(calcVec);
+                //    i--
+            }
+        };
+
+
+        HudMapProcessor.prototype.process_local_map = function(guiElement) {
 
 
             var controlledActor = GameAPI.getControlledActor();
@@ -129,36 +188,24 @@ define([
                 return;
             }
 
-            var actors = GameAPI.getActors();
+            actors = GameAPI.getActors();
 
             guiElement.origin.copy(this.mapCenter);
 
-            guiElement.origin.x -= this.size/2;
-            guiElement.origin.y -= this.size/2;
+        //    guiElement.origin.x -= this.size/2;
+         //   guiElement.origin.y -= this.size/2;
 
-            if ( guiElement.children[guiElement.options.map_actor_element_id]) {
-
-            } else {
-                for (var i = 0; i < actors.length; i++) {
+            if (!guiElement.children[guiElement.options.map_actor_element_id]) {
+                for (i = 0; i < actors.length; i++) {
                     guiElement.spawnChildElement(guiElement.options.map_actor_element_id)
                 }
                 return;
             }
 
+            this.drawActors(actors, guiElement);
 
-            for (var i = 0; i < actors.length; i++) {
 
-                if (guiElement.children[guiElement.options.map_actor_element_id][i]) {
-                    this.drawActorOnMap(actors[i], guiElement.children[guiElement.options.map_actor_element_id][i], i)
-                } else {
-                    guiElement.spawnChildElement(guiElement.options.map_actor_element_id)
-                }
-            }
 
-            for (var i = i; i < guiElement.children[guiElement.options.map_actor_element_id].length; i++) {
-                guiElement.despawnChildElement(guiElement.children[guiElement.options.map_actor_element_id].pop())
-                i--
-            }
 
         };
 

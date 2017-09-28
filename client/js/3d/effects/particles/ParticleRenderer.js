@@ -19,6 +19,15 @@ define([
         PipelineObject
     ) {
 
+        var config;
+        var dimensions;
+        var particle;
+        var req;
+        var i;
+        var color;
+        var key;
+
+
         var ParticleRenderer = function(rendererConfig, rendererReady) {
             this.id = rendererConfig.id;
             this.setupRendererMaterial(rendererConfig, rendererReady);
@@ -45,6 +54,7 @@ define([
 
             this.systemTime = 0;
 
+            this.needsUpdate = false;
             this.renderHighestIndex = 0;
 
             var particleMaterialData = function(src, data) {
@@ -67,7 +77,7 @@ define([
                this.setMaterial(material, rendererReady);
             }.bind(this);
 
-            for (var i = 0; i < data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 if (data[i].id == this.config.material_id) {
     //                console.log("buildParticleMaterial", data[i].id );
                     this.setupBufferAttributes(data[i].attributes);
@@ -88,9 +98,9 @@ define([
                 this.particles = [];
             }
 
-            for (var i = 0; i < this.poolSize; i++) {
-                var particle = new Particle(i);
-                for (var key in this.attributeConfigs) {
+            for (i = 0; i < this.poolSize; i++) {
+                particle = new Particle(i);
+                for (key in this.attributeConfigs) {
                     particle.bindAttribute(key, this.attributeConfigs[key].dimensions, this.attributes[key]);
                 }
                 this.particles.push(particle);
@@ -102,6 +112,8 @@ define([
             new ParticleMaterial(this.config.material_options, material_config, materialReady);
         };
 
+
+
         ParticleRenderer.prototype.buildMeshBuffer = function() {
             if (this.particleBuffer) {
                 this.particleBuffer.dispose();
@@ -111,11 +123,11 @@ define([
                 this.particleBuffer = new ParticleBuffer(geom.verts, geom.uvs, geom.indices, geom.normals);
 
 
-                for (var key in this.attributes) {
+                for (key in this.attributes) {
                     this.particleBuffer.geometry.addAttribute( key, this.attributes[key] );
                 }
 
-                for (var key in this.particleBuffer.geometry.attributes) {
+                for (key in this.particleBuffer.geometry.attributes) {
                     this.attributes[key] = this.particleBuffer.geometry.attributes[key];
                 }
 
@@ -137,15 +149,17 @@ define([
         //    this.particleBuffers.push(this.particleBuffer);
         };
 
+
+
         ParticleRenderer.prototype.attachMaterial = function() {
             this.particleBuffer.mesh.material = this.material;
         };
 
         ParticleRenderer.prototype.setupBufferAttributes = function(attributes_config) {
-            for (var i = 0; i < attributes_config.length; i++) {
-                var config = attributes_config[i];
+            for (i = 0; i < attributes_config.length; i++) {
+                config = attributes_config[i];
                 this.attributeConfigs[config.name] = config;
-                var dimensions = config.dimensions;
+                dimensions = config.dimensions;
                 this.attributes[config.name] = new THREE.InstancedBufferAttribute(new Float32Array(this.poolSize * dimensions), dimensions, 1).setDynamic( config.dynamic );
             }
         };
@@ -162,7 +176,7 @@ define([
             if (this.particles.length - requestSize > this.biggestRequest) {
                 return requestSize;
             } else {
-                var req = Math.round( (this.poolSize / this.particles.length) * requestSize) || 1;
+                req = Math.round( (this.poolSize / this.particles.length) * requestSize) || 1;
                 if (this.particles.length > req) {
                     return  req;
                 } else if (this.particles.length) {
@@ -174,12 +188,13 @@ define([
             }
         };
 
+
         ParticleRenderer.prototype.requestParticle = function() {
-            var particle = this.particles.shift();
+            particle = this.particles.shift();
 
             if (particle.particleIndex > this.renderHighestIndex) {
                 this.renderHighestIndex = particle.particleIndex;
-                this.particleBuffer.setInstancedCount( this.renderHighestIndex)
+                this.particleBuffer.setInstancedCount( this.renderHighestIndex +1)
             }
 
             particle.dead = false;
@@ -195,8 +210,8 @@ define([
                 return this.poolSize;
             }
 
-            for (var i = 0; i < this.drawingParticles.length; i++) {
-                if(this.drawingParticles[i].particleIndex > this.renderHighestIndex) {
+            for (i = 0; i < this.drawingParticles.length; i++) {
+                if (this.drawingParticles[i].particleIndex > this.renderHighestIndex) {
                     this.renderHighestIndex = this.drawingParticles[i].particleIndex
                 }
             }
@@ -209,9 +224,11 @@ define([
 
         //    if (particle.particleIndex === this.renderHighestIndex) {
 
-                this.renderHighestIndex = this.computerHighestRenderingIndex();
+            this.needsUpdate = true;
 
-                this.particleBuffer.setInstancedCount( this.renderHighestIndex + 2);
+            //    this.renderHighestIndex = this.computerHighestRenderingIndex();
+
+            //    this.particleBuffer.setInstancedCount( this.renderHighestIndex + 1);
         //    }
             this.particles.unshift(particle);
         };
@@ -229,7 +246,7 @@ define([
         };
 
         ParticleRenderer.prototype.applyUniformEnvironmentColor = function(uniform, worldProperty) {
-            var color = ThreeAPI.readEnvironmentUniform(worldProperty, 'color');
+            color = ThreeAPI.readEnvironmentUniform(worldProperty, 'color');
             uniform.value.r = color.r;
             uniform.value.g = color.g;
             uniform.value.b = color.b;
@@ -239,6 +256,12 @@ define([
         ParticleRenderer.prototype.updateParticleRenderer = function(systemTime) {
 
             this.systemTime = systemTime;
+
+            if (this.needsUpdate) {
+                this.renderHighestIndex = this.computerHighestRenderingIndex();
+                this.particleBuffer.setInstancedCount( this.renderHighestIndex + 1);
+                this.needsUpdate = false;
+            }
 
             if (this.material.uniforms.systemTime) {
                 this.material.uniforms.systemTime.value = this.systemTime;

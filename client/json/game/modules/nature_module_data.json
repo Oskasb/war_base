@@ -19,7 +19,7 @@
             {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
             {"channelid":"fire_channel",   "stateid": "fire_state"},
-            {"channelid":"channel_visual_shrub_medium",   "stateid": "state_active"}
+            {"channelid":"channel_visual_shrub_medium",   "stateid": "state_pos_y"}
           ],
           "attachment_points":[
             {"id":"ap_combat",
@@ -49,7 +49,7 @@
             {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
             {"channelid":"fire_channel",   "stateid": "fire_state"},
-            {"channelid":"channel_visual_module_tree_3_small",     "stateid": "state_active"}
+            {"channelid":"channel_visual_module_tree_3_small",     "stateid": "state_pos_y"}
           ],
           "attachment_points":[
             {"id":"ap_combat",
@@ -79,7 +79,7 @@
             {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
             {"channelid":"fire_channel",   "stateid": "fire_state"},
-            {"channelid":"channel_visual_module_tree_3_combined",     "stateid": "state_active"}
+            {"channelid":"channel_visual_module_tree_3_combined",     "stateid": "state_pos_y"}
           ],
           "attachment_points":[
             {"id":"ap_combat",
@@ -110,7 +110,7 @@
             {"channelid":"channel_quat_z", "stateid": "quat_state_z"},
             {"channelid":"channel_quat_w", "stateid": "quat_state_w"},
             {"channelid":"fire_channel",   "stateid": "fire_state"},
-            {"channelid":"channel_visual_module_tree_2_trunk",     "stateid": "state_active"}
+            {"channelid":"channel_visual_module_tree_2_trunk",     "stateid": "state_pos_y"}
           ],
           "attachment_points":[
             {"id":"ap_combat",

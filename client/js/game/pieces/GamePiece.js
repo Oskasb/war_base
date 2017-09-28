@@ -330,8 +330,9 @@ define([
         //    return true;
             if (activeState) {
 
+
                 if (activeState.getValue()) {
-                    if (Math.random() < 0.1) {
+                    if (Math.random() < 0.01) {
                         return true;
                     }
                 }

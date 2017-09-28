@@ -5,6 +5,12 @@
 define([],
     function() {
 
+
+        var min;
+        var max;
+        var idx;
+        var i;
+
         function createCurveParam(curveId, amplitude, min, max) {
             return new MATH.CurveState(MATH.curves[curveId], amplitude+MATH.randomBetween(amplitude*min, amplitude*max));
         }
@@ -29,8 +35,8 @@ define([],
             if (!pParams[param]) {
                 pParams[param] = new THREE.Vector2();
             }
-            var min = vec.spread.min;
-            var max = vec.spread.max;
+            min = vec.spread.min;
+            max = vec.spread.max;
             pParams[param].x = spreadParamValue(vec.x, min, max);
             pParams[param].y = spreadParamValue(vec.y, min, max);
         }
@@ -39,8 +45,8 @@ define([],
             if (!pParams[param]) {
                 pParams[param] = new THREE.Vector3();
             }
-            var min = vec.spread.min;
-            var max = vec.spread.max;
+            min = vec.spread.min;
+            max = vec.spread.max;
             pParams[param].x = spreadParamValue(vec.x, min, max);
             pParams[param].y = spreadParamValue(vec.y, min, max);
             pParams[param].z = spreadParamValue(vec.z, min, max);
@@ -50,8 +56,8 @@ define([],
             if (!pParams[param]) {
                 pParams[param] = new THREE.Vector4();
             }
-            var min = vec.spread.min;
-            var max = vec.spread.max;
+            min = vec.spread.min;
+            max = vec.spread.max;
             pParams[param].x = spreadParamValue(vec.x, min, max);
             pParams[param].y = spreadParamValue(vec.y, min, max);
             pParams[param].z = spreadParamValue(vec.z, min, max);
@@ -79,7 +85,7 @@ define([],
 
         function applyCurveXD(pParams, params, curves) {
             pParams[params.param] = [];
-            for (var i = 0; i < curves.length; i++) {
+            for (i = 0; i < curves.length; i++) {
                 pParams[params.param][i] = createCurveParam(curves[i],
                     params.amplitudes[i],
                     params.spread.min,
@@ -132,8 +138,9 @@ define([],
         };
 
 
+
         ParticleParamParser.applyEffectParams = function(particle, effectParams) {
-            for (var i = 0;i < effectParams.length; i++) {
+            for (i = 0;i < effectParams.length; i++) {
                 ParticleParamParser.applyParamToParticle(particle, effectParams[i])
             }
         };
@@ -145,7 +152,7 @@ define([],
             }
 
             if (sprite.tiles.length > 1) {
-                var idx = Math.floor(Math.random()*sprite.tiles.length);
+                idx = Math.floor(Math.random()*sprite.tiles.length);
                 particle.params.tiles.x = sprite.tiles[idx][0];
                 particle.params.tiles.y = sprite.tiles[idx][1];
             } else {

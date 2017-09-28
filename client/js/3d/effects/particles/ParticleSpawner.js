@@ -30,7 +30,29 @@ define([
 
         var started = 0;
         var finished = 0;
-        
+
+        var sysKey = 'THREE';
+
+        var poolTotal = 0;
+        var activeRenderes = 0;
+        var totalRenderers = 0;
+        var activeParticles;
+        var i;
+        var key;
+        var count;
+        var adds;
+        var effect;
+        var renderer;
+
+        var fxConf;
+        var particleConf;
+        var sprite;
+        var texelRow;
+
+        var dead;
+        var spliced;
+    //    var addRen;
+
         var ready = function() {};
         
         var rendererReady = function(renderer) {
@@ -52,7 +74,7 @@ define([
             this.particleEffectData.loadEffectData();
 
         };
-
+3
         ParticleSpawner.prototype.initParticleSpawner = function(onReady) {
 
             this.setupParticleRenderers();
@@ -72,7 +94,7 @@ define([
             
             
             var renderersData = function(src, data) {
-                for (var i = 0; i < data.length; i++) {
+                for (i = 0; i < data.length; i++) {
 
                     started++;
 
@@ -156,7 +178,7 @@ define([
 
         ParticleSpawner.prototype.buildEffect = function(id, pos, vel, size, quat, duration) {
 
-            var effect = this.getEffect();
+            effect = this.getEffect();
 
             effect.setEffectId(id);
 
@@ -200,19 +222,19 @@ define([
 
         };
 
-        var sysKey = 'THREE';
+
 
         ParticleSpawner.prototype.activateEffect = function(effect) {
             effect.setEffectData(this.particleEffectData.buildEffect(effect.effectData, sysKey, effect.getEffectId()));
 
-            var renderer = this.getRenderersById(effect.effectData.effect.renderer_id);
+            renderer = this.getRenderersById(effect.effectData.effect.renderer_id);
 
             if (!renderer) {
                 console.log("Renderer not yet ready...", effect.effectData.effect.renderer_id);
                 return;
             }
 
-            for (var i = 0; i < renderer.length; i++) {
+            for (i = 0; i < renderer.length; i++) {
                 if (renderer[i].particles.length > renderer[i].biggestRequest * 2) {
                     return this.renderEffect(renderer[i], effect);
                 }
@@ -225,7 +247,7 @@ define([
         ParticleSpawner.prototype.spawnActiveParticleEffect = function(id, pos, vel) {
 
 
-            var effect = this.buildEffect(id, pos, vel);
+            effect = this.buildEffect(id, pos, vel);
 
             if (typeof(effect) === 'undefined') {
                 console.log("Undefined effect created...", id, pos, vel);
@@ -245,14 +267,14 @@ define([
 
 
         ParticleSpawner.prototype.updateEffectParticleSprite = function(effect, spriteKey) {
-            var fxConf = this.particleEffectData.fetchEffect(sysKey,  effect.id);
-            var particleConf = this.particleEffectData.fetchParticle(fxConf.system_key, fxConf.particle_id);
-            var sprite = this.particleEffectData.fetchSprite(particleConf.sprite_key, spriteKey);
+            fxConf       = this.particleEffectData.fetchEffect(sysKey,  effect.id);
+            particleConf = this.particleEffectData.fetchParticle(fxConf.system_key, fxConf.particle_id);
+            sprite       = this.particleEffectData.fetchSprite(particleConf.sprite_key, spriteKey);
             effect.updateEffectSpriteSimulator(sprite, spriteKey);
         };
 
         ParticleSpawner.prototype.updateEffectParticleColor = function(effect, colorKey) {
-            var texelRow = EffectDataTranslator.getTexelRowByName(colorKey);
+            texelRow = EffectDataTranslator.getTexelRowByName(colorKey);
 
             if (isNaN(texelRow)) {
                 console.log("No such curve: ", colorKey);
@@ -265,7 +287,7 @@ define([
 
         ParticleSpawner.prototype.spawnTemporaryPassiveEffect = function(id, pos, vel, size, quat, duration) {
 
-            var effect = this.buildEffect(id, pos, vel, size, quat, duration);
+            effect = this.buildEffect(id, pos, vel, size, quat, duration);
 
             if (!duration) {
                 duration = 0;
@@ -302,6 +324,7 @@ define([
         };
 
 
+
         ParticleSpawner.prototype.updateSpawnedParticles = function(tpf) {
 
             systemTime += tpf;
@@ -312,15 +335,15 @@ define([
                 }
 
 
-            for (var key in renderers) {
-                for (var i = 0; i < renderers[key].length; i++) {
+            for (key in renderers) {
+                for (i = 0; i < renderers[key].length; i++) {
                     renderers[key][i].updateParticleRenderer(systemTime);
                 }
             }
 
             while (endedEffects.length) {
-                var dead = endedEffects.pop();
-                var spliced = activeEffects.splice(activeEffects.indexOf(dead), 1)[0];
+                dead = endedEffects.pop();
+                spliced = activeEffects.splice(activeEffects.indexOf(dead), 1)[0];
                 spliced.resetParticleEffect();
                 idleEffects.push(spliced);
             }
@@ -358,10 +381,10 @@ define([
         
         
         ParticleSpawner.prototype.getTotalParticlePool = function() {
-            var poolTotal = 0;
+            poolTotal = 0;
             
-            for (var key in renderers) {
-                for (var i = 0; i < renderers[key].length; i++) {
+            for (key in renderers) {
+                for (i = 0; i < renderers[key].length; i++) {
                     poolTotal += renderers[key][i].particles.length;
                 }
 
@@ -375,8 +398,7 @@ define([
             return idleEffects.length;
         };
 
-        var activeRenderes = 0;
-        var totalRenderers = 0;
+
 
         ParticleSpawner.prototype.getActiveRendererCount = function() {
             return activeRenderes+'/'+totalRenderers ;
@@ -387,21 +409,22 @@ define([
         };
 
 
+
         ParticleSpawner.prototype.getActiveParticlesCount = function() {
 
-            var count = 0;
+            count = 0;
             activeRenderes = 0;
             totalRenderers = 0;
 
 
-            for (var i = 0; i < activeEffects.length; i++) {
+            for (i = 0; i < activeEffects.length; i++) {
                 count += activeEffects[i].aliveParticles.length;
             }
             
             
-            for (var key in renderers) {
+            for (key in renderers) {
                 for (i = 0; i < renderers[key].length; i++) {
-                    var activeParticles = renderers[key][i].poolSize - renderers[key][i].particles.length;
+                    activeParticles = renderers[key][i].poolSize - renderers[key][i].particles.length;
                     if (activeParticles) {
                         if (!renderers[key][i].isRendering) {
                             renderers[key][i].enableParticleRenderer();
@@ -421,7 +444,7 @@ define([
         };
 
         ParticleSpawner.prototype.getEffectActivationCount = function() {
-            var adds = fxAdds;
+            adds = fxAdds;
             fxAdds = 0;
             return adds;
         };

@@ -103,7 +103,7 @@ define([
 
 
         ModuleCallbacks.call_notify_actor_active = function(module, target, enable) {
-            var value = target.state.buffer[0];
+            var value = Math.round(target.state.buffer[0]);
             var piece = enable();
                 if (!piece) {
                     enable(true);

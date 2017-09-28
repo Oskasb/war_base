@@ -11,7 +11,20 @@ define([
 
         var count = 0;
 
+        var i;
+        var key;
+
+        var childCount;
+        var elemCountDiff;
+
+        var txElemId;
+        var letter;
+        var callback;
+
+        var child;
+
         var guiRendererCallbacks;
+
         var calcVec = new THREE.Vector3();
 
         var GuiElement = function(dataKey, ready) {
@@ -65,15 +78,17 @@ define([
         };
 
 
+
+
         GuiElement.prototype.generateChildrenForText = function(text) {
 
-            var childCount = this.requestedChildren;
+            childCount = this.requestedChildren;
 
             if (this.children[this.options.text_element_id]) {
                 childCount += this.children[this.options.text_element_id].length;
             }
 
-            var elemCountDiff = text.length - childCount;
+            elemCountDiff = text.length - childCount;
 
             if (!elemCountDiff) return;
 
@@ -85,16 +100,19 @@ define([
                 }
 
             } else if (elemCountDiff > 0) {
-                for (var i = this.text.length; i < text.length; i++) {
+                for (i = this.text.length; i < text.length; i++) {
                     this.spawnChildElement(this.options.text_element_id);
                 }
             }
         };
 
+
+
+
         GuiElement.prototype.renderText = function(textOffsetVector) {
 
-            var txElemId = this.options.text_element_id;
-            var child;
+            txElemId = this.options.text_element_id;
+
 
             this.textOffsetVec.copy(textOffsetVector);
 
@@ -103,8 +121,8 @@ define([
 
             if (this.children[txElemId]) {
 
-                for (var i = 0; i < this.children[txElemId].length; i++) {
-                    var letter = this.text[i];
+                for (i = 0; i < this.children[txElemId].length; i++) {
+                    letter = this.text[i];
 
                     child = this.children[txElemId][i];
                     child.origin.copy(this.position);
@@ -160,8 +178,10 @@ define([
             return this.target;
         };
 
+
+
         GuiElement.prototype.spawnChildElement = function(fxId) {
-            var callback = function(element) {
+            callback = function(element) {
                 if (!this.children[element.dataKey]) {
                     this.children[element.dataKey] = [];
                 }
@@ -186,13 +206,13 @@ define([
 
             this.enabled = true;
 
-            for (var i = 0; i < this.fxIds.length; i++) {
+            for (i = 0; i < this.fxIds.length; i++) {
                 guiRendererCallbacks[this.enableFunc](this, i);
             }
         };
 
         GuiElement.prototype.removeChildren = function() {
-            for (var key in this.children) {
+            for (key in this.children) {
                 while (this.children[key].length) {
                     this.despawnChildElement(this.children[key].pop());
                 }
