@@ -10,13 +10,15 @@ define(['PipelineObject'],
         var particles = {};
         var simulations = {};
 
+        var i;
+
         var cacheSprites = function(src, data) {
 
             if (!sprites[src]) {
                 sprites[src] = {};
             }
 
-            for (var i = 0; i < data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 sprites[src][data[i].id] = data[i];
             }
         };
@@ -27,7 +29,7 @@ define(['PipelineObject'],
                 effect[src] = {};
             }
 
-            for (var i = 0; i < data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 effect[src][data[i].id] = data[i].data;
             }
         };
@@ -38,7 +40,7 @@ define(['PipelineObject'],
                 particles[src] = {};
             }
 
-            for (var i = 0; i < data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 particles[src][data[i].id] = data[i];
             }
         };
@@ -49,7 +51,7 @@ define(['PipelineObject'],
                 simulations[src] = {};
             }
 
-            for (var i = 0; i < data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 simulations[src][data[i].id] = data[i];
             }
         };

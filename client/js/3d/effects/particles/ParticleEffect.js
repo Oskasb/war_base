@@ -10,6 +10,16 @@ define(['3d/effects/particles/EffectSimulators',
 
         var calcVec = new THREE.Vector3();
 
+        var frameTpfFraction;
+        var i;
+        var dead;
+        var spliced;
+        var particle;
+        var simulation;
+        var maxDuration ;
+        var allowedCount;
+        var idealCount;
+
         var ParticleEffect = function() {
             this.id = null;
             this.lastTpf = 0.016;
@@ -86,11 +96,13 @@ define(['3d/effects/particles/EffectSimulators',
             this.vel.z = vel.z;
         };
 
+
+
         ParticleEffect.prototype.attachSimulators = function() {
-            var simulation = this.effectData.simulation;
+            simulation = this.effectData.simulation;
 
             this.simulators = [];
-            for (var i = 0; i < simulation.simulators.length; i++) {
+            for ( i = 0; i < simulation.simulators.length; i++) {
                 this.simulators.push(simulation.simulators[i])
             }
         };
@@ -99,13 +111,13 @@ define(['3d/effects/particles/EffectSimulators',
             this.renderer = renderer;
             this.age = 0;
 
-            var idealCount = this.effectData.effect.count;
-            var allowedCount = renderer.calculateAllowance(idealCount);
+            idealCount = this.effectData.effect.count;
+            allowedCount = renderer.calculateAllowance(idealCount);
 
-            var maxDuration = 0;
+            maxDuration = 0;
 
-            for (var i = 0; i < allowedCount; i++) {
-                var particle = renderer.requestParticle();
+            for ( i = 0; i < allowedCount; i++) {
+                particle = renderer.requestParticle();
                 this.includeParticle(particle, systemTime, i, allowedCount);
                 this.aliveParticles.push(particle);
                 if (particle.params.lifeTime.value > maxDuration) {
@@ -124,9 +136,11 @@ define(['3d/effects/particles/EffectSimulators',
             vec.z += spreadV4.z * (Math.random()-0.5);
         };
 
+
+
         ParticleEffect.prototype.includeParticle = function(particle, systemTime, index, allowedCount) {
 
-            var frameTpfFraction = this.lastTpf*(index/allowedCount);
+            frameTpfFraction = this.lastTpf*(index/allowedCount);
 
                 ParticleParamParser.applyEffectParams(particle, this.effectData.gpuEffect.init_params);
                 particle.posOffset.set(0, 0, 0);
@@ -164,7 +178,7 @@ define(['3d/effects/particles/EffectSimulators',
             this.dynamicColow = value;
             this.dynamicColorKey = colorKey;
 
-            for (var i = 0; i < this.aliveParticles.length; i++) {
+            for (i = 0; i < this.aliveParticles.length; i++) {
                 this.aliveParticles[i].params.texelRowSelect.x = value;
                 this.applyParticleSimulator(EffectSimulators.simulators.texelRowSelect, this.aliveParticles[i], 0)
             }
@@ -173,7 +187,7 @@ define(['3d/effects/particles/EffectSimulators',
 
         ParticleEffect.prototype.updateEffectSpriteSimulator = function(sprite) {
             this.dynamicSprite = sprite;
-            for (var i = 0; i < this.aliveParticles.length; i++) {
+            for (i = 0; i < this.aliveParticles.length; i++) {
                 ParticleParamParser.applyEffectSprite(this.aliveParticles[i], sprite);
                 this.applyParticleSimulator(EffectSimulators.simulators.tiles, this.aliveParticles[i], 0)
             }
@@ -181,7 +195,7 @@ define(['3d/effects/particles/EffectSimulators',
 
         ParticleEffect.prototype.updateEffectPositionSimulator = function(pos, tpf) {
 
-            for (var i = 0; i < this.aliveParticles.length; i++) {
+            for (i = 0; i < this.aliveParticles.length; i++) {
 
                 this.aliveParticles[i].setPosition(pos);
                 this.aliveParticles[i].addPosition(this.aliveParticles[i].posOffset);
@@ -192,7 +206,7 @@ define(['3d/effects/particles/EffectSimulators',
 
         ParticleEffect.prototype.updateEffectQuaternionSimulator = function(quat, tpf) {
 
-            for (var i = 0; i < this.aliveParticles.length; i++) {
+            for (i = 0; i < this.aliveParticles.length; i++) {
 
                 this.aliveParticles[i].setQuaternion(quat);
 
@@ -201,7 +215,7 @@ define(['3d/effects/particles/EffectSimulators',
         };
 
         ParticleEffect.prototype.updateParticle = function(particle, tpf) {
-            for (var i = 0; i < this.simulators.length; i++) {
+            for (i = 0; i < this.simulators.length; i++) {
                 this.applyParticleSimulator(EffectSimulators.simulators[this.simulators[i]], particle, tpf)
             }
         };
@@ -217,13 +231,13 @@ define(['3d/effects/particles/EffectSimulators',
             this.updateEffectAge(tpf);
 
             if (this.age > this.effectDuration) {
-                for (var i = 0; i < this.aliveParticles.length; i++) {
+                for (i = 0; i < this.aliveParticles.length; i++) {
                     EffectSimulators.dead(this.aliveParticles[i], tpf);
                     this.deadParticles.push(this.aliveParticles[i]);
                 }
             } else {
 
-                for (var i = 0; i < this.aliveParticles.length; i++) {
+                for (i = 0; i < this.aliveParticles.length; i++) {
                     if (this.aliveParticles[i].dead) {
                         EffectSimulators.dead(this.aliveParticles[i], tpf);
                         this.deadParticles.push(this.aliveParticles[i]);
@@ -245,8 +259,8 @@ define(['3d/effects/particles/EffectSimulators',
             }
 
             while (this.deadParticles.length) {
-                var dead = this.deadParticles.pop();
-                var spliced = this.aliveParticles.splice(this.aliveParticles.indexOf(dead), 1)[0];
+                dead = this.deadParticles.pop();
+                spliced = this.aliveParticles.splice(this.aliveParticles.indexOf(dead), 1)[0];
                 this.renderer.returnParticle(spliced);
             }
         };
