@@ -3,11 +3,9 @@
 
 
 define([
-        'Events',
         'PipelineObject'
     ],
     function(
-        evt,
         PipelineObject
     ) {
 
@@ -37,8 +35,17 @@ define([
             this.populationIds.push(actor.id);
         };
 
-        LevelPopulation.prototype.getPoplationActorConfig = function () {
-            return this.config.actors;
+        LevelPopulation.prototype.getSpawnCount = function () {
+
+            var min = this.config.amount.min || 1;
+            var max = this.config.amount.max || 1;
+
+            return min + Math.round(Math.random() * (max - min));
+
+        };
+
+        LevelPopulation.prototype.getPopulationSpawnConfig = function () {
+            return this.config.actors[Math.floor(Math.random() * this.config.actors.length)];
         };
 
         LevelPopulation.prototype.despawnLevelPopulation = function () {

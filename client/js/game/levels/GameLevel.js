@@ -5,12 +5,12 @@
 define([
         'Events',
         'PipelineObject',
-        'game/levels/LevelPopulation'
+        'game/levels/LevelStaticSector'
     ],
     function(
         evt,
         PipelineObject,
-        LevelPopulation
+        LevelStaticSector
     ) {
 
         var GameLevel = function(levelId, dataKey, ready) {
@@ -24,10 +24,13 @@ define([
 
             this.terrainActors = [];
 
+            this.staticGridSectors = [];
+
             this.minX = 0;
             this.maxX = 0;
             this.minZ = 0;
             this.maxZ = 0;
+            this.size = 0;
 
             var applyData = function() {
                 this.applyData(this.pipeObj.buildConfig()[dataKey], ready);
@@ -38,20 +41,13 @@ define([
 
         GameLevel.prototype.applyData = function (config, ready) {
             this.config = config;
+            this.sectorConf = config.static_sectors;
+            this.edges = this.sectorConf.edge_populations;
             ready(this)
         };
 
         GameLevel.prototype.createLevelPopulations = function(onReady) {
 
-            var dataReady = function(population) {
-                this.populations.push(population);
-                onReady(population);
-            }.bind(this);
-
-            for (var i = 0; i < this.config.populations.length; i++) {
-                 new LevelPopulation(this.config.populations[i], dataReady);
-
-            }
         };
 
         GameLevel.prototype.updateStaticDimensions = function () {
@@ -62,7 +58,7 @@ define([
                 console.log("Level Pos: ", i, pos);
                 console.log("Level Terrain: ", i, this.terrains[i]);
                 console.log("Terrain Size: ", size);
-
+                this.size = size;
                 this.minX = pos.x - size/2;
                 this.maxX = pos.x + size/2;
                 this.minZ = pos.z - size/2;
@@ -73,12 +69,53 @@ define([
 
         };
 
+        GameLevel.prototype.getSecorCornerEdgePopulationKey = function() {
+            return this.edges.corner[Math.floor(Math.random() * this.edges.corner.length)];
+        };
 
-        GameLevel.prototype.generateStaticSectors = function () {
+        GameLevel.prototype.getSecorColumnEdgePopulationKey = function() {
+            return this.edges.column[Math.floor(Math.random() * this.edges.column.length)];
+        };
 
+        GameLevel.prototype.getSecorRowEdgePopulationKey = function() {
+            return this.edges.row[Math.floor(Math.random() * this.edges.row.length)];
+        };
 
-            console.log("Level: ", this);
+        GameLevel.prototype.getSecorDefaultPopulationKey = function() {
+            return this.sectorConf.default_populations[Math.floor(Math.random() * this.sectorConf.default_populations.length)];
+        };
 
+        GameLevel.prototype.getSecorPopulationKey = function(row, column) {
+
+            if (row === 0 || row === this.sectorConf.rows-1) {
+
+                if (column === 0 || column === this.sectorConf.columns-1) {
+                    return this.getSecorCornerEdgePopulationKey();
+                }
+
+                return this.getSecorRowEdgePopulationKey();
+            }
+
+            if (column === 0 || column === this.sectorConf.columns-1) {
+                return this.getSecorColumnEdgePopulationKey();
+            }
+
+            return this.getSecorDefaultPopulationKey();
+        };
+
+        GameLevel.prototype.generateStaticSectors = function (sectorReady) {
+
+            var sectorSizeX = this.size / this.sectorConf.columns;
+            var sectorSizeZ = this.size / this.sectorConf.rows;
+
+            for (var i = 0; i < this.sectorConf.rows; i++) {
+                this.staticGridSectors[i] = [];
+                for (var j = 0; j < this.sectorConf.columns; j++) {
+                    this.staticGridSectors[i][j] = new LevelStaticSector(i, j, this.minX + sectorSizeX * i, this.minZ + sectorSizeZ * j, sectorSizeX, sectorSizeZ, this.getSecorPopulationKey(i, j), sectorReady);
+                }
+            }
+
+            console.log("Static Sectors:", this.staticGridSectors);
 
         };
 

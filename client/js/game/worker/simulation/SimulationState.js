@@ -235,6 +235,10 @@ define([
             this.simulationProcessor.processActiveActorFrame(actor, tpf);
         };
 
+        SimulationState.prototype.updateStaticActor = function(actor, tpf) {
+            pieceUpdates++;
+            this.simulationProcessor.processStaticActorFrame(actor, tpf);
+        };
 
         SimulationState.prototype.updateActorFrame = function(actor, tpf) {
             this.simulationProcessor.processActorFrame(actor, playerPos, tpf, visibleRange, activateRange);
@@ -244,7 +248,7 @@ define([
 
         var pieceUpdates;
         var activateRange = 25;
-        var visibleRange = 325;
+        var visibleRange = 1725;
         var playerPos = new THREE.Vector3();
 
         SimulationState.prototype.updateState = function(tpf) {

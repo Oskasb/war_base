@@ -5,7 +5,17 @@
         "id":"default_game_level",
         "data":{
           "actor":"default_terrain_actor",
-          "populations":["default_level_population"]
+
+          "static_sectors":{
+            "default_populations":["default_level_population"],
+            "edge_populations":{
+              "corner":["rock_edge_corner_population"],
+              "column":["rock_edge_column_population"],
+              "row":   ["rock_edge_row_population"]
+            },
+            "rows":10,
+            "columns":10
+          }
         }
       }
     ]

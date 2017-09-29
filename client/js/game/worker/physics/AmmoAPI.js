@@ -60,7 +60,11 @@ define(['worker/physics/AmmoFunctions'],
 
         AmmoAPI.prototype.setupPhysicalActor = function(actor) {
 
-            if (!world) return;
+            if (!world) {
+
+                console.log("No physical world yet..");
+                return;
+            }
 
             if (actor.getPhysicsBody()) {
                 console.log("Actor already has a body...");

@@ -18,9 +18,11 @@ define([
         var physicsApi;
 
         var calcVec = new THREE.Vector3();
+        var calcVec2 = new THREE.Vector3();
+        var calcVec3 = new THREE.Vector3();
 
         var SimulationUtils = function(simulationState, physApi) {
-
+            this.requestedEntries = 0;
             this.simulationState = simulationState;
             physicsApi = physApi;
             this.terrainFunctions = simulationState.terrainFunctions;
@@ -108,6 +110,12 @@ define([
 
                     if (groungInf.rotate_y) {
                         actor.piece.rootObj3D.rotateY(groungInf.rotate_y[0]*Math.PI +  Math.PI * Math.random() * (groungInf.rotate_y[1] - groungInf.rotate_y[0]));
+                    } else {
+                        if (rotY !== 'undefined') {
+                          actor.piece.rootObj3D.rotateY(rotY * Math.PI);
+                            //     actor.piece.rootObj3D.quaternion.y = rotY;
+                        //    actor.piece.rootObj3D.quaternion.normalize();
+                        }
                     }
                 }
             }
@@ -246,10 +254,88 @@ define([
 
         };
 
+
+        var checkSlope = function(normal, min, max) {
+            return min < 1 - normal.y && max >= 1 - normal.y
+        };
+
+        var checkElevation = function(pos, min, max) {
+            return min < pos.y && max >= pos.y
+        };
+
+
+        SimulationUtils.prototype.spawnStaticActor = function(pos, facing, spawnConf) {
+
+            console.log("Spawn StaticActor: ", facing, spawnConf);
+
+
+            var entryId = spawnConf.id;
+
+
+            var onOk = function(actor) {
+                this.requestedEntries--;
+                this.simulationState.activateActor(actor);
+                actor.setActivationState(ENUMS.PieceActivationStates.VISIBLE);
+                console.log("Generated Spawned Static actor", actor, this.requestedEntries);
+            }.bind(this);
+
+            calcVec.copy(pos);
+
+            calcVec.y = this.simulationState.getTerrainHeightAtPos(calcVec, calcVec3);
+
+            if (spawnConf.probability) {
+                if (Math.random() > spawnConf.probability) {
+                    return;
+                }
+            }
+
+            if (spawnConf.elevation) {
+                var slopeOk = checkSlope(calcVec3, spawnConf.slope.min, spawnConf.slope.max);
+
+                if (!slopeOk) {
+                    return;
+                }
+            }
+
+            if (spawnConf.elevation) {
+
+                var elevationOk = checkElevation(calcVec, spawnConf.elevation.min, spawnConf.elevation.max);
+
+                if (!elevationOk) {
+                    return;
+                }
+            }
+
+
+            this.requestedEntries++;
+
+            if (isNaN(calcVec.x) || isNaN(calcVec.y) || isNaN(calcVec.z) || isNaN(calcVec3.x)|| isNaN(calcVec3.y) || isNaN(calcVec3.z) || isNaN(facing)) {
+                console.log("Bad spatial vectors", calcVec, calcVec3, facing);
+                return;
+            }
+
+            this.simulationState.generateActor(entryId, calcVec, calcVec3, facing, onOk);
+
+
+        };
+
+        SimulationUtils.prototype.activateStaticSector = function(staticSector) {
+
+            var spawnCallback = function(pos, facing, spawnConf) {
+                this.spawnStaticActor(pos, facing, spawnConf);
+            }.bind(this);
+
+            staticSector.activateSectorPopulation(spawnCallback)
+        };
+
         SimulationUtils.prototype.populateActiveLevel = function(level) {
 
+            var sectorReady = function(sector) {
+                this.activateStaticSector(sector);
+            }.bind(this);
+
             level.updateStaticDimensions();
-            level.generateStaticSectors();
+            level.generateStaticSectors(sectorReady);
 
 
         };

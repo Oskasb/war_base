@@ -86,7 +86,35 @@ define([
 
         };
 
+        SimulationProcessor.prototype.processStaticActorFrame = function(actor, tpf) {
+
+            actor.piece.setPieceActivationState(ENUMS.PieceActivationStates.VISIBLE);
+
+
+            //    if (initState !== actor.piece.getPieceActivationState()) {
+            //    physicsApi.triggerPhysicallyActive(act
+            // or);
+            physicsApi.triggerPhysicallyActive(actor);
+        //    this.simulationState.updateActiveActor(actor, tpf);
+
+            actor.piece.rootObj3D.updateMatrixWorld();
+
+            actor.piece.updatePieceStates(tpf);
+            actor.piece.updatePieceSlots(tpf, this.simulationState);
+            //     actor.piece.updatePieceVisuals(tpf);
+
+            actor.samplePhysicsState();
+            this.protocolSystem.updateActorSendProtocol(actor, tpf);
+
+        };
+
+
         SimulationProcessor.prototype.processActorFrame = function(actor, playerPos, tpf, visibleRange, activateRange) {
+
+            if (actor.physicalPiece.getPhysicsPieceMass() === 0) {
+                this.simulationState.updateStaticActor(actor, tpf);
+                return;
+            }
 
             var initState = actor.piece.getPieceActivationState();
             this.protocolSystem.applyProtocolToActorState(actor, tpf);
@@ -94,6 +122,8 @@ define([
             if (!actor.body) {
                 return;
             }
+
+
 
             if (initState === ENUMS.PieceActivationStates.INACTIVE) {
                 actor.piece.updatePieceStates(tpf);

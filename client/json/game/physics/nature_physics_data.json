@@ -66,7 +66,7 @@
           "ground_influence":{
             "elevation":2,
             "normal_factor":0.5,
-            "rotate_Y":[-1, 1]
+            "rotate_y":[-1, 1]
           },
           "rigid_body":{
             "shape":"Box",
@@ -97,7 +97,7 @@
           "ground_influence":{
             "elevation":8,
             "normal_factor":0.4,
-            "rotate_Y":[-1, 1]
+            "rotate_y":[-1, 1]
           },
           "rigid_body":{
             "convex":true,
@@ -128,7 +128,7 @@
           "ground_influence":{
             "elevation":2,
             "normal_factor":0.5,
-            "rotate_Y":[-1, 1]
+            "rotate_y":[-1, 1]
           },
           "rigid_body":{
             "shape":"Box",
@@ -159,7 +159,7 @@
           "ground_influence":{
             "elevation":7,
             "normal_factor":0.4,
-            "rotate_Y":[-1, 1]
+            "rotate_y":[-1, 1]
           },
           "rigid_body":{
             "convex":true,
@@ -190,7 +190,7 @@
           "ground_influence":{
             "elevation":0,
             "normal_factor":1,
-            "rotate_Y":[-1, 1]
+            "rotate_y":[-1, 1]
           },
           "rigid_body":{
             "shape":"Box",

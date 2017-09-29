@@ -6,7 +6,7 @@
         "data":{
           "piece":"piece_wall_50_rock",
           "alignment":"neutral",
-          "physics":"physical_wall_50_30_20",
+          "physics":"physical_wall_50_40_50",
           "state_map":[]
         }
       }
