@@ -64,6 +64,16 @@ define([
             this.pipeObj = new PipelineObject('PIECE_DATA', 'PIECES', applyPieceData, dataKey);
         };
 
+        GamePiece.prototype.setStatesDirty = function() {
+
+            for (var i = 0; i < this.pieceStates.length; i++) {
+                this.pieceStates[i].makeDirty();
+            }
+
+            this.setDirtyCount(2);
+
+        };
+
         GamePiece.prototype.setDirtyCount = function(count) {
             this.dirtyCount = count;
 
@@ -268,9 +278,16 @@ define([
 
 
         GamePiece.prototype.setRendereable = function(bool) {
+
             if (bool) {
+                if (!this.render) {
+                    this.setStatesDirty();
+                }
                 ThreeAPI.showModel(this.rootObj3D);
             } else {
+                if (this.render) {
+
+                }
                 ThreeAPI.hideModel(this.rootObj3D)
             }
 
@@ -324,41 +341,37 @@ define([
             return this.render;
         };
 
-
-        GamePiece.prototype.testStatesDirtyStates = function () {
-            var activeState = this.getPieceStateByStateId('state_active');
-        //    return true;
-            if (activeState) {
-
-
-                if (activeState.getValue()) {
-                    if (Math.random() < 0.01) {
-                        return true;
-                    }
-                }
-
-                if (this.getDirtyCount()) {
-                    this.dirtyCount--;
+        GamePiece.prototype.anyStateIsDirty = function () {
+            for (var i = 0; i < this.pieceStates.length; i++) {
+                var state = this.pieceStates[i];
+                if (state.checkDirty()) {
                     return true;
                 }
+            }
+        };
 
-                for (var i = 0; i < this.pieceStates.length; i++) {
-                    var state = this.pieceStates[i];
-                    if (state.getValue() !== state.buffer[0]) {
-                        return true;
-                    }
-                }
+        GamePiece.prototype.testStatesDirtyStates = function () {
 
-
-            } else {
+            if (this.getDirtyCount()) {
+                this.dirtyCount--;
                 return true;
             }
 
-            if (Math.random() < 0.1) {
 
+            var activeState = this.getPieceStateByStateId('state_active');
+
+            if (activeState) {
+
+                if (this.anyStateIsDirty()) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } else {
+
+                return true;
             }
-        //        return true
-
 
         };
 

@@ -98,7 +98,7 @@ define([
 
                 var pieces = GameAPI.getPieces();
                 for (var i = 0; i < pieces.length; i++) {
-                    pieces[i].setDirtyCount(2);
+                    pieces[i].setStatesDirty();
                     pieces[i].render = true;
                     pieces[i].updatePieceStates(evt.args(e).tpf);
                     pieces[i].updatePieceSlots(evt.args(e).tpf);

@@ -48,7 +48,7 @@ define([
                 return;
             }
 
-            corner = -0.28;
+            corner = -0.18;
 
             size = 0.47;
 
@@ -110,8 +110,8 @@ define([
             calcVec.multiplyScalar(1 / 1000);
 
 
-            calcVec.y = -calcVec.z - 0.25;
-            calcVec.x = calcVec.x - 0.25;
+            calcVec.y = -calcVec.z - 0.15;
+            calcVec.x = calcVec.x - 0.15;
 
         //    calcVec.multiplyScalar(this.size);
 
@@ -137,7 +137,7 @@ define([
                 text += activationState;
         //    }
 
-            dirtyState = piece.testStatesDirtyStates();
+            dirtyState = piece.anyStateIsDirty();
 
 
             if (dirtyState) {
@@ -180,7 +180,7 @@ define([
 
         HudMapProcessor.prototype.process_local_map = function(guiElement) {
 
-            return;
+        //    return;
 
             var controlledActor = GameAPI.getControlledActor();
             if (controlledActor) {

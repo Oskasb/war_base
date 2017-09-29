@@ -24,6 +24,11 @@ define([
 
             this.terrainActors = [];
 
+            this.minX = 0;
+            this.maxX = 0;
+            this.minZ = 0;
+            this.maxZ = 0;
+
             var applyData = function() {
                 this.applyData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
@@ -47,6 +52,34 @@ define([
                  new LevelPopulation(this.config.populations[i], dataReady);
 
             }
+        };
+
+        GameLevel.prototype.updateStaticDimensions = function () {
+
+            for (var i =0; i < this.terrainActors.length; i++) {
+                var pos = this.terrainActors[i].piece.getPos();
+                var size = this.terrains[i].opts.xSize;
+                console.log("Level Pos: ", i, pos);
+                console.log("Level Terrain: ", i, this.terrains[i]);
+                console.log("Terrain Size: ", size);
+
+                this.minX = pos.x - size/2;
+                this.maxX = pos.x + size/2;
+                this.minZ = pos.z - size/2;
+                this.maxZ = pos.z + size/2;
+            }
+
+            console.log("Level: ", this);
+
+        };
+
+
+        GameLevel.prototype.generateStaticSectors = function () {
+
+
+            console.log("Level: ", this);
+
+
         };
 
         GameLevel.prototype.getLevelPopulations = function () {

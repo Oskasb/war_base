@@ -37,7 +37,7 @@
           "transform":{
             "rot":  [0,      0,    0],
             "pos":  [0,      0,    0],
-            "size": [10.0,  20,   10]
+            "size": [5.0,    6,    5]
           },
           "channels":[
             {"channelid":"channel_actor_active",   "stateid": "state_active"},

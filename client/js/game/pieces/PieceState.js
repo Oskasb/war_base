@@ -92,18 +92,21 @@ define([],
         };
 
         PieceState.prototype.checkDirty = function () {
-            if (this.value !== this.buffer[0] || this.progressDelta) {
-                this.dirty = true;
+            if (this.value !== this.buffer[0]) {
+                this.makeDirty();
             } else {
                 if (this.readCount > 2) {
                     this.dirty = false;
                 }
             }
 
-            if (Math.random() < 0.01) {
-                this.dirty = true;
-            }
+            return this.isDirty();
+        //    this.readCount++
 
+        };
+
+        PieceState.prototype.makeDirty = function () {
+            this.dirty = true;
         };
 
         PieceState.prototype.isDirty = function () {

@@ -3,6 +3,8 @@
 define([
         'PipelineAPI',
         'worker/simulation/SimulationOperations',
+        'worker/simulation/SimulationProcessor',
+        'worker/simulation/SimulationUtils',
         'worker/simulation/AggroProcessor',
         'ThreeAPI',
         'worker/physics/AmmoAPI',
@@ -14,6 +16,8 @@ define([
     function(
         PipelineAPI,
         SimulationOperations,
+        SimulationProcessor,
+        SimulationUtils,
         AggroProcessor,
         ThreeAPI,
         AmmoAPI,
@@ -30,9 +34,6 @@ define([
 
         var physicsApi;
 
-        var calcVec = new THREE.Vector3();
-        var calcObj = new THREE.Object3D();
-
         var SimulationState = function(protocolSystem) {
             this.protocolSystem = protocolSystem;
             this.selectionActivatedActorId = null;
@@ -47,24 +48,15 @@ define([
 
             this.simulationMonitor = new SimulationMonitor();
 
+            this.simulationUtils = new SimulationUtils(this, physicsApi);
+
+            this.simulationProcessor = new SimulationProcessor(this, physicsApi);
+
             ThreeAPI.initThreeScene();
         };
 
         SimulationState.prototype.addLevel = function(options, ready) {
-
-            physicsApi.initPhysics();
-
-            ThreeAPI.initThreeScene();
-
-            var levelBuilt = function(level) {
-                levels.push(level);
-                ready({dataKey:level.dataKey, levelId:level.id, config:level.config});
-            }.bind(this);
-
-            //
-            this.simulationOperations.buildLevel(options, levelBuilt);
-            //
-
+            this.simulationUtils.initSimulationLevel(options, ready);
         };
 
 
@@ -91,116 +83,13 @@ define([
 
 
         SimulationState.prototype.activateActor = function(actor) {
-
-
-            ThreeAPI.addToScene(actor.piece.rootObj3D);
-
-            if (actor.body) {
-                physicsApi.includeBody(actor.body);
-                physicsApi.triggerPhysicallyActive(actor)
-            }
-
-            actor.setActivationState(ENUMS.PieceActivationStates.HIDDEN);
-
-            if (actors.indexOf(actor) === -1) {
-                actors.push(actor);
-            }
-
-            var res = {dataKey:actor.dataKey, actorId:actor.id};
-            postMessage(['executeDeployActor', res]);
-
+            this.simulationUtils.activateSimulationActor(actor);
         };
 
-
-
-        var buildIt = function(actor, px, py, pz, nx, ny, nz, rotY, cb, simState) {
-
-
-            var elevation = 0;
-            var normalFactor = 3.14;
-            actor.piece.rootObj3D.quaternion.set(0, 0, 0, 1);
-
-            if (actor.physicalPiece) {
-                var groungInf = actor.physicalPiece.config.ground_influence;
-                if (groungInf) {
-                    elevation = groungInf.elevation;
-                    normalFactor *= groungInf.normal_factor;
-
-                    if (groungInf.rotate_y) {
-                        actor.piece.rootObj3D.rotateY(groungInf.rotate_y[0]*Math.PI +  Math.PI * Math.random() * (groungInf.rotate_y[1] - groungInf.rotate_y[0]));
-                    }
-                }
-            }
-
-            actor.piece.getPos().set(px, py+elevation, pz);
-
-            calcVec.set(nx, ny, nz);
-
-            actor.piece.rootObj3D.rotateX(calcVec.z * normalFactor);
-            actor.piece.rootObj3D.rotateZ(-calcVec.x * normalFactor);
-
-
-            simState.attachActorRigidBody(actor);
-            cb(actor);
-
-
-        };
-
-        var attachCompanions = function(actor, px, py, pz, nx, ny, nz, rotY, respond, _this, companion_actors, index) {
-            var companionActors = companion_actors;
-
-            if (companionActors) {
-
-                var i = index;
-                if (i === companionActors.length) {
-                    return;
-                }
-
-                var companionBuilt = function(companionActor) {
-
-                    var offset = companionActors[i].offset;
-
-                    i++;
-
-                    companionActor.setIsCompanion( true);
-
-                    buildIt(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, rotY, respond, _this);
-                    attachCompanions(companionActor, px+offset[0], py+offset[1], pz+offset[2], nx, ny, nz, rotY, respond, _this, companionActor.config.companion_actors, i);
-                };
-
-                _this.simulationOperations.buildActor({dataKey:companionActors[i].dataKey}, companionBuilt);
-            }
-        };
 
         SimulationState.prototype.generateActor = function(actorId, pos, normal, facing, onOk) {
 
-            var px = pos.x;
-            var py = pos.y;
-            var pz = pos.z;
-            var nx = normal.x;
-            var ny = normal.y;
-            var nz = normal.z;
-
-            var rotY = facing || 0;
-
-            var respond = onOk;
-            var _this = this;
-
-
-            var actorBuilt = function(actor) {
-                var comps =  actor.config.companion_actors;
-                if (comps) {
-                    for (var i = 0; i < comps.length; i++) {
-                        attachCompanions(actor, px, py, pz, nx, ny, nz, rotY, respond, _this, actor.config.companion_actors, i);
-                    }
-                }
-
-                actor.setIsCompanion(false);
-                buildIt(actor, px, py, pz, nx, ny, nz, rotY, respond, _this)
-            };
-
-            this.simulationOperations.buildActor({dataKey:actorId}, actorBuilt);
-
+            this.simulationUtils.generateSimulationActor(actorId, pos, normal, facing, onOk)
         };
 
         SimulationState.prototype.setActivationGrid = function(grid) {
@@ -221,60 +110,14 @@ define([
 
         };
 
+
         SimulationState.prototype.spawnActor = function(options, ready) {
-
-            var actorBuilt = function(actor) {
-                this.simulationOperations.getRandomPointOnTerrain(actor.piece.rootObj3D.position, levels);
-
-                if (actors.indexOf(actor) !== -1) {
-                    console.log("Double add actor fail");
-                } else {
-                    this.attachActorRigidBody(actor);
-                //    physicsApi.triggerPhysicallyActive(actor)
-                }
-
-                ThreeAPI.addToScene(actor.piece.rootObj3D);
-
-                if (actor.body) {
-                    physicsApi.includeBody(actor.body);
-                }
-
-                actor.setActivationState(ENUMS.PieceActivationStates.VISIBLE);
-
-                if (actors.indexOf(actor) === -1) {
-                    actors.push(actor);
-                }
-
-                ready({dataKey:actor.dataKey, actorId:actor.id});
-            }.bind(this);
-
-            this.simulationOperations.buildActor(options, actorBuilt);
+            this.simulationUtils.spawnSimulationActor(options, ready)
         };
 
+
         SimulationState.prototype.setSelectionActivatedActorId = function(actorId, onOk) {
-            var actor;
-            if (this.selectionActivatedActorId !== actorId) {
-                actor = this.getActorById(this.selectionActivatedActorId);
-
-                if (!actor) {
-                } else {
-                    actor.piece.getCombatStatus().notifyActivationDeactivate();
-                }
-            }
-
-            this.selectionActivatedActorId = actorId;
-
-            if (actorId) {
-                actor = this.getActorById(actorId);
-
-                if (!actor) {
-                    console.log("Cant select missing actor!");
-                } else {
-                    actor.piece.getCombatStatus().notifySelectedActivation();
-                }
-            }
-
-            onOk(actorId);
+            this.simulationUtils.simulationSelectionActivatedActorId(actorId, onOk)
         };
 
         SimulationState.prototype.getSelectionActivatedActor = function() {
@@ -309,7 +152,7 @@ define([
 
         SimulationState.prototype.getLevelById = function(leveId) {
             for (var i = 0; i < levels.length; i++) {
-                if (levels[i].id === leveId) {
+                if (levels[i].id === leveId) {3
                     return levels[i];
                 }
             }
@@ -317,36 +160,7 @@ define([
         };
 
         SimulationState.prototype.deactivateActorId = function(actorId, cb) {
-
-            var actor = this.getActorById(actorId);
-
-            if (actorId === this.controlledActorId) {
-                this.controlledActorId = null;
-            }
-
-            if (actor.body) {
-                physicsApi.disableActorPhysics(actor);
-            }
-
-            var combatStatus = actor.piece.getCombatStatus();
-            if (combatStatus) {
-                combatStatus.notifyCancelCombat();
-            }
-
-
-            actor.setActivationState(ENUMS.PieceActivationStates.INACTIVE);
-            this.updateActorFrame(actor, 0.1);
-            ThreeAPI.removeFromScene(actor.piece.rootObj3D);
-
-            this.detatchActor(actor);
-
-
-
-
-            if (typeof(cb) === 'function') {
-                cb(actorId);
-            }
-
+            this.simulationUtils.deactivateSimulationActorId(actorId, cb);
         };
 
         SimulationState.prototype.removeActorFromSimulation = function(actor) {
@@ -384,38 +198,7 @@ define([
         };
 
         SimulationState.prototype.attachTerrainActorToLevel = function(levelId, actorId, cb) {
-            var level = this.getLevelById(levelId);
-            var actor = this.getActorById(actorId);
-
-            if (actor && level) {
-                level.addLevelTerrainActor(actor);
-            } else {
-                cb({levelActorError:{actorId:actorId, levelId:levelId}});
-                console.log("Fail connectinr actor to level", actorId, levelId);
-            };
-
-            var terrainOpts = this.simulationOperations.getActorTerrainOptions(actor);
-
-            console.log("OPTS", terrainOpts);
-
-            var terrain = this.terrainFunctions.createTerrain(terrainOpts);
-
-            level.addTerrainToLevel(terrain);
-
-            var buffers = this.terrainFunctions.getTerrainBuffers(terrain);
-
-            terrain.array1d = buffers[4];
-            var terrainBody = this.terrainFunctions.addTerrainToPhysics(terrainOpts, terrain.array1d, 0, 0);
-
-            physicsApi.includeBody(terrainBody);
-            actor.setPhysicsBody(terrainBody);
-
-            //    time += 0.04;
-            //    physicsApi.updatePhysicsSimulation(time);
-
-            //    this.updateActorFrame(actor, 0.02);
-            this.activityFilter.notifyActorActiveState(actor, true);
-            cb([JSON.stringify({actorId:actorId, levelId:levelId}), buffers]);
+            this.simulationUtils.attachSimulationTerrainActorToLevel(levelId, actorId, cb);
         };
 
 
@@ -425,90 +208,22 @@ define([
 
 
         SimulationState.prototype.checkActorInRangeFromPosition = function(actor, range, position) {
-
             if (actor.piece.getPos().distanceTo(position) < range) {
                 return actor;
             }
-
         };
 
         SimulationState.prototype.applyForceToSimulationActor = function(impactForce, actor, randomize) {
             this.activityFilter.notifyActorActiveState(actor, true);
             physicsApi.applyForceToActor(impactForce, actor, randomize);
-
         };
 
         SimulationState.prototype.registerAttackHit = function(targetActor, attack, normal) {
-            this.removeActiveAttack(attack);
-            if (!targetActor) {
-                console.log("No target actor for hit");
-                targetActor = {};
-                targetActor.id = 'unknown'
-                // return;
-            }
-            attack.registerAttackHit(targetActor.id, normal);
-            attack.generateAttackHitMessage();
-
-            attack.applyHitDamageToTargetActor(targetActor, 1);
-
-
-
-            var aoeRange = attack.getAreaEffectRange();
-
-            if (aoeRange) {
-                var aoeDmgFactor = attack.getAreaEffectDamageFactor();
-
-                for (var i = 0; i < actors.length; i++) {
-
-                    var splashHitActor = this.checkActorInRangeFromPosition(actors[i], aoeRange, attack.getImpactPoint());
-                    if (splashHitActor) {
-
-                        if (actors[i].piece.getCombatStatus()) {
-                            attack.applyHitDamageToTargetActor(splashHitActor, aoeDmgFactor);
-                        }
-
-                        this.applyForceToSimulationActor(attack.getAreaDamageForce(splashHitActor), splashHitActor, 0.3);
-                        this.activityFilter.notifyActorActiveState(splashHitActor, true);
-                    }
-                }
-            } else {
-                this.applyForceToSimulationActor(attack.getImpactForce(), targetActor, 0.5);
-            }
-
-
-            this.activityFilter.notifyActorActiveState(targetActor, true);
+            this.simulationUtils.registerSimulationAttackHit(targetActor, attack, normal);
         };
 
         SimulationState.prototype.updateAttackFrame = function(attack, tpf) {
-
-            var steps = 20;
-            var stepTime = tpf / steps;
-
-
-            //    var hit = this.simulationOperations.castPhysicsRay(this, physicsApi, attack, tpf);
-
-            if (hit) {
-                return;
-            }
-
-            for (var i = 0; i < steps; i++) {
-                if (attack.duration + stepTime + tpf < 0) {
-                    this.removeActiveAttack(attack);
-                    return;
-                } else {
-                    attack.applyFrame(stepTime);
-
-                    var hit = this.simulationOperations.checkActorProximity(this, this.getActors(), attack);
-
-                    if (hit) {
-                        i = steps;
-                        return;
-                    }
-
-                    attack.advanceFrame(stepTime, physicsApi.getYGravity());
-                }
-            }
-
+            this.simulationProcessor.processAttackFrame(attack, tpf);
         };
 
         SimulationState.prototype.getGravityConstant = function() {
@@ -516,120 +231,13 @@ define([
         };
 
         SimulationState.prototype.updateActiveActor = function(actor, tpf) {
-
-
             pieceUpdates++;
-            actor.piece.rootObj3D.updateMatrixWorld();
-
-            actor.piece.updatePieceStates(tpf);
-            actor.piece.updatePieceSlots(tpf, this);
-            //     actor.piece.updatePieceVisuals(tpf);
-
-
-            //    actor.piece.updateGamePiece(tpf, time, this);
-            actor.samplePhysicsState();
-            this.protocolSystem.updateActorSendProtocol(actor, tpf);
-
-            var integrity = this.simulationOperations.checkActorIntegrity(actor, levels);
-
-            if (!integrity) {
-                //        this.simulationOperations.positionActorOnTerrain(actors[i], levels);
-            }
-
+            this.simulationProcessor.processActiveActorFrame(actor, tpf);
         };
 
 
         SimulationState.prototype.updateActorFrame = function(actor, tpf) {
-
-            var initState = actor.piece.getPieceActivationState();
-            this.protocolSystem.applyProtocolToActorState(actor, tpf);
-
-            if (!actor.body) {
-                return;
-            }
-
-            if (initState === ENUMS.PieceActivationStates.INACTIVE) {
-                actor.piece.updatePieceStates(tpf);
-                actor.piece.updatePieceSlots(tpf, this);
-                this.protocolSystem.updateActorSendProtocol(actor, tpf);
-                return;
-            }
-
-            var combatStatus = actor.piece.getCombatStatus();
-
-            if (combatStatus) {
-                combatStatus.tickCombatStatus();
-
-                if (combatStatus.getCombatState()) {
-
-                    actor.setActivationState(ENUMS.PieceActivationStates.ENGAGED);
-                    physicsApi.triggerPhysicallyActive(actor);
-                    this.activityFilter.notifyActorActiveState(actor, true);
-
-                } else {
-
-                    if (actor.isEngaged()) {
-                        actor.deescalateActivationState();
-                        this.activityFilter.notifyActorActiveState(actor, true);
-                    } else {
-
-                        var range = this.checkActorInRangeFromPosition(actor, activateRange + actor.piece.boundingSize, playerPos);
-
-                        if (range === actor) {
-                            this.activityFilter.notifyActorActiveState(actor, true);
-                            physicsApi.triggerPhysicallyActive(actor)
-                            if (initState < ENUMS.PieceActivationStates.VISIBLE) {
-                                actor.escalateActivationState();
-                            }
-                        } else {
-                            this.activityFilter.notifyActorActiveState(actor, physicsApi.isPhysicallyActive(actor));
-                        //    physicsApi.triggerPhysicallyRelaxed(actor)
-                        }
-
-                    }
-                }
-            }
-
-
-            if (this.activityFilter.getActorExpectActive(actor)) {
-                this.updateActiveActor(actor, tpf);
-            } else {
-
-                var range = this.checkActorInRangeFromPosition(actor, visibleRange + actor.piece.boundingSize, playerPos);
-
-                if (range === actor) {
-
-                    actor.piece.setPieceActivationState(ENUMS.PieceActivationStates.VISIBLE);
-
-
-                //    if (initState !== actor.piece.getPieceActivationState()) {
-                        //    physicsApi.triggerPhysicallyActive(act
-                        // or);
-                        physicsApi.triggerPhysicallyActive(actor);
-                        this.updateActiveActor(actor, tpf);
-                //    }
-
-
-                } else {
-                    actor.piece.setPieceActivationState(ENUMS.PieceActivationStates.HIDDEN);
-
-                    //    actor.deescalateActivationState();
-                        if (initState !== actor.piece.getPieceActivationState()) {
-                            this.updateActiveActor(actor, tpf);
-                        }
-                        this.protocolSystem.updateActorSendProtocol(actor, tpf);
-                        physicsApi.triggerPhysicallyRelaxed(actor)
-
-                }
-
-            }
-
-            if (initState === actor.piece.getPieceActivationState()) {
-                actor.piece.framesAtState ++;
-            } else {
-                actor.piece.framesAtState = 0;
-            }
-
+            this.simulationProcessor.processActorFrame(actor, playerPos, tpf, visibleRange, activateRange);
         };
 
         var activationStates = new Array(ENUMS.PieceActivationStates.ENGAGED + 3);
@@ -648,28 +256,8 @@ define([
             pieceUpdates = 0;
 
             if (levels.length) {
-
-                ThreeAPI.getScene().updateMatrixWorld();
                 time += tpf;
-
-                physicsApi.updatePhysicsSimulation(time);
-
-                if (this.controlledActorId) {
-                    playerPos.copy(this.getActorById(this.controlledActorId).piece.getPos());
-                }
-
-                for (var i = 0; i < attacks.length; i++) {
-                    this.updateAttackFrame(attacks[i], tpf);
-                }
-
-                for ( i = 0; i < actors.length; i++) {
-
-                    activationStates[actors[i].piece.pieceActivationState] ++;
-
-                    if (!actors[i].isInactive()) {
-                        this.updateActorFrame(actors[i], tpf);
-                    }
-                }
+                this.simulationProcessor.processLevelFrame(time, tpf, attacks, playerPos, activationStates);
             }
 
             this.monitorWorkerStatus();

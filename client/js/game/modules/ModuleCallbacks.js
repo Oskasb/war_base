@@ -114,17 +114,12 @@ define([
 
                 if (piece.getPieceActivationState() !== value) {
 
-
                     if (value > ENUMS.PieceActivationStates.HIDDEN) {
-
                         piece.setRendereable(true);
-                    //    piece.updateGamePiece(0);
-                    //    piece.setRendereable(false);
+
                     }
-
-                    piece.setDirtyCount(1);
+                    piece.setStatesDirty();
                 }
-
 
         };
 
