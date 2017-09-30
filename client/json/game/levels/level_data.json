@@ -7,7 +7,12 @@
           "actor":"default_terrain_actor",
 
           "static_sectors":{
-            "default_populations":["default_level_population"],
+            "default_populations":[
+              "default_level_population",
+              "dense_trees_population",
+              "sparse_trees_population",
+              "slope_dense_trees_population"
+            ],
             "edge_populations":{
               "corner":["rock_edge_corner_population"],
               "column":["rock_edge_column_population"],

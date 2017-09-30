@@ -236,6 +236,10 @@ define([
 
         GameAPI.tickGame = function(tpf, time) {
 
+            for (var i = 0; i < actors.length; i++) {
+                actors[i].piece.checkNeedsUpdate(actors[i]);
+            }
+
             for (var i = 0; i < pieces.length; i++) {
                 pieces[i].updateGamePiece(tpf, time)
             }

@@ -53,12 +53,46 @@
         }
       },
       {
+        "id":"dense_trees_population",
+        "data":{
+          "amount":{"min":6, "max":0},
+          "actors":[
+            {"id":"actor_tree_2_instanced",    "spread_xz":[0.8, 0.8],      "probability":0.9,  "slope":{"min":-0.002, "max":0.06} , "elevation":{"min": 2.6,    "max":38}},
+            {"id":"actor_tree_3_instanced",    "spread_xz":[0.8, 0.8],      "probability":0.9,  "slope":{"min":-0.002, "max":0.06} , "elevation":{"min":3.1,     "max":45}},
+            {"id":"actor_tree_3_small_instanced",    "spread_xz":[0.7, 0.7],   "probability":0.9 , "slope":{"min":-0.001,"max":0.10} , "elevation":{"min": 6,    "max":38}}
+          ]
+        }
+      },
+      {
+        "id":"sparse_trees_population",
+        "data":{
+          "amount":{"min":0, "max":1},
+          "actors":[
+            {"id":"actor_tree_2_instanced",    "spread_xz":[0.5, 0.5],      "probability":0.7,  "slope":{"min":0.002, "max":0.06} , "elevation":{"min": 2.6,    "max":38}},
+            {"id":"actor_tree_3_instanced",    "spread_xz":[0.5, 0.5],      "probability":0.5,  "slope":{"min":0.002, "max":0.06} , "elevation":{"min":3.1,     "max":45}},
+            {"id":"actor_tree_3_small_instanced",     "spread_xz":[0.7, 0.7],    "probability":0.9  , "slope":{"min":-0.001,"max":0.10} , "elevation":{"min": 6,    "max":38}}
+          ]
+        }
+      },
+      {
+        "id":"slope_dense_trees_population",
+        "data":{
+          "amount":{"min":6, "max":9},
+          "actors":[
+            {"id":"actor_tree_2_instanced",    "spread_xz":[1, 1],      "probability":0.99,  "slope":{"min":0.04, "max":0.26} , "elevation":{"min": 2.6,    "max":38}},
+            {"id":"actor_tree_3_instanced",    "spread_xz":[1, 1],      "probability":0.99,  "slope":{"min":0.04, "max":0.26} , "elevation":{"min":3.1,     "max":45}},
+            {"id":"actor_tree_3_small_instanced",   "spread_xz":[0.9, 0.9],   "probability":0.99  , "slope":{"min":-0.04,"max":0.16} , "elevation":{"min": 6,    "max":38}}
+          ]
+        }
+      },
+      {
         "id":"default_level_population",
         "data":{
-          "amount":{"min":3, "max":12},
+          "amount":{"min":2, "max":3},
           "actors":[
-            {"id":"actor_tree_2_instanced",    "spread_xz":[1, 1],      "probability":0.7,  "slope":{"min":0.002, "max":0.26} , "elevation":{"min": 2.6,    "max":38}},
-            {"id":"actor_tree_3_instanced",    "spread_xz":[1, 1],      "probability":0.5,  "slope":{"min":0.002, "max":0.26} , "elevation":{"min":3.1,     "max":45}}
+            {"id":"actor_tree_2_instanced",    "spread_xz":[0.7, 0.7],      "probability":0.7,  "slope":{"min":0.002, "max":0.26} , "elevation":{"min": 2.6,    "max":38}},
+            {"id":"actor_tree_3_instanced",    "spread_xz":[0.7, 0.7],      "probability":0.5,  "slope":{"min":0.002, "max":0.26} , "elevation":{"min":3.1,     "max":45}},
+            {"id":"actor_tree_3_small_instanced",  "spread_xz":[0.7, 0.7],   "probability":0.9 , "slope":{"min":-0.001,"max":0.10} , "elevation":{"min": 6,    "max":38}}
           ]
         }
       }

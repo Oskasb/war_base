@@ -102,7 +102,7 @@ define([
         };
 
 
-        HudMapProcessor.prototype.drawActorOnMap = function(actor, guiElement, index) {
+        HudMapProcessor.prototype.drawActorOnMap = function(actor, guiElement) {
 
 
             calcVec.subVectors(actor.piece.getPos()  , this.playerPos);
@@ -157,19 +157,27 @@ define([
 
 
         HudMapProcessor.prototype.drawActors = function(actors, guiElement) {
+            var cs = 0;
+
             for (i = 0; i < actors.length; i++) {
 
-                if (guiElement.children[guiElement.options.map_actor_element_id][i]) {
-                    this.drawActorOnMap(actors[i], guiElement.children[guiElement.options.map_actor_element_id][i], i)
-                } else {
-                    guiElement.spawnChildElement(guiElement.options.map_actor_element_id)
+                if (actors[i].piece.getCombatStatus()) {
+                    if (guiElement.children[guiElement.options.map_actor_element_id][cs]) {
+                        this.drawActorOnMap(actors[i], guiElement.children[guiElement.options.map_actor_element_id][cs])
+                    } else {
+                        guiElement.spawnChildElement(guiElement.options.map_actor_element_id)
+                    }
+                    cs++
+
                 }
+
+
             }
 
             calcVec.z = 99;
 
-            for (0; i < guiElement.children[guiElement.options.map_actor_element_id].length; i++) {
-                elem = guiElement.children[guiElement.options.map_actor_element_id][i];
+            for (0; cs < guiElement.children[guiElement.options.map_actor_element_id].length; cs++) {
+                elem = guiElement.children[guiElement.options.map_actor_element_id][cs];
                 elem.applyElementPosition(null, calcVec);
                 elem.setText('xxxx');
                 elem.renderText(calcVec);
@@ -180,7 +188,7 @@ define([
 
         HudMapProcessor.prototype.process_local_map = function(guiElement) {
 
-        //    return;
+            return;
 
             var controlledActor = GameAPI.getControlledActor();
             if (controlledActor) {
@@ -198,7 +206,10 @@ define([
 
             if (!guiElement.children[guiElement.options.map_actor_element_id]) {
                 for (i = 0; i < actors.length; i++) {
-                    guiElement.spawnChildElement(guiElement.options.map_actor_element_id)
+                    if (actors[i].piece.getCombatStatus()) {
+                        guiElement.spawnChildElement(guiElement.options.map_actor_element_id)
+                    }
+
                 }
                 return;
             }

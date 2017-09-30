@@ -275,7 +275,7 @@ define([
             var onOk = function(actor) {
                 this.requestedEntries--;
                 this.simulationState.activateActor(actor);
-                actor.setActivationState(ENUMS.PieceActivationStates.VISIBLE);
+                actor.setActivationState(ENUMS.PieceActivationStates.HIDDEN);
                 console.log("Generated Spawned Static actor", actor, this.requestedEntries);
             }.bind(this);
 

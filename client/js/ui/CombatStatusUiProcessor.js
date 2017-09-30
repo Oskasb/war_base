@@ -335,6 +335,7 @@ define([
 
 
             } else if (guiElement.enabled) {
+                guiElement.setTarget(null);
                 guiElement.disableGuiElement();
             }
 

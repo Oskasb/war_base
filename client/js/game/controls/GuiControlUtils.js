@@ -423,15 +423,23 @@ define([
 
         var activatedActor = guiControlState.getActivatedSelectionTarget();
 
+
         if (!activatedActor) {
             state.setValueAtTime(0, config.release_time);
-            return;
+            return null;
         }
-
+                
         if (activatedActor.piece.getPieceActivationState() < ENUMS.PieceActivationStates.VISIBLE) {
             guiControlState.setActivatedSelectionTarget(null);
             state.setValueAtTime(0, config.release_time);
-            return;
+            return null;
+        }
+
+        var actors = GameAPI.getActors();
+
+        if (actors.indexOf(activatedActor) === -1) {
+            activatedActor = null;
+            guiControlState.setActivatedSelectionTarget(null);
         }
 
         if (state.targetValue !== 1) {

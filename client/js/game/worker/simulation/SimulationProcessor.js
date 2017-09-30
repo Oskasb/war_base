@@ -88,23 +88,31 @@ define([
 
         SimulationProcessor.prototype.processStaticActorFrame = function(actor, tpf) {
 
-            actor.piece.setPieceActivationState(ENUMS.PieceActivationStates.VISIBLE);
+            var initState = actor.piece.getPieceActivationState();
+
+            if (this.simulationState.controlledActorId) {
+
+                if (initState !== ENUMS.PieceActivationStates.VISIBLE) {
+                    actor.piece.setPieceActivationState(ENUMS.PieceActivationStates.VISIBLE);
 
 
-            //    if (initState !== actor.piece.getPieceActivationState()) {
-            //    physicsApi.triggerPhysicallyActive(act
-            // or);
-            physicsApi.triggerPhysicallyActive(actor);
-        //    this.simulationState.updateActiveActor(actor, tpf);
+                    //    if (initState !== actor.piece.getPieceActivationState()) {
+                    //    physicsApi.triggerPhysicallyActive(act
+                    // or);
+                    physicsApi.triggerPhysicallyActive(actor);
+                    //    this.simulationState.updateActiveActor(actor, tpf);
 
-            actor.piece.rootObj3D.updateMatrixWorld();
+                    actor.piece.rootObj3D.updateMatrixWorld();
 
-            actor.piece.updatePieceStates(tpf);
-            actor.piece.updatePieceSlots(tpf, this.simulationState);
-            //     actor.piece.updatePieceVisuals(tpf);
+                    actor.piece.updatePieceStates(tpf);
+                    actor.piece.updatePieceSlots(tpf, this.simulationState);
+                    //     actor.piece.updatePieceVisuals(tpf);
 
-            actor.samplePhysicsState();
-            this.protocolSystem.updateActorSendProtocol(actor, tpf);
+                    actor.samplePhysicsState();
+                    this.protocolSystem.updateActorSendProtocol(actor, tpf);
+                }
+
+            }
 
         };
 
@@ -122,8 +130,6 @@ define([
             if (!actor.body) {
                 return;
             }
-
-
 
             if (initState === ENUMS.PieceActivationStates.INACTIVE) {
                 actor.piece.updatePieceStates(tpf);

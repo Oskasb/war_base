@@ -213,6 +213,15 @@ define([
         GameCommander.prototype.setSelectionActiveActor = function(actor) {
 
             var onRes = function(res) {
+
+                var presentActor = GameAPI.getActorById(res);
+                if (presentActor) {
+                    selectionActiveActor = presentActor;
+                } else {
+                    selectionActiveActor = null;
+                }
+
+
                 console.log("Selection Confirmed", res);
             };
 
@@ -226,8 +235,10 @@ define([
                     selectionActiveActor.piece.getCombatStatus().notifyActivationDeactivate();
                 }
 
+                selectionActiveActor = null;
+                console.log("Request Selection", id);
                 gameWorker.makeGameRequest('setActorSelected', id, onRes);
-                selectionActiveActor = actor;
+
                 if (actor) {
 //                    selectionActiveActor.piece.getCombatStatus().notifySelectedActivation();
                 }
@@ -317,6 +328,10 @@ define([
 
             var actr = GameAPI.getActorById(actorId);
 
+            if (actr === selectionActiveActor) {
+                this.setSelectionActiveActor(null);
+            }
+
             if (!actr) {
                 console.log("No actor to remove:", actorId);
                 return;
@@ -342,6 +357,10 @@ define([
         };
 
         GameCommander.prototype.removeGameActor = function(actor, onOk) {
+
+            if (actor === selectionActiveActor) {
+                this.setSelectionActiveActor(null);
+            }
 
             var onRes = function(msg) {
                 this.clearGameActor(msg, onOk);

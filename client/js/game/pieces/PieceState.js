@@ -100,8 +100,8 @@ define([],
                 }
             }
 
+            this.readCount++
             return this.isDirty();
-        //    this.readCount++
 
         };
 

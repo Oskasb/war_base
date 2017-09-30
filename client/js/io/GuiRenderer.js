@@ -99,15 +99,22 @@ define([
 
             var available = -1;
 
+            var actors = GameAPI.getActors();
+
             for (var i = 0; i < combatStatusElements.length; i++) {
                 var target = combatStatusElements[i].getTarget();
                 if (target === actor) {
                     return combatStatusElements[i];
                 }
 
+
                 if (!target) {
                     available = i;
+                } else if (actors.indexOf(target) === -1) {
+                    combatStatusElements[i].setTarget(null);
+                    available = i;
                 }
+
             }
 
             if (isIdle) return;

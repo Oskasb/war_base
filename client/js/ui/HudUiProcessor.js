@@ -203,6 +203,8 @@ define([
 
         HudUiProcessor.prototype.show_application_status = function(guiElement) {
 
+        //    return;
+
             var offsetChildren = guiElement.options.offset_children;
 
             var i;
