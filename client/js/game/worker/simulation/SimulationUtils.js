@@ -17,6 +17,9 @@ define([
 
         var physicsApi;
 
+        var getHeightAtPos;
+        var applyForceFunction;
+
         var calcVec = new THREE.Vector3();
         var calcVec2 = new THREE.Vector3();
         var calcVec3 = new THREE.Vector3();
@@ -30,6 +33,16 @@ define([
 
             actors = simulationState.getActors();
             levels = simulationState.getLevels();
+
+            getHeightAtPos = function(pos, normalStore) {
+                return simulationState.getTerrainHeightAtPos(pos, normalStore)
+            };
+
+            applyForceFunction = function(force, body, torqueVec) {
+                return simulationState.applyBodyForceAndTorque(force, body, torqueVec)
+            };
+
+
         };
 
         SimulationUtils.prototype.initSimulationLevel = function(options, ready) {
@@ -81,7 +94,10 @@ define([
 
             if (actor.body) {
                 physicsApi.includeBody(actor.body);
-                physicsApi.triggerPhysicallyActive(actor)
+                physicsApi.triggerPhysicallyActive(actor);
+                actor.physicalPiece.setHeightQueryFunction(getHeightAtPos);
+                actor.physicalPiece.setApplyForceFunction(applyForceFunction)
+
             }
 
             actor.setActivationState(ENUMS.PieceActivationStates.HIDDEN);

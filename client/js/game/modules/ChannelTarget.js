@@ -12,6 +12,7 @@ define([
     ) {
 
         var ChannelTarget = function(targetData, ready) {
+
             this.id = targetData.targetid;
 
             this.effectArray = [];
@@ -41,8 +42,6 @@ define([
                 return;
             }
             ModuleCallbacks[this.config.callback](module, this, enable);
-
-            state.checkDirty();
 
         };
 

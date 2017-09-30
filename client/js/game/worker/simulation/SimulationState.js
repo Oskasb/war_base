@@ -213,6 +213,10 @@ define([
             }
         };
 
+        SimulationState.prototype.applyBodyForceAndTorque = function(forceVec, body, offset) {
+            physicsApi.applyForceAndTorqueToBody(forceVec, body, offset);
+        };
+
         SimulationState.prototype.applyForceToSimulationActor = function(impactForce, actor, randomize) {
             this.activityFilter.notifyActorActiveState(actor, true);
             physicsApi.applyForceToActor(impactForce, actor, randomize);

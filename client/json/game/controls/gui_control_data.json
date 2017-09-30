@@ -28,6 +28,13 @@
           "piece":"piece_control_vehicle",
           "camera":"vehicle_control_camera"
         }
+      },
+      {
+        "id":"ai_control_vehicle",
+        "data":{
+          "piece":"piece_control_vehicle",
+          "camera":"vehicle_control_camera"
+        }
       }
     ]
   }

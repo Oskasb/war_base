@@ -18,6 +18,14 @@ define([
             this.id = hostId+'_physical';
             this.dataKey = dataKey;
 
+            this.getHeightAtPos = function(pos, normalStore) {
+                console.log("No query in place for physicalPiece", this);
+            };
+
+            this.applyForce = function(forceVec, body, offsetVec) {
+                console.log("No query in place for physicalPiece", this);
+            };
+
             var applyData = function() {
                 this.applyData(this.pipeObj.buildConfig()[dataKey], ready);
             }.bind(this);
@@ -122,6 +130,23 @@ define([
             this.setBodyPosition(body, posVec3);
         };
 
+        PhysicalPiece.prototype.setApplyForceFunction = function (forceFunction) {
+            this.applyForce = forceFunction;
+        };
+
+        PhysicalPiece.prototype.applyForceToPhysicalBody = function (forceVec, body, torqueVec) {
+            this.applyForce(forceVec, body, torqueVec);
+        };
+
+        PhysicalPiece.prototype.setHeightQueryFunction = function (getHeightAtPos) {
+            this.getHeightAtPos = getHeightAtPos;
+        };
+
+        PhysicalPiece.prototype.getHeightAboveGround = function (piece) {
+            var terrainY =  this.getHeightAtPos(piece.getPos());
+
+            return piece.getPos().y - terrainY;
+        };
 
         PhysicalPiece.prototype.sampleState = function (body, piece) {
 
@@ -135,7 +160,7 @@ define([
             this.applyBody(piece);
 
             if (piece.processor) {
-                piece.processor.sampleState(body, piece, this.config);
+                piece.processor.sampleState(body, piece, this.config, this);
             }
 
         };

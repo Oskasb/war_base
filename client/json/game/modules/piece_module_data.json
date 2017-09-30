@@ -33,7 +33,14 @@
             {"id":"ap_turret",
               "transform":{
                 "rot":[  0,    0,    0],
-                "pos":[  0,  1.55,    -0.44]
+                "pos":[  0,  1.55,    -0.34]
+              }
+            },
+
+            {"id":"ap_steering",
+              "transform":{
+                "rot":[  0,    0,    0],
+                "pos":[  0,  1.65,    0.74]
               }
             },
 
@@ -46,31 +53,48 @@
 
             {"id":"ap_thrust_0",
               "transform":{
-                "rot":[1.8,     0,   0.2],
-                "pos":[1.3,  -0.55, -1.2]
+                "rot":[1.9,     0,   0.2],
+                "pos":[1.3,  -0.55, -1.3]
               }
             },
 
             {"id":"ap_thrust_1",
               "transform":{
-                "rot":[1.5,      0,  0.2],
-                "pos":[1.3,  -0.55,  1.4]
+                "rot":[ 1.9,      0, -0.2],
+                "pos":[-1.3,  -0.55, -1.3]
               }
             },
 
             {"id":"ap_thrust_2",
               "transform":{
-                "rot":[ 1.8,      0, -0.2],
-                "pos":[-1.3,  -0.55, -1.2]
+                "rot":[1.8,   3.14,  0.2],
+                "pos":[1.3,  -0.55,  1.3]
               }
             },
 
+
             {"id":"ap_thrust_3",
               "transform":{
-                "rot":[ 1.5,     0,  -0.2],
-                "pos":[-1.3,  -0.55,  1.4]
+                "rot":[ 1.8,   3.14,  -0.2],
+                "pos":[-1.3,  -0.55,  1.3]
               }
             }
+          ]
+        }
+      },
+      {
+        "id":"hovercraft_steering_module",
+        "data":{
+          "transform":{
+            "rot":  [0,     0,    0],
+            "pos":  [0,     0,    0],
+            "size": [0.4, 0.3,   0.4]
+          },
+          "channels":[
+            {"channelid":"engine_power_channel",  "stateid":"state_control_thrust"},
+            {"channelid":"channel_roll",          "stateid":"state_control_roll"},
+            {"channelid":"channel_yaw",           "stateid":"state_control_yaw"},
+            {"channelid":"channel_pitch",         "stateid":"state_control_pitch"}
           ]
         }
       },
@@ -115,13 +139,13 @@
             "size": [1.4, 0.7, 1.4]
           },
           "channels":[
-            {"channelid":"engine_power_channel", "stateid":"state_active"}
+            {"channelid":"engine_power_channel", "stateid":"state_engine_power"}
           ]
         }
       },
 
       {
-        "id":"oomba_thrust_module",
+        "id":"oomba_thrust_module_0",
         "data":{
           "transform":{
             "rot":  [0.2,   0,    0],
@@ -129,7 +153,51 @@
             "size": [1.4, 0.7, 1.4]
           },
           "channels":[
-            {"channelid":"engine_thrust_channel", "stateid":"state_active"}
+            {"channelid":"channel_roll",          "stateid":"state_vector_yaw"},
+            {"channelid":"engine_thrust_channel", "stateid":"state_thruster_0"}
+          ]
+        }
+      },
+
+      {
+        "id":"oomba_thrust_module_1",
+        "data":{
+          "transform":{
+            "rot":  [0.2,   0,    0],
+            "pos":  [0,   0.2,    0],
+            "size": [1.4, 0.7, 1.4]
+          },
+          "channels":[
+            {"channelid":"channel_roll",          "stateid":"state_vector_yaw"},
+            {"channelid":"engine_thrust_channel", "stateid":"state_thruster_1"}
+          ]
+        }
+      },
+      {
+        "id":"oomba_thrust_module_2",
+        "data":{
+          "transform":{
+            "rot":  [0.2,   0,    0],
+            "pos":  [0,   0.2,    0],
+            "size": [1.4, 0.7, 1.4]
+          },
+          "channels":[
+            {"channelid":"channel_roll",          "stateid":"state_vector_yaw"},
+            {"channelid":"engine_thrust_channel", "stateid":"state_thruster_2"}
+          ]
+        }
+      },
+      {
+        "id":"oomba_thrust_module_3",
+        "data":{
+          "transform":{
+            "rot":  [0.2,   0,    0],
+            "pos":  [0,   0.2,    0],
+            "size": [1.4, 0.7, 1.4]
+          },
+          "channels":[
+            {"channelid":"channel_roll",          "stateid":"state_vector_yaw"},
+            {"channelid":"engine_thrust_channel", "stateid":"state_thruster_3"}
           ]
         }
       },

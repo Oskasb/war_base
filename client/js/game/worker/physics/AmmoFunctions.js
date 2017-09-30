@@ -3,11 +3,13 @@
 
 define([
         'worker/physics/AmmoVehicle',
+        'worker/physics/AmmoHovercraft',
         'three/ThreeModelLoader',
     'worker/physics/BodyPool'
     ],
     function(
         AmmoVehicle,
+        AmmoHovercraft,
         ThreeModelLoader,
         BodyPool
     ) {
@@ -158,6 +160,30 @@ define([
                 body.forceActivationState(STATE.DISABLE_SIMULATION);
             }, 500)
         }
+
+
+
+        AmmoFunctions.prototype.forceAndTorqueToBody = function(forceVec3, body, torqueVec) {
+
+
+            if (forceVec3) {
+                VECTOR_AUX.setX(forceVec3.x);
+                VECTOR_AUX.setY(forceVec3.y);
+                VECTOR_AUX.setZ(forceVec3.z);
+
+                body.applyCentralForce(VECTOR_AUX);
+            }
+
+            if (torqueVec) {
+                VECTOR_AUX.setX(torqueVec.x );
+                VECTOR_AUX.setY(torqueVec.y );
+                VECTOR_AUX.setZ(torqueVec.z );
+
+                body.applyLocalTorque(VECTOR_AUX);
+            }
+
+        };
+
 
         AmmoFunctions.prototype.applyForceToBodyWithMass = function(forceVec3, body, mass, randomize) {
             body.activate();
@@ -562,6 +588,15 @@ define([
                 rigidBody = ammoVehicle.body;
                 actor.piece.vehicle = ammoVehicle.vehicle;
             }
+
+            if (shapeKey === "hovercraft") {
+                var ammoVehicle = new AmmoHovercraft(world, conf.rigid_body, position, quaternion);
+
+                actor.piece.processor = ammoVehicle.processor;
+                rigidBody = ammoVehicle.body;
+                actor.piece.hovercraft = ammoVehicle;
+            }
+
 
 
             if (shapeKey === "mesh") {

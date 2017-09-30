@@ -428,7 +428,7 @@ define([
             state.setValueAtTime(0, config.release_time);
             return null;
         }
-                
+
         if (activatedActor.piece.getPieceActivationState() < ENUMS.PieceActivationStates.VISIBLE) {
             guiControlState.setActivatedSelectionTarget(null);
             state.setValueAtTime(0, config.release_time);

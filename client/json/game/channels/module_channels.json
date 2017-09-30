@@ -232,14 +232,6 @@
         }
       },
       {
-        "id":"channel_pitch",
-        "data":{
-          "targets":[
-            {"targetid":"model_rotate_pitch"}
-          ]
-        }
-      },
-      {
         "id":"channel_animate_coswave_scale",
         "data":{
           "targets":[
@@ -280,13 +272,30 @@
         }
       },
       {
+        "id":"channel_pitch",
+        "data":{
+          "targets":[
+            {"targetid":"model_rotate_pitch"}
+          ]
+        }
+      },
+      {
+        "id":"channel_roll",
+        "data":{
+          "targets":[
+            {"targetid":"model_rotate_yaw"}
+          ]
+        }
+      },
+      {
         "id":"animate_cursor_texture_cumulative",
         "data":{
           "targets":[
             {"targetid":"cursor_animate_texture_cumulative"}
           ]
         }
-      },      {
+      },
+      {
         "id":"animate_texture_cumulative",
         "data":{
           "targets":[

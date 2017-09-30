@@ -403,14 +403,6 @@
         }
       },
       {
-        "id":"model_rotate_pitch",
-        "data":{
-          "callback":"transform",
-          "parameter":"rotation",
-          "axis":"x"
-        }
-      },
-      {
         "id":"target_animate_scale_sin_time",
         "data":{
           "callback":"animate_transform",
@@ -465,6 +457,22 @@
           "callback":"transform",
           "parameter":"rotation",
           "axis":"y"
+        }
+      },
+      {
+        "id":"model_rotate_pitch",
+        "data":{
+          "callback":"transform",
+          "parameter":"rotation",
+          "axis":"x"
+        }
+      },
+      {
+        "id":"model_rotate_roll",
+        "data":{
+          "callback":"transform",
+          "parameter":"rotation",
+          "axis":"z"
         }
       },
       {
