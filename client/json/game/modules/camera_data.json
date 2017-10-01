@@ -33,13 +33,13 @@
           "aim_config":{
             "master_state":{"state_id":"state_control_active"},
             "min_elevation":6,
-            "look_ahead":3,
+            "look_ahead":4,
             "offsets":[
               {"property":"target", "axis":"y","value":5}
             ],
             "params":[
-              {"param":"maxDistance",   "value":18},
-              {"param":"minDistance",   "value":14},
+              {"param":"maxDistance",   "value":22},
+              {"param":"minDistance",   "value":18},
               {"param":"enableDamping", "value":true},
               {"param":"dampingFactor", "value":2.82},
               {"param":"autoRotate",    "value":false},

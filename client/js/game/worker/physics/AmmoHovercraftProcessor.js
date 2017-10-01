@@ -116,7 +116,12 @@ define([
         AmmoHovercraftProcessor.prototype.determineDynamicThrust = function(dynamicPower) {
 
             for (var key in this.settings.thrusters) {
-                this.setDynamic(key,  this.settings.thrusters[key] * dynamicPower);
+                this.setDynamic(key,
+                    this.settings.thrusters[key].factor * dynamicPower +
+                    this.torqueVec.x * this.settings.thrusters[key].torque_influence.x +
+                    this.torqueVec.y * this.settings.thrusters[key].torque_influence.y +
+                    this.torqueVec.z * this.settings.thrusters[key].torque_influence.z
+                );
             }
 
         };
@@ -128,14 +133,14 @@ define([
 
             calcVec.applyQuaternion(obj3d.quaternion);
 
-            this.torqueVec.z = -calcVec.z * Math.abs(calcVec.z) * maxTorque;
-            this.torqueVec.x = -calcVec.x * Math.abs(calcVec.x) * maxTorque;
+            this.torqueVec.z = -calcVec.z * Math.abs(calcVec.z);
+            this.torqueVec.x = -calcVec.x * Math.abs(calcVec.x);
 
         //    this.torqueVec.z = -obj3d.rotation.z * maxTorque;
         //    this.torqueVec.x = -obj3d.rotation.x * maxTorque;
 
 
-            this.torqueVec.y = 0 * maxTorque;
+            this.torqueVec.y = 0 ;
 
         };
 
@@ -186,9 +191,13 @@ define([
 
             var totalPower = dynamicPower * maxPower;
 
+            this.torqueVec.multiplyScalar(maxTorque);
+
             var groundEffectComponent = totalPower  / Math.clamp(heightAboveGround, 1, maxPower);
 
             this.forceVec.set(0, totalPower + groundEffectComponent, 0);
+
+            this.forceVec.applyQuaternion(threeObj.quaternion);
 
             physicalPiece.applyForceToPhysicalBody(this.forceVec, body, this.torqueVec);
 

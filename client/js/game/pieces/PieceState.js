@@ -76,18 +76,17 @@ define([],
         };
 
         PieceState.prototype.getValue = function () {
-            this.readCount++;
             return this.value;
         };
 
         PieceState.prototype.sampleBufferValue = function () {
-            this.readCount++;
             return this.buffer[0];
         };
 
         PieceState.prototype.setBufferValue = function (value) {
             this.readCount = 0;
             this.buffer[0] = value;
+        //    this.updateTargetValues();
             this.dirty = true;
         };
 
@@ -95,17 +94,17 @@ define([],
             if (this.value !== this.buffer[0]) {
                 this.makeDirty();
             } else {
-                if (this.readCount > 2) {
+                if (this.readCount > 0) {
                     this.dirty = false;
                 }
             }
 
-            this.readCount++
+            this.readCount++;
             return this.isDirty();
-
         };
 
         PieceState.prototype.makeDirty = function () {
+            this.readCount = 0;
             this.dirty = true;
         };
 
@@ -114,8 +113,7 @@ define([],
         };
 
         PieceState.prototype.setValueAtTime = function(value, time) {
-            this.dirty = true;
-            this.readCount = 0;
+            this.makeDirty();
             this.buffer[0] = value;
             this.buffer[1] = time;
         };
@@ -138,8 +136,7 @@ define([],
                 var frac = MATH.calcFraction(0, this.targetTime, this.stateProgress);
                 this.progressDelta = MATH.calcFraction(0, this.targetTime, tpf);
                 this.setValue(MATH.interpolateFromTo(this.startValue, this.targetValue, frac));
-                this.readCount = 0;
-                this.timeSinceUpdate = 0;
+                this.makeDirty();
             } else {
                 this.setValue(this.targetValue);
                 this.progressDelta = 0;
@@ -153,13 +150,12 @@ define([],
                 return;
             }
 
-
             if (this.targetValue !== this.buffer[0]) {
                 this.updateTargetValues()
             }
+
             this.updateStateProgress(tpf);
             this.notifyUpdate();
-
         };
 
         return PieceState

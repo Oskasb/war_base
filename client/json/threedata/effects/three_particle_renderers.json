@@ -50,7 +50,7 @@
         {
           "id":"gpu_additive_atlas_renderer",
           "material_id":"gpu_sprite_atlas_material",
-          "particle_pool":850,
+          "particle_pool":1850,
           "particle_geometry":"quad",
           "material_options":{
             "blending":"AdditiveBlending",
@@ -64,7 +64,7 @@
         {
           "id":"gpu_additive_atlas_trail_renderer",
           "material_id":"gpu_sprite_atlas_trail_material",
-          "particle_pool":800,
+          "particle_pool":600,
           "particle_geometry":{
             "model_id":"model_bullet"
           },

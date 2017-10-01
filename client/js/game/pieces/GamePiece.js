@@ -35,6 +35,10 @@ define([
 
             this.enable = true;
 
+            this.updatedOnce = false;
+
+        //    this.setDirtyCount(10);
+
             this.flipRender = false;
 
             this.framesAtState = 0;
@@ -72,7 +76,7 @@ define([
                 this.pieceStates[i].makeDirty();
             }
 
-            this.setDirtyCount(2);
+        //    this.setDirtyCount(1);
 
         };
 
@@ -283,11 +287,12 @@ define([
 
             if (this.render !== bool) {
                 this.flipRender = true;
+                this.setStatesDirty();
             }
 
             if (bool) {
                 if (!this.render) {
-                    this.setStatesDirty();
+
                 }
                 ThreeAPI.showModel(this.rootObj3D);
             } else {
@@ -356,7 +361,7 @@ define([
             }
         };
 
-        GamePiece.prototype.testStatesDirtyStates = function () {
+        GamePiece.prototype.testDirtyStates = function () {
 
             if (this.getDirtyCount()) {
                 this.dirtyCount--;
@@ -414,28 +419,40 @@ define([
 
         GamePiece.prototype.updateGamePiece = function(tpf) {
 
+
+
             activationState = this.getPieceActivationState();
 
             if (!activationState) {
 
             }
 
-            dirtyState = this.testStatesDirtyStates();
-
             if (this.isStatic || this.isDynamic) {
-                if (dirtyState) {
+
+                if (this.flipRender) {
+
                     this.updatePieceStates(tpf);
                     this.updatePieceSlots(tpf);
                     this.updatePieceVisuals(tpf);
+
+                    this.flipRender = false;
+
                 } else {
 
-                    if (this.flipRender) {
+                    dirtyState = this.testDirtyStates();
+                    if (dirtyState) {
+
+                        if (this.isStatic && this.updatedOnce) {
+                            //    return;
+                        }
+
+                        this.updatedOnce = true;
+
                         this.updatePieceStates(tpf);
                         this.updatePieceSlots(tpf);
                         this.updatePieceVisuals(tpf);
-                        this.flipRender = false;
-                    }
 
+                    }
                 }
 
             } else {

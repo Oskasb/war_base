@@ -44,10 +44,10 @@
               "mac_torque":1000000,
               "max_elevation":10,
               "thrusters":{
-                "thrust_0":3,
-                "thrust_1":3,
-                "thrust_2":3,
-                "thrust_3":3
+                "thrust_0":{"factor":3, "torque_influence":{"x":5,"y":0, "z":5}},
+                "thrust_1":{"factor":3, "torque_influence":{"x":5,"y":0, "z":-5}},
+                "thrust_2":{"factor":3, "torque_influence":{"x":-5,"y":0, "z":5}},
+                "thrust_3":{"factor":3, "torque_influence":{"x":-5,"y":0, "z":-5}}
               }
             }
           },
