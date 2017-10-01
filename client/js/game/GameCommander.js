@@ -117,6 +117,8 @@ define([
 
                 levels.push(level);
             //    levelBuilder.populateLevel(level, levelPopulated);
+                level.terrainActors[0].piece.render = false;
+                level.terrainActors[0].piece.setStatesDirty();
                 onOk(level);
             };
 
