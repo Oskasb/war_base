@@ -83,14 +83,14 @@ define([
 
             addButton();
 
-            var time = 15;
+            var time = 0;
 
-            var envs = ['morning', 'evening', 'sunny_day', 'high_noon'];
+            var envs = ['evening', 'night', 'pre_dawn', 'dawn', 'morning', 'sunny_day', 'high_noon'];
 
-            var switchTime = 25;
-            var transitTime = 23;
+            var switchTime = 26;
+            var transitTime = 25;
 
-            var envIdx = 0;
+            var envIdx = 3;
 
             var tick = function(e) {
 
@@ -135,7 +135,7 @@ define([
 
                     activeLevel = level;
 
-                    setEnvironment('evening', 300, 2.5);
+                    setEnvironment('dawn', 300, 2.5);
 
                     var activeRdy = function(ctrl) {
                         active = ctrl;

@@ -225,9 +225,10 @@ define(['../../PipelineObject',
         for (var key in current) {
             if (fraction >= 1) {
                 current[key] = target[key]
+            } else {
+                current[key] = MATH.interpolateFromTo(current[key], target[key],  fraction);
             }
 
-            current[key] = MATH.interpolateFromTo(current[key], target[key],  fraction);
         }
 
         return current;
@@ -242,9 +243,13 @@ define(['../../PipelineObject',
 
         var fraction = calcTransitionProgress(evt.args(e).tpf);
 
-        var useSky = interpolateSky(currentSkyConfig, skyList[currentEnvId], fraction*fraction);
+        if (fraction > 1.1) {
+            return;
+        }
 
-        interpolateEnv(currentEnvConfig, envList[currentEnvId], fraction*fraction);
+        var useSky = interpolateSky(currentSkyConfig, skyList[currentEnvId], fraction);
+
+        interpolateEnv(currentEnvConfig, envList[currentEnvId], fraction);
 
         if (fraction < 1) {
             applyEnvironment();
@@ -285,6 +290,7 @@ define(['../../PipelineObject',
 
         updateDynamigFog(sunInTheBack);
         updateDynamigAmbient(sunInTheBack);
+
     };
 
     ThreeEnvironment.readDynamicValue = function(worldProperty, key) {
