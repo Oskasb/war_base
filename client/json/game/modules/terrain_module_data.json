@@ -14,7 +14,7 @@
             "invert_hill":false,
             "terrain_edge_size":175,
             "edge_easing":"clampSin",
-            "max_height":25,
+            "max_height":20,
             "min_height":0,
             "frequency":3,
             "steps":6

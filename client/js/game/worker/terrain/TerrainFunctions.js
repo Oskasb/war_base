@@ -109,10 +109,10 @@ define([],
                 leftVert = sideVerts * i;
                 rightVert = sideVerts * i + sideVerts - 1;
 
-                array1d[bottomVert] = height;
-                array1d[topVert] = height;
-                array1d[leftVert] = height;
-                array1d[rightVert] = height;
+                array1d[bottomVert].z = height;
+                array1d[topVert].z = height;
+                array1d[leftVert].z = height;
+                array1d[rightVert].z = height;
             }
 
         };
@@ -127,6 +127,17 @@ define([],
         };
 
 
+        var elevateTerrainVerts = function(vertices, elevation) {
+
+            for (var i = 0; i < vertices.length; i++) {
+                vertices[i].z += elevation;
+            }
+
+        //    vertices[0].z = 1000;
+
+        };
+
+
         TerrainFunctions.prototype.createTerrain = function(moduleOptions) {
 
 
@@ -137,7 +148,9 @@ define([],
             terrain.opts = opts;
             terrain.edges = edges;
 
-            THREE.Terrain.Edges(terrain.children[0].geometry.vertices, opts, false, edges.edgeSize, edges.easingFunc);
+            elevateTerrainVerts(terrain.children[0].geometry.vertices, 1);
+        //    THREE.Terrain.Edges(terrain.children[0].geometry.vertices, opts, false, edges.edgeSize, edges.easingFunc);
+        //    this.setEdgeVerticeHeight(terrain.children[0].geometry.vertices, -0.5);
 
             return terrain;
         };

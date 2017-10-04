@@ -430,6 +430,8 @@ define([
 
             var groundBody = new Ammo.btRigidBody(rbInfo);
 
+            groundBody.setWorldTransform(groundTransform);
+
             groundBody.setRestitution(restitution);
             groundBody.setFriction(friction);
             groundBody.setDamping(damping, damping);

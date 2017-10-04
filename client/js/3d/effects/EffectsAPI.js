@@ -30,16 +30,24 @@ define([
             particleSpawner = new ParticleSpawner();
 
             var waterReady = function() {
+                waterFx = new WaterFX();
                 waterFx.initWaterEffect();
+                onReady()
             };
 
-        //    waterFx = new WaterFX();
 
-            setTimeout(function() {
-        //        waterReady();
-            }, 5);
+            var particlesReady = function() {
+                setTimeout(function() {
 
-            particleSpawner.initParticleSpawner(onReady);
+
+                    waterReady();
+                }, 2500);
+
+            };
+
+
+
+            particleSpawner.initParticleSpawner(particlesReady);
 
         };
 
