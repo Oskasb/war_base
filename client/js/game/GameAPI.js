@@ -5,7 +5,7 @@ define([
         'game/levels/LevelBuilder',
         'game/worker/GameWorker',
         'game/worker/io/ConfigPublisher',
-        'io/GuiRenderer'
+        'ui/particle/GuiAPI'
     ],
 
     function(
@@ -13,7 +13,7 @@ define([
         LevelBuilder,
         GameWorker,
         ConfigPublisher,
-        GuiRenderer
+        GuiAPI
     ) {
 
 
@@ -21,7 +21,6 @@ define([
         var gameWorker;
         var levelBuilder;
         var configPublisher = ConfigPublisher;
-        var guiRenderer;
 
         var pieces = [];
         var controls = [];
@@ -33,24 +32,30 @@ define([
         var controlledActor;
         var selectedActor;
 
-        var workerReady = function() {
-            configPublisher.publishConfigs(gameWorker)
-        };
 
         var GameAPI = function() {
 
         };
 
-        GameAPI.setupGameWorker = function() {
-            guiRenderer = new GuiRenderer(GameAPI);
-            levelBuilder = new LevelBuilder(GameAPI);
+        GameAPI.setupGameWorker = function(systemReady) {
+
+            var configsPublished = function() {
+                systemReady();
+            };
+
+            var workerReady = function() {
+                configPublisher.publishConfigs(gameWorker, configsPublished)
+            };
+
             gameWorker = new GameWorker(workerReady);
-            gameCommander = new GameCommander(GameAPI, gameWorker, levelBuilder)
 
         };
 
         GameAPI.initGame = function() {
-
+            console.log(" -- > INIT GAME < -- ");
+            GuiAPI.initGui(GameAPI);
+            levelBuilder = new LevelBuilder(GameAPI);
+            gameCommander = new GameCommander(GameAPI, gameWorker, levelBuilder);
         };
 
         GameAPI.getPieceById = function(id) {
@@ -134,7 +139,6 @@ define([
             return selectedActor;
         };
 
-
         GameAPI.setActiveCameraControl = function(camCtrl) {
             activeCameraControl = camCtrl;
         };
@@ -212,7 +216,8 @@ define([
             if (activeCameraControl && activeControl) {
                 activeCameraControl.updateCameraCopntrol(activeControl, controlledActor, tpf);
             }
-            guiRenderer.requestCameraMatrixUpdate();
+
+            GuiAPI.updateGui();
         };
 
         GameAPI.tickPlayerPiece = function(tpf) {
@@ -221,13 +226,8 @@ define([
                 pieces[i].determineVisibility();
             }
 
-            guiRenderer.updateGuiRenderer();
-
             if (controlledActor) {
                 controlledActor.piece.setRendereable(true);
-            //    controlledActor.piece.determineVisibility();
-
-            //    controlledActor.piece.updateGamePiece(tpf);
                 controlledActor.piece.updatePieceStates(tpf);
                 controlledActor.piece.updatePieceSlots(tpf);
                 controlledActor.piece.updatePieceVisuals(tpf);

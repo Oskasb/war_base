@@ -37,10 +37,12 @@ define([
         var ClientState = '';
         var sendMessage = function() {};
 
-        var ModelViewer = function(pointerCursor) {
+        var ClientViewer = function(pointerCursor, sceneController) {
             ClientState = ENUMS.ClientStates.INITIALIZING;
 
             new SetupDebug();
+
+            this.sceneController = sceneController;
 
 			this.pointerCursor = pointerCursor;
 
@@ -65,14 +67,14 @@ define([
 		};
 
 
-        ModelViewer.prototype.setClientState = function(state) {
+        ClientViewer.prototype.setClientState = function(state) {
             ClientState = state;
     //        console.log("SetCLientState: ", state);
             evt.fire(evt.list().MESSAGE_UI, {channel:ENUMS.Channel.client_state, message:' - '+state});
         };
 
 
-        ModelViewer.prototype.connectSocket = function(socketMessages, connection) {
+        ClientViewer.prototype.connectSocket = function(socketMessages, connection) {
             this.setClientState(ENUMS.ClientStates.CONNECTING);
 
             var disconnectedCallback = function() {
@@ -112,11 +114,8 @@ define([
         };
 
 
-        ModelViewer.prototype.initiateClient = function(socketMessages, ready) {
-
+        ClientViewer.prototype.initiateClientGui = function() {
             this.guiSetup.initMainGui();
-            ready();
-
 		};
 
         var aggDiff = 0;
@@ -144,7 +143,7 @@ define([
         var monitorStatus = {};
         var statusEntries = [];
 
-        ModelViewer.prototype.setupSimulation = function(sceneController, ready) {
+        ClientViewer.prototype.setupSimulation = function(ready) {
             var _this = this;
 
             PipelineAPI.setCategoryKeyValue('STATUS', 'RENDER_MONITOR', renderEntries);
@@ -152,51 +151,42 @@ define([
             PipelineAPI.setCategoryKeyValue('STATUS', 'EFFECT_MONITOR', effectEntries);
             PipelineAPI.setCategoryKeyValue('STATUS', 'GAME_MONITOR', gameEntries);
             PipelineAPI.setCategoryKeyValue('STATUS', 'SYSTEM_MONITOR', systemEntries);
-
             PipelineAPI.setCategoryKeyValue('STATUS', 'BROWSER_MONITOR', browserEntries);
             PipelineAPI.setCategoryKeyValue('STATUS', 'STATUS_MONITOR', statusEntries);
 
-    //        console.log("Setup Simulation");
 
-            var clientTick = function(tpf) {
-                _this.tick(tpf, sceneController)
-
-            };
-
-            var postrenderTick = function(tpf) {
-                _this.tickPostrender(tpf, sceneController)
-
-            };
-
-            var systems = 0;
-
-            var sysReady = function() {
-                systems++;
-                if (systems === 1) {
-                    ready();
-                }
-
-                if (systems === 2) {
-                    this.ready = true;
-                }
-
+            var sceneReady = function() {
+                ready();
             }.bind(this);
 
-            sceneController.setup3dScene(clientTick, postrenderTick, sysReady);
-            sceneController.setupEffectPlayers(sysReady);
-
-        //    evt.once(evt.list().PLAYER_READY, sysReady);
+            this.sceneController.setup3dScene(sceneReady);
 
         };
 
+        ClientViewer.prototype.clientReady = function() {
+
+            var clientTick = function(tpf) {
+                this.tick(tpf)
+            }.bind(this);
+
+            var postrenderTick = function(tpf) {
+                this.tickPostrender(tpf)
+            }.bind(this);
+
+            var fxReady = function() {
+                ThreeAPI.getSetup().addPrerenderCallback(clientTick);
+                ThreeAPI.getSetup().addPostrenderCallback(postrenderTick);
+            };
+
+            this.sceneController.setupEffectPlayers(fxReady);
+
+        };
 
         var start;
         var gameTime = 0;
 
-        ModelViewer.prototype.tickPostrender = function(tpf) {
-
+        ClientViewer.prototype.tickPostrender = function(tpf) {
             PipelineAPI.setCategoryKeyValue('STATUS', 'TPF', tpf);
-
             evt.fire(evt.list().CLIENT_TICK, tickEvent);
         };
 
@@ -209,7 +199,6 @@ define([
         var kilofy = function(number) {
             return Math.round((number/1000));
         };
-
 
         var notifyStatus = function(store, value, dataKey) {
             if (!store[dataKey]) {
@@ -230,7 +219,7 @@ define([
 
         var statusUpdate = 0;
 
-        ModelViewer.prototype.tickStatusUpdate = function(ftpf) {
+        ClientViewer.prototype.tickStatusUpdate = function(ftpf) {
 
             statusUpdate += ftpf;
             if (statusUpdate < 0.5) return;
@@ -242,7 +231,6 @@ define([
             notifyStatus(monitorGame,    GameAPI.getPieces().length,                      'PIECES');
             notifyStatus(monitorGame,    GameAPI.countCombatPieces(),                     'COMBATANTS');
             notifyStatus(monitorGame,    GameAPI.getGameCommander().countActiveAttacks(), 'ATTACK_POOL');
-
 
             notifyStatus(monitorSystem,    '',                                              'DATA TRANSFERS');
             notifyStatus(monitorSystem,    GameAPI.getGameWorker().getProtocolCount(),      'PROTOCOLS');
@@ -269,14 +257,12 @@ define([
             var timeIdle = PipelineAPI.readCachedConfigKey('STATUS', 'TIME_ANIM_IDLE');
             var timeRender = PipelineAPI.readCachedConfigKey('STATUS', 'TIME_ANIM_RENDER');
 
-
             notifyStatus(monitorTime,      Math.floor(tpf)+'ms',                        'TPF');
             notifyStatus(monitorTime,      Math.floor(tpf)+'ms',                        'IDLE');
             notifyStatus(monitorTime,      percentify(timeGame*1000, tpf) + '%',        'TIME_GAME');
             notifyStatus(monitorTime,      percentify(timeRender*1000, tpf) +'%',       'TIME_RENDER');
             notifyStatus(monitorTime,      mb+'MB',                                     'MEM_USED');
             notifyStatus(monitorTime,      Math.round(100 - (memoryUsed*100)) + '%',    'MEM_LEFT');
-
 
             var shaders = ThreeAPI.sampleRenderInfo('programs', null);
             var count = 0;
@@ -330,9 +316,7 @@ define([
 
 
 
-        ModelViewer.prototype.tick = function(tpf, sceneController) {
-
-            if (!this.ready) return;
+        ClientViewer.prototype.tick = function(tpf) {
 
             gameTime += tpf;
             start = performance.now();
@@ -361,7 +345,7 @@ define([
 
             GameAPI.tickPlayerPiece(tpf, gameTime);
 
-            sceneController.tickEffectPlayers(tpf);
+            this.sceneController.tickEffectPlayers(tpf);
 
             clearTimeout(tickTimeout);
             tickTimeout = setTimeout(function() {
@@ -391,6 +375,6 @@ define([
             
 		};
 
-		return ModelViewer;
+		return ClientViewer;
 
 	});

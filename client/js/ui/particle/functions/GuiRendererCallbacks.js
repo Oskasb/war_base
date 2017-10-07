@@ -2,10 +2,10 @@
 
 define([
 
-        'io/GuiFeedbackFunctions',
-    'ui/CombatStatusUiProcessor',
-        'ui/HudUiProcessor',
-        'ui/HudMapProcessor'
+        'ui/particle/functions/GuiFeedbackFunctions',
+    'ui/particle/processors/CombatStatusUiProcessor',
+        'ui/particle/processors/HudUiProcessor',
+        'ui/particle/processors/HudMapProcessor'
     ],
     function(
 

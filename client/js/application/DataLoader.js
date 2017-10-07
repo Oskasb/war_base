@@ -22,10 +22,14 @@ define([
 
         var client;
         var loadProgress;
-        var filesLoadedOK = false;
-        var clientInitiated = false;
 
-        GameAPI.setupGameWorker()
+        var systemReady = function() {
+
+            GameAPI.initGame();
+            client.clientReady();
+        };
+
+        GameAPI.setupGameWorker(systemReady);
 
         var path = './../../..';
 
@@ -123,60 +127,34 @@ define([
 
         };
         
-        DataLoader.prototype.loadData = function(Client, PointerCursor, sceneController, onReady) {
+        DataLoader.prototype.loadData = function(ClientViewer, PointerCursor, sceneController, onReady) {
 
             var _this = this;
 
-            var initClient = function(ready) {
-                if (client) {
-                    console.log("Multi Inits requested, bailing");
-                    return;
-                }
-                client = new Client(new PointerCursor());
+            var loadingCompleted = function() {
 
-                client.setupSimulation(sceneController, ready);
-                if (onReady) {
-                    onReady(client)
-                }
+                var clientReady = function() {
+                    onReady(client);
+                };
+
+                client = new ClientViewer(new PointerCursor(), sceneController);
+
+                client.setupSimulation(clientReady);
+            //    if (onReady) {
+
+            //    }
+
             };
 
-            function connectionReady() {
-             //   console.log('connectionReady do notifyCompleted')
-                _this.notifyCompleted();
-            }
-
-
-        //    var particlesReady = function() {
-                particles = true;
-
-            //    evt.removeListener(evt.list().PARTICLES_READY, particlesReady);
-        //    };
-
-            function connectClient() {
-    //            console.log('connectClient')
-                client.initiateClient(null, connectionReady);
-            }
-            
 
             var loadStateChange = function(state) {
             //    console.log('loadStateChange', state)
                 if (state == _this.getStates().IMAGES) {
-
                     _this.preloadImages();
                 }
-                
 
                 if (state == _this.getStates().COMPLETED) {
-
-                    var clientReady = function() {
-                        connectClient();
-                    }
-                    
-                    
-                    setTimeout(function() {
-                        initClient(clientReady);
-                    }, 10);
-
+                    loadingCompleted()
                 }
 
             };
@@ -292,6 +270,7 @@ define([
 
 
         DataLoader.prototype.notifyCompleted = function() {
+
             evt.fire(evt.list().PLAYER_READY, {});
             loadProgress.removeProgress();
         };        

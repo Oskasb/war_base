@@ -22,6 +22,7 @@ define([
     PointerCursor
 ) {
 
+    var dataLoader;
 
     var Setup = function() {
 
@@ -29,10 +30,13 @@ define([
 
     Setup.init = function(ModelViewer, onReady) {
         var sceneController = new SceneController();
-        var dataLoader = new DataLoader();
+        dataLoader = new DataLoader();
         dataLoader.loadData(ModelViewer, PointerCursor, sceneController, onReady);
     };
 
+    Setup.completed = function() {
+        dataLoader.notifyCompleted()
+    };
 
     return Setup;
 

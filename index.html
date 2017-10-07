@@ -47,7 +47,7 @@
         'modelviewer/Setup',
         'application/DevConfigurator',
         'application/FullScreenConfigurator',
-        'modelviewer/ModelViewer',
+        'application/ClientViewer',
         'modelviewer/EnvironmentLoader',
         'modelviewer/AppLoader',
         'modelviewer/ControlLoader',
@@ -57,31 +57,27 @@
         Setup,
         DevConfigurator,
         FullScreenConfigurator,
-        ModelViewer,
+        ClientViewer,
         EnvironmentLoader,
         AppLoader,
         ControlLoader,
         ViewerPointer
     ) {
 
-        var modelViewer;
-        var onReady = function(client) {
-            modelViewer = client;
-        };
 
-        var playerReady = function() {
+        var onReady = function(clientViewer) {
+            clientViewer.initiateClientGui();
+
             new DevConfigurator();
             new FullScreenConfigurator();
-        //    new EnvironmentLoader();
-        //    new ViewerPointer();
-            new AppLoader(modelViewer);
-        //    new ControlLoader();
-            evt.removeListener(evt.list().PLAYER_READY, playerReady);
+            //    new EnvironmentLoader();
+            //    new ViewerPointer();
+            new AppLoader(clientViewer);
+            Setup.completed();
         };
 
-        evt.on(evt.list().PLAYER_READY, playerReady);
 
-        Setup.init(ModelViewer, onReady)
+        Setup.init(ClientViewer, onReady)
 
     });
 

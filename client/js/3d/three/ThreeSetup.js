@@ -82,13 +82,8 @@ define(['../../ui/GameScreen',
         return renderEnd;
     };
 
-    ThreeSetup.initThreeRenderer = function(pxRatio, antialias, containerElement, clientTickCallback, postrenderTick, store) {
+    ThreeSetup.initThreeRenderer = function(pxRatio, antialias, containerElement, store) {
         initTime = performance.now();
-        prerenderCallbacks.push(clientTickCallback);
-
-        postrenderCallbacks.push(postrenderTick);
-
-    //    ThreeSetup.addPrerenderCallback(ThreeSetup.updateCameraMatrix);
 
         lastTime = 0;
         init();
@@ -122,6 +117,10 @@ define(['../../ui/GameScreen',
 
     ThreeSetup.addPrerenderCallback = function(callback) {
         prerenderCallbacks.push(callback);
+    };
+
+    ThreeSetup.addPostrenderCallback = function(callback) {
+        postrenderCallbacks.push(callback);
     };
 
     var vector = new THREE.Vector3();

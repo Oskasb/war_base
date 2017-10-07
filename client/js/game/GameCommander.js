@@ -42,7 +42,6 @@ define([
 
             ModuleCallbacks.initCallbacks(GameAPI);
 
-
             var executorOkResponse = function(res) {
                 execCalls++
             };
@@ -79,9 +78,8 @@ define([
             gameWorker.setExecutor('executeRemoveActor', executeRemoveActor);
             gameWorker.setExecutor('executeAttackStart', executeAttackStart);
             gameWorker.setExecutor('executeAttackHit',   executeAttackHit);
-            gameWorker.setExecutor('executeAttackEnd',   executeAttackEnd)
+            gameWorker.setExecutor('executeAttackEnd',   executeAttackEnd);
             gameWorker.setExecutor('executeMonitorWorker',   executeMonitorWorker);
-
 
 
             PipelineAPI.setCategoryKeyValue('STATUS', 'WORKER_MONITOR', workerEntrie);

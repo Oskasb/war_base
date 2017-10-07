@@ -2,7 +2,7 @@
 
 
 define([
-    'PipelineAPI',
+    'io/PipelineAPI',
     'EffectsAPI',
     'game/modules/ModuleEffectCreator'
 

@@ -2,9 +2,11 @@
 
 define([
         'ThreeAPI',
-        'PipelineAPI',
-        'io/GuiRendererCallbacks',
-        'io/GuiElement',
+        'io/PipelineAPI',
+        'ui/particle/functions/GuiRendererCallbacks',
+
+        'ui/particle/elements/GuiElement',
+        'ui/particle/elements/GuiSystem',
         'application/ExpandingPool'
     ],
     function(
@@ -12,6 +14,7 @@ define([
         PipelineAPI,
         GuiRendererCallbacks,
         GuiElement,
+        GuiSystem,
         ExpandingPool
     ) {
 
@@ -25,6 +28,8 @@ define([
 
         var expandingPools = {};
 
+
+        var guiSystems = {};
         var guiElements = [];
 
         var combatStatusElements = [];
@@ -37,7 +42,7 @@ define([
             GameAPI = gameApi;
             guiRendererCallbacks = new GuiRendererCallbacks(this, GameAPI);
 
-            this.generateGuiElements();
+            this.initiateGuiSystems();
 
 
             var fetchPointer = function(src, data) {
@@ -63,20 +68,42 @@ define([
         };
 
 
-        GuiRenderer.prototype.generateGuiElements = function() {
+        GuiRenderer.prototype.generateGuiElement = function(elementId, store) {
 
             var elementReady = function(guiElement) {
-                guiElements.push(guiElement);
-            //    console.log("Gui Element Ready", guiElement);
+                if (guiElement.renderFunc) {
+                    store.push(guiElement);
+                }
+
             };
 
-            var guiElemData = function(src, data) {
+            this.getGuiElement(elementId, elementReady);
+
+        };
+
+
+        GuiRenderer.prototype.activateGuiSystemId = function(systemId) {
+            guiSystems[systemId].activateGuiSystem();
+        };
+
+
+        GuiRenderer.prototype.deactivateGuiSystemId = function(systemId) {
+            guiSystems[systemId].deactivateGuiSystem();
+        };
+
+        GuiRenderer.prototype.initiateGuiSystems = function() {
+
+            var guiSystemData = function(src, data) {
+
                 for (var i = 0; i < data.length; i++) {
-                    this.getGuiElement(data[i].id, elementReady);
+                    guiSystems[data[i].id] = new GuiSystem(data[i], this);
+
+                //    this.activateGuiSystemId(data[i].id);
                 }
+
             }.bind(this);
 
-            PipelineAPI.subscribeToCategoryKey('GUI_PARTICLE_ELEMENTS', 'ELEMENTS', guiElemData)
+            PipelineAPI.subscribeToCategoryKey('GUI_PARTICLE_SYSTEMS', 'SYSTEMS', guiSystemData)
         };
 
 
@@ -92,7 +119,6 @@ define([
             this.getGuiElement(combatElemId, addBombatElementCB)
 
         };
-
 
 
         GuiRenderer.prototype.getActorCombatElement = function(actor, isIdle) {
@@ -131,8 +157,8 @@ define([
 
             guiRendererCallbacks.updateMouseState(mouseState);
 
-            for (var i = 0; i < guiElements.length; i++) {
-                guiElements[i].updateGuiElement(guiRendererCallbacks);
+            for (var key in guiSystems) {
+                guiSystems[key].updateGuiSystem(guiRendererCallbacks);
             }
 
             var actors = GameAPI.getActors();

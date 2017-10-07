@@ -48,9 +48,9 @@ define([
             
         };
 
-        ThreeAPI.initThreeScene = function(containerElement, clientTickCallback, postrenderTick, pxRatio, antialias) {
+        ThreeAPI.initThreeScene = function(containerElement, pxRatio, antialias) {
             var store = {}; 
-            store = ThreeSetup.initThreeRenderer(pxRatio, antialias, containerElement, clientTickCallback, postrenderTick, store);
+            store = ThreeSetup.initThreeRenderer(pxRatio, antialias, containerElement, store);
             ThreeEnvironment.initEnvironment(store);
             glContext = store.renderer.context;
             scene = store.scene;
@@ -61,6 +61,10 @@ define([
 
         ThreeAPI.getTimeElapsed = function() {
             return ThreeSetup.getTotalRenderTime();
+        };
+
+        ThreeAPI.getSetup = function() {
+            return ThreeSetup;
         };
 
         ThreeAPI.getContext = function() {

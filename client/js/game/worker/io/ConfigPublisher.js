@@ -6,10 +6,10 @@ define([   'PipelineAPI'], function(PipelineAPI) {
 
         };
 
-        ConfigPublisher.publishConfigs = function(gameWorker) {
+        ConfigPublisher.publishConfigs = function(gameWorker, configsPublished) {
 
             var fileList = function(src, data) {
-                ConfigPublisher.updateWorkerConfigs(gameWorker, data);
+                ConfigPublisher.updateWorkerConfigs(gameWorker, data, configsPublished);
             };
 
             if (PipelineAPI.getCachedConfigs()['urls']) {
@@ -25,14 +25,32 @@ define([   'PipelineAPI'], function(PipelineAPI) {
             }
         };
 
-    ConfigPublisher.updateWorkerConfigs = function(gameWorker, data) {
+    ConfigPublisher.updateWorkerConfigs = function(gameWorker, data, configsPublished) {
+
+        var started = 0;
+        var finished = 0;
+
+        var testTimeout;
+
+        var testFinished = function() {
+            clearTimeout(testTimeout);
+            testTimeout = setTimeout(function() {
+               if (started === finished) {
+                   configsPublished();
+               }
+            }, 0);
+        };
 
         var storeConfigMap = function(config, key) {
+
+            started++;
 
             var cfg = config;
 
             var postConfig = function(src, data) {
                 gameWorker.storeConfig(cfg, src, data);
+                finished++;
+                testFinished()
             };
 
             PipelineAPI.subscribeToCategoryKey(config, key, postConfig);

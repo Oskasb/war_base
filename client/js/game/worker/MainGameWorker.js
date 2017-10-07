@@ -40,7 +40,6 @@ require(
 	    WorkerGameMain
     ) {
 
-
         var count = 0;
 
         var onWorkerReady = function() {
@@ -48,17 +47,16 @@ require(
 
             console.log("Worker Configs & Models Loaded", count);
 
+            if (count == 1) {
+                postMessage([1, 'ready']);
+            }
         };
 
 		var MainGameWorker = function() {
             this.workerGameMain = new WorkerGameMain(onWorkerReady);
 		};
 
-
         mainGameWorker = new MainGameWorker();
-
-
-        postMessage([1, 'ready']);
 
 	}
 );

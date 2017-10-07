@@ -256,7 +256,7 @@ define([
             if (offsetVec3) {
                 this.position.addVectors(this.origin, offsetVec3);
             } else {
-                if (Math.random() < 0.999 && this.position.x === this.origin.x && this.position.y === this.origin.y && this.position.z === this.origin.z) {
+                if (this.position.equals(this.origin)) {
                     return;
                 }
                 this.position.copy(this.origin);

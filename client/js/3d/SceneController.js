@@ -19,8 +19,8 @@ define([
     };
     
 
-    SceneController.prototype.setup3dScene = function(clientTickCallback, postrenderTick, ready) {
-        ThreeController.setupThreeRenderer(clientTickCallback, postrenderTick, ready);
+    SceneController.prototype.setup3dScene = function(ready) {
+        ThreeController.setupThreeRenderer(ready);
     };
 
     SceneController.prototype.setupEffectPlayers = function(onReady) {

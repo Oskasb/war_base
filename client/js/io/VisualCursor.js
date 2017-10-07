@@ -2,7 +2,7 @@
 
 define([
 	'ui/GameScreen',
-	'io/GuiFeedbackFunctions'
+	'ui/particle/functions/GuiFeedbackFunctions'
 ],
 	function(
 		GameScreen,
