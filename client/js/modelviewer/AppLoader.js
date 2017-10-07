@@ -57,9 +57,7 @@ define([
 
             evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
 
-            setTimeout(function() {
-                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {APP_LOADER:false});
-            }, 1000);
+
 
         }
 
@@ -79,9 +77,15 @@ define([
                 }, 100);
             };
 
+
+            setTimeout(function() {
+                PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {APP_LOADER:false});
+            }, 10);
+
+
             PipelineAPI.subscribeToCategoryKey(ENUMS.Category.STATUS, ENUMS.Key.APP_LOADER, apply);
 
-            addButton();
+        //    addButton();
 
             var time = 0;
 

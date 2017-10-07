@@ -14,6 +14,7 @@
       "ui/gui_elements.json",
       "ui/gui_particle_elements.json",
       "ui/gui_particle_map_elements.json",
+      "ui/gui_particle_menu_elements.json",
       "ui/gui_particle_status_elements.json",
       "ui/gui_particle_systems.json",
       "ui/main_navigation.json",

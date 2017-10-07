@@ -2,6 +2,14 @@
   "GUI_PARTICLE_SYSTEMS":{
     "SYSTEMS":[
       {
+        "id":"gui_main_menu_system",
+        "data":{
+          "elements":[
+            "gui_main_menu_element"
+          ]
+        }
+      },
+      {
         "id":"gui_system_status",
         "data":{
           "elements":[

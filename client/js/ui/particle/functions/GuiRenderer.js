@@ -97,8 +97,6 @@ define([
 
                 for (var i = 0; i < data.length; i++) {
                     guiSystems[data[i].id] = new GuiSystem(data[i], this);
-
-                //    this.activateGuiSystemId(data[i].id);
                 }
 
             }.bind(this);

@@ -1,10 +1,12 @@
 "use strict";
 
 define([
+        'ui/particle/functions/GuiButtonFunctions',
         'ui/GameScreen',
-    'PipelineAPI'
+        'PipelineAPI'
     ],
     function(
+        GuiButtonFunctions,
         GameScreen,
         PipelineAPI
     ) {
@@ -12,12 +14,27 @@ define([
         var GameAPI;
         var guiRenderer;
         var mouseState;
+
         var calcVec = new THREE.Vector3();
         var calcVec2 = new THREE.Vector3();
+
+        var cursorPosition = new THREE.Vector3();
+
+        var POINTER_STATES = {
+            DISABLED:0,
+            SEEKING:1,
+            ENABLED:2,
+            HOVER:3,
+            PRESS:4,
+            ACTIVE:5,
+            RELEASE:6
+        };
+
 
         var HudUiProcessor = function(gRenderer, gameApi) {
             GameAPI = gameApi;
             guiRenderer = gRenderer;
+            this.guiButtonFunctions = new GuiButtonFunctions(gRenderer, gameApi);
         };
 
 
@@ -132,27 +149,36 @@ define([
         };
 
 
+        HudUiProcessor.prototype.updateCursorPoint = function() {
+
+            cursorPosition.set(
+                ((mouseState.x-GameScreen.getLeft()) / GameScreen.getWidth() - 0.5),
+                -((mouseState.y-GameScreen.getTop()) / GameScreen.getHeight()) + 0.5,
+                -1
+            );
+
+            GameScreen.fitView(cursorPosition);
+
+        };
+
         HudUiProcessor.prototype.show_cursor_point = function(guiElement) {
+
+
 
             if (mouseState.action[0]) {
 
                 if (!guiElement.enabled) {
                     guiElement.enableGuiElement();
+                    return;
                 }
-
-                guiElement.origin.set(
-                    ((mouseState.x-GameScreen.getLeft()) / GameScreen.getWidth() - 0.5),
-                    -((mouseState.y-GameScreen.getTop()) / GameScreen.getHeight()) + 0.5,
-                    -1
-                );
-
-                GameScreen.fitView(guiElement.origin);
-
-                guiElement.applyElementPosition(null);
 
             } else if (guiElement.enabled) {
                 guiElement.disableGuiElement();
             }
+
+            guiElement.origin.copy(cursorPosition);
+            calcVec.set(0, 0, 0);
+            guiElement.applyElementPosition(null, calcVec);
 
         };
 
@@ -194,16 +220,27 @@ define([
         HudUiProcessor.prototype.updateTextElement = function(text, guiElement, position, offset) {
             guiElement.setText(text);
 
-            //    if (Math.random() < 0.05) {
             guiElement.applyElementPosition(null, position);
-            //    }
 
             guiElement.renderText(offset);
         };
 
+        HudUiProcessor.prototype.applyElementStateMap = function(guiElement, stateMap) {
+
+            if (stateMap[guiElement.getPointerState()].color_curve) {
+                guiElement.setColorCurveKey(stateMap[guiElement.getPointerState()].color_curve);
+            }
+
+            if (stateMap[guiElement.getPointerState()].sprite_id) {
+                guiElement.setSpriteKey(stateMap[guiElement.getPointerState()].sprite_id);
+            }
+
+        };
+
+
         HudUiProcessor.prototype.show_application_status = function(guiElement) {
 
-        //    return;
+            //    return;
 
             var offsetChildren = guiElement.options.offset_children;
 
@@ -241,8 +278,8 @@ define([
 
             if (monitor.length > guiElement.children[labelElemId].length) {
                 for (i = guiElement.children[labelElemId].length; i < monitor.length; i++) {
-            //        guiElement.spawnChildElement(labelElemId);
-            //        guiElement.spawnChildElement(valueElemId);
+                    //        guiElement.spawnChildElement(labelElemId);
+                    //        guiElement.spawnChildElement(valueElemId);
                 }
             }
 
@@ -289,7 +326,9 @@ define([
                             calcVec2.x = child.options.offset_x;
                             calcVec2.y = child.options.offset_y;
 
+
                             this.updateTextElement(''+monitor[i].value, child, calcVec, calcVec2);
+
                         }
                     }
                     monitor[i].dirty = false;
@@ -308,8 +347,198 @@ define([
         };
 
 
+
+        HudUiProcessor.prototype.determineElementPointerState = function(guiElement) {
+
+            if (guiElement.getPointerState() ===  POINTER_STATES.PRESS) {
+
+                console.log("PRessing button")
+
+            }
+
+            if (mouseState.action[0]) {
+
+                var distX = Math.abs(cursorPosition.x - guiElement.position.x);
+
+                if (distX < guiElement.options.width / 2) {
+
+                    var distY = Math.abs(cursorPosition.y - guiElement.position.y);
+
+                    if (distY < guiElement.options.height / 2) {
+
+                        if (guiElement.getPointerState() === POINTER_STATES.ENABLED || guiElement.getPointerState() === POINTER_STATES.PRESS) {
+                            guiElement.setPointerState(POINTER_STATES.PRESS);
+                        } else {
+
+                            if (guiElement.getPointerState() ===  POINTER_STATES.ACTIVE) {
+                                guiElement.setPointerState(POINTER_STATES.RELEASE);
+                            } else if (guiElement.getPointerState() !==  POINTER_STATES.RELEASE) {
+                                guiElement.setPointerState(POINTER_STATES.HOVER);
+                            }
+                        }
+
+                        return;
+                    }
+                }
+
+                if (guiElement.getPointerState() ===  POINTER_STATES.RELEASE) {
+                    guiElement.setPointerState(POINTER_STATES.ACTIVE);
+                }
+
+                if (guiElement.getPointerState() !==  POINTER_STATES.ACTIVE) {
+                    guiElement.setPointerState(POINTER_STATES.SEEKING);
+                }
+
+            } else {
+
+                if (guiElement.getPointerState() ===  POINTER_STATES.PRESS) {
+                    guiElement.setPointerState(POINTER_STATES.ACTIVE)
+                } else if (guiElement.getPointerState() !==  POINTER_STATES.ACTIVE) {
+                    guiElement.setPointerState(POINTER_STATES.ENABLED)
+                }
+
+            }
+
+        };
+
+
+        HudUiProcessor.prototype.activateMenuState = function(menuState) {
+            menuState.active = true;
+            this.guiButtonFunctions.callButtonActivate(menuState.functionKey , menuState.value)
+
+
+        };
+
+        HudUiProcessor.prototype.deactivateMenuState = function(menuState) {
+            menuState.active = false;
+            this.guiButtonFunctions.callButtonDeactivate(menuState.functionKey , menuState.value)
+        };
+
+        HudUiProcessor.prototype.show_menu_status = function(guiElement) {
+
+            //    return;
+
+            var offsetChildren = guiElement.options.offset_children;
+
+            var i;
+
+            var menuState = PipelineAPI.readCachedConfigKey('GUI_STATE', guiElement.options.gui_key);
+
+            if (!menuState.length) return;
+
+            var labelElemId = guiElement.options.label_elemet_id;
+            var valueElemId = guiElement.options.value_elemet_id;
+
+            if (!guiElement.enabled) {
+                guiElement.enableGuiElement();
+                return;
+            }
+
+            if (!guiElement.children[labelElemId]) {
+                for (i = 0; i < menuState.length; i++) {
+                    guiElement.spawnChildElement(labelElemId);
+                }
+
+                return;
+            }
+
+
+            if (menuState.length > guiElement.children[labelElemId].length) {
+                for (i = guiElement.children[labelElemId].length; i < menuState.length; i++) {
+                    //        guiElement.spawnChildElement(labelElemId);
+                }
+                return;
+            }
+
+
+
+            guiElement.origin.set(guiElement.options.screen_pos[0], guiElement.options.screen_pos[1], guiElement.options.screen_pos[2]);
+            GameScreen.fitView(guiElement.origin);
+
+            calcVec.z = 0;
+            calcVec.x = 0;
+            calcVec.y = 0;
+
+            calcVec2.x = 0;
+            calcVec2.y = 0;
+            calcVec2.z = 0;
+
+            var child;
+            var stateMap;
+            var state = 0;
+
+            calcVec.y = offsetChildren[1];
+
+            var update = false;
+
+            for (i = 0; i < guiElement.children[labelElemId].length; i++) {
+
+                if (!menuState[i]) {
+                    return;
+                }
+
+                child = guiElement.children[labelElemId][i];
+
+                child.origin.copy(guiElement.origin);
+
+                calcVec.x = offsetChildren[0];
+
+                calcVec2.x = child.options.offset_x;
+                calcVec2.y = child.options.offset_y;
+
+                stateMap = child.options.state_map;
+
+                var initState = child.getPointerState();
+
+                this.determineElementPointerState(child);
+
+                if (initState !== child.getPointerState()) {
+
+                    if (initState === POINTER_STATES.RELEASE && child.getPointerState() === POINTER_STATES.ENABLED) {
+
+                        console.log(child.getPointerState());
+
+                        if (menuState[i].active) {
+                            this.deactivateMenuState(menuState[i])
+                        }
+                    }
+
+
+                    if (child.getPointerState() === POINTER_STATES.ACTIVE) {
+                        if (!menuState[i].active) {
+                            this.activateMenuState(menuState[i])
+                        }
+                    }
+
+
+                    menuState[i].dirty = true;
+                }
+
+                if (menuState[i].active && (initState !== POINTER_STATES.ACTIVE || initState !== POINTER_STATES.RELEASE)) {
+                //    child.setPointerState(POINTER_STATES.ACTIVE);
+                //    menuState[i].dirty = true;
+                }
+
+
+                if (menuState[i].dirty || Math.random() < 0.0) {
+                    update = true;
+
+                    this.applyElementStateMap(child, stateMap);
+                    this.updateTextElement(menuState[i].key, child, calcVec, calcVec2);
+
+                    menuState[i].dirty = false;
+                }
+
+                calcVec.y -= child.options.row_y;
+            }
+
+
+        };
+
+
         HudUiProcessor.prototype.updateMouseState = function(mState) {
             mouseState = mState;
+            this.updateCursorPoint();
         };
 
         return HudUiProcessor;

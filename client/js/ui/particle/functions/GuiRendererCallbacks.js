@@ -25,8 +25,12 @@ define([
             this.guiFeedbackFunctions = new GuiFeedbackFunctions();
             this.cursorElement = null;
             this.combatStatusUiProcessor = new CombatStatusUiProcessor(gRenderer, gameApi);
+
+
+
             this.hudUiProcessor = new HudUiProcessor(gRenderer, gameApi);
-                this.hudMapProcessor = new HudMapProcessor(gRenderer, gameApi)
+            this.hudMapProcessor = new HudMapProcessor(gRenderer, gameApi);
+
         };
 
 
@@ -42,6 +46,7 @@ define([
 
         };
 
+
         GuiRendererCallbacks.prototype.showDragToPoint = function(x, y, distance, angle) {
 
         };
@@ -56,7 +61,6 @@ define([
 
         GuiRendererCallbacks.prototype.removeChildElement = function(guiElement) {
             guiRenderer.removeGuiElement(guiElement)
-
         };
 
         GuiRendererCallbacks.prototype.show_map_corners = function(guiElement) {
@@ -106,6 +110,10 @@ define([
 
         GuiRendererCallbacks.prototype.show_application_status = function(guiElement) {
             this.hudUiProcessor.show_application_status(guiElement);
+        };
+
+        GuiRendererCallbacks.prototype.show_menu_status = function(guiElement) {
+            this.hudUiProcessor.show_menu_status(guiElement);
         };
 
         GuiRendererCallbacks.prototype.show_selection_corners = function(guiElement) {

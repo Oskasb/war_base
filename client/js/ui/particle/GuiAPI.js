@@ -1,16 +1,19 @@
 "use strict";
 
 define([
-        'ui/particle/functions/GuiRenderer'
+        'ui/particle/functions/GuiRenderer',
+        'ui/particle/GuiState'
     ],
     function(
-        GuiRenderer
+        GuiRenderer,
+        GuiState
     ) {
 
         var guiRenderer;
         var GameAPI;
 
         var defaultGuySystems = [
+            "gui_main_menu_system",
             "gui_system_combat",
             "gui_system_interaction"
         ];
@@ -20,6 +23,7 @@ define([
         };
 
         GuiAPI.initGui = function(gameApi) {
+            GuiState.initGuiState();
             GameAPI = gameApi;
             guiRenderer = new GuiRenderer(GameAPI);
             GuiAPI.activateDefaultGuiSystems();

@@ -46,6 +46,7 @@ define([
             this.requestedChildren = 0;
             this.dataKey = dataKey;
 
+            this.pointerState = 0;
             this.target = null;
             this.text = '';
             this.letter = '';
@@ -71,13 +72,21 @@ define([
         };
 
         GuiElement.prototype.setText = function(text) {
-            if (this.text !== text || Math.random() < 0.1) {
+            if (this.text !== text || Math.random() < 0.01) {
                 this.generateChildrenForText(text);
             }
             this.text = text;
         };
 
 
+
+        GuiElement.prototype.setPointerState = function(state) {
+            this.pointerState = state;
+        };
+
+        GuiElement.prototype.getPointerState = function() {
+            return this.pointerState;
+        };
 
 
         GuiElement.prototype.generateChildrenForText = function(text) {
@@ -138,6 +147,10 @@ define([
                         child.letter = this.text[i];
                     }
 
+                    if (child.colorCurveKey !== this.colorCurveKey) {
+                        child.setColorCurveKey(this.colorCurveKey)
+                    }
+
                     child.applyElementPosition(null, this.textOffsetVec);
 
                     this.textOffsetVec.z = 0;
@@ -169,7 +182,7 @@ define([
         };
 
         GuiElement.prototype.setColorCurveKey = function(colorCurveKey) {
-            if (this.colorCurveKey !== colorCurveKey || Math.random() < 0.05) {
+            if (this.colorCurveKey !== colorCurveKey || Math.random() < 0.005) {
                 if (!this.fxElements.length) return;
                 this.updateRenderingColorCurveKey(colorCurveKey);
             }
@@ -194,16 +207,18 @@ define([
             return this.target;
         };
 
-
+        GuiElement.prototype.registerChildElement = function(element) {
+            if (!this.children[element.dataKey]) {
+                this.children[element.dataKey] = [];
+            }
+            element.enableGuiElement(guiRendererCallbacks);
+            this.children[element.dataKey].push(element);
+            this.requestedChildren--;
+        };
 
         GuiElement.prototype.spawnChildElement = function(fxId) {
             callback = function(element) {
-                if (!this.children[element.dataKey]) {
-                    this.children[element.dataKey] = [];
-                }
-                element.enableGuiElement(guiRendererCallbacks);
-                this.children[element.dataKey].push(element);
-                this.requestedChildren--;
+                this.registerChildElement(element);
             }.bind(this);
 
             this.requestedChildren++;
@@ -227,15 +242,29 @@ define([
             }
         };
 
+        var children;
+
         GuiElement.prototype.removeChildren = function() {
-            for (key in this.children) {
-                while (this.children[key].length) {
-                    this.despawnChildElement(this.children[key].pop());
+
+            for (var key in this.children) {
+
+                children = this.children[key];
+
+                if (typeof(this.children[key]) === 'undefined') {
+
+                    console.log("Children undefined", this);
+
                 }
+
+                    while (this.children[key].length) {
+                        this.despawnChildElement(this.children[key].pop());
+                    }
+
             }
         };
 
         GuiElement.prototype.disableGuiElement = function() {
+            this.setText('');
             this.enabled = false;
             this.spriteKey = null;
             this.colorCurveKey = null;
