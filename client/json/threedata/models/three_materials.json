@@ -6,12 +6,12 @@
         {
           "id":"tank_atlas",
           "shader":"MeshStandardMaterial",
-          "color":{"r":1, "g":1, "b":1},
+          "color":{"r":0.9, "g":0.9, "b":0.9},
           "settings":{
             "blending":"NoBlending",
             "roughness":1,
-            "metalness":1.0,
-            "envMapIntensity":1.0,
+            "metalness":0.8,
+            "envMapIntensity":0.6,
             "aoMapIntensity":1.1
           },
           "textures":[{
@@ -49,17 +49,16 @@
 
           "id":"main_atlas",
           "shader":"MeshStandardMaterial",
+          "color":{"r":0.7, "g":0.7, "b":0.7},
           "settings":{
             "blending":"NoBlending",
             "side":"DoubleSide",
-            "emissive":{"r":0, "g":1.0, "b":1.0},
-            "color":{"r":0, "g":1.0, "b":1.0},
             "alphaTest": 0.8,
             "roughness":1.0,
-            "metalness":1.0,
-            "envMapIntensity":1.2,
-            "emissiveIntensity":1,
-            "lightMapIntensity":2,
+            "metalness":0.8,
+            "envMapIntensity":0.9,
+            "emissiveIntensity":0,
+            "lightMapIntensity":1,
             "refractionRatio":0.1,
             "aoMapIntensity":1.0
           },
@@ -74,9 +73,9 @@
         },{
           "id":"tank_track",
           "shader":"MeshPhongMaterial",
+          "color":{"r":0.7, "g":0.7, "b":0.7},
           "settings":{
-            "blending":"NoBlending",
-            "color":{"r":1.0, "g":1.0, "b":1.0}
+            "blending":"NoBlending"
           },
           "textures":[{
             "map":"./client/assets/images/textures/track.png"

@@ -33,22 +33,29 @@ define([
 
         var waterMaterial;
 
-        var WaterFX = function() {
+        var WaterFX = function(waterReady) {
             waterMaterial = new WaterMaterial(ThreeAPI);
 
             
-            this.loadData();
+            this.loadData(waterReady);
         };
 
 
-        WaterFX.prototype.loadData = function() {
+        WaterFX.prototype.loadData = function(waterReady) {
+
+            var materialReady = function() {
+
+                waterReady();
+
+            }
 
 
             var oceansLoaded = function(scr, data) {
                 for (var i = 0; i < data.length; i++){
                     waterList[data[i].id] = data[i];
-                    waterMaterial.addWaterMaterial(data[i].id, data[i].textures, data[i].shader);
+                    waterMaterial.addWaterMaterial(data[i].id, data[i].textures, data[i].shader, materialReady);
                 }
+
             };
             new PipelineObject("OCEANS", "THREE", oceansLoaded);
         };

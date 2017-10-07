@@ -149,7 +149,7 @@ define([],
             terrain.edges = edges;
 
             elevateTerrainVerts(terrain.children[0].geometry.vertices, 1);
-        //    THREE.Terrain.Edges(terrain.children[0].geometry.vertices, opts, false, edges.edgeSize, edges.easingFunc);
+            THREE.Terrain.Edges(terrain.children[0].geometry.vertices, opts, false, edges.edgeSize, edges.easingFunc);
         //    this.setEdgeVerticeHeight(terrain.children[0].geometry.vertices, -0.5);
 
             return terrain;

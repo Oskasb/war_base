@@ -102,7 +102,7 @@ define([
             gameCommander.removeLevel(level)
         };
 
-        GameAPI.createControl = function(id, onRes) {3
+        GameAPI.createControl = function(id, onRes) {
             gameCommander.createGuiControl(id, onRes)
         };
 

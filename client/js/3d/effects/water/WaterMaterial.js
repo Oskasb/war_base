@@ -55,16 +55,23 @@ define([
 
         };
 
-        WaterMaterial.prototype.addWaterMaterial = function(id, textures, shader) {
+        WaterMaterial.prototype.addWaterMaterial = function(id, textures, shader, materialReady) {
 
             uniforms[id] = {};
 
-
-            loadShader(id, shader);
             this.setupMaterial(id);
 
-            updateUniforms(id, THREE.UniformsLib['common']);
-            updateUniforms(id, THREE.UniformsLib['fog']);
+            var shaderLoaded = function() {
+
+                updateUniforms(id, THREE.UniformsLib['common']);
+                updateUniforms(id, THREE.UniformsLib['fog']);
+                updateUniforms(id, global_uniforms);
+                this.attachTextures(id, textures);
+                materialReady()
+            }.bind(this);
+
+
+            loadShader(id, shader, shaderLoaded);
 
 
 
@@ -75,9 +82,9 @@ define([
                 sunLightDirection: { value: {x:0.7, y:-0.3, z:0.7}}
             };
 
-            updateUniforms(id, global_uniforms);
 
-            this.attachTextures(id, textures);
+
+
 
         };
 
@@ -95,12 +102,13 @@ define([
             });
         };
 
-        var loadShader = function(id, shader) {
+        var loadShader = function(id, shader, shaderLoaded) {
 
             var applyShaders = function(src, data) {
                 materialList[id].vertexShader = data.vertex;
                 materialList[id].fragmentShader = data.fragment;
                 materialList[id].needsUpdate = true;
+                shaderLoaded()
             };
 
             new PipelineObject("SHADERS", shader, applyShaders);
