@@ -32,6 +32,7 @@ define([
                 action:[0, 0],
                 lastAction:[0, 0],
                 interactionTargets:[],
+                pressFrames:0,
                 pressingButton:false
             };
             this.elementListeners = new ElementListeners(this.mouseState);

@@ -18,6 +18,19 @@ if(typeof(ENUMS) === "undefined"){
         PLAYER_REQUESTED:'PLAYER_REQUESTED'
     };
 
+    ENUMS.PointerStates = {
+        DISABLED:0,
+        ENABLED:1,
+        HOVER:2,
+        PRESS_INIT:3,
+        PRESS:4,
+        PRESS_EXIT:5,
+        ACTIVATE:6,
+        ACTIVE:7,
+        ACTIVE_HOVER:8,
+        ACTIVE_PRESS:9,
+        DEACTIVATE:10
+    };
 
     ENUMS.PieceAlignments = {
         NEUTRAL:        0,

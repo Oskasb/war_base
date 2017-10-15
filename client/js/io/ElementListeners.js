@@ -115,6 +115,13 @@ define([
 
 
 		ElementListeners.prototype.sampleMouseState = function(mouseStore) {
+
+			if (mouseStore.action[0]) {
+				mouseStore.pressFrames++;
+			} else {
+                mouseStore.pressFrames = 0;
+			}
+
 			mouseStore.action[0] = 0;
             mouseStore.action[1] = 0;
 			this.actionListener.sampleAction(mouseStore);

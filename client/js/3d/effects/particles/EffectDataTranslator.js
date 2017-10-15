@@ -7,7 +7,8 @@ define([
     ) {
 
         var dataCurves = {
-
+            flatCyan    :63,
+            brightCyan  :62,
             threatSixe  :61,
             threatFive  :60,
             threatFour  :59,

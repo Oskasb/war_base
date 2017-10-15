@@ -2,11 +2,13 @@
 
 define([
         'ui/particle/functions/GuiButtonFunctions',
+        'ui/particle/processors/HudPointerProcessor',
         'ui/GameScreen',
         'PipelineAPI'
     ],
     function(
         GuiButtonFunctions,
+        HudPointerProcessor,
         GameScreen,
         PipelineAPI
     ) {
@@ -20,21 +22,14 @@ define([
 
         var cursorPosition = new THREE.Vector3();
 
-        var POINTER_STATES = {
-            DISABLED:0,
-            SEEKING:1,
-            ENABLED:2,
-            HOVER:3,
-            PRESS:4,
-            ACTIVE:5,
-            RELEASE:6
-        };
-
+        var POINTER_STATES;
 
         var HudUiProcessor = function(gRenderer, gameApi) {
             GameAPI = gameApi;
             guiRenderer = gRenderer;
             this.guiButtonFunctions = new GuiButtonFunctions(gRenderer, gameApi);
+            this.hudPointerProcessor = new HudPointerProcessor();
+            POINTER_STATES = ENUMS.PointerStates;
         };
 
 
@@ -347,61 +342,6 @@ define([
         };
 
 
-
-        HudUiProcessor.prototype.determineElementPointerState = function(guiElement) {
-
-            if (guiElement.getPointerState() ===  POINTER_STATES.PRESS) {
-
-                console.log("PRessing button")
-
-            }
-
-            if (mouseState.action[0]) {
-
-                var distX = Math.abs(cursorPosition.x - guiElement.position.x);
-
-                if (distX < guiElement.options.width / 2) {
-
-                    var distY = Math.abs(cursorPosition.y - guiElement.position.y);
-
-                    if (distY < guiElement.options.height / 2) {
-
-                        if (guiElement.getPointerState() === POINTER_STATES.ENABLED || guiElement.getPointerState() === POINTER_STATES.PRESS) {
-                            guiElement.setPointerState(POINTER_STATES.PRESS);
-                        } else {
-
-                            if (guiElement.getPointerState() ===  POINTER_STATES.ACTIVE) {
-                                guiElement.setPointerState(POINTER_STATES.RELEASE);
-                            } else if (guiElement.getPointerState() !==  POINTER_STATES.RELEASE) {
-                                guiElement.setPointerState(POINTER_STATES.HOVER);
-                            }
-                        }
-
-                        return;
-                    }
-                }
-
-                if (guiElement.getPointerState() ===  POINTER_STATES.RELEASE) {
-                    guiElement.setPointerState(POINTER_STATES.ACTIVE);
-                }
-
-                if (guiElement.getPointerState() !==  POINTER_STATES.ACTIVE) {
-                    guiElement.setPointerState(POINTER_STATES.SEEKING);
-                }
-
-            } else {
-
-                if (guiElement.getPointerState() ===  POINTER_STATES.PRESS) {
-                    guiElement.setPointerState(POINTER_STATES.ACTIVE)
-                } else if (guiElement.getPointerState() !==  POINTER_STATES.ACTIVE) {
-                    guiElement.setPointerState(POINTER_STATES.ENABLED)
-                }
-
-            }
-
-        };
-
-
         HudUiProcessor.prototype.activateMenuState = function(menuState) {
             menuState.active = true;
             this.guiButtonFunctions.callButtonActivate(menuState.functionKey , menuState.value)
@@ -488,13 +428,15 @@ define([
 
                 stateMap = child.options.state_map;
 
-                var initState = child.getPointerState();
 
-                this.determineElementPointerState(child);
 
-                if (initState !== child.getPointerState()) {
+                var stateChanged = this.hudPointerProcessor.updateElementPointerState(child, mouseState, cursorPosition);
 
-                    if (initState === POINTER_STATES.RELEASE && child.getPointerState() === POINTER_STATES.ENABLED) {
+                if (stateChanged) {
+
+                    var elementState = child.getPointerState();
+
+                    if (elementState === POINTER_STATES.DEACTIVATE) {
 
                         console.log(child.getPointerState());
 
@@ -504,7 +446,7 @@ define([
                     }
 
 
-                    if (child.getPointerState() === POINTER_STATES.ACTIVE) {
+                    if (elementState === POINTER_STATES.ACTIVATE) {
                         if (!menuState[i].active) {
                             this.activateMenuState(menuState[i])
                         }
@@ -512,11 +454,6 @@ define([
 
 
                     menuState[i].dirty = true;
-                }
-
-                if (menuState[i].active && (initState !== POINTER_STATES.ACTIVE || initState !== POINTER_STATES.RELEASE)) {
-                //    child.setPointerState(POINTER_STATES.ACTIVE);
-                //    menuState[i].dirty = true;
                 }
 
 
