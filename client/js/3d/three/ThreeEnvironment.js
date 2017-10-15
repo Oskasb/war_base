@@ -170,11 +170,16 @@ define(['../../PipelineObject',
 
     
 
+    var sunRedness;
+    var sunFactor;
     var updateDynamigFog = function(sunInTheBack) {
 
         dynamicFogColor.copy(fogColor);
-        dynamicFogColor.lerp(world.sun.color, 0.2 - sunInTheBack * 0.2);
-        dynamicFogColor.lerp(ambientColor, 0.3 - sunInTheBack * 0.3);
+
+        sunRedness = world.sun.color.r * 0.5;
+        sunFactor = (sunRedness - sunInTheBack * (1 - sunRedness)) * 0.15;
+        dynamicFogColor.lerp(world.sun.color,   sunFactor);
+        dynamicFogColor.lerp(ambientColor,      sunFactor);
         world.fog.color.copy(dynamicFogColor)
 
     };

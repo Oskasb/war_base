@@ -48,9 +48,9 @@ define([
                 return;
             }
 
-            corner = -0.18;
+            corner = -0.25;
 
-            size = 0.47;
+            size = 0.37;
 
             guiElement.origin.set(corner, corner, -1); // (activeSelection.piece.frustumCoords);
             GameScreen.fitView(guiElement.origin);
@@ -188,7 +188,6 @@ define([
 
         HudMapProcessor.prototype.process_local_map = function(guiElement) {
 
-            return;
 
             var controlledActor = GameAPI.getControlledActor();
             if (controlledActor) {

@@ -8,7 +8,7 @@
           "effect_ids":[],
           "options":{
             "gui_key":"MAIN_MENU",
-            "screen_pos":[-0.39, 0.43, -1],
+            "screen_pos":[-0.43, 0.46, -1],
             "offset_children":[0.004, -0.004, 0.03, -0.002],
             "label_elemet_id":"gui_menu_label_container_element"
           },
@@ -31,7 +31,7 @@
             "text_element_id":"gui_menu_text_element",
             "offset_x": -0.030 ,
             "offset_y": -0.010,
-            "row_y":0.045,
+            "row_y":0.048,
             "height":0.042,
             "width":0.15,
             "pad_x":-0.012,

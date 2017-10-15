@@ -265,6 +265,9 @@ define([
 
         GuiElement.prototype.disableGuiElement = function() {
             this.setText('');
+            calcVec.set(0, 0, 0);
+            this.renderText(calcVec);
+
             this.enabled = false;
             this.spriteKey = null;
             this.colorCurveKey = null;
