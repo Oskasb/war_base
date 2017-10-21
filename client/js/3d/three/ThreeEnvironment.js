@@ -246,9 +246,9 @@ define(['../../PipelineObject',
 
     var tickEnvironment = function(e) {
 
-        var fraction = calcTransitionProgress(evt.args(e).tpf) * 0.02;
+        var fraction = calcTransitionProgress(evt.args(e).tpf) * 0.05;
 
-        if (fraction > 1.1) {
+        if (fraction > 1.01) {
             return;
         }
 

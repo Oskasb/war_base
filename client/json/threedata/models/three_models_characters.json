@@ -1,0 +1,21 @@
+
+[
+  {
+    "MODELS": {
+      "THREE": [
+        {
+          "id": "character_barbarian",
+          "material": "barbarian_atlas",
+          "format":"fbx",
+          "url": "./client/assets/models/characters/barbarian/barb_animated",
+          "pool": 2,
+          "transform": {
+            "pos": [0, -0.7, -0.3],
+            "rot": [0, 0, 0],
+            "scale": [1, 1, 1]
+          }
+        }
+      ]
+    }
+  }
+]

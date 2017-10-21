@@ -32,9 +32,17 @@ define([
 
 
         var modelViewer;
+        var playerActor;
+        var activeLevel;
+        var selector;
+        var active;
+        var cursor;
+
 
         var AppLoader = function(viewerClient) {
+
             modelViewer = viewerClient;
+
             this.running = false;
             this.panel = null;
             this.currentValue = 0;
@@ -141,12 +149,6 @@ define([
         };
 
 
-        var playerActor;
-        var activeLevel;
-
-        var selector;
-        var active;
-        var cursor;
 
         AppLoader.prototype.toggleApp = function(src, value) {
 

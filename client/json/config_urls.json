@@ -34,7 +34,6 @@
 
       "game/controls/gui_control_data.json",
 
-
       "game/pieces/control_piece_data.json",
       "game/pieces/enemy_piece_data.json",
       "game/pieces/nature_piece_data.json",
@@ -75,6 +74,7 @@
 
       "threedata/models/three_materials.json",
       "threedata/models/three_models.json",
+      "threedata/models/three_models_characters.json",
       "threedata/models/three_physics_models.json",
       "threedata/models/three_prop_models.json",
       "threedata/models/three_nature_models.json",

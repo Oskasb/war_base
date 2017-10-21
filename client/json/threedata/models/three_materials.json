@@ -4,6 +4,18 @@
 
       "THREE":[
         {
+          "id":"barbarian_atlas",
+          "shader":"MeshPhongMaterial",
+          "color":{"r":1, "g":1, "b":1},
+          "settings":{
+            "blending":"NoBlending",
+            "skinning":true
+          },
+          "textures":[{
+            "map":"./client/assets/images/textures/barbarian_atlas.png"
+          }]
+        },
+        {
           "id":"tank_atlas",
           "shader":"MeshStandardMaterial",
           "color":{"r":1, "g":1, "b":1},
@@ -22,7 +34,8 @@
             "envMap":"./client/assets/images/textures/ref_sphere.png",
             "aoMap":"./client/assets/images/textures/tank_lm.png"
           }]
-        },{
+        },
+        {
           "id":"modern_transport_atlas",
           "shader":"MeshStandardMaterial",
           "settings":{
