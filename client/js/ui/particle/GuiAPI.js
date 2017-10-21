@@ -22,7 +22,7 @@ define([
 
         };
 
-        GuiAPI.initGui = function(gameApi) {
+        GuiAPI.initGuiApi = function(gameApi) {
             GuiState.initGuiState();
             GameAPI = gameApi;
             guiRenderer = new GuiRenderer(GameAPI);

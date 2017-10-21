@@ -51,11 +51,15 @@ define([
 
         };
 
-        GameAPI.initGame = function() {
+        GameAPI.initGameSystems = function() {
             console.log(" -- > INIT GAME < -- ");
-            GuiAPI.initGui(GameAPI);
             levelBuilder = new LevelBuilder(GameAPI);
             gameCommander = new GameCommander(GameAPI, gameWorker, levelBuilder);
+        };
+
+        GameAPI.initGameGui = function() {
+            console.log(" -- > INIT GUI < -- ");
+            GuiAPI.initGuiApi(GameAPI);
         };
 
         GameAPI.getPieceById = function(id) {

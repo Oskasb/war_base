@@ -19,9 +19,7 @@ define([
         };
 
         GuiSetup.prototype.initMainGui = function() {
-            var parent = document.body;
-            panels[ENUMS.Gui.rightPanel] = new DomPanel(parent, 'right_panel', true);
-            panels[ENUMS.Gui.leftPanel] = new DomPanel(parent, 'left_panel', true);
+
             this.registerGuiListener()
         };
 
@@ -29,7 +27,7 @@ define([
         GuiSetup.prototype.registerGuiListener = function() {
             var _this = this;
             var addElement = function(e) {
-                _this.addElement(evt.args(e).data.panel, evt.args(e).data)
+        //        _this.addElement(evt.args(e).data.panel, evt.args(e).data)
             };
         //    PipelineAPI.subscribeToCategoryKey(ENUMS.Category.GUI_ELEMENT, ENUMS.Key.ADD, addElement);
 

@@ -30,36 +30,6 @@ define([
         ModuleStateViewer
     ) {
 
-        var panels = {};
-        var panelStates = {};
-        var loadedModules = {};
-        var rootModels = {};
-        var stateData;
-
-        function addButton() {
-            var buttonEvent = {category:ENUMS.Category.STATUS, key:ENUMS.Key.APP_LOADER, type:ENUMS.Type.toggle};
-
-            var buttonConf = {
-                panel:ENUMS.Gui.leftPanel,
-                id:"apploaderbutton",
-                container:"editor_button_container",
-                data:{
-                    style:["panel_button", "coloring_button_main_panel"],
-                    button:{
-                        id:"panel_button",
-                        event:buttonEvent
-                    },
-                    text:'PLAY'
-                }
-            };
-
-        //    PipelineAPI.setCategoryData(ENUMS.Category.STATUS, {APP_LOADER:true});
-
-            evt.fire(evt.list().ADD_GUI_ELEMENT, {data:buttonConf});
-
-
-
-        }
 
         var modelViewer;
 
@@ -145,7 +115,7 @@ define([
                         active = ctrl;
                         GameAPI.createActor({dataKey:"actor_sherman_tank"}, playerAdded);
 
-                        modelViewer.guiSetup.removeMainGui()
+                    //    modelViewer.guiSetup.removeMainGui()
 
                     };
 

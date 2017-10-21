@@ -23,10 +23,14 @@ define([
         var client;
         var loadProgress;
 
+        var setupReady = function() {
+            GameAPI.initGameGui();
+        };
+
         var systemReady = function() {
 
-            GameAPI.initGame();
-            client.clientReady();
+            GameAPI.initGameSystems();
+            client.clientReady(setupReady);
         };
 
         GameAPI.setupGameWorker(systemReady);

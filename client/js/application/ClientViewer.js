@@ -10,7 +10,6 @@ define([
 		'io/Connection',
 		'application/TimeTracker',
 		'modelviewer/ViewerMain',
-        'ui/GuiSetup',
 		'ui/UiMessenger',
 		'PipelineAPI'
     ],
@@ -24,7 +23,6 @@ define([
         Connection,
         TimeTracker,
         ViewerMain,
-        GuiSetup,
         UiMessenger,
         PipelineAPI
     ) {
@@ -51,7 +49,7 @@ define([
 
 			this.gameMain = this.viewerMain;
 
-			this.guiSetup = new GuiSetup();
+		//	this.guiSetup = new GuiSetup();
             new UiMessenger();
             this.connection = new Connection();
 
@@ -115,7 +113,7 @@ define([
 
 
         ClientViewer.prototype.initiateClientGui = function() {
-            this.guiSetup.initMainGui();
+        //    this.guiSetup.initMainGui();
 		};
 
         var aggDiff = 0;
@@ -163,7 +161,7 @@ define([
 
         };
 
-        ClientViewer.prototype.clientReady = function() {
+        ClientViewer.prototype.clientReady = function(setupReady) {
 
             var clientTick = function(tpf) {
                 this.tick(tpf)
@@ -176,6 +174,7 @@ define([
             var fxReady = function() {
                 ThreeAPI.getSetup().addPrerenderCallback(clientTick);
                 ThreeAPI.getSetup().addPostrenderCallback(postrenderTick);
+                setupReady()
             };
 
             this.sceneController.setupEffectPlayers(fxReady);

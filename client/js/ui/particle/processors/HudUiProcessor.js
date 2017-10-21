@@ -457,7 +457,7 @@ define([
                 }
 
 
-                if (menuState[i].dirty || Math.random() < 0.0) {
+                if (menuState[i].dirty || Math.random() < 0.1) {
                     update = true;
 
                     this.applyElementStateMap(child, stateMap);

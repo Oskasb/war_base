@@ -10,29 +10,15 @@
       "messages/ui_messages.json",
 
 
-      "ui/buttons.json",
       "ui/gui_elements.json",
       "ui/gui_particle_elements.json",
       "ui/gui_particle_map_elements.json",
       "ui/gui_particle_menu_elements.json",
       "ui/gui_particle_status_elements.json",
       "ui/gui_particle_systems.json",
-      "ui/main_navigation.json",
-      "ui/popups.json",
-      "ui/type_style_map.json",
 
-      "styles/ui_monitor.json",
-      "styles/element_types.json",
-      "styles/ui_main.json",
-      "styles/ui_popups.json",
+
       "styles/messaging.json",
-      "styles/world_objects.json",
-      "styles/ui_hud.json",
-      "styles/ships.json",
-      "styles/effects.json",
-
-      "modules/canvas_systems.json",
-      "modules/canvas3d_elements.json",
 
       "game/levels/level_data.json",
       "game/levels/level_population_data.json",
