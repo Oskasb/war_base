@@ -17,6 +17,8 @@ define([
 
         var activeModels = {};
 
+        var activeMixers = [];
+
         var contentUrl = function(url) {
             return 'content'+url.slice(1);
         };
@@ -24,6 +26,28 @@ define([
         var saveJsonUrl = function(json, url) {
             var shiftUrl = url.slice(1);
             PipelineAPI.saveJsonFileOnServer(json, shiftUrl)
+        };
+
+
+        var getGroupSkinnedMesh = function(children) {
+
+            for (var j = 0; j < children.length; j++) {
+                console.log("Types:", children[j].type);
+
+                if (children[j].type === 'Group') {
+                    console.log("Use the SkinnedMesh", children[j]);
+                    return getGroupSkinnedMesh(children[j]);
+                }
+
+                if (children[j].type === 'SkinnedMesh') {
+                    console.log("Use the SkinnedMesh", children[j]);
+                    return children[j];
+                }
+
+                if (children[j].children.length) {
+                    return getGroupSkinnedMesh(children[j].children);
+                }
+            }
         };
 
         var poolMesh = function(id, mesh, count) {
@@ -34,19 +58,67 @@ define([
             }
 
             for (var i = 0; i < poolCount; i++) {
-                var clone = mesh.clone();
-                clone.userData.poolId = id;
 
-                if (typeof(clone) === 'Group') {
-                    if (clone.animations.length) {
 
-                    }
 
+                if (mesh.type === 'Group') {
+
+                //    var skinMesh = getGroupSkinnedMesh(mesh.children);
+
+                    var clone = mesh;
                     clone.mixer = new THREE.AnimationMixer( clone );
-                    var action = clone.mixer.clipAction( clone.animations[ 0 ] );
-                    action.play();
+                    clone.animations = mesh.animations;
+                    /*
+                    var clone = mesh.clone();
+
+                                    if (mesh.animations.length) {
+
+                                        console.log("mesh Has Animations:", mesh);
+
+                                                             clone.animations = mesh.animations;
+
+                                                             var bones = [];
+
+                                                             for (var j = 0; j < mesh.skeleton.bones.length; j++) {
+                                                                 bones[j] = mesh.skeleton.bones[j].clone();
+                                                             }
+
+                                                             clone.skeleton = new THREE.Skeleton(bones);
+
+                                                             var clonedSkinMesh = clone.children[1];
+
+                                                             clonedSkinMesh.bind(clone.skeleton);
+
+
+                                                             var geometryFromGlobal = globalAssets.getGeometry(this.characterType)
+                                                             var clonedGeometry = geometryFromGlobal.clone()
+                                                             var bones = JSON.parse(JSON.stringify(geometryFromGlobal.bones))
+                                                             var skinWeights = JSON.parse(JSON.stringify(geometryFromGlobal.skinWeights))
+                                                             var skinIndices = JSON.parse(JSON.stringify(geometryFromGlobal.skinIndices))
+                                                             skinWeights = skinWeights.map(x => { return new THREE.Vector4().copy(x) })
+                                                             skinIndices = skinIndices.map(x => { return new THREE.Vector4().copy(x) })
+                                                             Object.assign(clonedGeometry, {bones, skinWeights, skinIndices })
+
+                                                         //    var clonedMesh = new THREE.SkinnedMesh(clonedGeometry, globalAssets.getMaterial(this.characterType).clone())
+
+
+
+
+
+                                    }
+
+                                    if (clone.animations.length) {
+                                        console.log("clone Has Animations:", clone)
+                                    }
+            */
+
+
+
+                } else {
+                    var clone = mesh.clone();
                 }
 
+                clone.userData.poolId = id;
                 clone.frustumCulled = false;
                 modelPool[id].push(clone);
             }
@@ -86,23 +158,15 @@ define([
 
         var loadCollada = function(modelId, pool) {
 
-            var dae;
-
             var loader = new THREE.ColladaLoader();
-            loader.options.convertUpAxis = true;
+        //    loader.options.convertUpAxis = true;
             loader.load( modelList[modelId].url+'.DAE', function ( collada ) {
-                dae = collada.scene;
+                var model = collada.scene;
 
-                dae.traverse( function ( child ) {
+                console.log("DAE LOADED: ",model);
 
-                    if ( child instanceof THREE.Mesh ) {
-                        child.parent.remove(child);
-                        console.log(child)
-                        child.rotation.x = Math.PI;
-                        child.needsUpdate = true;
-                        cacheMesh(modelId, child, pool);
-                    }
-                } );
+                cacheMesh(modelId, model, pool);
+                console.log("Model Pool:", modelPool);
             });
         };
 
@@ -275,28 +339,75 @@ define([
 
         var attachAsynchModel = function(modelId, rootObject) {
 
-
             var attachModel = function(model) {
 
-                    transformModel(modelList[modelId].transform, model);
+                transformModel(modelList[modelId].transform, model);
+
+                if (model.mixer) {
+                    var action = model.mixer.clipAction( model.animations[ 0 ] );
+                    action.play();
+
+                    if (activeMixers.indexOf(model.mixer) === -1) {
+                        activeMixers.push(model.mixer);
+                    } else {
+                        console.log("Mixer already active... clean up needed!", model);
+                    }
+
+                    console.log("Play Action", action);
+                }
+
+                var attachMaterial = function(src, data) {
+                    model.material = data;
+                    rootObject.add(model);
+                };
+
+                var skinMaterial = function(src, data) {
+                    model.material = data;
+                    model.material.skinning = true;
+                    model.material.needsUpdate = true;
+                    rootObject.add(model);
+                };
+
+                if (model.type === 'SkinnedMesh') {
+                    console.log("Attach Skin Material", model);
+                    new PipelineObject('THREE_MATERIAL', modelList[modelId].material, skinMaterial, modelList[modelId].material);
+                    return;
+                }
+
+                    if (model.type === 'Group') {
+
+                        console.log("Attach Group or Scene model", model);
+
+                        var groupMaterial = function(src, mat) {
+
+                            for (var i = 0; i < model.children.length; i++) {
+                                var child = model.children[i];
+                                if (child.type === 'SkinnedMesh') {
+                                    child.material = mat.clone();
+                                    child.material.skinning = true;
+                                    child.material.needsUpdate = true;
+                                }
+                            }
+                        };
+
+                        new PipelineObject('THREE_MATERIAL', modelList[modelId].material, groupMaterial, modelList[modelId].material);
+
+                        rootObject.add(model);
+                        return;
+                    }
 
                     if (model.material) {
+
                         if (model.material.userData.animMat) {
                             rootObject.add(model);
                             return;
                         }
 
-                        var attachMaterial = function(src, data) {
-                            model.material = data;
-                            rootObject.add(model);
-                        };
                     //    attachMaterial(null, PipelineAPI.readCachedConfigKey('THREE_MATERIAL', modelList[modelId].material))
-
 
                         new PipelineObject('THREE_MATERIAL', modelList[modelId].material, attachMaterial, modelList[modelId].material);
 
                     } else {
-
 
                     //    var root = new THREE.Object3D();
                     //    root.add(model)
@@ -305,7 +416,6 @@ define([
                         for (var i = 0; i < model.children.length; i++) {
                             setup.addToScene(model.children[i])
                         }
-
 
                         rootObject.add(model);
                     }
@@ -535,6 +645,14 @@ define([
                 pool += modelPool[key].length;
             }
             return pool;
+        };
+
+        ThreeModelLoader.updateActiveMixers = function(tpf) {
+
+            for (var i = 0; i < activeMixers.length; i++) {
+                activeMixers[i].update(tpf);
+            }
+
         };
 
         return ThreeModelLoader;

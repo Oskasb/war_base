@@ -4,7 +4,7 @@
 
       "THREE":[
         {
-          "id":"barbarian_atlas",
+          "id":"atlas_2k",
           "shader":"MeshPhongMaterial",
           "color":{"r":1, "g":1, "b":1},
           "settings":{
@@ -12,7 +12,7 @@
             "skinning":true
           },
           "textures":[{
-            "map":"./client/assets/images/textures/barbarian_atlas.png"
+            "map":"./client/assets/images/textures/atlas_2k_diff.png"
           }]
         },
         {

@@ -57,6 +57,7 @@ define([
             camera = store.camera;
             renderer = store.renderer;
             shaderBuilder.loadShaderData(glContext);
+            ThreeSetup.addPrerenderCallback(ThreeModelLoader.updateActiveMixers);
         };
 
         ThreeAPI.getTimeElapsed = function() {
