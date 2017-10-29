@@ -8,6 +8,7 @@ define([
         '3d/three/ThreeMaterialMaker',
         '3d/three/ThreeFeedbackFunctions',
         '3d/three/ThreeEnvironment',
+        '3d/three/ThreeRenderFilter',
         '3d/three/ThreeSpatialFunctions'
 
 ],
@@ -19,6 +20,7 @@ define([
         ThreeMaterialMaker,
         ThreeFeedbackFunctions,
         ThreeEnvironment,
+        ThreeRenderFilter,
         ThreeSpatialFunctions
         
     ) {
@@ -33,6 +35,8 @@ define([
 
         var effectCallbacks;
 
+        var renderFilter;
+
         var ThreeAPI = function() {
 
         };
@@ -40,12 +44,12 @@ define([
         ThreeAPI.initThreeLoaders = function(TAPI) {
             shaderBuilder = new ThreeShaderBuilder();
             spatialFunctions = new ThreeSpatialFunctions();
+            renderFilter = new ThreeRenderFilter();
             ThreeModelLoader.loadData();
             ThreeModelLoader.loadTerrainData(TAPI);
             ThreeTextureMaker.loadTextures();
             ThreeMaterialMaker.loadMaterialist();
             ThreeEnvironment.loadEnvironmentData();
-            
         };
 
         ThreeAPI.initThreeScene = function(containerElement, pxRatio, antialias) {
@@ -219,7 +223,6 @@ define([
         ThreeAPI.attachInstancedModel = function(modelId, rootObject) {
             return ThreeModelLoader.attachInstancedModelTo3DObject(modelId, rootObject, ThreeSetup);
         };
-
 
 
 

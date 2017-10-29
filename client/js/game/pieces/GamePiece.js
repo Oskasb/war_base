@@ -150,7 +150,22 @@ define([
 
         GamePiece.prototype.setSlotAttachment = function(parentSlotId, apId, childSlotId) {
             var ap = this.getSlotById(parentSlotId).getAttachmentPointById(apId);
-            ap.setAttachedModule(this.getSlotById(childSlotId).module);
+
+            var slot = this.getSlotById(childSlotId);
+
+            if (!slot) {
+                console.log("No slot at", this.dataKey, [parentSlotId, apId, childSlotId, ap, this]);
+                return;
+            }
+
+            var module = slot.module;
+
+            if (!module) {
+                console.log("No module at", slot, parentSlotId, apId, childSlotId, this);
+                return;
+            }
+
+            ap.setAttachedModule(module);
             this.getSlotById(childSlotId).attachToObject3d(ap.object3D);
         };
 
@@ -403,63 +418,30 @@ define([
         };
 
         var activationState;
-        var dirtyState;
 
-        GamePiece.prototype.checkNeedsUpdate = function (actor) {
+        GamePiece.prototype.updateGamePiece = function(tpf) {
 
-            if (actor.physicalPiece.getPhysicsPieceMass() === 0) {
-                this.isStatic = true;
-                this.isDynamic = false;
-            } else {
-                this.isDynamic = true;
-                this.isStatic = false;
+            this.determineVisibility();
+
+            this.updatePieceStates(tpf);
+            this.updatePieceSlots(tpf);
+
+            if (this.render) {
+                this.updatePieceVisuals(tpf);
             }
 
         };
 
-        GamePiece.prototype.updateGamePiece = function(tpf) {
+        GamePiece.prototype.updateStaticGamePiece = function(tpf) {
 
-
-
-            activationState = this.getPieceActivationState();
-
-            if (!activationState) {
-
-            }
-
-            if (this.isStatic || this.isDynamic) {
+            this.determineVisibility();
 
                 if (this.flipRender) {
-
                     this.updatePieceStates(tpf);
                     this.updatePieceSlots(tpf);
                     this.updatePieceVisuals(tpf);
-
                     this.flipRender = false;
-
-                } else {
-
-                    dirtyState = this.testDirtyStates();
-                    if (dirtyState) {
-
-                        if (this.isStatic && this.updatedOnce) {
-                            //    return;
-                        }
-
-                        this.updatedOnce = true;
-
-                        this.updatePieceStates(tpf);
-                        this.updatePieceSlots(tpf);
-                        this.updatePieceVisuals(tpf);
-
-                    }
                 }
-
-            } else {
-                this.updatePieceStates(tpf);
-                this.updatePieceSlots(tpf);
-            }
-
         };
 
         GamePiece.prototype.removeGamePiece = function () {

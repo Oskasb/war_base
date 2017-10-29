@@ -23,6 +23,7 @@ define([
         var configPublisher = ConfigPublisher;
 
         var pieces = [];
+        var staticPieces = [];
         var controls = [];
         var actors = [];
         var levels = [];
@@ -74,7 +75,7 @@ define([
         GameAPI.countCombatPieces = function() {
             var count = 0;
 
-            for (var i = 0; i < pieces.length; i++) {
+            for (i = 0; i < pieces.length; i++) {
                 if (pieces[i].getCombatStatus()) {
                     count++
                 }
@@ -162,7 +163,15 @@ define([
 
 
         GameAPI.addActor = function(actor) {
-            this.addPiece(actor.piece);
+
+
+            if (actor.getMass() > 0) {
+                this.addPiece(actor.piece);
+            } else {
+                this.addStaticPiece(actor.piece);
+            }
+
+
             if (actors.indexOf(actor === -1)) {
                 actors.push(actor)
             }
@@ -189,8 +198,18 @@ define([
             pieces.push(piece)
         };
 
+        GameAPI.addStaticPiece = function(piece) {
+            GameAPI.removeStaticPiece(piece);
+            staticPieces.push(piece);
+            piece.updateGamePiece(0.01);
+        };
+
         GameAPI.removePiece = function(piece) {
             gameCommander.removeArrayEntry(pieces, piece);
+        };
+
+        GameAPI.removeStaticPiece = function(piece) {
+            gameCommander.removeArrayEntry(staticPieces, piece);
         };
 
         GameAPI.addGuiControl = function(ctrlSys) {
@@ -211,9 +230,11 @@ define([
             return activeControl;
         };
 
+        var i;
+
         GameAPI.tickControls = function(tpf) {
 
-            for (var i = 0; i < controls.length; i++) {
+            for (i = 0; i < controls.length; i++) {
                 controls[i].updateGuiControl(tpf)
             }
 
@@ -226,10 +247,6 @@ define([
 
         GameAPI.tickPlayerPiece = function(tpf) {
 
-            for (var i = 0; i < pieces.length; i++) {
-                pieces[i].determineVisibility();
-            }
-
             if (controlledActor) {
                 controlledActor.piece.setRendereable(true);
                 controlledActor.piece.updatePieceStates(tpf);
@@ -240,12 +257,12 @@ define([
 
         GameAPI.tickGame = function(tpf, time) {
 
-            for (var i = 0; i < actors.length; i++) {
-                actors[i].piece.checkNeedsUpdate(actors[i]);
+            for (i = 0; i < pieces.length; i++) {
+                pieces[i].updateGamePiece(tpf, time)
             }
 
-            for (var i = 0; i < pieces.length; i++) {
-                pieces[i].updateGamePiece(tpf, time)
+            for (i = 0; i < staticPieces.length; i++) {
+                staticPieces[i].updateStaticGamePiece(tpf, time)
             }
 
         };

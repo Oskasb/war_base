@@ -21,7 +21,6 @@
             {"slot":"piece_root",         "module":"module_tree_3_small_instanced"}
           ],
           "attachments":[
-            {"slot":"piece_root",         "ap":"ap_combat",     "child":"combat" }
           ]
         }
       },

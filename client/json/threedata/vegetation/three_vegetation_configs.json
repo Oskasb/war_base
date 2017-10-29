@@ -8,14 +8,14 @@
           "vegetationSectorSize":39,
           "rowsNColumns":5,
           "spawnFrames":5,
-          "plantCount":10
+          "plantCount":5
         },
         {
           "name":"big",
           "vegetationSectorSize":28,
           "rowsNColumns":9,
           "spawnFrames":4,
-          "plantCount":80
+          "plantCount":15
         }
       ],
 

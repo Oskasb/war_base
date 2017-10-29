@@ -55,6 +55,9 @@ define([
             return this.isCompanionActor;
         };
 
+        GameActor.prototype.getMass = function () {
+            return this.physicalPiece.getPhysicsPieceMass();
+        };
 
         GameActor.prototype.setGamePiece = function (piece) {
             if (this.piece) this.piece.removeGamePiece();
