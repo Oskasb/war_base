@@ -298,7 +298,7 @@ define([
         };
 
 
-        GamePiece.prototype.setRendereable = function(bool) {
+        GamePiece.prototype.setRenderable = function(bool) {
 
             if (this.render !== bool) {
                 this.flipRender = true;
@@ -330,7 +330,7 @@ define([
             activationState = this.getPieceActivationState();
 
             if (activationState < ENUMS.PieceActivationStates.VISIBLE) {
-                this.setRendereable(false);
+                this.setRenderable(false);
                 return;
             }
 
@@ -340,13 +340,13 @@ define([
 
             if (distance < this.boundingSize / 2) {
 
-                this.setRendereable(true);
+                this.setRenderable(true);
                 return this.render;
             }
 
             if (distance >  150 + Math.sqrt(this.boundingSize + 10) + 10 * this.boundingSize * this.boundingSize) {
                 if (this.render) {
-                    this.setRendereable(false);
+                    this.setRenderable(false);
                 }
                 return this.render;
             }
@@ -354,13 +354,13 @@ define([
             this.getScreenPosition(this.frustumCoords);
 
             if (MATH.valueIsBetween(this.frustumCoords.x, 0, 1) && MATH.valueIsBetween(this.frustumCoords.y, 0, 1) ) {
-                this.setRendereable(true);
+                this.setRenderable(true);
             } else {
 
                 if (ThreeAPI.checkVolumeObjectVisible(this.rootObj3D.position, this.boundingSize)) {
-                    this.setRendereable(true);
+                    this.setRenderable(true);
                 } else {
-                    this.setRendereable(false);
+                    this.setRenderable(false);
                 }
             }
 

@@ -123,7 +123,14 @@ define([
         GameAPI.controlActor = function(actor) {
             GameAPI.removePiece(actor.piece);
             controlledActor = actor;
-            gameCommander.enableActorControls(actor)
+            gameCommander.enableActorControls(actor);
+
+            for (i = 0; i < staticPieces.length; i++) {
+
+                staticPieces[i].updateGamePiece(1);
+                staticPieces[i].setRenderable(true);
+            }
+
         };
 
 
@@ -202,6 +209,7 @@ define([
             GameAPI.removeStaticPiece(piece);
             staticPieces.push(piece);
             piece.updateGamePiece(0.01);
+            piece.setRenderable(true);
         };
 
         GameAPI.removePiece = function(piece) {
@@ -248,7 +256,7 @@ define([
         GameAPI.tickPlayerPiece = function(tpf) {
 
             if (controlledActor) {
-                controlledActor.piece.setRendereable(true);
+                controlledActor.piece.setRenderable(true);
                 controlledActor.piece.updatePieceStates(tpf);
                 controlledActor.piece.updatePieceSlots(tpf);
                 controlledActor.piece.updatePieceVisuals(tpf);

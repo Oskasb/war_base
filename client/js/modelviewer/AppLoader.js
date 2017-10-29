@@ -121,7 +121,11 @@ define([
 
                     var activeRdy = function(ctrl) {
                         active = ctrl;
-                        GameAPI.createActor({dataKey:"actor_sherman_tank"}, playerAdded);
+
+                        setTimeout(function() {
+                            GameAPI.createActor({dataKey:"actor_sherman_tank"}, playerAdded);
+                        }, 1000)
+
 
                     //    modelViewer.guiSetup.removeMainGui()
 

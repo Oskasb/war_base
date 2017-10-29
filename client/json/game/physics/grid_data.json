@@ -13,9 +13,9 @@
         {
           "name":"big",
           "visible_range":400,
-          "sector_size":75,
+          "sector_size":125,
           "rows_n_columns":3,
-          "actor_count":1
+          "actor_count":2
         }
       ],
       "GRID_SYSTEMS":[

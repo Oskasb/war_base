@@ -40,7 +40,7 @@ define([
 
             var delayedOk = function(call, l) {
                 setTimeout(function() {
-                    actor.piece.setRendereable(true);
+                    actor.piece.setRenderable(true);
                     actor.piece.setStatesDirty();
                     call(l)
                 }, 500)

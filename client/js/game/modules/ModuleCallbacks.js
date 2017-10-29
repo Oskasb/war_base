@@ -115,7 +115,7 @@ define([
                 if (Math.round(piece.getPieceActivationState()) !== Math.round(value)) {
 
                     if (value > ENUMS.PieceActivationStates.HIDDEN) {
-                        piece.setRendereable(true);
+                        piece.setRenderable(true);
 
                     }
                     piece.setStatesDirty();
